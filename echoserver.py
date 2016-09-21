@@ -4,7 +4,7 @@ from wit import Wit
 import json
 import requests
 
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
+w = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
 
 print(w.get_message('Hi, I was in Rome today')
 
