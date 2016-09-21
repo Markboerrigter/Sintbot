@@ -12,7 +12,7 @@ actions = {
 
 access_token = 'GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ'
 
-client = Wit(access_token=access_token, actions=actions)
+client = Wit(access_token)
 
 def resp(text):
 	respons = client.get_message(text)
