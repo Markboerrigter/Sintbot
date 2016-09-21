@@ -10,9 +10,10 @@ actions = {
     'my_action': my_action,
 }
 
+access_token = 'GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ'
+
 client = Wit(access_token=access_token, actions=actions
 
-
 def resp(text):
-	respons = client.message(text)
+	respons = client.get_message(text)
 	return respons
