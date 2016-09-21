@@ -4,10 +4,7 @@ from wit import Wit
 import json
 import requests
 
-if len(sys.argv) != 2:
-    print('usage: python ' + sys.argv[0] + ' <wit-token>')
-    exit(1)
-access_token = sys.argv[1]
+access_token = GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ
 
 
 def send(request, response):
