@@ -1,1 +1,1 @@
-web: gunicorn echobot:app
+web: gunicorn echoserver:app
