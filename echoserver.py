@@ -1,4 +1,6 @@
 from flask import Flask, request
+import sys
+from wit import Wit
 import json
 import requests
 
@@ -40,20 +42,30 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
-
 def send_message(token, recipient, text):
+	
   """Send the message text to recipient with id recipient.
   """
-
+  resp = client.converse('my-user-session-42', text, {})
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": text.decode('unicode_escape')}
+      "message": {"text": resp.decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.text
+    print r.resp
+
+
+session_id = 'my-user-session-42'
+context0 = {}
+context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
+print('The session state is now: ' + str(context1))
+context2 = client.run_actions(session_id, 'and in Brussels?', context1)
+print('The session state is now: ' + str(context2))
+
+
 
 if __name__ == '__main__':
   app.run()
