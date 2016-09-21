@@ -4,19 +4,10 @@ from wit import Wit
 import json
 import requests
 
-access_token = GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ
+client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
 
+print(w.get_message('Hi, I was in Rome today')
 
-def send(request, response):
-	print(response['text'])
-
-actions = {
-    'send': send,
-}
-
-client = Wit(access_token=access_token, actions=actions)
-
-app = Flask(__name__)
 
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
