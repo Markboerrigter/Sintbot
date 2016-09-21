@@ -1,4 +1,5 @@
 from flask import Flask, request
+from wit import*
 import json
 import requests
 import witje
