@@ -1,17 +1,12 @@
 from flask import Flask, request
-#import sys
-#from wit import Wit
 import json
 import requests
 
-#w = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
-
-#print(w.get_message('Hi, I was in Rome today')
-
+app = Flask(__name__)
 
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD' #'EAAEkTt8L730BAFzZAvriuEFRYN47gpEtI0UIY0Ylsj5GXvw9qp7GnUhlqoIBt2fXZBp3WVs3YIpm6pgnZCeryREd9evbl9wziWQelGcHPxaNtHpU3J7piv9V4fCPfpr5YOMevt8ZC7LXx4PEBXVOvIJluclnOhZB4st8FpYYXJQZDZD'
+PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -45,30 +40,20 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
+
 def send_message(token, recipient, text):
-	
   """Send the message text to recipient with id recipient.
   """
-  resp = client.converse('my-user-session-42', text, {})
+
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": resp.decode('unicode_escape')}
+      "message": {"text": text.decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.resp
-
-
-session_id = 'my-user-session-42'
-context0 = {}
-context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
-print('The session state is now: ' + str(context1))
-context2 = client.run_actions(session_id, 'and in Brussels?', context1)
-print('The session state is now: ' + str(context2))
-
-
+    print r.text
 
 if __name__ == '__main__':
   app.run()
