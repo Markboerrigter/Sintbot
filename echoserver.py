@@ -1,6 +1,6 @@
 from flask import Flask, request
 import sys
-import wit import Wit
+from wit import Wit
 import json
 import requests
 
