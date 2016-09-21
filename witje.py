@@ -1,4 +1,4 @@
-from wit import Wit
+from echobot.lib.python2.7.site-packages.wit import Wit
 
 def send(request, response):
     print('Sending to user...', response['text'])
