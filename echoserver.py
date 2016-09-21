@@ -1,12 +1,12 @@
 from flask import Flask, request
-import sys
-from wit import Wit
+#import sys
+#from wit import Wit
 import json
 import requests
 
-w = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
+#w = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
 
-print(w.get_message('Hi, I was in Rome today')
+#print(w.get_message('Hi, I was in Rome today')
 
 
 # This needs to be filled with the Page Access Token that will be provided
