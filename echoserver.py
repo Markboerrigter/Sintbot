@@ -11,7 +11,7 @@ access_token = sys.argv[1]
 
 
 def send(request, response):
-print(response['text'])
+	print(response['text'])
 
 actions = {
     'send': send,
