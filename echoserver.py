@@ -1,8 +1,23 @@
 from flask import Flask, request
 import sys
-import pywit
+import wit import Wit
 import json
 import requests
+
+if len(sys.argv) != 2:
+    print('usage: python ' + sys.argv[0] + ' <wit-token>')
+    exit(1)
+access_token = sys.argv[1]
+
+
+def send(request, response):
+print(response['text'])
+
+actions = {
+    'send': send,
+}
+
+client = Wit(access_token=access_token, actions=actions)
 
 app = Flask(__name__)
 
