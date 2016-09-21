@@ -1,8 +1,8 @@
 import json
 
-from . import helpers
-from .connector import Connector
-from .exceptions import (
+import helpers
+from connector import Connector
+from exceptions import (
     AuthenticationFailedError, ResourceNotFoundError,
     BadRequestError)
 
