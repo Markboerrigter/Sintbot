@@ -1,6 +1,7 @@
 from wit import Wit
 
-
+import pyowm
+owm = pyowm.OWM()
 
 def first_entity_value(entities, entity):
     if entity not in entities:
@@ -10,7 +11,10 @@ def first_entity_value(entities, entity):
         return None
     return val['value'] if isinstance(val, dict) else val
 
-
+def get_weather(location):
+    observation = owm.weather_at_place(location)
+    w = observation.get_weather()
+    return w.get_status()
 
 def get_forecast(request):
     context = request['context']
@@ -18,12 +22,11 @@ def get_forecast(request):
 
     loc = first_entity_value(entities, 'location')
     if loc:
-        context['forecast'] = 'sunny'
+        context['forecast'] = get_weather(loc)
     else:
         context['missingLocation'] = True
         if context.get('forecast') is not None:
             del context['forecast']
-
     return context
 
 def send(request, response):
@@ -35,7 +38,9 @@ actions = {
     'getForecast': get_forecast,
 }
 
-client = Wit('OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ',actions = actions)
+# clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ 'present'
+client = Wit('ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR',actions = actions)
+
 client.interactive()
 
 # session_id = 'my-user-session-42'
