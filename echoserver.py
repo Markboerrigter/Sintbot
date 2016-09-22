@@ -3,11 +3,8 @@ from flask import Flask, request
 import json
 import requests
 import sys
-print(sys.executable)
 from wit import Wit
-
-
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
+import talkeBot as tb
 
 
 
@@ -36,7 +33,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     send_message(PAT, sender, message)
-  return "ok",sender
+  return "ok"
 
 def messaging_events(payload):
   """Generate tuples of (sender_id, message_text) from the
@@ -50,64 +47,23 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
-def first_entity_value(entities, entity):
-    if entity not in entities:
-        return None
-    val = entities[entity][0]['value']
-    if not val:
-        return None
-    return val['value'] if isinstance(val, dict) else val
-
-
-
-def get_forecast(request):
-    context = request['context']
-    entities = request['entities']
-
-    loc = first_entity_value(entities, 'location')
-    if loc:
-        context['forecast'] = 'sunny'
-    else:
-        context['missingLocation'] = True
-        if context.get('forecast') is not None:
-            del context['forecast']
-
-    return context
-
-def send_message(token, recipient, response):
+def send_message(token, recipient, text):
 
   """Send the message text to recipient with id recipient.
   """
-  print('message: ')
+
   #print(response['text'])
-  msg = response
-  print(msg)
+  response = tb.response(text)
+  print('message: response')
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": msg.decode('unicode_escape')}
+      "message": {"text": response.decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.msg
-
-
-def send(request, response,sender):
-    print(response['text'])
-    send_message(PAT, sender, response['text'])
-
-actions = {
-    'send_message': send_message,
-    'handle_messages': handle_messages,
-    'first_entity_value': first_entity_value,
-    'getForecast': get_forecast,
-}
-
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions = actions)
-client.interactive()
-
-
+    print r.response
 
 if __name__ == '__main__':
   app.run()
