@@ -64,7 +64,7 @@ def send_message(token, recipient, text):
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.(msg)
+    print r.msg
 
 if __name__ == '__main__':
   app.run()
