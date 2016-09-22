@@ -4,7 +4,21 @@ import json
 import requests
 import sys
 print(sys.executable)
-import wit
+from wit import Wit
+
+client = Wit(access_token=GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ)
+
+session_id = 'my-user-session-42'
+context0 = {}
+context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
+print('The session state is now: ' + str(context1))
+context2 = client.run_actions(session_id, 'and in Brussels?', context1)
+print('The session state is now: ' + str(context2))
+
+def response(client, text):
+	resp = client.message(text)
+	return resp
+
 
 app = Flask(__name__)
 
@@ -54,11 +68,11 @@ def send_message(token, recipient, text):
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": text.decode('unicode_escape')}
+      "message": {"text": response(text).decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.text
+    print r.response(text)
 
 if __name__ == '__main__':
   app.run()
