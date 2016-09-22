@@ -6,6 +6,10 @@ import sys
 print(sys.executable)
 from wit import Wit
 
+def response(client, text):
+	resp = client.message(text)
+	return resp
+
 actions = {
     'response': response,
 }
@@ -20,9 +24,6 @@ print('The session state is now: ' + str(context1))
 context2 = client.run_actions(session_id, 'and in Brussels?', context1)
 print('The session state is now: ' + str(context2))
 
-def response(client, text):
-	resp = client.message(text)
-	return resp
 
 
 app = Flask(__name__)
