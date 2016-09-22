@@ -35,7 +35,7 @@ actions = {
     'getForecast': get_forecast,
 }
 
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions = actions)
+client = Wit('OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ',actions = actions)
 client.interactive()
 
 # session_id = 'my-user-session-42'
