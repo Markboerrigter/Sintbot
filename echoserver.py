@@ -36,7 +36,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     send_message(PAT, sender, message)
-  return "ok"
+  return "ok",sender
 
 def messaging_events(payload):
   """Generate tuples of (sender_id, message_text) from the
@@ -79,8 +79,8 @@ def send_message(token, recipient, response):
   """Send the message text to recipient with id recipient.
   """
   print('message: ')
-  print(response['text'])
-  msg = response['text']
+  #print(response['text'])
+  msg = response
   print(msg)
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
@@ -91,6 +91,11 @@ def send_message(token, recipient, response):
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
     print r.msg
+
+
+def send(request, response,sender):
+    print(response['text'])
+    send_message(PAT, sender, response['text'])
 
 actions = {
     'send_message': send_message,
