@@ -7,7 +7,6 @@ print(sys.executable)
 from wit import Wit
 
 actions = {
-    'send': send,
     'response': response,
 }
 
