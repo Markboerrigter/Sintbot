@@ -31,8 +31,7 @@ def send(request, response,sender):
     send_message(PAT, sender, response['text'])
 
 actions = {
-    'send': send_message,
-    'handle_messages': handle_messages,
+    'send': send,
     'first_entity_value': first_entity_value,
     'getForecast': get_forecast,
 }
