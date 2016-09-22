@@ -78,6 +78,7 @@ def send_message(token, recipient, response):
 
   """Send the message text to recipient with id recipient.
   """
+  print('message: ')
   print(response['text'])
   msg = response['text']
   print(msg)
