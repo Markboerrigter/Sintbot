@@ -26,9 +26,8 @@ def get_forecast(request):
 
     return context
 
-def send(request, response,sender):
+def send(request, response):
     print(response['text'])
-    send_message(PAT, sender, response['text'])
 
 actions = {
     'send': send,
