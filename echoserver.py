@@ -50,12 +50,35 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
+def first_entity_value(entities, entity):
+    if entity not in entities:
+        return None
+    val = entities[entity][0]['value']
+    if not val:
+        return None
+    return val['value'] if isinstance(val, dict) else val
 
-def send_message(token, recipient, text):
+
+
+def get_forecast(request):
+    context = request['context']
+    entities = request['entities']
+
+    loc = first_entity_value(entities, 'location')
+    if loc:
+        context['forecast'] = 'sunny'
+    else:
+        context['missingLocation'] = True
+        if context.get('forecast') is not None:
+            del context['forecast']
+
+    return context
+
+def send_message(token, recipient, response):
 
   """Send the message text to recipient with id recipient.
   """
-  msg = str(client.message(text))
+  msg = response['text']
   print(msg)
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
@@ -66,6 +89,18 @@ def send_message(token, recipient, text):
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
     print r.msg
+
+actions = {
+    'send_message': send_message,
+    'handle_messages': handle_messages,
+    'first_entity_value': first_entity_value,
+    'getForecast': get_forecast,
+}
+
+client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions = actions)
+client.interactive()
+
+
 
 if __name__ == '__main__':
   app.run()
