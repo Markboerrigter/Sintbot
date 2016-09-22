@@ -56,6 +56,8 @@ def send_message(token, recipient, text):
   response = tb.response(text)
   print(response)
   print(response['text'])
+  for part in response:
+      print(part)
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
