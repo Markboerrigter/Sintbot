@@ -6,7 +6,7 @@ import sys
 print(sys.executable)
 from wit import Wit
 
-client = Wit(access_token=GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ)
+client = Wit(access_token='GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
 
 session_id = 'my-user-session-42'
 context0 = {}
