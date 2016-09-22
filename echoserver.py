@@ -6,23 +6,8 @@ import sys
 print(sys.executable)
 from wit import Wit
 
-def response(client, text):
-	resp = client.message(text)
-	return resp
 
-actions = {
-    'response': response,
-}
-
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions)
-
-
-session_id = 'my-user-session-42'
-context0 = {}
-context1 = client.run_actions(session_id, 'what is the weather in London?', context0)
-print('The session state is now: ' + str(context1))
-context2 = client.run_actions(session_id, 'and in Brussels?', context1)
-print('The session state is now: ' + str(context2))
+client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
 
 
 
@@ -74,11 +59,11 @@ def send_message(token, recipient, text):
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": response(text).decode('unicode_escape')}
+      "message": {"text": client.message(text).decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
-    print r.response(text)
+    print r.(client.message(text))
 
 if __name__ == '__main__':
   app.run()
