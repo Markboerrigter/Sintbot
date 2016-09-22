@@ -30,7 +30,7 @@ def get_forecast(request):
             del context['forecast']
     return context
 
-def compute-res(request):
+def computeRes(request):
     entities = request['entities']
     print(entities)
 
