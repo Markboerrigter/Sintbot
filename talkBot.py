@@ -39,7 +39,7 @@ def send(request, response):
 
 actions = {
     'send': send,
-    'compute-res': compute-res,
+    'computeRes': computeRes,
     'first_entity_value': first_entity_value,
     'getForecast': get_forecast,
 }
