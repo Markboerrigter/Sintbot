@@ -2,7 +2,7 @@
 from flask import Flask, request
 import json
 import requests
-import wit
+from wit import Wit
 
 app = Flask(__name__)
 
