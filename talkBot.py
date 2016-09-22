@@ -30,11 +30,16 @@ def get_forecast(request):
             del context['forecast']
     return context
 
+def compute-res(request):
+    entities = request['entities']
+    print(entities)
+
 def send(request, response):
     print(response['text'])
 
 actions = {
     'send': send,
+    'compute-res': compute-res,
     'first_entity_value': first_entity_value,
     'getForecast': get_forecast,
 }
