@@ -52,10 +52,11 @@ def messaging_events(payload):
 
 
 def send_message(token, recipient, text):
+	
   """Send the message text to recipient with id recipient.
   """
+	
 	msg = client.message(text)
-
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
