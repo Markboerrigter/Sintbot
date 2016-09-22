@@ -32,7 +32,7 @@ def get_forecast(request):
 
 def computeRes(request):
     entities = request['entities']
-    print(entities)
+    print('entities: ', entities)
 
 def send(request, response):
     print(response['text'])
