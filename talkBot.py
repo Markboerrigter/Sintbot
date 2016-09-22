@@ -46,6 +46,6 @@ context2 = client.run_actions(session_id, 'and in Brussels?', context1)
 print('The session state is now: ' + str(context2))
 
 def response(input):
-    print(input)
-    resp = client.converse('my-user-session-42', 'what is the weather in London?', {})
+    #print(input)
+    resp = client.converse('my-user-session-42', input, {})
     return str(resp)
