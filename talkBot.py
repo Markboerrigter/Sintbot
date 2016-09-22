@@ -39,8 +39,8 @@ actions = {
     'getForecast': get_forecast,
 }
 
-# clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ 'present'
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions = actions)
+# clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ 'present'
+client = Wit('OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ',actions = actions)
 
 client.interactive()
 
