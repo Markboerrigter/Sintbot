@@ -4,7 +4,7 @@ import json
 import requests
 import sys
 from wit import Wit
-import talkeBot as tb
+import talkBot as tb
 
 
 
