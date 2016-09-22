@@ -55,7 +55,6 @@ def send_message(token, recipient, text):
   #print(response['text'])
   response = tb.response(text)
   print(response)
-  print(response['text'])
   for part in response:
       print(part)
   if reponse['text']:
