@@ -40,7 +40,7 @@ actions = {
 }
 
 # clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ 'present'
-client = Wit('ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR',actions = actions)
+client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions = actions)
 
 client.interactive()
 
