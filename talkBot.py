@@ -48,5 +48,4 @@ client.interactive()
 def response(input):
     #print(input)
     resp = client.converse('my-user-session-42', input, {})
-    print('Response: ',resp)
     return resp
