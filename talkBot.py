@@ -21,6 +21,7 @@ def get_forecast(request):
     entities = request['entities']
 
     loc = first_entity_value(entities, 'location')
+    print(loc)
     if loc:
         context['forecast'] = get_weather(loc)
     else:
