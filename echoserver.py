@@ -55,12 +55,12 @@ def send_message(token, recipient, text):
   #print(response['text'])
   response = tb.response(text)
   print(response)
-  print(response['confidence'])
+  print(response['text'])
   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     params={"access_token": token},
     data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": response['msg'].decode('unicode_escape')}
+      "message": {"text": response['text'].decode('unicode_escape')}
     }),
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
