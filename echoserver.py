@@ -6,7 +6,13 @@ import sys
 print(sys.executable)
 from wit import Wit
 
-client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ')
+actions = {
+    'send': send,
+    'response': response,
+}
+
+client = Wit('GNWSVIUT4MZLZGHNVPXKJYLKBLKNQNYQ',actions)
+
 
 session_id = 'my-user-session-42'
 context0 = {}
