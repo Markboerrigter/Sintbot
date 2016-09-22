@@ -2,6 +2,8 @@
 from flask import Flask, request
 import json
 import requests
+import sys
+print(sys.executable)
 import wit
 
 app = Flask(__name__)
