@@ -5,6 +5,7 @@ import requests
 import sys
 from wit import Wit
 import talkBot as tb
+from runLogin import getIt
 
 
 
@@ -69,4 +70,6 @@ def send_message(token, recipient, text):
         print r.response
 
 if __name__ == '__main__':
+  personality, sentiment = getIt()
+  print(sentiment)
   app.run()
