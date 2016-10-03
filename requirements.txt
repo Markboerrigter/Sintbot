@@ -1,4 +1,4 @@
-ick==6.6
+click==6.6
 Flask==0.11.1
 itsdangerous==0.24
 Jinja2==2.8
