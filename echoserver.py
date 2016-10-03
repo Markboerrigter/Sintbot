@@ -1,12 +1,19 @@
 from flask import Flask, request
 import json
 import requests
+import sys
+from wit import Wit
+import talkBot as tb
+from runLogin import getIt
+
+
 
 app = Flask(__name__)
 
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BADIcbcbG8GomlDf3ljwrHxf0Qyg4M3O1Tsyrnydf9lgua4ZBFPa6QunNVeUg7q0TiuFSF6dWCjk4gXeF3f2mkldGRNr4tPu969sKRtJsxI9v3xtFnbeZBIkoZByhysAcyIKcSonjMXf5I1QPZC73GVgp752mjQZDZD'
+PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
+
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -40,21 +47,28 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
-
 def send_message(token, recipient, text):
+
   """Send the message text to recipient with id recipient.
   """
 
-  r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    params={"access_token": token},
-    data=json.dumps({
-      "recipient": {"id": recipient},
-      "message": {"text": text.decode('unicode_escape')}
-    }),
-    headers={'Content-type': 'application/json'})
-  if r.status_code != requests.codes.ok:
-    print r.text
+  #print(response['text'])
+  response = tb.response(text)
+  print(response)
+  for part in response:
+      print(part)
+  if 'msg' in response:
+      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+          "recipient": {"id": recipient},
+          "message": {"text": response['msg'].decode('unicode_escape')}
+        }),
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.response
 
 if __name__ == '__main__':
+  personality, sentiment = getIt()
+  print(sentiment)
   app.run()
-
