@@ -14,10 +14,8 @@ numpy==1.11.1
 oauth2client==3.0.0
 pyasn1==0.1.9
 pyasn1-modules==0.0.8
-pycurl==7.43.0
 pyliblzma==0.5.3
 pysolr==3.5.0
-pysqlite==1.0.1
 python-dateutil==1.5
 requests==2.11.1
 rmate==1.0.2
@@ -26,9 +24,7 @@ rsa==3.4.2
 simplejson==3.8.2
 six==1.10.0
 uritemplate==0.6
-urlgrabber==3.9.1
 virtualenv==15.0.3
 watson-developer-cloud==0.20.0
 Werkzeug==0.11.11
 wit==4.1.0
-yum-metadata-parser==1.1.4
