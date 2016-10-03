@@ -27,3 +27,4 @@ virtualenv==15.0.3
 watson-developer-cloud==0.20.0
 Werkzeug==0.11.11
 wit==4.1.0
+pyowm==2.4.0
