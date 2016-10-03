@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-mport json
+import json
 import facebook
 import urllib
 import pickle
