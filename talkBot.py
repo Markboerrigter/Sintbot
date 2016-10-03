@@ -1,4 +1,5 @@
-from wit import Wit
+
+m wit import Wit
 
 import pyowm
 owm = pyowm.OWM()
