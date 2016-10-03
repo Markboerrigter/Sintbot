@@ -1,5 +1,4 @@
 click==6.6
-<<<<<<< HEAD
 Flask==0.11.1
 itsdangerous==0.24
 Jinja2==2.8
@@ -7,20 +6,4 @@ MarkupSafe==0.23
 requests==2.11.1
 gunicorn==19.6.0
 Werkzeug==0.11.11
-=======
-facebook-sdk==2.0.0
-Flask==0.11.1
-gunicorn==19.6.0
-heroku==0.1.4
-itsdangerous==0.24
-Jinja2==2.8
-MarkupSafe==0.23
-pyowm==2.4.0
-pysolr==3.5.0
-python-dateutil==1.5
-requests==2.11.1
-simplejson==3.8.2
-watson-developer-cloud==0.19.0
-Werkzeug==0.11.11
-wit==4.1.0
->>>>>>> e429f4a1df7f77a533a01d1321e01cf085237eea
+
