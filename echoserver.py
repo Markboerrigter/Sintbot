@@ -65,6 +65,7 @@ def messaging_events(payload):
 
 def findAnswer(response, question, Tokens):
      print(question)
+     print(response)
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
