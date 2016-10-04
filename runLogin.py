@@ -14,14 +14,14 @@ from translateGoogle import trans, detect, allEng
 
 # print(translate.translate('hallo ik ben Mark'))
 
-from nltk.corpus import stopwords
+
 from nltk.tokenize import TweetTokenizer
 tknzr = TweetTokenizer()
-stopwords.fileids()
-stopwords.words('english')[0:10]
-stopset = list(set(stopwords.words('english')))
 
-sentimentClassifier = pickle.load( open( "sentiment_analysis.p", "rb" ) )
+
+stopset = pickle.load( open( "stopset.p", "rb" ) )
+
+sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 FB_APP_ID = '321396144861053'
 FB_APP_SECRET = '6b9ee66ca451209dd55a1dacd47932b3'
