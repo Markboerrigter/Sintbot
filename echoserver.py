@@ -20,6 +20,7 @@ app = Flask(__name__)
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
 tokenWit = Tokens[0]
+pickle.dump(tokenWit(open("tokenWit.p", "wb"))
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
@@ -64,9 +65,7 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question, Tokens):
-     print(question)
-     print(response)
-     print(Tokens[0])
+
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
@@ -76,6 +75,8 @@ def findAnswer(response, question, Tokens):
              Tokens = TokensSave[int(msg[2]):]
              print(Tokens[0])
              tokenWit = Tokens[0]
+             pickle.dump(tokenWit(open("tokenWit.p", "wb"))
+
              return tb.response(msg[1], tokenWit), Tokens
          else:
              return response, Tokens
@@ -84,13 +85,13 @@ def findAnswer(response, question, Tokens):
           return response, Tokens
 
 
-def send_message(token, recipient, text, Tokens):
-
+def send_message(token, recipient, text):
+  witToken = pickle.load( open( "witToken.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
-  print(Tokens[0])
+
   #print(response['text'])
-  response , global Tokens = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
+  response , Tokens = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
