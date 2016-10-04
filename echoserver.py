@@ -86,7 +86,7 @@ def findAnswer(response, question):
 
 
 def send_message(token, recipient, text):
-  witToken = pickle.load( open( "witToken.p", "rb" ) )
+  witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
 
