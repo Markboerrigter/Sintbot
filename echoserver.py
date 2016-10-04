@@ -88,7 +88,7 @@ def send_message(token, recipient, text, Tokens):
 
   """Send the message text to recipient with id recipient.
   """
-
+  print(Tokens[0])
   #print(response['text'])
   response , Tokens = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
   if 'msg' in response:
