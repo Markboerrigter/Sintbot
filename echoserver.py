@@ -6,10 +6,13 @@ from wit import Wit
 import talkBot as tb
 from runLogin import getIt
 
+personality, sentiment = getIt()
 
+sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
+customerNeedToken = 'PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD'
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
@@ -35,6 +38,13 @@ def handle_messages():
     send_message(PAT, sender, message)
   return "ok"
 
+def find_sender():
+    payload = request.get_data()
+    data = json.loads(payload)
+    messaging_events = data["entry"][0]["messaging"]
+    for sender, message in messaging_events(payload):
+        return sender
+
 def messaging_events(payload):
   """Generate tuples of (sender_id, message_text) from the
   provided payload.
@@ -53,11 +63,12 @@ def send_message(token, recipient, text):
   """
 
   #print(response['text'])
-  response = tb.response(text)
+  response = tb.response(text, customerNeedToken)
   print(response)
   for part in response:
       print(part)
   if 'msg' in response:
+      print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -69,6 +80,9 @@ def send_message(token, recipient, text):
         print r.response
 
 if __name__ == '__main__':
+
   personality, sentiment = getIt()
-  print(sentiment)
+  recipient = find_sender()
+  # print(sentiment)
+  send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?'):
   app.run()

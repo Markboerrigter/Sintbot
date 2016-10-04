@@ -44,11 +44,15 @@ actions = {
     'first_entity_value': first_entity_value,
     'getForecast': get_forecast,
 }
+# 
+# def interact(token):
+#
+# # clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ 'present'
+#
+#
+#     client.interactive()
 
-# clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ 'present'
-client = Wit('OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ',actions = actions)
 
-client.interactive()
 
 # session_id = 'my-user-session-42'
 # context0 = {}
@@ -57,8 +61,9 @@ client.interactive()
 # context2 = client.run_actions(session_id, 'and in Brussels?', context1)
 # print('The session state is now: ' + str(context2))
 
-def response(input):
+def response(input,token):
+    client = Wit(token,actions = actions)
     #print(input)
     resp = client.converse('my-user-session-43', input, {})
-    
+
     return resp
