@@ -64,9 +64,11 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question):
+     print(question)
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
+             print(response)
              print('Stop Message')
              print(msg)
              Tokens = TokensSave[int(msg[2]):]
