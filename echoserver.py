@@ -68,7 +68,7 @@ def findAnswer(response, question):
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
              Tokens = Tokens[1:]
-             Tokens[0] = Tokens[[0]msg[2]]
+             Tokens[0] = Tokens[[0][msg[2]]]
              return tb.response(question, Tokens[0])
          else:
              return response
