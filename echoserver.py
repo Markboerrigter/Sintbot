@@ -81,9 +81,7 @@ def send_message(token, recipient, text, witToken = 0):
 
   #print(response['text'])
   response = findAnswer(tb.response(text, tokenWit),text)
-
-  for part in response:
-      print(part)
+  print(response)
   if 'msg' in response:
       print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
