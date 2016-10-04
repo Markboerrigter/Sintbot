@@ -42,6 +42,7 @@ def handle_messages():
   print payload
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
+    print(sender, message)
     send_message(PAT, sender, message)
   return "ok"
 
@@ -83,7 +84,7 @@ def send_message(token, recipient, text, witToken = 0):
   response = findAnswer(tb.response(text, tokenWit),text)
   print(response)
   if 'msg' in response:
-      print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
+    #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
