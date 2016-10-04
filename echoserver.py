@@ -44,7 +44,7 @@ def handle_messages():
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
     send_message(PAT, sender, message, Tokens)
-  return "ok", Tokens
+  return "ok"
 
 def find_sender():
     payload = request.get_data()
