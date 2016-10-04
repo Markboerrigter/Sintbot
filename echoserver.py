@@ -10,7 +10,7 @@ personality, sentiment = getIt()
 
 def word_feats(words):
     return dict([(word, True) for word in words])
-    
+
 import pickle
 
 sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
@@ -69,7 +69,7 @@ def send_message(token, recipient, text):
 
   #print(response['text'])
   response = tb.response(text, customerNeedToken)
-  print(response)
+  print('text analysis: ' + response)
   for part in response:
       print(part)
   if 'msg' in response:
