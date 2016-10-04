@@ -69,7 +69,8 @@ def send_message(token, recipient, text):
 
   #print(response['text'])
   response = tb.response(text, customerNeedToken)
-  print('text analysis: ' + response)
+  print('text analysis: ')
+  print(response)
   for part in response:
       print(part)
   if 'msg' in response:
