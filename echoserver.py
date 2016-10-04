@@ -85,6 +85,7 @@ def send_message(token, recipient, text, witToken = 0):
 
   #print(response['text'])
   response = findAnswer(tb.response(text, Tokens[0]),text)
+  print(tokenWit)
   print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
