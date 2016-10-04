@@ -67,6 +67,7 @@ def findAnswer(response, question):
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
+             print('Stop Message')
              print(msg)
              Tokens = TokensSave[int(msg[2]):]
              tokenWit = Tokens[0]
