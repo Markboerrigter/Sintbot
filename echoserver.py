@@ -19,7 +19,7 @@ app = Flask(__name__)
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
-tokenWit = Tokens[0]
+# tokenWit = Tokens[0]
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
@@ -68,7 +68,8 @@ def findAnswer(response, question):
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
              print(msg)
-             tokenWit = Tokens[int(msg[2])]
+             Tokens = TokensSave[int(msg[2]):]
+             tokenWit = Tokens[0]
              return tb.response(msg[1], tokenWit)
          else:
              return response
@@ -80,7 +81,7 @@ def send_message(token, recipient, text, witToken = 0):
   """
 
   #print(response['text'])
-  response = findAnswer(tb.response(text, tokenWit),text)
+  response = findAnswer(tb.response(text, Tokens[0]),text)
   print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
