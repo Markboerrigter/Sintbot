@@ -17,7 +17,8 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
-customerNeedToken = 'PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD'
+TokensSave = [['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD'],['K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']]
+Tokens = TokensSave
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
@@ -62,15 +63,25 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
-def send_message(token, recipient, text):
+ def findAnswer(response, question):
+     if 'msg' in response:
+         msg = response['msg'].split(',')
+         if msg[0] == 'Stop':
+             Tokens = Tokens[1:]
+             Tokens[0] = Tokens[[0]msg[2]]
+             return tb.response(question, Tokens[0])
+         else:
+             return response
+
+
+def send_message(token, recipient, text, witToken = 0):
 
   """Send the message text to recipient with id recipient.
   """
 
   #print(response['text'])
-  response = tb.response(text, customerNeedToken)
-  print('text analysis: ')
-  print(response)
+  response = findAnswer(tb.response(text, Tokens[0]),text)
+
   for part in response:
       print(part)
   if 'msg' in response:
@@ -86,6 +97,13 @@ def send_message(token, recipient, text):
         print r.response
 
 if __name__ == '__main__':
+  # for i in range(len(Tokens)):
+  #     Stop = False
+  #
+  #     while not Stop:
+  #         keuze =
+  #         witToken = Tokens[i]
+
 
   personality, sentiment = getIt()
   recipient = find_sender()
