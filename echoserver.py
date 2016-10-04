@@ -89,9 +89,10 @@ def send_message(token, recipient, text):
   witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
-
+  print(witToken)
   #print(response['text'])
   response = findAnswer(tb.response(text, Tokens[0]),text)
+  print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
