@@ -8,6 +8,8 @@ from runLogin import getIt
 
 personality, sentiment = getIt()
 
+import pickle
+
 sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
