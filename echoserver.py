@@ -64,7 +64,7 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question, Tokens):
+def findAnswer(response, question):
 
      if 'msg' in response:
          msg = response['msg'].split(',')
@@ -77,12 +77,12 @@ def findAnswer(response, question, Tokens):
              tokenWit = Tokens[0]
              pickle.dump(tokenWit(open("tokenWit.p", "wb"))
 
-             return tb.response(msg[1], tokenWit), Tokens
+             return tb.response(msg[1], tokenWit)
          else:
-             return response, Tokens
+             return response
      else:
 
-          return response, Tokens
+          return response
 
 
 def send_message(token, recipient, text):
@@ -91,7 +91,7 @@ def send_message(token, recipient, text):
   """
 
   #print(response['text'])
-  response , Tokens = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
+  response = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
