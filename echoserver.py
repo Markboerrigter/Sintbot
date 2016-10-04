@@ -84,5 +84,5 @@ if __name__ == '__main__':
   personality, sentiment = getIt()
   recipient = find_sender()
   # print(sentiment)
-  send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?'):
+  send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
   app.run()
