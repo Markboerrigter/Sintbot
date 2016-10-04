@@ -36,7 +36,7 @@ def handle_verification():
     return 'Error, wrong validation token'
 
 @app.route('/', methods=['POST'])
-def handle_messages():
+def handle_messages(Tokens):
   print "Handling Messages"
   payload = request.get_data()
   print payload
@@ -44,7 +44,7 @@ def handle_messages():
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
     send_message(PAT, sender, message, Tokens)
-  return "ok"
+  return "ok", Tokens
 
 def find_sender():
     payload = request.get_data()
