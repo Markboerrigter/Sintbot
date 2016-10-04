@@ -66,6 +66,7 @@ def messaging_events(payload):
 def findAnswer(response, question, Tokens):
      print(question)
      print(response)
+     print(Tokens[0])
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
@@ -78,7 +79,7 @@ def findAnswer(response, question, Tokens):
          else:
              return response, Tokens
       else:
-          
+
           return response, Tokens
 
 
