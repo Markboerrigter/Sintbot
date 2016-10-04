@@ -14,8 +14,7 @@ import random
 
 def word_feats(words):
     return dict([(word, True) for word in words])
-for line in data:
-    print(line)
+
 
 anders = [x for x in data if x[1] not in ['neg', 'pos', 'obj']]
 negids = [[tknzr.tokenize(x[0]),x[1]] for x in data if x[1] == 'neg']
@@ -23,7 +22,7 @@ posids = [[tknzr.tokenize(x[0]),x[1]] for x in data if x[1] == 'pos']
 objids = [[tknzr.tokenize(x[0]),x[1]] for x in data if x[1] == 'obj']
 print(len(negids),len(posids),len(objids),len(data))
 
- 
+
 negfeats = [(word_feats(f[0]), 'neg') for f in negids]
 posfeats = [(word_feats(f[0]), 'pos') for f in posids]
 objfeats = [(word_feats(f[0]), 'obj') for f in objids]
@@ -40,7 +39,7 @@ objfeats = random.sample(objfeats,leng)
 ##for x in posfeats:
 ##    print(x)
 ##    eerr
-## 
+##
 negcutoff = int(len(negfeats)*3/4)
 poscutoff = int(len(posfeats)*3/4)
 objcutoff = int(len(objfeats)*3/4)
@@ -78,5 +77,3 @@ import pickle
 
 
 pickle.dump(classifier, open( "sentiment_analysis_final.p", "wb" ) )
-
-

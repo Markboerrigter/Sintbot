@@ -8,6 +8,9 @@ from runLogin import getIt
 
 personality, sentiment = getIt()
 
+def word_feats(words):
+    return dict([(word, True) for word in words])
+    
 import pickle
 
 sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
