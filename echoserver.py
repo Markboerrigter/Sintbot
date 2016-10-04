@@ -80,6 +80,7 @@ def send_message(token, recipient, text, witToken = 0):
   """
 
   #print(response['text'])
+  print(Tokens[0])
   response = findAnswer(tb.response(text, Tokens[0]),text)
 
   for part in response:
