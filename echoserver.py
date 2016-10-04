@@ -77,6 +77,9 @@ def findAnswer(response, question, Tokens):
              return tb.response(msg[1], tokenWit), Tokens
          else:
              return response, Tokens
+      else:
+          
+          return response, Tokens
 
 
 def send_message(token, recipient, text, Tokens):
