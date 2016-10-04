@@ -63,7 +63,7 @@ def messaging_events(payload):
     else:
       yield event["sender"]["id"], "I can't echo this"
 
- def findAnswer(response, question):
+def findAnswer(response, question):
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
