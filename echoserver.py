@@ -43,7 +43,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
-    send_message(PAT, sender, message)
+    send_message(PAT, sender, message, Tokens)
   return "ok"
 
 def find_sender():
@@ -63,7 +63,7 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question):
+def findAnswer(response, question, Tokens):
      print(question)
      if 'msg' in response:
          msg = response['msg'].split(',')
@@ -73,20 +73,18 @@ def findAnswer(response, question):
              print(msg)
              Tokens = TokensSave[int(msg[2]):]
              tokenWit = Tokens[0]
-             return tb.response(msg[1], tokenWit)
+             return tb.response(msg[1], tokenWit), Tokens
          else:
-             return response
+             return response, Tokens
 
 
-def send_message(token, recipient, text, witToken = 0):
+def send_message(token, recipient, text, Tokens):
 
   """Send the message text to recipient with id recipient.
   """
 
   #print(response['text'])
-  response = findAnswer(tb.response(text, Tokens[0]),text)
-  print(tokenWit)
-  print(response)
+  response , Tokens = findAnswer(tb.response(text, Tokens[0]),text, Tokens)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -98,6 +96,7 @@ def send_message(token, recipient, text, witToken = 0):
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.response
+  return Tokens
 
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
@@ -111,5 +110,5 @@ if __name__ == '__main__':
   personality, sentiment = getIt()
   recipient = find_sender()
   # print(sentiment)
-  send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
+  # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
   app.run()
