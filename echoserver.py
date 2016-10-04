@@ -74,6 +74,7 @@ def findAnswer(response, question, Tokens):
              print('Stop Message')
              print(msg)
              Tokens = TokensSave[int(msg[2]):]
+             print(Tokens[0])
              tokenWit = Tokens[0]
              return tb.response(msg[1], tokenWit), Tokens
          else:

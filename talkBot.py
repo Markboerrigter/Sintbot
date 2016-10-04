@@ -17,6 +17,11 @@ def get_weather(location):
     w = observation.get_weather()
     return w.get_status()
 
+# def getOntvanger(request):
+#     return request['entities'][]
+#     {u'type': u'msg', u'msg': u'Stop, Nee, 2', u'entities': {u'ja_nee': [{u'type': u'value', u'suggested': True, u'value': u'Tokens', u'confidence': 0.45982073550975217}], u'intent': [{u'value': u'zoekt kado', u'confidence': 0.5284788122969792}]}, u'confidence': 0.011277662821231825}
+#
+
 def get_forecast(request):
     context = request['context']
     entities = request['entities']
@@ -40,11 +45,12 @@ def send(request, response):
 
 actions = {
     'send': send,
+    # 'getOntvanger': getOntvanger
     'computeRes': computeRes,
     'first_entity_value': first_entity_value,
     'getForecast': get_forecast,
 }
-# 
+#
 # def interact(token):
 #
 # # clients: ELLWPVMW4P6CEU77HYWBMNUOF45SDSYR 'weather', OP72DHYVY77FZY2U6RCOGN2SNFXXIODJ 'present'
