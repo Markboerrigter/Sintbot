@@ -1,7 +1,7 @@
-# from wit import Wit
+from wit import Wit
 #
-# import pyowm
-# owm = pyowm.OWM
+import pyowm
+owm = pyowm.OWM
 
 import pickle
 
