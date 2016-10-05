@@ -70,6 +70,6 @@ actions = {
 def response(input,token):
     client = Wit(token,actions = actions)
     #print(input)
-    resp = client.converse('my-user-session-43', input, {})
+    resp = client.message(input)
 
     return resp
