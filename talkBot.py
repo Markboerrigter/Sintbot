@@ -5,7 +5,7 @@
 
 import pickle
 
-a = pickle.load( open('session_id.p', 'wb'))
+a = pickle.load( open('session_id.p', 'rb'))
 
 session_id = 'GreenOrange-session-' + str(a)
 
