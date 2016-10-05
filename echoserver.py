@@ -12,6 +12,7 @@ personality, sentiment = getIt()
 
 a = random.randint(0,1000000)
 session_id = 'GreenOrange-session-' + str(a)
+print('start')
 print(session_id)
 # a +=1
 # pickle.dump(a, open('session_id.p', 'wb'))
