@@ -6,16 +6,18 @@ from wit import Wit
 import talkBot as tb
 from runLogin import getIt
 import pickle
+import random
 
 personality, sentiment = getIt()
 
-a = pickle.load( open('session_id.p', 'rb'))
-print(a)
+a = random.randint(0,1000000)
+
 
 session_id = 'GreenOrange-session-' + str(a)
 
-a +=1
-pickle.dump(a, open('session_id.p', 'wb'))
+print(session_id)
+# a +=1
+# pickle.dump(a, open('session_id.p', 'wb'))
 
 def word_feats(words):
     return dict([(word, True) for word in words])
