@@ -1,8 +1,17 @@
+# from wit import Wit
+#
+# import pyowm
+# owm = pyowm.OWM
 
-from wit import Wit
+import pickle
 
-import pyowm
-owm = pyowm.OWM()
+a = stopset = pickle.load(a, open('session_id.p', 'wb'))
+
+session_id = 'GreenOrange-session-' + str(a)
+
+a +=1
+pickle.dump(a, open('session_id.p', 'wb'))
+
 
 def first_entity_value(entities, entity):
     if entity not in entities:
@@ -70,6 +79,6 @@ actions = {
 def response(input,token):
     client = Wit(token,actions = actions)
     #print(input)
-    resp = client.message(input)
+    resp = client.converse(session_id, input, {})
 
     return resp
