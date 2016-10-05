@@ -10,7 +10,9 @@ import random
 
 personality, sentiment = getIt()
 
-
+a = random.randint(0,1000000)
+session_id = 'GreenOrange-session-' + str(a)
+print(session_id)
 # a +=1
 # pickle.dump(a, open('session_id.p', 'wb'))
 
@@ -126,7 +128,5 @@ if __name__ == '__main__':
   # print(sentiment)
   # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
 
-  a = random.randint(0,1000000)
-  session_id = 'GreenOrange-session-' + str(a)
-  print(session_id)
+
   app.run()
