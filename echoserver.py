@@ -52,7 +52,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
-    send_message(PAT, sender, message)
+    send_message(PAT, sender, message, session_id)
   return "ok"
 
 def find_sender():
