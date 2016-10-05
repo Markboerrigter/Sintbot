@@ -58,6 +58,7 @@ def handle_messages():
         session_id
     except NameError:
         session_id = datetime.datetime.now()
+        print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
 
