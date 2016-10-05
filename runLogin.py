@@ -12,6 +12,8 @@ from PersonalityTest import getPersonality
 from translateGoogle import trans, detect, allEng
 
 
+
+
 # print(translate.translate('hallo ik ben Mark'))
 
 

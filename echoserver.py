@@ -8,6 +8,13 @@ from runLogin import getIt
 
 personality, sentiment = getIt()
 
+a = pickle.load( open('session_id.p', 'rb'))
+
+session_id = 'GreenOrange-session-' + str(a)
+
+a +=1
+pickle.dump(a, open('session_id.p', 'wb'))
+
 def word_feats(words):
     return dict([(word, True) for word in words])
 
@@ -64,7 +71,7 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question):
+def findAnswer(response, question, session_id):
 
      if 'msg' in response:
          msg = response['msg'].split(',')
@@ -77,7 +84,7 @@ def findAnswer(response, question):
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
 
-             return tb.response(msg[1], tokenWit)
+             return tb.response(msg[1], tokenWit, session_id)
          else:
              return response
      else:
@@ -85,13 +92,13 @@ def findAnswer(response, question):
           return response
 
 
-def send_message(token, recipient, text):
+def send_message(token, recipient, text, session_id):
   witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
   print(witToken)
   #print(response['text'])
-  response = findAnswer(tb.response(text, Tokens[0]),text)
+  response = findAnswer(tb.response(text, Tokens[0], session_id),text,session_id)
   print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
@@ -119,4 +126,6 @@ if __name__ == '__main__':
   recipient = find_sender()
   # print(sentiment)
   # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
+
+
   app.run()

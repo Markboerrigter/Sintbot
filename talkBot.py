@@ -3,15 +3,6 @@ from wit import Wit
 import pyowm
 owm = pyowm.OWM
 
-import pickle
-
-a = pickle.load( open('session_id.p', 'rb'))
-
-session_id = 'GreenOrange-session-' + str(a)
-
-a +=1
-pickle.dump(a, open('session_id.p', 'wb'))
-
 
 def first_entity_value(entities, entity):
     if entity not in entities:
@@ -76,7 +67,7 @@ actions = {
 # context2 = client.run_actions(session_id, 'and in Brussels?', context1)
 # print('The session state is now: ' + str(context2))
 
-def response(input,token):
+def response(input,token, session_id):
     client = Wit(token,actions = actions)
     #print(input)
     print(session_id)
