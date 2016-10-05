@@ -10,6 +10,7 @@ import pickle
 personality, sentiment = getIt()
 
 a = pickle.load( open('session_id.p', 'rb'))
+print(a)
 
 session_id = 'GreenOrange-session-' + str(a)
 
