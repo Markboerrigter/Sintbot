@@ -5,6 +5,7 @@ import sys
 from wit import Wit
 import talkBot as tb
 from runLogin import getIt
+import pickle
 
 personality, sentiment = getIt()
 
