@@ -7,15 +7,16 @@ import talkBot as tb
 from runLogin import getIt
 import pickle
 import random
+import datetime
 
 personality, sentiment = getIt()
 
-a = random.randint(0,1000000)
-session_id = 'GreenOrange-session-' + str(a)
-print('start')
-print(session_id)
-# a +=1
-pickle.dump(a, open('session_id.p', 'wb'))
+# a = random.randint(0,1000000)
+# session_id = 'GreenOrange-session-' + str(a)
+# print('start')
+# print(session_id)
+# # a +=1
+# pickle.dump(a, open('session_id.p', 'wb'))
 
 def word_feats(words):
     return dict([(word, True) for word in words])
@@ -53,6 +54,10 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
+    try:
+        session_id
+    except NameError:
+        session_id = datetime.datetime.now()
     send_message(PAT, sender, message, session_id)
   return "ok"
 
@@ -84,9 +89,9 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-             a = random.randint(0,1000000)
-             session_id = 'GreenOrange-session-' + str(a)
-             pickle.dump(session_id,(open("tokenWit.p", "wb")))
+            #  a = random.randint(0,1000000)
+             session_id = datetime.datetime.now()
+            #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
              return tb.response(msg[1], tokenWit, session_id)
          else:
              return response
