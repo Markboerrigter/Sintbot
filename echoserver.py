@@ -15,7 +15,7 @@ session_id = 'GreenOrange-session-' + str(a)
 print('start')
 print(session_id)
 # a +=1
-# pickle.dump(a, open('session_id.p', 'wb'))
+pickle.dump(a, open('session_id.p', 'wb'))
 
 def word_feats(words):
     return dict([(word, True) for word in words])
@@ -74,7 +74,6 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question, session_id):
-
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
@@ -85,12 +84,13 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-
+             a = random.randint(0,1000000)
+             session_id = 'GreenOrange-session-' + str(a)
+             pickle.dump(session_id,(open("tokenWit.p", "wb")))
              return tb.response(msg[1], tokenWit, session_id)
          else:
              return response
      else:
-
           return response
 
 
