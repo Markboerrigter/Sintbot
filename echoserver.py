@@ -31,8 +31,7 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 app = Flask(__name__)
 
 with app.app_context():
-    g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-
+    session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
@@ -64,7 +63,8 @@ def handle_messages():
     try:
         session_id
     except NameError:
-        session_id = g.session_id
+        print('NameError')
+        session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
         print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
