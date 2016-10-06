@@ -81,6 +81,12 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question,witToken):
+    if response['type'] == 'stop':
+        if 'ja_nee' in response['entities']:
+            print(response['entities']['ja_nee'][0]['value'])
+            text = response['entities']['ja_nee'][0]['value']
+            print(text)
+            response = tb.response(text, witToken, session_id, {})
     response = mergeAns(response, witToken, session_id)
     if 'msg' in response:
         msg = response['msg'].split(',')
