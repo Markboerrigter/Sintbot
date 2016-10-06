@@ -93,7 +93,7 @@ def findAnswer(response, question, session_id):
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
             #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
              a = random.randint(0,1000000)
-             session_id = 'GreenOrange-session-' + str(a)
+             global session_id = 'GreenOrange-session-' + str(a)
              print('new id :' + session_id)
 
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
