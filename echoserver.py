@@ -106,7 +106,7 @@ def findAnswer(response, question,witToken):
 def mergeAns(response, witToken, session_id):
     if 'type' in response:
         action = response['type']
-        if action == merge:
+        if action == 'merge':
             print(response)
             print(tb.response('', witToken, session_id, {}))
             return tb.response('', witToken, session_id, {})
