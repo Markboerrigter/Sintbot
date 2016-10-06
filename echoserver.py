@@ -83,10 +83,9 @@ def messaging_events(payload):
 def findAnswer(response, question,witToken):
     if response['type'] == 'stop':
         if 'ja_nee' in response['entities']:
-            print(response['entities']['ja_nee'][0]['value'])
             text = response['entities']['ja_nee'][0]['value']
-            print(text)
             response = tb.response(text, witToken, session_id, {})
+            print(response)
     response = mergeAns(response, witToken, session_id)
     if 'msg' in response:
         msg = response['msg'].split(',')
@@ -118,6 +117,9 @@ def mergeAns(response, witToken, session_id):
                 print(response['entities']['ja_nee'][0]['value'])
                 text = response['entities']['ja_nee'][0]['value']
                 print(text)
+                tb.response(text, witToken, session_id, {})
+                if 'msg' in response:
+                    text = response['msg']
             print(response)
             return tb.response(text, witToken, session_id, {})
         else:
