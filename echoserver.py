@@ -150,7 +150,7 @@ def send_message(token, recipient, text):
           print('new id :' + session_id)
   print(response)
   if 'msg' in response:
-    #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
+      print('pos: ' + sentimentClassifier.prob_classify(word_feats((response['msg'])))['pos'])
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
