@@ -80,7 +80,7 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question):
+def findAnswer(response, question,witToken):
     response = mergeAns(response, witToken, session_id)
     if 'msg' in response:
         msg = response['msg'].split(',')
@@ -122,9 +122,7 @@ def send_message(token, recipient, text):
   global session_id
   print(witToken)
   #print(response['text'])
-
-
-  response = findAnswer(tb.response(text, witToken, session_id, {}),text)
+  response = findAnswer(tb.response(text, witToken, session_id, {}),text,witToken)
   print(session_id)
   print(response)
 
