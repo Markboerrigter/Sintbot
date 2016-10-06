@@ -60,7 +60,7 @@ def handle_messages():
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
     global session_id
-    send_message(PAT, sender, message, session_id)
+    send_message(PAT, sender, message)
   return "ok"
 
 def find_sender():
