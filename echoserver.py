@@ -13,8 +13,6 @@ personality, sentiment = getIt()
 
 from flask import g
 
-with app.app_context():
-    g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 # a = random.randint(0,1000000)
 # session_id = 'GreenOrange-session-' + str(a)
@@ -31,6 +29,10 @@ import pickle
 sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
+
+with app.app_context():
+    g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
