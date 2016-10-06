@@ -109,6 +109,7 @@ def mergeAns(response, witToken, session_id):
         if action == 'merge':
             text = ''
             if 'ja_nee' in response['entities']:
+                print(response['entities'])
                 text = response['entities'][0]['value']
                 print(text)
             print(response)
