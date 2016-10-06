@@ -15,7 +15,7 @@ from flask import g
 
 
 a = random.randint(0,1000000)
-session_id = 'GreenOrange-session-' + str(a)
+var session_id = 'GreenOrange-session-' + str(a)
 # print('start')
 # print(session_id)
 # # a +=1
@@ -92,7 +92,7 @@ def findAnswer(response, question, session_id):
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
             #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-             a+=1
+             a = random.randint(0,1000000)
              session_id = 'GreenOrange-session-' + str(a)
              print('new id :' + session_id)
 
