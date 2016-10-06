@@ -31,7 +31,7 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 app = Flask(__name__)
 
 with app.app_context():
-    flask.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+    app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
@@ -98,8 +98,8 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-             flask.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-             session_id = flask.session['uid']
+             app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+             session_id = app.session['uid']
              print('new id :' + session_id)
 
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
