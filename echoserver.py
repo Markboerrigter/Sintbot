@@ -117,7 +117,7 @@ def mergeAns(response, witToken, session_id):
                 print(response['entities']['ja_nee'][0]['value'])
                 text = response['entities']['ja_nee'][0]['value']
                 print(text)
-                tb.response(text, witToken, session_id, {})
+                response = tb.response(text, witToken, session_id, {})
                 if 'msg' in response:
                     text = response['msg']
             print(response)
