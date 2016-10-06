@@ -120,6 +120,8 @@ def mergeAns(response, witToken, session_id):
                 response = tb.response(text, witToken, session_id, {})
                 if 'msg' in response:
                     text = response['msg']
+                else:
+                    return response
             print(response)
             return tb.response(text, witToken, session_id, {})
         else:
@@ -146,6 +148,7 @@ def send_message(token, recipient, text):
       if response['type'] == 'stop':
           session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + session_id)
+  print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
