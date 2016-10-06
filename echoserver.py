@@ -31,7 +31,7 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 app = Flask(__name__)
 
 with app.app_context():
-    session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+    flask.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
@@ -60,12 +60,13 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
-    try:
-        session_id
-    except NameError:
-        print('NameError')
-        session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-        print(session_id)
+    session_id = flask.session['uid']
+    # try:
+    #     session_id
+    # except NameError:
+    #     print('NameError')
+    #     session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+    #     print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
 
@@ -97,8 +98,10 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-             session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+             flask.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+             session_id = flask.session['uid']
              print('new id :' + session_id)
+
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
              return tb.response(msg[1], tokenWit, session_id)
          else:
