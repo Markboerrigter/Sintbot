@@ -58,7 +58,7 @@ def handle_messages():
         session_id
     except NameError:
         session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-        print(type(session_id))
+        print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
 
@@ -90,8 +90,8 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-            #  a = random.randint(0,1000000)
              session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+             print('new id :' + session_id)
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
              return tb.response(msg[1], tokenWit, session_id)
          else:
