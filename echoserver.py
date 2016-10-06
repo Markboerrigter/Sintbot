@@ -112,6 +112,8 @@ def send_message(token, recipient, text):
   #print(response['text'])
   response = findAnswer(tb.response(text, witToken, session_id),text,)
   print(response)
+  if response['type'] == 'stop':
+      session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
