@@ -14,8 +14,8 @@ personality, sentiment = getIt()
 from flask import g
 
 
-# a = random.randint(0,1000000)
-# session_id = 'GreenOrange-session-' + str(a)
+a = random.randint(0,1000000)
+session_id = 'GreenOrange-session-' + str(a)
 # print('start')
 # print(session_id)
 # # a +=1
@@ -30,8 +30,8 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
-with app.app_context():
-    app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+# with app.app_context():
+#     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 TokensSave = ['PTCJPYDS5MJ7EQOUD5HMD3GDQNXK23XD','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
@@ -60,13 +60,6 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
-    session_id = flask.session['uid']
-    # try:
-    #     session_id
-    # except NameError:
-    #     print('NameError')
-    #     session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-    #     print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
 
@@ -98,8 +91,9 @@ def findAnswer(response, question, session_id):
              print(Tokens[0])
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-             app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-             session_id = app.session['uid']
+            #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+             a+=1
+             session_id = 'GreenOrange-session-' + str(a)
              print('new id :' + session_id)
 
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
