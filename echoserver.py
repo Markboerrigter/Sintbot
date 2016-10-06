@@ -113,13 +113,13 @@ def mergeAns(response, witToken, session_id):
         action = response['type']
         if action == 'merge':
             text = ''
-            if 'ja_nee' in response['entities']:
-                print(response['entities']['ja_nee'][0]['value'])
-                text = response['entities']['ja_nee'][0]['value']
-                print(text)
-                response = tb.response(text, witToken, session_id, {})
-                return response
-            print(response)
+            # if 'ja_nee' in response['entities']:
+            #     print(response['entities']['ja_nee'][0]['value'])
+            #     text = response['entities']['ja_nee'][0]['value']
+            #     print(text)
+            #     response = tb.response(text, witToken, session_id, {})
+            #     return response
+            # print(response)
             return tb.response(text, witToken, session_id, {})
         else:
             return response
