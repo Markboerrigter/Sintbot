@@ -32,7 +32,7 @@ app = Flask(__name__)
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
-TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
+TokensSave = ['VUCZSIO2FK5R3W2SX77HQY23HVIVX4YM','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
 tokenWit = Tokens[0]
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
@@ -81,11 +81,11 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question,witToken):
-    if response['type'] == 'stop':
-        if 'ja_nee' in response['entities']:
-            text = response['entities']['ja_nee'][0]['value']
-            response = tb.response(text, witToken, session_id, {})
-            print(response)
+    # if response['type'] == 'stop':
+    #     if 'ja_nee' in response['entities']:
+    #         text = response['entities']['ja_nee'][0]['value']
+    #         response = tb.response(text, witToken, session_id, {})
+    #         print(response)
     response = mergeAns(response, witToken, session_id)
     if 'msg' in response:
         msg = response['msg'].split(',')
