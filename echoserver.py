@@ -11,6 +11,10 @@ import datetime
 
 personality, sentiment = getIt()
 
+from flask import g
+
+g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+
 # a = random.randint(0,1000000)
 # session_id = 'GreenOrange-session-' + str(a)
 # print('start')
@@ -57,7 +61,7 @@ def handle_messages():
     try:
         session_id
     except NameError:
-        session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+        session_id = g.session_id
         print(session_id)
     send_message(PAT, sender, message, session_id)
   return "ok"
