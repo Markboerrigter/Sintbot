@@ -108,7 +108,6 @@ def mergeAns(response, witToken, session_id):
         action = response['type']
         if action == 'merge':
             print(response)
-            print(tb.response('', witToken, session_id, {}))
             return tb.response('', witToken, session_id, {})
         else:
             return response
