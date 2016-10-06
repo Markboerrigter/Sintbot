@@ -102,6 +102,14 @@ def findAnswer(response, question):
      else:
           return response
 
+def mergeAns(response):
+    if 'type' in response:
+        action = response['type']
+        if action = merge:
+            print(response)
+            # print(tb.response())
+
+    findAnswer(tb.response(text, witToken, session_id),text):
 
 def send_message(token, recipient, text):
   witToken = pickle.load( open( "tokenWit.p", "rb" ) )
