@@ -110,7 +110,7 @@ def send_message(token, recipient, text):
   global session_id
   print(witToken)
   #print(response['text'])
-  response = findAnswer(tb.response(text, Tokens[0], session_id),text,)
+  response = findAnswer(tb.response(text, witToken, session_id),text,)
   print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
