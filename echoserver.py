@@ -110,7 +110,8 @@ def mergeAns(response, witToken, session_id):
             print(response)
             print(tb.response('', witToken, session_id, {}))
             return tb.response('', witToken, session_id, {})
-        else: return response
+        else:
+            return response
     else:
         return response
 
@@ -125,8 +126,9 @@ def send_message(token, recipient, text):
   response = findAnswer(tb.response(text, witToken, session_id, {}),text,witToken)
   print(session_id)
   print(response)
-
+  print('sending response')
   if response['type'] == 'stop':
+      print(response)
       session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
       print('new id :' + session_id)
   if 'msg' in response:
