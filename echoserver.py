@@ -13,7 +13,8 @@ personality, sentiment = getIt()
 
 from flask import g
 
-g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+with app.app_context():
+    g.session_id = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
 # a = random.randint(0,1000000)
 # session_id = 'GreenOrange-session-' + str(a)
