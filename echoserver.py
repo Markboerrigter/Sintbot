@@ -32,7 +32,7 @@ app = Flask(__name__)
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
-TokensSave = ['VUCZSIO2FK5R3W2SX77HQY23HVIVX4YM','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
+TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 Tokens = TokensSave
 tokenWit = Tokens[0]
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
