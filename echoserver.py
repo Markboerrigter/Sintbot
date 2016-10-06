@@ -107,8 +107,12 @@ def mergeAns(response, witToken, session_id):
     if 'type' in response:
         action = response['type']
         if action == 'merge':
+            text = ''
+            if 'ja_nee' in repsonse['entities']:
+                text = repsonse['entities'][0]['value']
+                print(text)
             print(response)
-            return tb.response('', witToken, session_id, {})
+            return tb.response(text, witToken, session_id, {})
         else:
             return response
     else:
