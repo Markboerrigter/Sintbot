@@ -81,6 +81,7 @@ def messaging_events(payload):
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
 def findAnswer(response, question):
+    response = mergeAns(response, witToken, session_id))
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
@@ -96,18 +97,23 @@ def findAnswer(response, question):
              session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
              print('new id :' + session_id)
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-             return tb.response(msg[1], tokenWit, session_id)
+             return tb.response(msg[1], tokenWit, session_id, {})
          else:
              return response
      else:
           return response
 
-def mergeAns(response):
+def mergeAns(response, witToken, session_id):
     if 'type' in response:
         action = response['type']
-        if action = merge:
+        if action == merge:
             print(response)
-            # print(tb.response())
+            print(tb.response('', witToken, session_id, {}))
+            return tb.response('', witToken, session_id, {})
+        else: return response
+    else:
+        return response
+
 
     findAnswer(tb.response(text, witToken, session_id),text):
 
@@ -118,7 +124,9 @@ def send_message(token, recipient, text):
   global session_id
   print(witToken)
   #print(response['text'])
-  response = findAnswer(tb.response(text, witToken, session_id),text)
+
+
+  response = findAnswer(tb.response(text, witToken, session_id, {}),text)
   print(session_id)
   print(response)
 
