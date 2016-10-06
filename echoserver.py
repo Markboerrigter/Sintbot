@@ -14,8 +14,7 @@ personality, sentiment = getIt()
 from flask import g
 
 
-a = random.randint(0,1000000)
-var session_id = 'GreenOrange-session-' + str(a)
+session_id = 'GreenOrange-session-' +str(datetime.datetime.now()).replace(" ", '')
 # print('start')
 # print(session_id)
 # # a +=1
@@ -60,6 +59,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
+    global session_id
     send_message(PAT, sender, message, session_id)
   return "ok"
 
@@ -80,10 +80,11 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question, session_id):
+def findAnswer(response, question):
      if 'msg' in response:
          msg = response['msg'].split(',')
          if msg[0] == 'Stop':
+             global session_id
              print(response)
              print('Stop Message')
              print(msg)
@@ -92,10 +93,8 @@ def findAnswer(response, question, session_id):
              tokenWit = Tokens[0]
              pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
             #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-             a = random.randint(0,1000000)
-             global session_id = 'GreenOrange-session-' + str(a)
+             session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
              print('new id :' + session_id)
-
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
              return tb.response(msg[1], tokenWit, session_id)
          else:
@@ -104,13 +103,14 @@ def findAnswer(response, question, session_id):
           return response
 
 
-def send_message(token, recipient, text, session_id):
+def send_message(token, recipient, text):
   witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
+  global session_id
   print(witToken)
   #print(response['text'])
-  response = findAnswer(tb.response(text, Tokens[0], session_id),text,session_id)
+  response = findAnswer(tb.response(text, Tokens[0], session_id),text,)
   print(response)
   if 'msg' in response:
     #   print(sentimentClassifier.prob_classify(word_feats((response['msg']))))
