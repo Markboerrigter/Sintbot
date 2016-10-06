@@ -147,6 +147,22 @@ def send_message(token, recipient, text):
           print('new id :' + session_id)
   print(response)
   if 'msg' in response:
+      if 'quickreplies' in response:
+          replies = response['quickreplies']
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": response['msg'].decode('unicode_escape')}
+              "quick_replies":[{
+                            "content_type":"text",
+                            "title":x,
+                            "payload":x
+                          } for x in replies]
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.response
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -157,7 +173,6 @@ def send_message(token, recipient, text):
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.response
-  return Tokens
 
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
