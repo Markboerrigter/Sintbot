@@ -147,6 +147,7 @@ def send_message(token, recipient, text):
           print('new id :' + session_id)
   print(response)
   if 'msg' in response:
+      print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -163,7 +164,6 @@ def send_message(token, recipient, text):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
-      print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       else:
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
