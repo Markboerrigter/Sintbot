@@ -12,13 +12,13 @@ import datetime
 # personality, sentiment = getIt()
 
 from flask import g
+# x = dict()
+# pickle.dump(x, open('user_data.p', 'wb'))
 
-pickle.dump({}, open('user_data.p', 'wb'))
-
-# user_data = pickle.load( open( "user_data.p", "rb" ) )
+user_data = pickle.load( open( "user_data.p", "rb" ) )
 # err
 
-session_id = 'GreenOrange-session-' +str(datetime.datetime.now()).replace(" ", '')
+
 # print('start')
 # print(session_id)
 # # a +=1
@@ -44,8 +44,6 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
 
-
-isnew = True
 @app.route('/', methods=['GET'])
 def handle_verification():
   print "Handling Verification."
@@ -61,25 +59,32 @@ def handle_messages():
   print "Handling Messages"
   payload = request.get_data()
   print payload
-  if isnew:
-      r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
-        params={"access_token": PAT},
-        data=json.dumps({  "setting_type":"greeting",
-        "greeting":{
-          "text":"Timeless apparel for the masses."
-        }}),
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.response
   for sender, message in messaging_events(payload):
     if sender in user_data:
+        if 'stop' in user_data[sender]:
+            user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+            user_data[sender]['token'] = tokenWit
         print "Incoming from %s: %s" % (sender, message)
         print(sender, message)
         global session_id
-        send_message(PAT, sender, message)
+        send_message(PAT, sender, message,user_data[sender])
     else:
+        r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+          params={"access_token": PAT},
+          data=json.dumps({  "setting_type":"greeting",
+          "greeting":{
+            "text":"Timeless apparel for the masses."
+          }}),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.response
         # user_data[sender= [Tokens]
-        user_data[sender]['session']['Tokens']  = Tokens
+        user_data[sender] = dict()
+        user_data[sender]['token'] = tokenWit
+        user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        print(sender, message)
+        global session_id
+        send_message(PAT, sender, message, user_data[sender])
   return "ok"
 
 def find_sender():
@@ -105,7 +110,7 @@ def findAnswer(response, question,witToken):
     #         text = response['entities']['ja_nee'][0]['value']
     #         response = tb.response(text, witToken, session_id, {})
     #         print(response)
-    response = mergeAns(response, witToken, session_id)
+    response = mergeAns(response, witToken, session_id,data)
     if 'msg' in response:
         msg = response['msg'].split(',')
         if msg[0] == 'Stop':
@@ -113,9 +118,7 @@ def findAnswer(response, question,witToken):
             print(response)
             print('Stop Message')
             print(msg)
-            Tokens = TokensSave[int(msg[2]):]
-            print(Tokens[0])
-            tokenWit = Tokens[0]
+            data['token'] = TokensSave[int(msg[2]):][0]
             pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
             #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
             session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -123,9 +126,9 @@ def findAnswer(response, question,witToken):
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
             return tb.response(msg[1], tokenWit, session_id, {})
         else:
-            return response
+            return response, data
     else:
-        return response
+        return response,data
 
 def mergeAns(response, witToken, session_id):
     if 'type' in response:
@@ -140,14 +143,15 @@ def mergeAns(response, witToken, session_id):
         return response
 
 
-def send_message(token, recipient, text):
+def send_message(token, recipient, text, data):
   witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
+  print(data)
   global session_id
   print(witToken)
   #print(response['text'])
-  response = findAnswer(tb.response(text, witToken, session_id, {}),text,witToken)
+  response, data = findAnswer(tb.response(text, data['token'], session_id, {}),text,data['token'],data)
   print(session_id)
   print(response)
   print('sending response')
