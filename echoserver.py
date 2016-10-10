@@ -16,13 +16,7 @@ from flask import g
 # pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
-# err
 
-
-# print('start')
-# print(session_id)
-# # a +=1
-# pickle.dump(a, open('session_id.p', 'wb'))
 
 def word_feats(words):
     return dict([(word, True) for word in words])
@@ -59,6 +53,7 @@ def handle_messages():
   print "Handling Messages"
   payload = request.get_data()
   print payload
+  global user_data
   for sender, message in messaging_events(payload):
     if sender in user_data:
         if 'stop' in user_data[sender]:
@@ -66,7 +61,6 @@ def handle_messages():
             user_data[sender]['token'] = tokenWit
         print "Incoming from %s: %s" % (sender, message)
         print(sender, message)
-        global session_id
         send_message(PAT, sender, message,user_data[sender])
     else:
         r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
@@ -83,7 +77,6 @@ def handle_messages():
         user_data[sender]['token'] = tokenWit
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print(sender, message)
-        global session_id
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
 
@@ -104,27 +97,28 @@ def messaging_events(payload):
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
 
-def findAnswer(response, question,witToken):
+def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
     #     if 'ja_nee' in response['entities']:
     #         text = response['entities']['ja_nee'][0]['value']
     #         response = tb.response(text, witToken, session_id, {})
     #         print(response)
-    response = mergeAns(response, witToken, session_id,data)
+    session_id = data['session']
+    response = mergeAns(response, witToken, session_id)
     if 'msg' in response:
         msg = response['msg'].split(',')
         if msg[0] == 'Stop':
-            global session_id
+            # global session_id
             print(response)
             print('Stop Message')
             print(msg)
             data['token'] = TokensSave[int(msg[2]):][0]
-            pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
+            # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
             #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-            session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            print('new id :' + session_id)
+            data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+            print('new id :' + data['session'])
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-            return tb.response(msg[1], tokenWit, session_id, {})
+            return tb.response(msg[1], tokenWit, data['session'], {})
         else:
             return response, data
     else:
@@ -148,20 +142,20 @@ def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
   print(data)
-  global session_id
-  print(witToken)
+  # global session_id
+  # print(witToken)
   #print(response['text'])
   response, data = findAnswer(tb.response(text, data['token'], session_id, {}),text,data['token'],data)
-  print(session_id)
+  # print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
   if response['type'] == 'stop':
-      response = findAnswer(tb.response(text, witToken, session_id, {}),text,witToken)
+      response = findAnswer(tb.response(text, data['token'], session_id, {}),text,data['token'],data)
       print(response)
       if response['type'] == 'stop':
-          session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-          print('new id :' + session_id)
+          data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+          print('new id :' + data['session'])
 
   # print(response)
   if 'msg' in response:
