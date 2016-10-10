@@ -118,7 +118,7 @@ def findAnswer(response, question,witToken,data):
             data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             print('new id :' + data['session'])
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-            return tb.response(msg[1], tokenWit, data['session'], {})
+            return tb.response(msg[1], tokenWit, data['session'], {}), data
         else:
             return response, data
     else:
@@ -138,7 +138,7 @@ def mergeAns(response, witToken, session_id):
 
 
 def send_message(token, recipient, text, data):
-  witToken = pickle.load( open( "tokenWit.p", "rb" ) )
+  # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
   print(data)
@@ -151,7 +151,7 @@ def send_message(token, recipient, text, data):
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
   if response['type'] == 'stop':
-      response = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
+      response,data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
       print(response)
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -187,7 +187,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
-            pickle.dump(user_data, open('user_data.p', 'wb'))
+    pickle.dump(user_data, open('user_data.p', 'wb'))
+
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
   #     Stop = False
