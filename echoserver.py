@@ -104,7 +104,8 @@ def findAnswer(response, question,witToken,data):
     #         response = tb.response(text, witToken, session_id, {})
     #         print(response)
     session_id = data['session']
-    response = mergeAns(response, witToken, session_id)
+    response = mergeAns(response, witToken, session_id, question)
+    print(response)
     if 'msg' in response:
         msg = response['msg'].split(',')
         if msg[0] == 'Stop':
@@ -124,14 +125,14 @@ def findAnswer(response, question,witToken,data):
     else:
         return response,data
 
-def mergeAns(response, witToken, session_id):
+def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
         action = response['type']
         if action == 'merge':
 
             print(response['entities'])
-            text = ''
-            return tb.response(text, witToken, session_id,{})
+
+            return tb.response(question, witToken, session_id,{})
         else:
             return response
     else:
