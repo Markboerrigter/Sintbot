@@ -162,6 +162,7 @@ def send_message(token, recipient, text, data):
       if response['type'] == 'stop':
           session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + session_id)
+
   # print(response)
   if 'msg' in response:
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
@@ -192,7 +193,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
-
+            pickle.dump(user_data, open('user_data.p', 'wb'))
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
   #     Stop = False
