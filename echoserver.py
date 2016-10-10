@@ -187,7 +187,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
-    pickle.dump(user_data, open('user_data.p', 'wb'))
+  pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
