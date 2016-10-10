@@ -40,6 +40,12 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
 
+requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+  params={"access_token": token},
+  data=json.dumps({  "setting_type":"greeting",
+  "greeting":{
+    "text":"Timeless apparel for the masses."
+  }))
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -187,7 +193,7 @@ if __name__ == '__main__':
 
 
   # personality, sentiment = getIt()
-  recipient = find_sender()
+  # recipient = find_sender()
   # print(sentiment)
   # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
 
