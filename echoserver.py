@@ -129,6 +129,7 @@ def findContext(resp):
     entities = resp['entities']
     for x in entities:
         if x is not 'intent':
+            print(x)
             return entities[x]
 
 def mergeAns(response, witToken, session_id, question):
