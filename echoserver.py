@@ -13,6 +13,10 @@ import datetime
 
 from flask import g
 
+pickle.dump({}, open('user_data.p', 'wb'))
+
+# user_data = pickle.load( open( "user_data.p", "rb" ) )
+# err
 
 session_id = 'GreenOrange-session-' +str(datetime.datetime.now()).replace(" ", '')
 # print('start')
@@ -68,10 +72,14 @@ def handle_messages():
       if r.status_code != requests.codes.ok:
         print r.response
   for sender, message in messaging_events(payload):
-    print "Incoming from %s: %s" % (sender, message)
-    print(sender, message)
-    global session_id
-    send_message(PAT, sender, message)
+    if sender in user_data:
+        print "Incoming from %s: %s" % (sender, message)
+        print(sender, message)
+        global session_id
+        send_message(PAT, sender, message)
+    else:
+        # user_data[sender= [Tokens]
+        user_data[sender]['session']['Tokens']  = Tokens
   return "ok"
 
 def find_sender():
