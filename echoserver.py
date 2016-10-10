@@ -125,6 +125,12 @@ def findAnswer(response, question,witToken,data):
     else:
         return response,data
 
+def findContext(resp):
+    entities = resp['entities']
+    for x in entities:
+        if x is not 'intent':
+            return entities[x]
+
 def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
         action = response['type']
@@ -132,7 +138,7 @@ def mergeAns(response, witToken, session_id, question):
 
             print(response['entities'])
 
-            return tb.response(question, witToken, session_id,{})
+            return tb.response('', witToken, session_id,findContext(response))
         else:
             return response
     else:
