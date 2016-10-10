@@ -113,6 +113,7 @@ def mergeAns(response, witToken, session_id):
         action = response['type']
         if action == 'merge':
             text = ''
+
             # if 'ja_nee' in response['entities']:
             #     print(response['entities']['ja_nee'][0]['value'])
             #     text = response['entities']['ja_nee'][0]['value']
@@ -138,7 +139,7 @@ def send_message(token, recipient, text):
   print(session_id)
   print(response)
   print('sending response')
-  response = mergeAns(response, witToken, session_id)
+  # response = mergeAns(response, witToken, session_id)
   if response['type'] == 'stop':
       response = findAnswer(tb.response(text, witToken, session_id, {}),text,witToken)
       print(response)
