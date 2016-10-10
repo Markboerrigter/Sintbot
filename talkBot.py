@@ -43,7 +43,17 @@ def computeRes(request):
 def send(request, response):
     print(response['text'])
 
-def merge(request,response):
+def merge(request):
+    context = request['context']
+    entities = request['entities']
+    if 'relative' in context:
+        del context['relative']
+    rela = first_entity_value(entities,'relative')
+    if rela:
+        context['relative'] = rela
+    return context
+
+
     print(response['context'])
 
 actions = {
