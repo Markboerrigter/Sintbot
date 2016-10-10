@@ -65,14 +65,14 @@ def handle_messages():
     else:
         r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
           params={"access_token": PAT},
-          data={
+          data=json.dumps({
                       "setting_type":"call_to_actions",
                       "thread_state":"new_thread",
                       "call_to_actions":[
                         {
-                          "payload":"USER_DEFINED_PAYLOAD"
+                          "payload":"Hallo"
                         }
-                      ]}
+                      ]})
           headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
           print r.response
