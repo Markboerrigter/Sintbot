@@ -83,7 +83,7 @@ def handle_messages():
                         "setting_type":"greeting",
                         "greeting":{
                         "text":"Timeless apparel for the masses."
-                        }),
+                        }}),
           headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
           print r.response
