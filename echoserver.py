@@ -145,13 +145,13 @@ def send_message(token, recipient, text, data):
   # global session_id
   # print(witToken)
   #print(response['text'])
-  response, data = findAnswer(tb.response(text, data['token'], session_id, {}),text,data['token'],data)
+  response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
   # print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
   if response['type'] == 'stop':
-      response = findAnswer(tb.response(text, data['token'], session_id, {}),text,data['token'],data)
+      response = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
       print(response)
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
