@@ -150,7 +150,7 @@ def send_message(token, recipient, text):
       if response['type'] == 'stop':
           session_id = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + session_id)
-  print(response)
+  # print(response)
   if 'msg' in response:
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
