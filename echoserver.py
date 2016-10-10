@@ -154,12 +154,13 @@ def send_message(token, recipient, text):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": response['msg'].decode('unicode_escape')},
+              "message": {"text": response['msg'].decode('unicode_escape'),
               "quick_replies":[{
                             "content_type":"text",
                             "title":x,
                             "payload":x
-                          } for x in replies]
+                          } for x in replies]}
+
             }),
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
