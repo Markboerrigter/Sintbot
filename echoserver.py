@@ -72,7 +72,7 @@ def handle_messages():
                         {
                           "payload":"Hallo"
                         }
-                      ]})
+                      ]}),
           headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
           print r.response
