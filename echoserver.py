@@ -55,6 +55,20 @@ def handle_messages():
   print payload
   global user_data
   for sender, message in messaging_events(payload):
+    if message['result'] == "Succesfully added new-thread's CTAs":
+        r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+          params={"access_token": PAT},
+          data=json.dumps({
+                      "setting_type":"call_to_actions",
+                      "thread_state":"new_thread",
+                      "call_to_actions":[
+                        {
+                          "payload":"Hallo"
+                        }
+                      ]}),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.response
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -66,13 +80,10 @@ def handle_messages():
         r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
           params={"access_token": PAT},
           data=json.dumps({
-                      "setting_type":"call_to_actions",
-                      "thread_state":"new_thread",
-                      "call_to_actions":[
-                        {
-                          "payload":"Hallo"
-                        }
-                      ]}),
+                        "setting_type":"greeting",
+                        "greeting":{
+                        "text":"Timeless apparel for the masses."
+                        }),
           headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
           print r.response
