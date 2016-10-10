@@ -44,7 +44,7 @@ def send(request, response):
     print(response['text'])
 
 def merge(request,response):
-    print(request['context'])
+    print(response['context'])
 
 actions = {
     'send': send,
