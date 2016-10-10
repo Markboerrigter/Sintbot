@@ -40,14 +40,8 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
 
-requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
-  params={"access_token": PAT},
-  data=json.dumps({  "setting_type":"greeting",
-  "greeting":{
-    "text":"Timeless apparel for the masses."
-  }}),
-  headers={'Content-type': 'application/json'})
 
+isnew = True
 @app.route('/', methods=['GET'])
 def handle_verification():
   print "Handling Verification."
@@ -63,6 +57,16 @@ def handle_messages():
   print "Handling Messages"
   payload = request.get_data()
   print payload
+  if isnew:
+      r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+        params={"access_token": PAT},
+        data=json.dumps({  "setting_type":"greeting",
+        "greeting":{
+          "text":"Timeless apparel for the masses."
+        }}),
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.response
   for sender, message in messaging_events(payload):
     print "Incoming from %s: %s" % (sender, message)
     print(sender, message)
