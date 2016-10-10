@@ -9,7 +9,7 @@ import pickle
 import random
 import datetime
 
-personality, sentiment = getIt()
+# personality, sentiment = getIt()
 
 from flask import g
 
@@ -183,7 +183,7 @@ if __name__ == '__main__':
   #         witToken = Tokens[i]
 
 
-  personality, sentiment = getIt()
+  # personality, sentiment = getIt()
   recipient = find_sender()
   # print(sentiment)
   # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
