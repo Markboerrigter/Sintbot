@@ -43,8 +43,13 @@ def computeRes(request):
 def send(request, response):
     print(response['text'])
 
+def merge(request,response):
+    print(request)
+    print(response)
+
 actions = {
     'send': send,
+    'merge': merge,
     # 'getOntvanger': getOntvanger
     'computeRes': computeRes,
     'first_entity_value': first_entity_value,
