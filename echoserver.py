@@ -118,7 +118,7 @@ def findAnswer(response, question,witToken,data):
             data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             print('new id :' + data['session'])
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-            return tb.response(msg[1], tokenWit, data['session'], {}), data
+            return tb.response(msg[1], data['token'], data['session'], {}), data
         else:
             return response, data
     else:
@@ -131,7 +131,7 @@ def mergeAns(response, witToken, session_id):
 
             print(response['entities'])
             text = ''
-            return tb.response(text, witToken, session_id, {})
+            return tb.response(text, witToken, session_id, [keys for keys in response['entities']])
         else:
             return response
     else:
