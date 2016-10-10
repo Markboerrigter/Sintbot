@@ -45,7 +45,8 @@ requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
   data=json.dumps({  "setting_type":"greeting",
   "greeting":{
     "text":"Timeless apparel for the masses."
-  }))
+  }}),
+  headers={'Content-type': 'application/json'})
 
 @app.route('/', methods=['GET'])
 def handle_verification():
