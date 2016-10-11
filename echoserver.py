@@ -179,7 +179,7 @@ def send_message(token, recipient, text, data):
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
-  if response['type'] == 'stop' and :
+  if response['type'] == 'stop' and text != 'Bedankt!':
       response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
       print(response)
       if response['type'] == 'stop':
@@ -219,8 +219,10 @@ def send_message(token, recipient, text, data):
       print(response['msg'])
       print(data['data'])
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '?'
+        message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '? \n En tot de volgende keer!'
         print(message)
+        data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        print('new id :' + data['session'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
