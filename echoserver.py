@@ -241,7 +241,7 @@ def send_message(token, recipient, text, data):
         for x in output:
             x = x.split(',')
             # print(x)
-            if len(x[-1]) > 15 and len(speelgoed) < 6:
+            if len(x[-1]) > 16 and len(speelgoed) < 6:
                 print(x)
                 speelgoed.append([x[0],x[-1]])
             # print(len(x))
