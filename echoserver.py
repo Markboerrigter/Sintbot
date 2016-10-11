@@ -30,9 +30,9 @@ app = Flask(__name__)
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
-TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
-Tokens = TokensSave
-tokenWit = Tokens[0]
+# TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
+# Tokens = TokensSave
+tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
@@ -161,8 +161,13 @@ def mergeAns(response, witToken, session_id, question):
     else:
         return response
 
+def getInformation(response):
+    entities = resp['entities']
+    print(entities)
+
 
 def send_message(token, recipient, text, data):
+  getInformation()
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
@@ -170,8 +175,10 @@ def send_message(token, recipient, text, data):
   # global session_id
   # print(witToken)
   #print(response['text'])
+
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
-  # print(session_id)
+  getInformation(response
+  )# print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
