@@ -82,7 +82,6 @@ actions = {
 # print('The session state is now: ' + str(context2))
 
 def response(input,token, session_id, context):
-    print(context)
     client = Wit(token,actions = actions)
     #print(input)
     resp = client.converse(session_id, input, context)

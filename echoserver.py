@@ -77,6 +77,7 @@ def handle_messages():
         user_data[sender] = dict()
         user_data[sender]['token'] = tokenWit
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        user_data[sender]['session']['data'] = []
         print(sender, message)
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
@@ -149,8 +150,15 @@ def mergeAns(response, witToken, session_id, question):
 
 def getInformation(response):
     entities = response['entities']
+    out  = []
     print(entities)
-
+    if 'Budget' in entities:
+        out.append(['Budget', entities['Budget'][0]['value']])
+    if 'Gender' in entities:
+        out.append(['Gender', entities['Gender'][0]['value']])
+    if 'distinction' in entities:
+        out.append(['distinction', entities['distinction'][0]['value']])
+    return out
 
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
@@ -162,7 +170,9 @@ def send_message(token, recipient, text, data):
   #print(response['text'])
 
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
-  getInformation(response)
+  information = getInformation(response)
+  for x in information:
+      data['session']['data'][x[0]] = x[1]
   # print(session_id)
   print(response)
   print('sending response')
@@ -200,6 +210,17 @@ def send_message(token, recipient, text, data):
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": response['msg'].decode('unicode_escape')}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.response
+    if response['msg'] == 'Bedankt!':
+        message = 'Zocht u een kado voor' + data['session']['data']['Gender'] + 'voor' data['session']['data']['Budget'] + '?'
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message.decode('unicode_escape')}
             }),
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
