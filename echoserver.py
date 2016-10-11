@@ -173,19 +173,18 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   print(information)
-
   if len(data['data'])>0:
       data['data'][information[0]] = information[1]
   # print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
-  # if response['type'] == 'stop':
-  #     response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-  #     print(response)
-  #     if response['type'] == 'stop':
-  #         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-  #         print('new id :' + data['session'])
+  if response['type'] == 'stop' and :
+      response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
+      print(response)
+      if response['type'] == 'stop':
+          data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+          print('new id :' + data['session'])
 
   # print(response)
   if 'msg' in response:
