@@ -226,21 +226,23 @@ def send_message(token, recipient, text, data):
       print(response['msg'])
       print(data['data'])
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '? \nEn tot de volgende keer!'
-        print(message)
         output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],data['data']['Budget'].lower().split(' ')[2],'')
         print(output)
+        messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
+        'Dan bent u vast op zoek naar deze kadootjes:' , output, 'En tot de volgende keer']
+        print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": token},
-        data=json.dumps({
-          "recipient": {"id": recipient},
-          "message": {"text": message.decode('unicode_escape')}
-        }),
-        headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-          print r.response
+        for message in messages:
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message.decode('unicode_escape')}
+            }),
+            headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+              print r.response
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
