@@ -128,13 +128,13 @@ def findAnswer(response, question,witToken,data):
     else:
         return response,data
 
-def findContext(resp):
-    entities = resp['entities']
-    for x in entities:
-        if x != 'intent':
-            print('entities')
-            print(x)
-            return entities[x]
+# def findContext(resp):
+#     entities = resp['entities']
+#     for x in entities:
+#         if x != 'intent':
+#             print('entities')
+#             print(x)
+#             return entities[x]
 
 def mergeAns(response, witToken, session_id, question):
     if 'type' in response:

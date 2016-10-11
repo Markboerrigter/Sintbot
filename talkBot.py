@@ -43,18 +43,18 @@ def computeRes(request):
 def send(request, response):
     print(response['text'])
 
-def merge(request):
-    context = request['context']
-    entities = request['entities']
-    if 'relative' in context:
-        del context['relative']
-    rela = first_entity_value(entities,'relative')
-    if rela:
-        context['relative'] = rela
-    return context
-
-
-    print(response['context'])
+# def merge(request):
+#     context = request['context']
+#     entities = request['entities']
+#     if 'relative' in context:
+#         del context['relative']
+#     rela = first_entity_value(entities,'relative')
+#     if rela:
+#         context['relative'] = rela
+#     return context
+#
+#
+#     print(response['context'])
 
 actions = {
     'send': send,
@@ -84,6 +84,6 @@ actions = {
 def response(input,token, session_id):
     client = Wit(token,actions = actions)
     #print(input)
-    resp = client.converse(session_id, input, ())
+    resp = client.converse(session_id, input, {}
 
     return resp
