@@ -237,7 +237,8 @@ def send_message(token, recipient, text, data):
         output = output.split('<br>')
         speelgoed = []
         for x in output:
-            x.split(',')
+            x = x.split(',')
+            print(len(x))
             speelgoed.append(x[0] + ' voor maar ' + x[2] + ' euro.')
         messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
         'Dan bent u vast op zoek naar deze kadootjes:']
