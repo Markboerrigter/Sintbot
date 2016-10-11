@@ -234,7 +234,7 @@ def send_message(token, recipient, text, data):
         print(data['data']['Budget'].lower().split(' ')[0])
         print(data['data']['Budget'].lower().split(' ')[2])
         output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
-        output = output.spli('<br>')
+        output = output.split('<br>')
         for x in output:
             print(type(x))
             print(x)
