@@ -173,8 +173,8 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
   information = getInformation(response)
   print(information)
-  print(data['session']['data'])
-  data['session']['data'][information[0]] = information[1]
+  print(data['data'])
+  data['data'][information[0]] = information[1]
   # print(session_id)
   print(response)
   print('sending response')
@@ -217,7 +217,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.response
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor' + data['session']['data']['Gender'] + 'voor' + data['session']['data']['Budget'] + '?'
+        message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '?'
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
