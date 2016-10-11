@@ -108,7 +108,7 @@ def findAnswer(response, question,witToken,data):
     #         response = tb.response(text, witToken, session_id, {})
     #         print(response)
     session_id = data['session']
-    # response = mergeAns(response, witToken, session_id, question)
+    response = mergeAns(response, witToken, session_id, question)
     print('Response in find answer')
     print(response)
     if 'msg' in response:
