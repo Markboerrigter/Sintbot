@@ -172,7 +172,7 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
   information = getInformation(response)
   print(information)
-  
+  print(data['session']['data'])
   data['session']['data'][information[0]] = information[1]
   # print(session_id)
   print(response)
