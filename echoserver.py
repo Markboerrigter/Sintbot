@@ -143,7 +143,7 @@ def mergeAns(response, witToken, session_id, question):
 
             print(response['entities'])
 
-            return tb.response('', witToken, session_id,{})
+            return tb.response('', witToken, session_id)
         else:
             return response
     else:
