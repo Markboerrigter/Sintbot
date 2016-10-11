@@ -225,7 +225,7 @@ def send_message(token, recipient, text, data):
       print(response['msg'])
       print(data['data'])
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '? \n En tot de volgende keer!'
+        message = 'Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '? \n En tot de volgende keer!'
         print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
