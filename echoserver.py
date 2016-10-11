@@ -238,12 +238,13 @@ def send_message(token, recipient, text, data):
         speelgoed = []
         for x in output:
             x = x.split(',')
+            print(x)
             # print(len(x))
             speelgoed.append(x[0])
             # speelgoed.append(x[0] + ' voor maar ' + x[2] + ' euro.')
         messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
         'Dan bent u vast op zoek naar deze kadootjes:']
-        messages.extent(speelgoed)
+        messages.extend(speelgoed)
         messages.append('En tot de volgende keer')
         # print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
