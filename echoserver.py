@@ -155,17 +155,21 @@ def mergeAns(response, witToken, session_id, question):
 def getInformation(response):
     print('Response in getInformation')
     print(response)
-    entities = response['entities']
-    out  = []
+    if 'entities' in response:
 
-    print(entities)
-    if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
-        out.append(['Budget', entities['Budget'][0]['value']])
-    if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
-        out.append(['Gender', entities['Gender'][0]['value']])
-    if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
-        out.append(['distinction', entities['distinction'][0]['value']])
-    return out
+        entities = response['entities']
+        out  = []
+
+        print(entities)
+        if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
+            out.append(['Budget', entities['Budget'][0]['value']])
+        if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
+            out.append(['Gender', entities['Gender'][0]['value']])
+        if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
+            out.append(['distinction', entities['distinction'][0]['value']])
+        return out
+    else:
+        return []
 
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
