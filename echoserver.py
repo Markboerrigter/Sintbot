@@ -174,7 +174,8 @@ def send_message(token, recipient, text, data):
   # global session_id
   # print(witToken)
   #print(response['text'])
-
+  print('gegevens')
+  print(text, data['token'], data['session'])
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   print(information)
@@ -231,7 +232,7 @@ def send_message(token, recipient, text, data):
         print(data['data']['Budget'].lower().split(' ')[0])
         print(data['data']['Budget'].lower().split(' ')[2])
         output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
-        # print(output)
+        output = output.spli('<br>')
         for x in output:
             print(type(x))
             print(x)
