@@ -153,7 +153,6 @@ def getInformation(response):
 
 
 def send_message(token, recipient, text, data):
-  getInformation()
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
@@ -163,8 +162,8 @@ def send_message(token, recipient, text, data):
   #print(response['text'])
 
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
-  getInformation(response
-  )# print(session_id)
+  getInformation(response)
+  # print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
