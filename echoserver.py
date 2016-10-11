@@ -153,11 +153,11 @@ def getInformation(response):
     entities = response['entities']
     out  = []
     print(entities)
-    if 'Budget' in entities:
+    if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
         out.append(['Budget', entities['Budget'][0]['value']])
-    if 'Gender' in entities:
+    if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
         out.append(['Gender', entities['Gender'][0]['value']])
-    if 'distinction' in entities:
+    if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
         out.append(['distinction', entities['distinction'][0]['value']])
     return out
 
@@ -173,8 +173,9 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
   information = getInformation(response)
   print(information)
-  print(data['data'])
-  data['data'][information[0]] = information[1]
+  print(information)
+  if len(data['data'])>0:
+      data['data'][information[0]] = information[1]
   # print(session_id)
   print(response)
   print('sending response')
