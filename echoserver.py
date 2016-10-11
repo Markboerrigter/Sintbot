@@ -55,7 +55,10 @@ def handle_messages():
   payload = request.get_data()
   print payload
   global user_data
+  print('message events')
+  print(len(messaging_events(payload)))
   for sender, message in messaging_events(payload):
+
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -110,8 +113,8 @@ def findAnswer(response, question,witToken,data):
     #         print(response)
     session_id = data['session']
     response = mergeAns(response, witToken, session_id, question)
-    print('Response in find answer')
-    print(response)
+    # print('Response in find answer')
+    # print(response)
     if 'msg' in response:
         msg = response['msg'].split(',')
         if msg[0] == 'Stop':
@@ -143,9 +146,7 @@ def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
         action = response['type']
         if action == 'merge':
-
-            print(response['entities'])
-
+            # print(response['entities'])
             return tb.response('', witToken, session_id)
         else:
             return response
@@ -153,14 +154,14 @@ def mergeAns(response, witToken, session_id, question):
         return response
 
 def getInformation(response):
-    print('Response in getInformation')
-    print(response)
+    # print('Response in getInformation')
+    # print(response)
     if 'entities' in response:
 
         entities = response['entities']
         out  = []
 
-        print(entities)
+        # print(entities)
         if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
             out.append(['Budget', entities['Budget'][0]['value']])
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
@@ -175,22 +176,22 @@ def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
-  print(data)
+  # print(data)
   # global session_id
   # print(witToken)
   #print(response['text'])
-  print('gegevens')
-  print(text, data['token'], data['session'])
+  # print('gegevens')
+  # print(text, data['token'], data['session'])
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
-  print(information)
+  # print(information)
   for x in information:
       data['data'][x[0]] = x[1]
-  print('Hierbij de nieuwe data')
-  print(data['data'])
-  # print(session_id)
-  print(response)
-  print('sending response')
+  # print('Hierbij de nieuwe data')
+  # print(data['data'])
+  # # print(session_id)
+  # print(response)
+  # print('sending response')
   # response = mergeAns(response, witToken, session_id)
   print(text)
   if response['type'] == 'stop' and text != 'Bedankt!':
@@ -276,7 +277,7 @@ def send_message(token, recipient, text, data):
                 }),
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
-                  print r.text
+                  print r.response
                 print(message)
                 image = message[1].split('"')[1]
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -293,7 +294,7 @@ def send_message(token, recipient, text, data):
                           }}),
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
-                  print r.text
+                  print r.response
 
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
