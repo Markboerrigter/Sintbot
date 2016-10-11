@@ -173,19 +173,19 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   print(information)
-  print(information)
+
   if len(data['data'])>0:
       data['data'][information[0]] = information[1]
   # print(session_id)
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
-  if response['type'] == 'stop':
-      response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-      print(response)
-      if response['type'] == 'stop':
-          data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-          print('new id :' + data['session'])
+  # if response['type'] == 'stop':
+  #     response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
+  #     print(response)
+  #     if response['type'] == 'stop':
+  #         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+  #         print('new id :' + data['session'])
 
   # print(response)
   if 'msg' in response:
@@ -218,6 +218,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.response
       print(response['msg'])
+      print(data['data'])
       if response['msg'] == 'Bedankt!':
         message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '?'
         print(message)
