@@ -175,6 +175,8 @@ def send_message(token, recipient, text, data):
   print(information)
   if len(data['data'])>0:
       data['data'][information[0]] = information[1]
+  print('Hierbij de nieuwe data')
+  print(data['data'])
   # print(session_id)
   print(response)
   print('sending response')
