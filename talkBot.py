@@ -58,7 +58,7 @@ def merge(request):
 
 actions = {
     'send': send,
-    'merge': merge,
+    # 'merge': merge,
     # 'getOntvanger': getOntvanger
     'computeRes': computeRes,
     'first_entity_value': first_entity_value,
