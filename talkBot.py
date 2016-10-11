@@ -83,6 +83,5 @@ actions = {
 
 def response(input,token, session_id):
     client = Wit(token,actions = actions)
-    #print(input)
     resp = client.converse(session_id, input)
     return resp
