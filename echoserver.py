@@ -56,7 +56,7 @@ def handle_messages():
   print payload
   global user_data
   print('message events')
-  print(len(messaging_events(payload)))
+  print(len([[sender, message] for sender, message in messaging_events(payload)]))
   for sender, message in messaging_events(payload):
 
     if sender in user_data:
