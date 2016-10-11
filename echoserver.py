@@ -8,6 +8,7 @@ from runLogin import getIt
 import pickle
 import random
 import datetime
+import mongo as mg
 
 # personality, sentiment = getIt()
 
@@ -225,8 +226,10 @@ def send_message(token, recipient, text, data):
       print(response['msg'])
       print(data['data'])
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '? \n En tot de volgende keer!'
+        message = 'Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '? \nEn tot de volgende keer!'
         print(message)
+        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],data['data']['Budget'].lower().split(' ')[2],''):
+        print(output)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
