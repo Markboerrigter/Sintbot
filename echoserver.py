@@ -177,8 +177,8 @@ def send_message(token, recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   print(information)
-  if len(information)>0:
-      data['data'][information[0]] = information[1]
+  for x in information:
+      data['data'][x[0]] = x[1]
   print('Hierbij de nieuwe data')
   print(data['data'])
   # print(session_id)
