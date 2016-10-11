@@ -82,6 +82,7 @@ def handle_messages():
         user_data[sender]['data'] = {}
         print(sender, message)
         send_message(PAT, sender, message, user_data[sender])
+
   return "ok"
 
 def find_sender():
@@ -239,8 +240,10 @@ def send_message(token, recipient, text, data):
         for x in output:
             x = x.split(',')
             print(x)
+            if len(x[-1]) > 15 and len(speelgoed) < 6:
+                speelgoed.append([x[0],x[-1]])
             # print(len(x))
-            speelgoed.append(x[0])
+
             # speelgoed.append(x[0] + ' voor maar ' + x[2] + ' euro.')
         messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
         'Dan bent u vast op zoek naar deze kadootjes:']
@@ -250,15 +253,44 @@ def send_message(token, recipient, text, data):
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
         for message in messages:
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": message.decode('unicode_escape')}
-            }),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-              print r.text
+            if type(message) == 'string':
+
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": token},
+                data=json.dumps({
+                  "recipient": {"id": recipient},
+                  "message": {"text": message.decode('unicode_escape')}
+                }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                  print r.text
+            else:
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": token},
+                data=json.dumps({
+                  "recipient": {"id": recipient},
+                  "message": {"text": message[0].decode('unicode_escape')}
+                }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                  print r.text
+                image = message[1].split('"')[1]
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": token},
+                data=json.dumps({
+                  "recipient": {"id": recipient},
+                  "message":{
+                            "attachment":{
+                              "type":"image",
+                              "payload":{
+                                "url":image
+                              }
+                            }
+                          }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                  print r.text
+
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
