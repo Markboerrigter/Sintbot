@@ -229,7 +229,7 @@ def send_message(token, recipient, text, data):
         print(data['data']['Gender'].lower().split(' ')[1])
         print(data['data']['Budget'].lower().split(' ')[0])
         print(data['data']['Budget'].lower().split(' ')[2])
-        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8
+        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
         print(output)
         messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
         'Dan bent u vast op zoek naar deze kadootjes:' , output, 'En tot de volgende keer']
