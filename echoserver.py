@@ -215,16 +215,16 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.response
       if response['msg'] == 'Bedankt!':
-        message = 'Zocht u een kado voor' + data['session']['data']['Gender'] + 'voor' data['session']['data']['Budget'] + '?'
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": message.decode('unicode_escape')}
-            }),
-            headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-            print r.response
+        message = 'Zocht u een kado voor' + data['session']['data']['Gender'] + 'voor' + data['session']['data']['Budget'] + '?'
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+          "recipient": {"id": recipient},
+          "message": {"text": message.decode('unicode_escape')}
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.response
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
