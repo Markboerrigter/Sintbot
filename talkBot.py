@@ -81,9 +81,9 @@ actions = {
 # context2 = client.run_actions(session_id, 'and in Brussels?', context1)
 # print('The session state is now: ' + str(context2))
 
-def response(input,token, session_id, context):
+def response(input,token, session_id):
     client = Wit(token,actions = actions)
     #print(input)
-    resp = client.converse(session_id, input, context)
+    resp = client.converse(session_id, input, {}})
 
     return resp

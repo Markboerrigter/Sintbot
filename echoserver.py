@@ -122,7 +122,7 @@ def findAnswer(response, question,witToken,data):
             data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             print('new id :' + data['session'])
             #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-            return tb.response(msg[1], data['token'], data['session'], {}), data
+            return tb.response(msg[1], data['token'], data['session']), data
         else:
             return response, data
     else:
@@ -143,7 +143,7 @@ def mergeAns(response, witToken, session_id, question):
 
             print(response['entities'])
 
-            return tb.response('', witToken, session_id,findContext(response))
+            return tb.response('', witToken, session_id,{})
         else:
             return response
     else:
@@ -170,7 +170,7 @@ def send_message(token, recipient, text, data):
   # print(witToken)
   #print(response['text'])
 
-  response, data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
+  response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   print(information)
   print(information)
@@ -181,7 +181,7 @@ def send_message(token, recipient, text, data):
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
   if response['type'] == 'stop':
-      response,data = findAnswer(tb.response(text, data['token'], data['session'], {}),text,data['token'],data)
+      response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
       print(response)
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -217,8 +217,10 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
+      print(response['msg'])
       if response['msg'] == 'Bedankt!':
         message = 'Zocht u een kado voor' + data['data']['Gender'] + 'voor' + data['data']['Budget'] + '?'
+        print(message)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
