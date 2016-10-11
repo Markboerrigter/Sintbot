@@ -77,8 +77,8 @@ def handle_messages():
         user_data[sender] = dict()
         user_data[sender]['token'] = tokenWit
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-        print(user_data)    
-        user_data[sender]['session']['data'] = []
+        print(user_data)
+        user_data[sender]['data'] = []
         print(sender, message)
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
