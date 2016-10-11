@@ -218,7 +218,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.response
       else:
-          print(response)
+        #   print(response)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -228,19 +228,17 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.response
-      print(response['msg'])
-      print(data['data'])
+    #   print(response['msg'])
+    #   print(data['data'])
       if response['msg'] == 'Bedankt!':
-        print(data['data']['Gender'].lower().split(' ')[1])
-        print(data['data']['Budget'].lower().split(' ')[0])
-        print(data['data']['Budget'].lower().split(' ')[2])
         output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
         output = output.split('<br>')
         speelgoed = []
         for x in output:
             x = x.split(',')
-            print(x)
+            # print(x)
             if len(x[-1]) > 15 and len(speelgoed) < 6:
+                print(x)
                 speelgoed.append([x[0],x[-1]])
             # print(len(x))
 
@@ -274,6 +272,7 @@ def send_message(token, recipient, text, data):
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   print r.text
+                print(message)
                 image = message[1].split('"')[1]
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
