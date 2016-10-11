@@ -108,6 +108,7 @@ def findAnswer(response, question,witToken,data):
     #         print(response)
     session_id = data['session']
     response = mergeAns(response, witToken, session_id, question)
+    print('Response in find answer')
     print(response)
     if 'msg' in response:
         msg = response['msg'].split(',')
@@ -150,8 +151,11 @@ def mergeAns(response, witToken, session_id, question):
         return response
 
 def getInformation(response):
+    print('Response in getInformation')
+    print(response)
     entities = response['entities']
     out  = []
+
     print(entities)
     if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
         out.append(['Budget', entities['Budget'][0]['value']])
