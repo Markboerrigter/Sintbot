@@ -256,7 +256,7 @@ def send_message(token, recipient, text, data):
         print('new id :' + data['session'])
         for message in messages:
             print(type(message))
-            if isinstance(message,str):
+            if isinstance(message,unicode) or isinstance(message,str):
 
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
