@@ -1,32 +1,33 @@
-from flask import Flask
-from flask_pymongo import PyMongo
-from bson.son import SON
-from bson.code import Code
+from pymongo import MongoClient
+# from bson.son import SON
+# from bson.code import Code
 
-app = Flask(__name__)
-app.config['MONGO_DBNAME'] = 'toys'
-app.config['MONGO_URI'] = 'mongodb://go:go1234@95.85.15.38:27017/toys'
-app.config['MONGO_MAX_POOL_SIZE'] = 5
-app.config['MONGO_CONNECT'] = False
+client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
+db = client.toys
 
-mongo = PyMongo(app)
+# cursor = db.speelgoedboek.find()
+#
+# for document in cursor:
+#     print(document)
 
-# finding one unique toy by article number [title, brand, price, age, gender, page]
-@app.route('/article/number/<artnr>')
+
+# # finding one unique toy by article number [title, brand, price, age, gender, page]
+# @app.route('/article/number/<artnr>')
 def findArticle(artnr):
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         toy = catalogus.find_one({'article_number':int(artnr)})
         # return str(toy['price'])
         return 'The article you found: ' + toy['title'] + ', ' + toy['brand'] + ', ' + str(toy['price']) + ', ' + toy['age'] + ', ' + toy['gender'] +', ' + str(toy['page']) + '<br>'
     except Exception, e:
         return 'Not found an article'
 
+
 # getting all articles based on title (regex part of string not case sensitive)
-@app.route('/articles/title/<the_query>')
+# @app.route('/articles/title/<the_query>')
 def findArticlesTitle(the_query):
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find(
         {'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}
         )
@@ -39,10 +40,10 @@ def findArticlesTitle(the_query):
         return 'Not found'
 
 # getting all articles based on title and description_extended (regex part of string not case sensitive)
-@app.route('/articles/<the_query>')
+# @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'$or': [{'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}},{'description_extended': {'$regex': '.*'+the_query+'.*','$options' : 'i'}} ]})
         ordered = results.sort('price')
         output = ''
@@ -53,10 +54,10 @@ def findArticlesTitleAndDescription(the_query):
         return 'Not found'
 
 # getting all articles [title, brand, price, age, gender, page]
-@app.route('/articles')
+# @app.route('/articles')
 def findAllArticles():
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find()
         output = ''
         for r in results:
@@ -66,12 +67,12 @@ def findAllArticles():
         return 'Not found'
 
 # getting all articles that are aprox. price (plus and minus 15%)
-@app.route('/articles/price/<the_price>')
+# @app.route('/articles/price/<the_price>')
 def findByPrice(the_price):
     try:
         the_price_low = float(the_price) - float(the_price)/6.6
         the_price_high = float(the_price)/6.6 + float(the_price)
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'$and': [{'price': {'$lt':the_price_high}},{'price': {'$gt':the_price_low}} ]})
         ordered = results.sort('price')
         output = ''
@@ -83,10 +84,10 @@ def findByPrice(the_price):
         return 'Not found'
 
 # getting all articles under 50 euro
-@app.route('/articles/under')
+# @app.route('/articles/under')
 def findUndervalue():
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'$and': [{'price': {'$lt':50}},{'price': {'$gt':0}} ]})
         ordered = results.sort('price')
         output = ''
@@ -97,10 +98,10 @@ def findUndervalue():
         return 'Not found'
 
 # getting all articles above 50 euro
-@app.route('/articles/above')
+# @app.route('/articles/above')
 def findAbovevalue():
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'price': {'$gt':50}})
         ordered = results.sort('price')
         output = ''
@@ -111,12 +112,12 @@ def findAbovevalue():
         return 'Not found'
 
 # getting all articles within price range
-@app.route('/articles/price/range/<start>/<end>')
+# @app.route('/articles/price/range/<start>/<end>')
 def findFromRange(start, end):
     try:
         aa = float(start)
         bb = float(end)
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]})
         ordered = results.sort('price')
         output = ''
@@ -127,10 +128,10 @@ def findFromRange(start, end):
         return 'Not found'
 
 # getting all articles based on gender (Jongen / Meisje / Beide)
-@app.route('/articles/gender/<sex>')
+# @app.route('/articles/gender/<sex>')
 def findArticlesGender(sex):
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'gender': sex})
         ordered = results.sort('price')
         output = ''
@@ -141,10 +142,10 @@ def findArticlesGender(sex):
         return 'Not found'
 
 # getting all articles based on brand (regex part of string not case sensitive)
-@app.route('/articles/brand/<the_brand>')
+# @app.route('/articles/brand/<the_brand>')
 def findArticlesBrand(the_brand):
     try:
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({'brand': {'$regex': '.*'+the_brand+'.*','$options' : 'i'}})
         ordered = results.sort('price')
         output = ''
@@ -155,7 +156,7 @@ def findArticlesBrand(the_brand):
         return 'Not found'
 
 # finding one unique toy by article number [title, brand, price, age, gender, page]
-@app.route('/articles/by/age/year/<jaar>')
+# @app.route('/articles/by/age/year/<jaar>')
 def findByAge(jaar):
     try:
         # append this madness dictionary regarding age
@@ -838,7 +839,7 @@ def findByAge(jaar):
             query.append({'age': 'Vanaf 10 maanden'})
             query.append({'age': ''})
 
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         # get query dict working
         results = catalogus.find({'$or': query})
         ordered = results.sort('price')
@@ -848,9 +849,9 @@ def findByAge(jaar):
         return output
     except Exception, e:
         return 'Not found an article'
-
-# finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
-@app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
+#
+# # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
+# @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
 def findByTrinity(geslacht,budget,bedrag,jaar):
     try:
         # append this madness dictionary regarding age
@@ -1547,7 +1548,7 @@ def findByTrinity(geslacht,budget,bedrag,jaar):
         else:
             query3 = '$gte'
 
-        catalogus = mongo.db.speelgoedboek
+        catalogus = db.speelgoedboek
         results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
         ordered = results.sort('price')
 
@@ -1573,7 +1574,7 @@ get product(s) by keywords
 get populartiy
 get dislike
 """
-
-if __name__ == '__main__':
-    # app.run(debug=True)
-    app.run(host='0.0.0.0', debug=True)
+#
+# if __name__ == '__main__':
+#     # app.run(debug=True)
+#     app.run(host='0.0.0.0', debug=True)
