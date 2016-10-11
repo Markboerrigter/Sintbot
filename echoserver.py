@@ -255,7 +255,8 @@ def send_message(token, recipient, text, data):
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
         for message in messages:
-            if type(message) == 'string':
+            print(type(message))
+            if isinstance(message,str):
 
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
