@@ -235,11 +235,14 @@ def send_message(token, recipient, text, data):
         print(data['data']['Budget'].lower().split(' ')[2])
         output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
         output = output.split('<br>')
+        speelgoed = []
         for x in output:
-            print(type(x))
-            print(x)
+            x.split(',')
+            speelgoed.append(x[0] + ' voor maar € ' + x[2])
         messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
-        'Dan bent u vast op zoek naar deze kadootjes:' , output, 'En tot de volgende keer']
+        'Dan bent u vast op zoek naar deze kadootjes:']
+        messages.extent(speelgoed)
+        messages.append('En tot de volgende keer')
         # print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
