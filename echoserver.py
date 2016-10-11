@@ -196,7 +196,6 @@ def send_message(token, recipient, text, data):
   print(text)
   if response['type'] == 'stop' and text != 'Bedankt!':
       response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-      print(response)
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + data['session'])
@@ -206,7 +205,6 @@ def send_message(token, recipient, text, data):
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']
-          print(response)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -243,7 +241,6 @@ def send_message(token, recipient, text, data):
             x = x.split(',')
             # print(x)
             if len(x[-1]) > 16 and len(speelgoed) < 6:
-                print(x)
                 speelgoed.append([x[0],x[-1]])
             # print(len(x))
 
@@ -256,7 +253,6 @@ def send_message(token, recipient, text, data):
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
         for message in messages:
-            print(type(message))
             if isinstance(message,unicode) or isinstance(message,str):
 
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -278,7 +274,6 @@ def send_message(token, recipient, text, data):
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   print r.response
-                print(message)
                 image = message[1].split('"')[1]
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
