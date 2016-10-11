@@ -228,7 +228,7 @@ def send_message(token, recipient, text, data):
       if response['msg'] == 'Bedankt!':
         message = 'Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '? \nEn tot de volgende keer!'
         print(message)
-        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],data['data']['Budget'].lower().split(' ')[2],''):
+        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],data['data']['Budget'].lower().split(' ')[2],'')
         print(output)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
