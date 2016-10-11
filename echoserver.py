@@ -186,6 +186,7 @@ def send_message(token, recipient, text, data):
   print(response)
   print('sending response')
   # response = mergeAns(response, witToken, session_id)
+  print(text)
   if response['type'] == 'stop' and text != 'Bedankt!':
       response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
       print(response)
