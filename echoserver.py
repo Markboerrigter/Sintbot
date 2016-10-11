@@ -148,7 +148,7 @@ def mergeAns(response, witToken, session_id, question):
         return response
 
 def getInformation(response):
-    entities = resp['entities']
+    entities = response['entities']
     print(entities)
 
 
