@@ -9,6 +9,7 @@ import pickle
 import random
 import datetime
 import mongo as mg
+import pprint
 
 # personality, sentiment = getIt()
 
@@ -199,9 +200,11 @@ def send_message(token, recipient, text, data):
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + data['session'])
-
+  personality, sentiment = getIt()
+  print(pprint.pprint(personality))
   # print(response)
   if 'msg' in response:
+
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']

@@ -2,6 +2,8 @@ import json
 import facebook
 import urllib
 import pickle
+import pprint
+
 import numpy
 # import urlparse
 import subprocess
@@ -76,7 +78,8 @@ def getIt():
 
 
     personality = getPersonality(personality_text, profile['name'], 'facebook')
-
+    pprint.pprint(personality)
+    # print(json.dumps(json.loads(personality), indent =4, sort_keys=True))
     def word_feats(words):
         return dict([(word, True) for word in words.split() if word not in stopset])
 
