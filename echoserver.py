@@ -95,7 +95,6 @@ def handle_messages():
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['token'] = tokenWit
             user_data[sender]['token'] = Tokens['StartOld']['usual']
             user_data[sender]['Stage'] = 'StartOld'
         # else:
@@ -210,7 +209,7 @@ def getInformation(response):
     else:
         return []
 
-def getResponse(token, recipient, text, data):
+def getResponse(recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   for x in information:
@@ -222,7 +221,7 @@ def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
-  response, data = getResponse(token, recipient, text, data)
+  response, data = getResponse(recipient, text, data)
   if response['type'] == 'stop' and text != 'Bedankt!':
     #   response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
     #   if response['type'] == 'stop':
