@@ -34,8 +34,27 @@ app = Flask(__name__)
 
 # TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 # Tokens = TokensSave
+Tokens = {}
+Tokens['StartNew'] = {}
+Tokens['StartNew']['Introduce'] = 'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ'
+Tokens['StartNew']['Sinterklaas'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
+Tokens['StartNew']['Story'] = 'JW4QZSHW2GXLJKZEGPH6ZFOOP6PBYTKL'
+Tokens['StartNew']['Open'] = 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'
+Tokens['StartNew']['loose'] = '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'
+Tokens['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
+Tokens['StartOld'] = {}
+Tokens['StartOld']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
+
+
+
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
+
+returns = ['Hallo, ik ben Spot, de chatbot van Spotta! Waar kan ik u mee helpen?', 'Hallo daar, ik ben Sinterklaas. Zullen wij samen op zoek gaan naar het juiste kadootje?', ['Kent u het verhaal over Sinterklaas en het verloren kadootje?', ],
+                    'Welcome back, why are you in this screen?', 'Hi, welcombe back in the Sinterklaas chat! Bent u weer op zoek naar een kado?', 'Goedendag, ik zie dat u ons weer gevonden heeft! Kan ik u helpen met het vinden van een kadootje?',
+                    "Sorry, ik houd niet zo van die lange antwoorden. Ik stel voor om er nog eens rustig overheen te gaan. Bent u op zoek naar een kado?"]
+
+#VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
@@ -64,23 +83,25 @@ def handle_messages():
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['token'] = tokenWit
+            user_data[sender]['token'] = Tokens['StartOld']['usual']
+        else:
+            """" def findToken()
+            This formula should include a way to extract the old token and from this find the next
+            Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
+            It should return the old message and a new token.
+            """
+
         print "Incoming from %s: %s" % (sender, message)
         print(sender, message)
         send_message(PAT, sender, message,user_data[sender])
     else:
-        r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
-          params={"access_token": PAT},
-          data=json.dumps({
-                        "setting_type":"greeting",
-                        "greeting":{
-                        "text":"Timeless apparel for the masses."
-                        }}),
-          headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-          print r.response
+        """"
+        First a introduction screen should be shown, this should happen whenever a user enters the chat.
+        After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict""""
+
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
-        user_data[sender]['token'] = tokenWit
+        user_data[sender]['token'] = Tokens['StartNew'][random.choice(Tokens['StartNew'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print(user_data)
         user_data[sender]['data'] = {}
@@ -200,8 +221,8 @@ def send_message(token, recipient, text, data):
       if response['type'] == 'stop':
           data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
           print('new id :' + data['session'])
-  personality, sentiment = getIt()
-  print(pprint.pprint(personality))
+  # personality, sentiment = getIt()
+  # print(pprint.pprint(personality))
   # print(response)
   if 'msg' in response:
 
@@ -293,7 +314,6 @@ def send_message(token, recipient, text, data):
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   print r.response
-
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
