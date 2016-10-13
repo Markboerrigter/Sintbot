@@ -85,20 +85,20 @@ def handle_messages():
             user_data[sender]['token'] = tokenWit
             user_data[sender]['token'] = Tokens['StartOld']['usual']
         else:
-            """" def findToken()
-            This formula should include a way to extract the old token and from this find the next
-            Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
-            It should return the old message and a new token.
-            """
+            # """" def findToken()
+            # This formula should include a way to extract the old token and from this find the next
+            # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
+            # It should return the old message and a new token.
+            # """
 
         print "Incoming from %s: %s" % (sender, message)
         print(sender, message)
         send_message(PAT, sender, message,user_data[sender])
     else:
-        """"
-        First a introduction screen should be shown, this should happen whenever a user enters the chat.
-        After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
-        """"
+        # """"
+        # First a introduction screen should be shown, this should happen whenever a user enters the chat.
+        # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
+        # """"
 
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
