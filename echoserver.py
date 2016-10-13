@@ -10,6 +10,7 @@ import random
 import datetime
 import mongo as mg
 import pprint
+from copy import copy
 
 # personality, sentiment = getIt()
 
@@ -65,18 +66,28 @@ PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEI
 def get_keys(d,target):
     result = []
     path = []
-    get_key(d,target)
-    return result
+    get_key(d,target, path, result)
+    return result[0]
 
 
-def get_key(d, target):
+def get_key(d, target, path, result):
     for k, v in d.iteritems():
         path.append(k)
         if isinstance(v, dict):
-            get_keys(v, target)
+            get_key(v, target, path, result)
         if v == target:
             result.append(copy(path))
         path.pop()
+
+example_dict = { 'key1' : 'value6',
+                 'key2' : 'value2',
+                 'key3' : { 'key3a': 'value3a' },
+                 'key4' : { 'key4a': { 'key4aa': 'value4aa',
+                                       'key4ab': 'value4ab',
+                                       'key4ac': 'value1'},
+                            'key4b': 'value4b'}
+                }
+
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -248,7 +259,7 @@ def send_message(token, recipient, text, data):
   # print(pprint.pprint(personality))
   # print(response)
   if 'msg' in response:
-      user_data[sender]['oldmessage'] = response['msg']
+      data['oldmessage'] = response['msg']
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']
@@ -299,7 +310,7 @@ def send_message(token, recipient, text, data):
         # print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
-        user_data[sender]['oldmessage'] = messages[-1]
+        data['oldmessage'] = messages[-1]
         for message in messages:
             if isinstance(message,unicode) or isinstance(message,str):
 
