@@ -248,7 +248,7 @@ def send_message(token, recipient, text, data):
       oldToken = data['token']
       Stage = get_keys(Tokens, oldToken)[0]
       if TokenStages.index(Stage) < len(TokenStages):
-          NextStage = TokensStages[TokenStages.index(Stage)+1]
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
           token = data['token']
           response, data = getResponse(token, recipient, text, data)
