@@ -48,6 +48,7 @@ Tokens['Start']['Old']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 
 
 
+
 TokenStages = ['Start', 'StartConversation', 'ChitChat', 'DecisionMaking', 'PresentChoosing', 'Feedback']
 
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
@@ -120,6 +121,7 @@ def handle_messages():
 
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
+        user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
@@ -227,7 +229,7 @@ def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
   response, data = getResponse(recipient, text, data)
-  if response['type'] == 'stop' and text != 'Bedankt!':
+  if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
     #   response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
     #   if response['type'] == 'stop':
       data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -246,7 +248,7 @@ def send_message(token, recipient, text, data):
   # print(pprint.pprint(personality))
   # print(response)
   if 'msg' in response:
-
+      user_data[sender]['oldmessage'] = response['msg']
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']
@@ -297,6 +299,7 @@ def send_message(token, recipient, text, data):
         # print(message)
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         print('new id :' + data['session'])
+        user_data[sender]['oldmessage'] = messages[-1]
         for message in messages:
             if isinstance(message,unicode) or isinstance(message,str):
 
