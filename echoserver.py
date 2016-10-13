@@ -35,17 +35,18 @@ app = Flask(__name__)
 # TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
 # Tokens = TokensSave
 Tokens = {}
-Tokens['StartNew'] = {}
-Tokens['StartNew']['Introduce'] = 'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ'
-Tokens['StartNew']['Sinterklaas'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
-Tokens['StartNew']['Story'] = 'JW4QZSHW2GXLJKZEGPH6ZFOOP6PBYTKL'
-Tokens['StartNew']['Open'] = 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'
-Tokens['StartNew']['loose'] = '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'
-Tokens['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
+Tokens['Start'] = {}
+Tokens['Start']['New'] = {}
+Tokens['Start']['New']['Introduce'] = 'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ'
+Tokens['Start']['New']['Sinterklaas'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
+Tokens['Start']['New']['Story'] = 'JW4QZSHW2GXLJKZEGPH6ZFOOP6PBYTKL'
+Tokens['Start']['New']['Open'] = 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'
+Tokens['Start']['New']['loose'] = '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'
+Tokens['Start']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
 Tokens['StartOld'] = {}
-Tokens['StartOld']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
+Tokens['Start']['Old']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 
-
+TokenStages = ['Start', 'StartConversation', 'ChitChat', 'DecisionMaking', 'PresentChoosing', 'Feedback']
 
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
@@ -58,6 +59,16 @@ returns = ['Hallo, ik ben Spot, de chatbot van Spotta! Waar kan ik u mee helpen?
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
+
+
+def get_keys(d, target):
+    for k, v in d.iteritems():
+        path.append(k)
+        if isinstance(v, dict):
+            get_keys(v, target)
+        if v == target:
+            result.append(copy(path))
+        path.pop()
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -84,6 +95,7 @@ def handle_messages():
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['token'] = tokenWit
             user_data[sender]['token'] = Tokens['StartOld']['usual']
+            user_data[sender]['Stage'] = 'StartOld'
         # else:
         #     # """" def findToken()
         #     # This formula should include a way to extract the old token and from this find the next
@@ -104,6 +116,7 @@ def handle_messages():
         user_data[sender] = dict()
         user_data[sender]['token'] = Tokens['StartNew'][random.choice(Tokens['StartNew'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        user_data[sender]['Stage'] = 'StartNew'
         print(user_data)
         user_data[sender]['data'] = {}
         print(sender, message)
@@ -195,33 +208,34 @@ def getInformation(response):
     else:
         return []
 
+def getResponse(token, recipient, text, data):
+  response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
+  information = getInformation(response)
+  for x in information:
+      data['data'][x[0]] = x[1]
+  print(text)
+  return response, data
+
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
-  # print(data)
-  # global session_id
-  # print(witToken)
-  #print(response['text'])
-  # print('gegevens')
-  # print(text, data['token'], data['session'])
-  response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-  information = getInformation(response)
-  # print(information)
-  for x in information:
-      data['data'][x[0]] = x[1]
-  # print('Hierbij de nieuwe data')
-  # print(data['data'])
-  # # print(session_id)
-  # print(response)
-  # print('sending response')
-  # response = mergeAns(response, witToken, session_id)
-  print(text)
+  response, data = getResponse(token, recipient, text, data)
   if response['type'] == 'stop' and text != 'Bedankt!':
-      response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-      if response['type'] == 'stop':
-          data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-          print('new id :' + data['session'])
+    #   response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
+    #   if response['type'] == 'stop':
+      data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+      print('new id :' + data['session'])
+      oldToken = data['token']
+      Stage = get_keys[0]
+      if TokenStages.index(Stage) < len(TokenStages):
+          NextStage = TokensStages[TokenStages.index(Stage)+1]
+          data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
+          token = data['token']
+          response, data = getResponse(token, recipient, text, data)
+      else:
+          print('end of conversation')
+
   # personality, sentiment = getIt()
   # print(pprint.pprint(personality))
   # print(response)
