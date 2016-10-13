@@ -115,7 +115,7 @@ def handle_messages():
 
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
-        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['New'].keys())]
+        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
         print(user_data)
