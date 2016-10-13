@@ -61,9 +61,14 @@ returns = ['Hallo, ik ben Spot, de chatbot van Spotta! Waar kan ik u mee helpen?
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
+def get_keys(d,target):
+    result = []
+    path = []
+    get_key(d,target)
+    return result
 
 
-def get_keys(d, target):
+def get_key(d, target):
     for k, v in d.iteritems():
         path.append(k)
         if isinstance(v, dict):
