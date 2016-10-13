@@ -43,8 +43,10 @@ Tokens['Start']['New']['Story'] = 'JW4QZSHW2GXLJKZEGPH6ZFOOP6PBYTKL'
 Tokens['Start']['New']['Open'] = 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'
 Tokens['Start']['New']['loose'] = '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'
 Tokens['Start']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
-Tokens['StartOld'] = {}
+Tokens['Start']['Old'] = {}
 Tokens['Start']['Old']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
+
+
 
 TokenStages = ['Start', 'StartConversation', 'ChitChat', 'DecisionMaking', 'PresentChoosing', 'Feedback']
 
