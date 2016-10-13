@@ -246,7 +246,7 @@ def send_message(token, recipient, text, data):
       data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
       print('new id :' + data['session'])
       oldToken = data['token']
-      Stage = get_keys[0]
+      Stage = get_keys(Tokens, oldToken)[0]
       if TokenStages.index(Stage) < len(TokenStages):
           NextStage = TokensStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
