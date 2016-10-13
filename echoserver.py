@@ -95,7 +95,7 @@ def handle_messages():
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['token'] = Tokens['StartOld']['usual']
+            user_data[sender]['token'] = Tokens['Start']['Old']['usual']
             user_data[sender]['Stage'] = 'StartOld'
         # else:
         #     # """" def findToken()
@@ -115,7 +115,7 @@ def handle_messages():
 
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
-        user_data[sender]['token'] = Tokens['StartNew'][random.choice(Tokens['StartNew'].keys())]
+        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['New'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
         print(user_data)
