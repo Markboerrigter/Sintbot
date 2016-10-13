@@ -84,12 +84,12 @@ def handle_messages():
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['token'] = tokenWit
             user_data[sender]['token'] = Tokens['StartOld']['usual']
-        else:
-            # """" def findToken()
-            # This formula should include a way to extract the old token and from this find the next
-            # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
-            # It should return the old message and a new token.
-            # """
+        # else:
+        #     # """" def findToken()
+        #     # This formula should include a way to extract the old token and from this find the next
+        #     # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
+        #     # It should return the old message and a new token.
+        #     # """
 
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
