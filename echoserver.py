@@ -97,7 +97,8 @@ def handle_messages():
     else:
         """"
         First a introduction screen should be shown, this should happen whenever a user enters the chat.
-        After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict""""
+        After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
+        """"
 
         # user_data[sender= [Tokens]
         user_data[sender] = dict()
