@@ -91,7 +91,7 @@ def handle_messages():
             # It should return the old message and a new token.
             # """
 
-        print "Incoming from %s: %s" % (sender, message)
+        print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         send_message(PAT, sender, message,user_data[sender])
     else:
