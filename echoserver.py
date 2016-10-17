@@ -108,7 +108,7 @@ def get_key(d, target, path, result):
             result.append(copy(path))
         path.pop()
 
-def makeStartScreen(token)
+def makeStartScreen(token):
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
         {"setting_type":"call_to_actions",
         "thread_state":"new_thread",
