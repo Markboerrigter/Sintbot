@@ -108,18 +108,18 @@ def get_key(d, target, path, result):
             result.append(copy(path))
         path.pop()
 
-def makeStartScreen(token):
-    print('hoi')
-    print(type([{"payload":"LEUK BERICHTJES"}]))
-    r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
-        {"setting_type":"call_to_actions",
-        "thread_state":"new_thread",
-        "call_to_actions":["LEUK BERICHTJES"]},
-    headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-        print(dir(r))
-        print r.reason
-        print r.text
+# def makeStartScreen(token):
+#     print('hoi')
+#     print(type([{"payload":"LEUK BERICHTJES"}]))
+#     r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
+#         {"setting_type":"call_to_actions",
+#         "thread_state":"new_thread",
+#         "call_to_actions":["LEUK BERICHTJES"]},
+#     headers={'Content-type': 'application/json'})
+#     if r.status_code != requests.codes.ok:
+#         print(dir(r))
+#         print r.reason
+#         print r.text
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -161,7 +161,7 @@ def handle_messages():
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
         print('new')
-        makeStartScreen(PAT)
+        # makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
