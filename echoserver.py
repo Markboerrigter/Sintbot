@@ -147,7 +147,7 @@ def handle_messages():
   global user_data
   print('message events')
   for sender, message in messaging_events(payload):
-
+    if message
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -168,6 +168,7 @@ def handle_messages():
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
         makeStartScreen(PAT)
+        if
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
@@ -194,6 +195,8 @@ def messaging_events(payload):
   for event in messaging_events:
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
+    if 'postback' in payload['entry'][0]['messaging'][0]:
+      yield event["sender"]["id"], 'Get started'
 
 def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
