@@ -48,6 +48,7 @@ Tokens['Start']['Old']['recognized'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 Tokens['Start']['Old']['oldFashioned'] = 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'
 Tokens['Start']['Old']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
 Tokens['Start']['Old']['sintQuestioning'] = 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'
+Tokens['GiveIdea'] = {}
 Tokens['GiveIdea']['True'] = 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'
 Tokens['GiveIdea']['False'] = '4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'
 Tokens['decisions'] = {}
@@ -82,7 +83,7 @@ Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
 
 
-TokenStages = ['Start', 'decisions', 'presentchoosing', 'feedback']
+TokenStages = ['Start','GiveIdea' 'decisions', 'presentchoosing', 'feedback']
 
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
