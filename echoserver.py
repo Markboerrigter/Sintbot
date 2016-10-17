@@ -270,7 +270,7 @@ def allValues(dictionary, ans = []):
             ans.append(allValues(v)
         else:
             ans.append(v)
-            return ans
+        return ans
 
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
