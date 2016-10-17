@@ -107,18 +107,21 @@ def get_key(d, target, path, result):
             result.append(copy(path))
         path.pop()
 
-# def makeStartScreen(token):
-#     print('hoi')
-#     print(type([{"payload":"LEUK BERICHTJES"}]))
-#     r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
-#         {"setting_type":"call_to_actions",
-#         "thread_state":"new_thread",
-#         "call_to_actions":["LEUK BERICHTJES"]},
-#     headers={'Content-type': 'application/json'})
-#     if r.status_code != requests.codes.ok:
-#         print(dir(r))
-#         print r.reason
-#         print r.text
+def makeStartScreen(token):
+  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+    params={"access_token": token},
+    data=json.dumps({
+          "setting_type":"call_to_actions",
+          "thread_state":"new_thread",
+          "call_to_actions":[
+            {
+              "payload":"USER_DEFINED_PAYLOAD"
+            }
+          ]
+        }),
+    headers={'Content-type': 'application/json'})
+  if r.status_code != requests.codes.ok:
+    print r.text
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -158,10 +161,11 @@ def handle_messages():
         # First a introduction screen should be shown, this should happen whenever a user enters the chat.
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
-        # makeStartScreen(PAT)
+        makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
-        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
+        user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
+        # user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
         user_data[sender]['data'] = {}
@@ -184,6 +188,7 @@ def messaging_events(payload):
   for event in messaging_events:
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
+    if
 
 def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
