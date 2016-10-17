@@ -316,7 +316,7 @@ def send_message(token, recipient, text, data):
             }),
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
-            print r.response
+            print r.text()
       else:
         #   print(response)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -327,7 +327,7 @@ def send_message(token, recipient, text, data):
             }),
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
-            print r.response
+            print r.text()
     #   print(response['msg'])
     #   print(data['data'])
       if response['msg'] == 'Bedankt!':
@@ -371,7 +371,7 @@ def send_message(token, recipient, text, data):
                 }),
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
-                  print r.response
+                  print r.text()
                 image = message[1].split('"')[1]
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
@@ -387,7 +387,7 @@ def send_message(token, recipient, text, data):
                           }}),
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
-                  print r.response
+                  print r.text()
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
