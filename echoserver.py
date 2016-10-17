@@ -294,9 +294,6 @@ def send_message(token, recipient, text, data):
       else:
           print('end of conversation')
 
-  # personality, sentiment = getIt()
-  # print(pprint.pprint(personality))
-  # print(response)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
