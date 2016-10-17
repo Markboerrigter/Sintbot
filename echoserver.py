@@ -45,12 +45,40 @@ Tokens['Start']['New']['Open'] = 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'
 Tokens['Start']['New']['loose'] = '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'
 Tokens['Start']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
 Tokens['Start']['Old'] = {}
-Tokens['Start']['Old']['usual'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
+Tokens['Start']['Old']['recognized'] = 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
+Tokens['Start']['Old']['oldFashioned'] = 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'
+Tokens['Start']['Old']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
+Tokens['Start']['Old']['sintQuestioning'] = 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'
+Tokens['decisions'] = {}
+Tokens['decisions']['age'] = {}
+Tokens['decisions']['gender'] = {}
+Tokens['decisions']['budget'] = {}
+Tokens['decisions']['age']['findage1'] = 'BQDMM2HIB7YSAXICR7QFULGKXQWJHKXJ'
+Tokens['decisions']['age']['findage2'] = '5UTS7JO3NPTOHD52HAWKQOZBUNTFC53R'
+Tokens['decisions']['gender']['findgender1'] = 'BBEESH7AOGULQK6L3TPYYRC4L4Y36LHH'
+Tokens['decisions']['gender']['findgender2'] = 'UQVGOAZSC54YYVUGHURXHY5I4U6A2X3M'
+Tokens['decisions']['budget']['findbudget1'] = 'IJ7PMHQPAVNK6UU3C3BE3NOVXZ6MMPOJ'
+Tokens['decisions']['budget']['findbudget2'] = 'TB4QZIZYN4AZQPHYMWDCNFVOR3MJRUGI'
+Tokens['presentchoosing'] = {}
+Tokens['presentchoosing']['present'] = {}
+Tokens['presentchoosing']['present']['normal'] = '5YVSD6XFV4I3Q457C56YRYLED5Q6E6ZK'
+Tokens['presentchoosing']['present']['discount'] = 'RNZHGD6QHWG6JOZF66W52XHU364H4B6Y'
+Tokens['presentchoosing']['present']['loyal'] = 'COHIUFQKSQMSGK6SNFLDR6D74CWZIJLZ'
+Tokens['presentchoosing']['notFound'] = {}
+Tokens['presentchoosing']['notFound']['stop1'] = 'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'
+Tokens['presentchoosing']['notFound']['stop2'] = 'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'
+Tokens['presentchoosing']['notFound']['popular'] = 'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C'
+Tokens['presentchoosing']['notFound']['keyword1'] = 'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'
+Tokens['presentchoosing']['notFound']['keyword2'] = '5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'
+Tokens['feedback'] = {}
+Tokens['feedback']['feedback1'] = 'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'
+Tokens['feedback']['feedback1'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
 
 
 
-TokenStages = ['Start', 'StartConversation', 'ChitChat', 'DecisionMaking', 'PresentChoosing', 'Feedback']
+
+TokenStages = ['Start', 'decisions', 'presentchoosing', 'feedback']
 
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
@@ -79,14 +107,18 @@ def get_key(d, target, path, result):
             result.append(copy(path))
         path.pop()
 
-example_dict = { 'key1' : 'value6',
-                 'key2' : 'value2',
-                 'key3' : { 'key3a': 'value3a' },
-                 'key4' : { 'key4a': { 'key4aa': 'value4aa',
-                                       'key4ab': 'value4ab',
-                                       'key4ac': 'value1'},
-                            'key4b': 'value4b'}
-                }
+def makeStartScreen(token,recipient,)
+  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
+        {"setting_type":"call_to_actions",
+        "thread_state":"new_thread",
+        "call_to_actions":[
+        {
+          "payload":"LEUK BERICHTJES"
+        }
+        ]}
+    headers={'Content-type': 'application/json'})
+  if r.status_code != requests.codes.ok:
+    print r.response
 
 
 @app.route('/', methods=['GET'])
@@ -112,7 +144,7 @@ def handle_messages():
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['token'] = Tokens['Start']['Old']['usual']
+            user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())]
             user_data[sender]['Stage'] = 'StartOld'
         # else:
         #     # """" def findToken()
@@ -130,7 +162,7 @@ def handle_messages():
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
 
-        # user_data[sender= [Tokens]
+        makeStartScreen()
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
