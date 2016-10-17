@@ -20,7 +20,7 @@ pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
-
+print(user_data)
 
 def word_feats(words):
     return dict([(word, True) for word in words])
@@ -138,7 +138,6 @@ def handle_messages():
   print payload
   global user_data
   print('message events')
-  print(len([[sender, message] for sender, message in messaging_events(payload)]))
   for sender, message in messaging_events(payload):
 
     if sender in user_data:
@@ -160,14 +159,12 @@ def handle_messages():
         # First a introduction screen should be shown, this should happen whenever a user enters the chat.
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
-        print('new')
         # makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
-        print(user_data)
         user_data[sender]['data'] = {}
         print(sender, message)
         send_message(PAT, sender, message, user_data[sender])
@@ -286,10 +283,11 @@ def send_message(token, recipient, text, data):
       Stage = get_keys(Tokens, oldToken)[0]
       if TokenStages.index(Stage) < len(TokenStages):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
-          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          data['token'] = random.choice(allValues(Tokens[NextStage]))[0]
         #   if isinstance(data['token'], dict):
         #       data['token'] = random.choice(allValues(data['token']))
           token = data['token']
+          print(newtoken) = token
           response, data = getResponse(recipient, text, data)
       else:
           print('end of conversation')
