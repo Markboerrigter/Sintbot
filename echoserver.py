@@ -114,7 +114,7 @@ def makeStartScreen(token):
     r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
         {"setting_type":"call_to_actions",
         "thread_state":"new_thread",
-        "call_to_actions":[{"payload":"LEUK BERICHTJES"}]},
+        "call_to_actions":["LEUK BERICHTJES"]},
     headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         print(dir(r))
