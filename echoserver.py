@@ -147,7 +147,6 @@ def handle_messages():
   global user_data
   print('message events')
   for sender, message in messaging_events(payload):
-    if message
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
