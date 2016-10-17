@@ -73,7 +73,8 @@ Tokens['presentchoosing']['notFound']['keyword1'] = 'YPRANRJYCS4VPLXM3RZBOZA7V4R
 Tokens['presentchoosing']['notFound']['keyword2'] = '5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'
 Tokens['feedback'] = {}
 Tokens['feedback']['feedback1'] = 'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'
-Tokens['feedback']['feedback1'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
+Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
+
 
 
 
@@ -261,13 +262,14 @@ def getResponse(recipient, text, data):
   print(text)
   return response, data
 
-def allValues(dictionary, ans = []):
+def allValues(dictionary):
+    ans = []
     for k,v in dictionary.items():
         if isinstance(v,dict):
             ans.extend(allValues(v))
         else:
-            ans.extend(v)
-        return ans
+            ans.append(v)
+    return ans
 
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
