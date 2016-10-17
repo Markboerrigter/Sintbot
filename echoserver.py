@@ -287,8 +287,8 @@ def send_message(token, recipient, text, data):
       if TokenStages.index(Stage) < len(TokenStages):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
-          if isinstance(data['token'], dict):
-              data['token'] = random.choice(allValues(data['token']))
+        #   if isinstance(data['token'], dict):
+        #       data['token'] = random.choice(allValues(data['token']))
           token = data['token']
           response, data = getResponse(recipient, text, data)
       else:
