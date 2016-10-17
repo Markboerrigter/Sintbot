@@ -267,7 +267,7 @@ def getResponse(recipient, text, data):
 def allValues(dictionary, ans = []):
     for k,v in dictionary.items():
         if isintance(v,dict):
-            ans.append(allValues(v)
+            ans.append(allValues(v))
         else:
             ans.append(v)
         return ans
