@@ -266,7 +266,7 @@ def getResponse(recipient, text, data):
 
 def allValues(dictionary, ans = []):
     for k,v in dictionary.items():
-        if isinstancentance(v,dict):
+        if isinstance(v,dict):
             ans.append(allValues(v))
         else:
             ans.append(v)
