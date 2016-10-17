@@ -15,10 +15,11 @@ from copy import copy
 # personality, sentiment = getIt()
 
 from flask import g
-# x = dict()
-# pickle.dump(x, open('user_data.p', 'wb'))
+x = dict()
+pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
+
 
 
 def word_feats(words):
@@ -107,7 +108,7 @@ def get_key(d, target, path, result):
             result.append(copy(path))
         path.pop()
 
-def makeStartScreen(token,recipient,)
+def makeStartScreen(token)
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
         {"setting_type":"call_to_actions",
         "thread_state":"new_thread",
@@ -161,8 +162,8 @@ def handle_messages():
         # First a introduction screen should be shown, this should happen whenever a user enters the chat.
         # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
         # """"
-
-        makeStartScreen()
+        print('new')
+        makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
