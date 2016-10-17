@@ -264,6 +264,14 @@ def getResponse(recipient, text, data):
   print(text)
   return response, data
 
+def allValues(dictionary, ans = []):
+    for k,v in dictionary.items():
+        if isintance(v,dict):
+            ans.append(allValues(v)
+        else:
+            ans.append(v)
+            return ans
+
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
@@ -279,6 +287,8 @@ def send_message(token, recipient, text, data):
       if TokenStages.index(Stage) < len(TokenStages):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
+          if isinstance(data['token'], dict):
+              data['token'] = random.choice(allValues(data['token']))
           token = data['token']
           response, data = getResponse(recipient, text, data)
       else:
