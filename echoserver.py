@@ -201,20 +201,20 @@ def findAnswer(response, question,witToken,data):
     # print(response)
     if 'msg' in response:
         msg = response['msg'].split(',')
-        if msg[0] == 'Stop':
-            # global session_id
-            print(response)
-            print('Stop Message')
-            print(msg)
-            data['token'] = TokensSave[int(msg[2]):][0]
-            # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-            #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-            data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            print('new id :' + data['session'])
-            #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-            return tb.response(msg[1], data['token'], data['session']), data
-        else:
-            return response, data
+        # if msg[0] == 'Stop':
+        #     # global session_id
+        #     print(response)
+        #     print('Stop Message')
+        #     print(msg)
+        #     data['token'] = TokensSave[int(msg[2]):][0]
+        #     # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
+        #     #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+        #     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        #     print('new id :' + data['session'])
+        #     #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
+        #     return tb.response(msg[1], data['token'], data['session']), data
+        # else:
+        return response, data
     else:
         return response,data
 
@@ -280,7 +280,7 @@ def send_message(token, recipient, text, data):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
           token = data['token']
-          response, data = getResponse(token, recipient, text, data)
+          response, data = getResponse(recipient, text, data)
       else:
           print('end of conversation')
 
