@@ -267,9 +267,9 @@ def getResponse(recipient, text, data):
 def allValues(dictionary, ans = []):
     for k,v in dictionary.items():
         if isinstance(v,dict):
-            ans.append(allValues(v))
+            ans.extend(allValues(v))
         else:
-            ans.append(v)
+            ans.extend(v)
         return ans
 
 def send_message(token, recipient, text, data):
