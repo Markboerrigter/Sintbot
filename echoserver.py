@@ -188,7 +188,6 @@ def messaging_events(payload):
   for event in messaging_events:
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
-    if
 
 def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
