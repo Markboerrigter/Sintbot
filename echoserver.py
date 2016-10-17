@@ -121,8 +121,8 @@ def makeStartScreen(token):
     headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         print(dir(r))
-        print r.response
-
+        print r.reason
+        print r.text
 
 @app.route('/', methods=['GET'])
 def handle_verification():
