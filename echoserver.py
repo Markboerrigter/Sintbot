@@ -90,12 +90,16 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAJzPxFYza8w3Ob9SlH41MwZArFoLFdGCSpgPYkoOB2zfIOJnaDhhP922PyEIayJH5HpzMKZCGM0IcbvZBZCrKRaFY1tj27pGsFcAu2KzvO8ZCusT5OvsUG9RghmR9UDMIOND2prsW5RL4taRe15YgZAtwrgRsM1QZDZD'
+PAT = "EAAEkTt8L730BAHXNEVzBUuRIiMvQA6vpYOdGqBdGG8xVdEqLKVdvtuZAuvkVZCu677xnHC0AcYm9PgkqZBXexX96uhzEKbO8QL4UNyToEcBk8lX8eK53paQAKZB20TQ8D5tSXOQrph3nU30JCJ60NONKSUemiLn538RZCxAS46QZDZD"
+# EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
 def get_keys(d,target):
     result = []
     path = []
     get_key(d,target, path, result)
     return result[0]
+
+
+sdfas
 
 
 def get_key(d, target, path, result):
@@ -360,6 +364,7 @@ def send_message(token, recipient, text, data):
                 }),
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
+
                   print r.text
             else:
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
