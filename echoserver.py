@@ -120,6 +120,7 @@ def makeStartScreen(token):
         ]},
     headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
+        print(dir(r))
         print r.response
 
 
