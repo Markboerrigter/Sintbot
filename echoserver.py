@@ -75,9 +75,9 @@ Tokens['feedback'] = {}
 Tokens['feedback']['feedback1'] = 'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'
 Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
-startmessage = {
-        'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
-}
+# startmessage = {
+#         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
+# }
 
 
 
