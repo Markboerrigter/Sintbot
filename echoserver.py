@@ -116,7 +116,7 @@ def makeStartScreen(token):
         {
           "payload":"LEUK BERICHTJES"
         }
-        ]}
+        ]},
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
     print r.response
