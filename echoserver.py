@@ -110,11 +110,11 @@ def get_key(d, target, path, result):
 
 def makeStartScreen(token):
     print('hoi')
-    print(type(["payload":"LEUK BERICHTJES"]))
+    print(type([{"payload":"LEUK BERICHTJES"}]))
     r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
         {"setting_type":"call_to_actions",
         "thread_state":"new_thread",
-        "call_to_actions":["payload":"LEUK BERICHTJES"]},
+        "call_to_actions":[{"payload":"LEUK BERICHTJES"}]},
     headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         print(dir(r))
@@ -152,7 +152,6 @@ def handle_messages():
         #     # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
         #     # It should return the old message and a new token.
         #     # """
-
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         send_message(PAT, sender, message,user_data[sender])
@@ -172,12 +171,10 @@ def handle_messages():
         user_data[sender]['data'] = {}
         print(sender, message)
         send_message(PAT, sender, message, user_data[sender])
-
   return "ok"
 
 def find_sender():
     payload = request.get_data()
-    data = json.loads(payload)
     messaging_events = data["entry"][0]["messaging"]
     for sender, message in messaging_events(payload):
         return sender
