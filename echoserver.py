@@ -99,9 +99,6 @@ def get_keys(d,target):
     return result[0]
 
 
-sdfas
-
-
 def get_key(d, target, path, result):
     for k, v in d.iteritems():
         path.append(k)
