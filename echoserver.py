@@ -109,7 +109,8 @@ def get_key(d, target, path, result):
         path.pop()
 
 def makeStartScreen(token):
-  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
+    print('hoi')
+    r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings?access_token=" + token,
         {"setting_type":"call_to_actions",
         "thread_state":"new_thread",
         "call_to_actions":[
@@ -118,7 +119,7 @@ def makeStartScreen(token):
         }
         ]},
     headers={'Content-type': 'application/json'})
-  if r.status_code != requests.codes.ok:
+    if r.status_code != requests.codes.ok:
     print r.response
 
 
