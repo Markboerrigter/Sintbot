@@ -266,7 +266,7 @@ def getResponse(recipient, text, data):
 
 def allValues(dictionary, ans = []):
     for k,v in dictionary.items():
-        if isintance(v,dict):
+        if isinstancentance(v,dict):
             ans.append(allValues(v))
         else:
             ans.append(v)
@@ -286,7 +286,7 @@ def send_message(token, recipient, text, data):
       Stage = get_keys(Tokens, oldToken)[0]
       if TokenStages.index(Stage) < len(TokenStages):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
-          data['token'] = Tokens[NextStage][random.choice(Tokens[NextStage].keys())]
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
           if isinstance(data['token'], dict):
               data['token'] = random.choice(allValues(data['token']))
           token = data['token']
