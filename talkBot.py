@@ -49,8 +49,6 @@ def response(input,token, session_id):
     client = Wit(token,actions = actions)
     print(input, token, session_id)
     resp = client.converse(session_id, input, {})
-
-    print(resp)
     return resp
 
 

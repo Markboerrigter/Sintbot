@@ -352,6 +352,7 @@ def send_message(token, recipient, text, data):
           data['token'] = random.choice(allValues(Tokens[Stage]))
         #   data['starter'] = get_keys(Tokens, data['token'])[-1]
           while data['starter'] == get_keys(Tokens, data['token'])[-1]:
+
               data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
 
@@ -359,6 +360,9 @@ def send_message(token, recipient, text, data):
       elif Stage == 'Start':
           if data['data']['distinction'].lower() == 'ja':
               data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
+          else:
+              data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
               data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif TokenStages.index(Stage) < len(TokenStages)-1:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
