@@ -358,7 +358,7 @@ def send_message(token, recipient, text, data):
           response, data = getResponse(recipient, data['starter'], data)
       elif Stage == 'Start':
           if data['data']['distinction'].lower() == 'ja':
-              data['token'] = Tokens['GiveIdea']['Ja'].values()
+              data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
               data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif TokenStages.index(Stage) < len(TokenStages)-1:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
