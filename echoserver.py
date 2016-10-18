@@ -193,8 +193,8 @@ def messaging_events(payload):
   for event in messaging_events:
     if "message" in event and "text" in event["message"]:
       yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
-    if 'postback' in payload['entry'][0]['messaging'][0]:
-      yield event["sender"]["id"], 'Get started'
+    # if 'postback' in payload['entry'][0]['messaging'][0]:
+    #   yield event["sender"]["id"], 'Get started'
 
 def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
