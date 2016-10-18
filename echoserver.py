@@ -95,7 +95,7 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAEfBH4Dl1tlY2DE6bMd82B3XBSJtMrqJJ8J97jcZApfUj0VK35RN3ZAwtimAMtlIbpQaXKMnSVt54ZAboeNkiNkK7pEgGUkf4CdnZBsBZCl8jIsPK86sFSf0k1FjheeRUXkOzTMNwpQlJp8zXiNoZD'
+PAT = 'EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
 # EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
 def get_keys(d,target):
     result = []
@@ -114,7 +114,7 @@ def get_key(d, target, path, result):
         path.pop()
 
 def makeStartScreen(token):
-  r = requests.post("https://graph.facebook.com/v2.6/321396144861053/thread_settings",
+  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
     params={"access_token": token},
     data=json.dumps({
           "setting_type":"call_to_actions",
