@@ -149,22 +149,22 @@ def handle_messages():
   print('message events')
   for sender, message in messaging_events(payload):
     if sender in user_data:
-        if 'stop' in user_data[sender]:
-            user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].values()[0]
-            user_data[sender]['starter'] = get_keys(Tokens['Start']['Old'],user_data[sender]['token'])[-1]
-            user_data[sender]['Stage'] = 'StartOld'
-            send_message(PAT, user_data[sender]['starter'], message,user_data[sender])
-        else:
+        # if 'stop' in user_data[sender]:
+        #     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        #     user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].values()[0]
+        #     user_data[sender]['starter'] = get_keys(Tokens['Start']['Old'],user_data[sender]['token'])[-1]
+        #     user_data[sender]['Stage'] = 'StartOld'
+        #     send_message(PAT, user_data[sender]['starter'], message,user_data[sender])
+        # else:
         # else:
         #     # """" def findToken()
         #     # This formula should include a way to extract the old token and from this find the next
         #     # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
         #     # It should return the old message and a new token.
         #     # """
-            print("Incoming from %s: %s" % (sender, message))
-            print(sender, message)
-            send_message(PAT, sender, message,user_data[sender])
+        print("Incoming from %s: %s" % (sender, message))
+        print(sender, message)
+        send_message(PAT, sender, message,user_data[sender])
     else:
         # """"
         # First a introduction screen should be shown, this should happen whenever a user enters the chat.
