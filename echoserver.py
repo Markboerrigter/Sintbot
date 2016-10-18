@@ -274,6 +274,7 @@ def getInformation(response):
             out['Age'] = entities['age_of_person'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
             out['distinction'] = entities['distinction'][0]['value']
+        print(out)
         return out
     else:
         return []
@@ -281,8 +282,7 @@ def getInformation(response):
 def getResponse(recipient, text, data):
   response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
-  for x in information:
-      data['data'][x[0]] = x[1]
+  data['data'].update(information)
   return response, data
 
 def allValues(dictionary):
