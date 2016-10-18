@@ -280,7 +280,7 @@ def checksuggest(token, recipient, data):
         if r.status_code != requests.codes.ok:
             print r.text
 
-def findToken(recipient, data):
+def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
@@ -290,7 +290,7 @@ def findToken(recipient, data):
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
-      if 'distinction' in data['data'] and data['data']['distinction'].lower() == 'ja':
+      if 'distinction' in data['data'] and text.lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       else:
@@ -314,7 +314,7 @@ def send_message(token, recipient, text, data):
   global user_data
   response, data = getResponse(recipient, text, data)
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
-      response, data = findToken(recipient, data)
+      response, data = findToken(recipient, data, text)
   checksuggest(token, recipient, data)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
