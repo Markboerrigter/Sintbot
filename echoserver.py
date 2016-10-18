@@ -324,7 +324,7 @@ def checksuggest(token, recipient, data):
                       }
                     ]
                   }
-                ]for x in presents]
+                for x in presents]
               }
             }
           }
