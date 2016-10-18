@@ -198,7 +198,7 @@ def messaging_events(payload):
   if "messaging" in data["entry"][0]:
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
-        if "message" in event and "text" in event["message"]:
+        if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
