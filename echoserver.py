@@ -285,12 +285,14 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
+  NextStage = TokenStages[TokenStages.index(Stage)+1]
   if Stage == 'decisions' and len(data['data']) < 4:
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
+      data['Stage'] = NextStage
       if 'distinction' in data['data'] and text.lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
@@ -298,12 +300,11 @@ def findToken(recipient, data, text):
           data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
-      NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
       if isinstance(data['token'], dict):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-      data['stage'] = NextStage
+      data['Stage'] = NextStage
   else:
       print('end of conversation')
       response = {}
