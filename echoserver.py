@@ -144,10 +144,11 @@ def handle_verification():
 def handle_messages():
   print "Handling Messages"
   payload = request.get_data()
-  print payload
   global user_data
   print('message events')
   for sender, message in messaging_events(payload):
+    print(sender, message)
+    print(user_data[sender])
     if sender in user_data:
         # if 'stop' in user_data[sender]:
         #     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -179,8 +180,6 @@ def handle_messages():
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
         user_data[sender]['data'] = {}
-        print(sender, message)
-        print(user_data[sender])
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
 
@@ -199,6 +198,7 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
+
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
