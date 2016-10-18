@@ -361,6 +361,7 @@ def send_message(token, recipient, text, data):
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif TokenStages.index(Stage) < len(TokenStages)-1:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
+          data['token'] = random.choice(allValues(Tokens[NextStage])) 
           if isinstance(data['token'], dict):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
