@@ -83,7 +83,7 @@ Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
 
 
-TokenStages = ['Start','GiveIdea' 'decisions', 'presentchoosing', 'feedback']
+TokenStages = ['Start','GiveIdea',s 'decisions', 'presentchoosing', 'feedback']
 
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
