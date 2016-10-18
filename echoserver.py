@@ -142,10 +142,10 @@ def handle_verification():
 
 @app.route('/', methods=['POST'])
 def handle_messages():
-  print "Handling Messages"
+  # print "Handling Messages"
   payload = request.get_data()
   global user_data
-  print('message events')
+  # print('message events')
   for sender, message in messaging_events(payload):
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
@@ -240,7 +240,7 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
-    if data['Stage'] == 'present':
+    if data['Stage'] == 'presentchoosing':
         print('giving presents')
         final_data = data['data']
         geslacht = final_data['Gender']
