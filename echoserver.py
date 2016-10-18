@@ -249,6 +249,8 @@ def checksuggest(token, recipient, data):
         budget = final_data['budget']
         jaar = final_data['Age']
         presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
+        print(type(presents))
+        print(presents)
         print(presents[0])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
