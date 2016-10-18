@@ -73,8 +73,8 @@ Tokens['presentchoosing']['present']['loyal'] = {"Suggest loyal":'COHIUFQKSQMSGK
 # Tokens['presentchoosing']['notFound']['keyword1'] = {"budget":'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'}
 # Tokens['presentchoosing']['notFound']['keyword2'] = {"budget":'5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'}
 Tokens['feedback'] = {}
-Tokens['feedback']['feedback1'] = {"budget":'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'}
-Tokens['feedback']['feedback2'] = {"budget":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'}
+Tokens['feedback']['feedback1'] = {"Feedback":'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'}
+Tokens['feedback']['feedback2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'}
 
 # startmessage = {
 #         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
@@ -148,6 +148,7 @@ def handle_messages():
   print('message events')
   for sender, message in messaging_events(payload):
     print(sender, message)
+    checksuggest(PAT, recipient, data)
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
@@ -220,14 +221,6 @@ def findAnswer(response, question,witToken,data):
     # else:
     return response,data, information
 
-# def findContext(resp):
-#     entities = resp['entities']
-#     for x in entities:
-#         if x != 'intent':
-#             print('entities')
-#             print(x)
-#             return entities[x]
-
 def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
         action = response['type']
@@ -289,11 +282,11 @@ def checksuggest(token, recipient, data):
     if data['Stage'] == 'present':
         print('giving presents')
         # print(data['data'])
-        final_data = data['data']
-        geslacht = final_data['Gender']
-        budget = final_data['Budget'].split('-')
-        jaar = final_data['Age']
-        presents = mg.findByTrinity(geslacht,'minder', budget[1],jaar)[:5]
+        # final_data = data['data']
+        # geslacht = final_data['Gender']
+        # budget = final_data['Budget'].split('-')
+        # jaar = final_data['Age']
+        presents = mg.findByTrinity('Jongen','minder', 45,9]
         print(presents)
 
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -346,7 +339,7 @@ def findToken(recipient, data):
       data['starter'] = get_keys(Tokens, data['token'])[-1]
       response, data = getResponse(recipient, data['starter'], data)
   elif Stage == 'Start':
-      if data['data']['distinction'].lower() == 'ja':
+      if 'distinction' in data['data'] and data['data']['distinction'].lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       else:
