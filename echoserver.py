@@ -309,6 +309,7 @@ def send_message(token, recipient, text, data):
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       print(response['msg'])
       if 'quickreplies' in response:
+          print('quickreplies 2.6')
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
