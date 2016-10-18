@@ -55,26 +55,26 @@ Tokens['decisions'] = {}
 Tokens['decisions']['age'] = {}
 Tokens['decisions']['gender'] = {}
 Tokens['decisions']['budget'] = {}
-Tokens['decisions']['age']['findage1'] = 'BQDMM2HIB7YSAXICR7QFULGKXQWJHKXJ'
-Tokens['decisions']['age']['findage2'] = '5UTS7JO3NPTOHD52HAWKQOZBUNTFC53R'
-Tokens['decisions']['gender']['findgender1'] = 'BBEESH7AOGULQK6L3TPYYRC4L4Y36LHH'
-Tokens['decisions']['gender']['findgender2'] = 'UQVGOAZSC54YYVUGHURXHY5I4U6A2X3M'
-Tokens['decisions']['budget']['findbudget1'] = 'IJ7PMHQPAVNK6UU3C3BE3NOVXZ6MMPOJ'
-Tokens['decisions']['budget']['findbudget2'] = 'TB4QZIZYN4AZQPHYMWDCNFVOR3MJRUGI'
+Tokens['decisions']['age']['findage1'] =  {"Age":'BQDMM2HIB7YSAXICR7QFULGKXQWJHKXJ'}
+Tokens['decisions']['age']['findage2'] =  {"Age":'5UTS7JO3NPTOHD52HAWKQOZBUNTFC53R'}
+Tokens['decisions']['gender']['findgender1'] =  {"Gender":'BBEESH7AOGULQK6L3TPYYRC4L4Y36LHH'}
+Tokens['decisions']['gender']['findgender2'] =  {"Gender":'UQVGOAZSC54YYVUGHURXHY5I4U6A2X3M'}
+Tokens['decisions']['budget']['findbudget1'] =  {"budget":'IJ7PMHQPAVNK6UU3C3BE3NOVXZ6MMPOJ'}
+Tokens['decisions']['budget']['findbudget2'] =  {"budget":'TB4QZIZYN4AZQPHYMWDCNFVOR3MJRUGI'}
 Tokens['presentchoosing'] = {}
 Tokens['presentchoosing']['present'] = {}
-Tokens['presentchoosing']['present']['normal'] = '5YVSD6XFV4I3Q457C56YRYLED5Q6E6ZK'
-Tokens['presentchoosing']['present']['discount'] = 'RNZHGD6QHWG6JOZF66W52XHU364H4B6Y'
-Tokens['presentchoosing']['present']['loyal'] = 'COHIUFQKSQMSGK6SNFLDR6D74CWZIJLZ'
+Tokens['presentchoosing']['present']['normal'] = {"Suggest":'5YVSD6XFV4I3Q457C56YRYLED5Q6E6ZK'
+Tokens['presentchoosing']['present']['discount'] = {"Suggest Discount":'RNZHGD6QHWG6JOZF66W52XHU364H4B6Y'
+Tokens['presentchoosing']['present']['loyal'] = {"Suggest loyal":'COHIUFQKSQMSGK6SNFLDR6D74CWZIJLZ'
 Tokens['presentchoosing']['notFound'] = {}
-Tokens['presentchoosing']['notFound']['stop1'] = 'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'
-Tokens['presentchoosing']['notFound']['stop2'] = 'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'
-Tokens['presentchoosing']['notFound']['popular'] = 'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C'
-Tokens['presentchoosing']['notFound']['keyword1'] = 'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'
-Tokens['presentchoosing']['notFound']['keyword2'] = '5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'
+Tokens['presentchoosing']['notFound']['stop1'] = {"budget":'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'
+Tokens['presentchoosing']['notFound']['stop2'] = {"budget":'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'
+Tokens['presentchoosing']['notFound']['popular'] = {"budget":'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C'
+Tokens['presentchoosing']['notFound']['keyword1'] = {"budget":'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'
+Tokens['presentchoosing']['notFound']['keyword2'] = {"budget":'5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'
 Tokens['feedback'] = {}
-Tokens['feedback']['feedback1'] = 'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'
-Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
+Tokens['feedback']['feedback1'] = {"budget":'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'
+Tokens['feedback']['feedback2'] = {"budget":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
 # startmessage = {
 #         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
@@ -152,7 +152,7 @@ def handle_messages():
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].values()[0]
-            user_data[sender]['starter'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].keys()[0]
+            user_data[sender]['starter'] = get_keys(Tokens['Start']['Old'],user_data[sender]['token'])[-1]
             user_data[sender]['Stage'] = 'StartOld'
             send_message(PAT, user_data[sender]['starter'], message,user_data[sender])
         else:
@@ -173,8 +173,9 @@ def handle_messages():
         makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
-        user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
-        # user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())]
+        # user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
+        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+        user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['Stage'] = 'StartNew'
         user_data[sender]['data'] = {}
@@ -251,10 +252,11 @@ def mergeAns(response, witToken, session_id, question):
         return response
 
 
-def replace_value_with_definition(key_to_find, definition):
+def replace_value_with_definition(key_to_find, definition, current_dict):
     for key in current_dict.keys():
         if key == key_to_find:
             current_dict[key] = definition
+    return current_dict
 
 def getInformation(response):
     # print('Response in getInformation')
@@ -313,7 +315,7 @@ def send_message(token, recipient, text, data):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   token = data['token']
         #   print(token)
-          response, data = getResponse(recipient, text, data)
+          response, data = getResponse(recipient, '', data)
       else:
           print('end of conversation')
 
@@ -449,8 +451,8 @@ def send_message(token, recipient, text, data):
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   print r.text
-  # user_data = replace_value_with_definition(datadata)
-  # pickle.dump(user_data, open('user_data.p', 'wb'))
+  user_data[recipient] = data
+  pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
