@@ -212,7 +212,7 @@ def getInformation(response):
         entities = response['entities']
         out  = {}
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
-            out['budget'] =  entities['amount_of_money'][0]['value']
+            out['budget'] =  entities['amount_of_money'][0]['value']*-1
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
@@ -246,9 +246,9 @@ def checksuggest(token, recipient, data):
         print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
-        budget = final_data['budget'].split('-')
+        budget = final_data['budget']
         jaar = final_data['Age']
-        presents = random.sample(mg.findByTrinityRange('Jongen','minder', 45,9),5)
+        presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
         print(presents[0])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
