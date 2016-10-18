@@ -256,7 +256,7 @@ def getInformation(response):
         print(entities)
         # print(entities)
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
-            out['Budget'] =  entities['amount_of_money'][0]['value']
+            out['budget'] =  entities['amount_of_money'][0]['value']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
@@ -351,8 +351,7 @@ def send_message(token, recipient, text, data):
 
           data['token'] = random.choice(allValues(Tokens[Stage]))
         #   data['starter'] = get_keys(Tokens, data['token'])[-1]
-          while data['starter'] == get_keys(Tokens, data['token'])[-1]:
-
+          while get_keys(Tokens, data['token'])[-1] in data['data']:
               data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
 
