@@ -147,6 +147,12 @@ def handle_messages():
   global user_data
   # print('message events')
   for sender, message in messaging_events(payload):
+    presentlist = mg.findByTrinityRange('Jongen',35, 45,9)
+    print(type(presenlist))
+    presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
+    print(type(presents))
+    print(presents)
+    print(presents[0])
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
@@ -248,6 +254,8 @@ def checksuggest(token, recipient, data):
         geslacht = final_data['Gender']
         budget = final_data['budget']
         jaar = final_data['Age']
+        presentlist = mg.findByTrinityRange('Jongen',35, 45,9)
+        print(type(presenlist))
         presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
         print(type(presents))
         print(presents)
