@@ -375,7 +375,8 @@ def send_message(token, recipient, text, data):
   checksuggest(token, recipient, data)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
-      print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
+    #   print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
+      print(response)
       print(response['msg'])
       if 'quickreplies' in response:
           print('quickreplies 2.6')
