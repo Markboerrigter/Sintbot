@@ -243,9 +243,10 @@ def checksuggest(token, recipient, data):
     print('in checksuggest' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
         print('giving presents')
+        print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
-        budget = final_data['Budget'].split('-')
+        budget = final_data['budget'].split('-')
         jaar = final_data['Age']
         presents = random.sample(mg.findByTrinityRange('Jongen','minder', 45,9),5)
         print(presents[0])
