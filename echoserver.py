@@ -49,8 +49,8 @@ Tokens['Start']['Old']['oldFashioned'] = {"Ja": 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HM
 Tokens['Start']['Old']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
 Tokens['Start']['Old']['sintQuestioning'] = {"Ja": 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'}
 Tokens['GiveIdea'] = {}
-Tokens['GiveIdea']['True'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
-Tokens['GiveIdea']['False'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
+Tokens['GiveIdea']['Ja'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
+Tokens['GiveIdea']['Nee'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
 Tokens['decisions'] = {}
 Tokens['decisions']['age'] = {}
 Tokens['decisions']['gender'] = {}
@@ -344,6 +344,7 @@ def send_message(token, recipient, text, data):
       print('new id :' + data['session'])
       oldToken = data['token']
       Stage = get_keys(Tokens, oldToken)[0]
+
       if Stage == 'decisions' and len(data['data']) < 4:
           print(data['data'])
           print(data['token'], oldToken)
@@ -353,8 +354,12 @@ def send_message(token, recipient, text, data):
           while data['starter'] == get_keys(Tokens, data['token'])[-1]:
               data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          
+
           response, data = getResponse(recipient, data['starter'], data)
+      elif Stage == 'Start':
+          if data['data']['distinction'].lower() == 'ja':
+              data['token'] = Tokens['GiveIdea']['Ja'].values()
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif TokenStages.index(Stage) < len(TokenStages)-1:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
