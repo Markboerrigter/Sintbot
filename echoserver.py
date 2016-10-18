@@ -337,7 +337,6 @@ def findToken(recipient, data):
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
-      response, data = getResponse(recipient, data['starter'], data)
   elif Stage == 'Start':
       if 'distinction' in data['data'] and data['data']['distinction'].lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
@@ -345,6 +344,7 @@ def findToken(recipient, data):
       else:
           data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
+
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -352,9 +352,9 @@ def findToken(recipient, data):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['stage'] = NextStage
-      response, data = getResponse(recipient, data['starter'], data)
   else:
       print('end of conversation')
+  response, data = getResponse(recipient, data['starter'], data)
   return response, data
 
 def send_message(token, recipient, text, data):
