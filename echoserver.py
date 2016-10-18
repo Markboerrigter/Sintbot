@@ -189,12 +189,13 @@ def messaging_events(payload):
   provided payload.
   """
   data = json.loads(payload)
-  messaging_events = data["entry"][0]["messaging"]
-  for event in messaging_events:
-    if "message" in event and "text" in event["message"]:
-      yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
-    # if 'postback' in payload['entry'][0]['messaging'][0]:
-    #   yield event["sender"]["id"], 'Get started'
+  if "messaging" in data["entry"][0]:
+      messaging_events = data["entry"][0]["messaging"]
+      for event in messaging_events:
+        if "message" in event and "text" in event["message"]:
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
+        # if 'postback' in payload['entry'][0]['messaging'][0]:
+        #   yield event["sender"]["id"], 'Get started'
 
 def findAnswer(response, question,witToken,data):
     # if response['type'] == 'stop':
@@ -306,6 +307,7 @@ def send_message(token, recipient, text, data):
   if 'msg' in response:
       data['oldmessage'] = response['msg']
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
+      print(response['msg'])
       if 'quickreplies' in response:
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.8/me/messages",
