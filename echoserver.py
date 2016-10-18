@@ -240,7 +240,7 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
-    print('in checksuggest')
+    print('in checksuggest' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
         print('giving presents')
         final_data = data['data']
