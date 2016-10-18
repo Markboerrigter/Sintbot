@@ -310,7 +310,7 @@ def send_message(token, recipient, text, data):
       print(response['msg'])
       if 'quickreplies' in response:
           replies = response['quickreplies']
-          r = requests.post("https://graph.facebook.com/v2.8/me/messages",
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
