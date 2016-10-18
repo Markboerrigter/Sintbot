@@ -240,6 +240,7 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
+    print('in checksuggest')
     if data['Stage'] == 'presentchoosing':
         print('giving presents')
         final_data = data['data']
@@ -305,6 +306,7 @@ def findToken(recipient, data, text):
       data['stage'] = NextStage
   else:
       print('end of conversation')
+      response = {}
   response, data = getResponse(recipient, data['starter'], data)
   return response, data
 
