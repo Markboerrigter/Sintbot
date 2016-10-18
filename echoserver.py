@@ -278,53 +278,53 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
+    #
+    # if data['Stage'] == 'present':
+    print('giving presents')
+    # print(data['data'])
+    # final_data = data['data']
+    # geslacht = final_data['Gender']
+    # budget = final_data['Budget'].split('-')
+    # jaar = final_data['Age']
+    presents = mg.findByTrinity('Jongen','minder', 45,9)
+    print(presents)
 
-    if data['Stage'] == 'present':
-        print('giving presents')
-        # print(data['data'])
-        # final_data = data['data']
-        # geslacht = final_data['Gender']
-        # budget = final_data['Budget'].split('-')
-        # jaar = final_data['Age']
-        presents = mg.findByTrinity('Jongen','minder', 45,9)
-        print(presents)
-
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": token},
-        data=json.dumps({
-          "recipient":{"id": recipient},
-          "message":{
-            "attachment":{
-              "type":"template",
-              "payload":{
-                "template_type":"generic",
-                "elements":[
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    params={"access_token": token},
+    data=json.dumps({
+      "recipient":{"id": recipient},
+      "message":{
+        "attachment":{
+          "type":"template",
+          "payload":{
+            "template_type":"generic",
+            "elements":[
+              {
+                "title":x['title'],
+                "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+                "image_url":x['img_link'],
+                "subtitle":x['description'],
+                "buttons":[
                   {
-                    "title":x['title'],
-                    "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                    "image_url":x['img_link'],
-                    "subtitle":x['description'],
-                    "buttons":[
-                      {
-                        "type":"web_url",
-                        "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                        "title":"View Website"
-                      },
-                      {
-                        "type":"postback",
-                        "title":"Start Chatting",
-                        "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                      }
-                    ]
+                    "type":"web_url",
+                    "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+                    "title":"View Website"
+                  },
+                  {
+                    "type":"postback",
+                    "title":"Start Chatting",
+                    "payload":"DEVELOPER_DEFINED_PAYLOAD"
                   }
-                for x in presents]
+                ]
               }
-            }
+            for x in presents]
           }
-        }),
-        headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-            print r.text
+        }
+      }
+    }),
+    headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+        print r.text
 
 def findToken(recipient, data):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
