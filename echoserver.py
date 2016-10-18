@@ -297,8 +297,8 @@ def send_message(token, recipient, text, data):
           data['token'] = Tokens[NextStage]
           if isinstance(data['token'], dict):
               data['token'] = random.choice(allValues(data['token']))
-          token = data['token']
-          print(token)
+        #   token = data['token']
+        #   print(token)
           response, data = getResponse(recipient, text, data)
       else:
           print('end of conversation')
