@@ -196,27 +196,29 @@ def findAnswer(response, question,witToken,data):
     #         response = tb.response(text, witToken, session_id, {})
     #         print(response)
     session_id = data['session']
+    information = getInformation(response)
     response = mergeAns(response, witToken, session_id, question)
+    information.update(getInformation(response))
     # print('Response in find answer')
     # print(response)
-    if 'msg' in response:
-        msg = response['msg'].split(',')
-        # if msg[0] == 'Stop':
-        #     # global session_id
-        #     print(response)
-        #     print('Stop Message')
-        #     print(msg)
-        #     data['token'] = TokensSave[int(msg[2]):][0]
-        #     # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-        #     #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-        #     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-        #     print('new id :' + data['session'])
-        #     #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-        #     return tb.response(msg[1], data['token'], data['session']), data
-        # else:
-        return response, data
-    else:
-        return response,data
+    # if 'msg' in response:
+    #     msg = response['msg'].split(',')
+    #     # if msg[0] == 'Stop':
+    #     #     # global session_id
+    #     #     print(response)
+    #     #     print('Stop Message')
+    #     #     print(msg)
+    #     #     data['token'] = TokensSave[int(msg[2]):][0]
+    #     #     # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
+    #     #     #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
+    #     #     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+    #     #     print('new id :' + data['session'])
+    #     #     #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
+    #     #     return tb.response(msg[1], data['token'], data['session']), data
+    #     # else:
+    #     return response, data
+    # else:
+    return response,data, information
 
 # def findContext(resp):
 #     entities = resp['entities']
@@ -267,9 +269,8 @@ def getInformation(response):
         return []
 
 def getResponse(recipient, text, data):
-  information = getInformation(response)
+  response, data, information = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   data['data'].update(information)
-  response, data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
   information = getInformation(response)
   data['data'].update(information)
   return response, data
