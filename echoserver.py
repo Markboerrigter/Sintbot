@@ -297,7 +297,7 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
-    if data['Stage'] = 'present':
+    if data['Stage'] == 'present':
         print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
