@@ -49,8 +49,8 @@ Tokens['Start']['Old']['oldFashioned'] = 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'
 Tokens['Start']['Old']['longText'] = 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'
 Tokens['Start']['Old']['sintQuestioning'] = 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'
 Tokens['GiveIdea'] = {}
-Tokens['GiveIdea']['True'] = 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'
-Tokens['GiveIdea']['False'] = '4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'
+Tokens['GiveIdea']['True'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
+Tokens['GiveIdea']['False'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
 Tokens['decisions'] = {}
 Tokens['decisions']['age'] = {}
 Tokens['decisions']['gender'] = {}
@@ -79,6 +79,7 @@ Tokens['feedback']['feedback2'] = '6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 # startmessage = {
 #         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
 # }
+
 
 
 
@@ -150,17 +151,20 @@ def handle_messages():
     if sender in user_data:
         if 'stop' in user_data[sender]:
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())]
+            user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].values()[0]
+            user_data[sender]['starter'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['Old'].keys())].keys()[0]
             user_data[sender]['Stage'] = 'StartOld'
+            send_message(PAT, user_data[sender]['starter'], message,user_data[sender])
+        else:
         # else:
         #     # """" def findToken()
         #     # This formula should include a way to extract the old token and from this find the next
         #     # Token. In this the context and session should be used to find where in the story we are and therefore which deck of cards should be opened
         #     # It should return the old message and a new token.
         #     # """
-        print("Incoming from %s: %s" % (sender, message))
-        print(sender, message)
-        send_message(PAT, sender, message,user_data[sender])
+            print("Incoming from %s: %s" % (sender, message))
+            print(sender, message)
+            send_message(PAT, sender, message,user_data[sender])
     else:
         # """"
         # First a introduction screen should be shown, this should happen whenever a user enters the chat.
@@ -175,6 +179,7 @@ def handle_messages():
         user_data[sender]['Stage'] = 'StartNew'
         user_data[sender]['data'] = {}
         print(sender, message)
+        print(user_data[sender])
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
 
@@ -245,6 +250,12 @@ def mergeAns(response, witToken, session_id, question):
     else:
         return response
 
+
+def replace_value_with_definition(key_to_find, definition):
+    for key in current_dict.keys():
+        if key == key_to_find:
+            current_dict[key] = definition
+
 def getInformation(response):
     # print('Response in getInformation')
     # print(response)
@@ -285,6 +296,7 @@ def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
+  global user_data
   response, data = getResponse(recipient, text, data)
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
     #   response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
@@ -297,7 +309,8 @@ def send_message(token, recipient, text, data):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage]
           if isinstance(data['token'], dict):
-              data['token'] = random.choice(allValues(data['token']))
+              data['token'] = random.choice(allValues(data['token]))
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   token = data['token']
         #   print(token)
           response, data = getResponse(recipient, text, data)
@@ -436,7 +449,8 @@ def send_message(token, recipient, text, data):
                 headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   print r.text
-  pickle.dump(user_data, open('user_data.p', 'wb'))
+  # user_data = replace_value_with_definition(datadata)
+  # pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
   # for i in range(len(Tokens)):
