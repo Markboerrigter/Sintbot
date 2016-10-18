@@ -66,12 +66,12 @@ Tokens['presentchoosing']['present'] = {}
 Tokens['presentchoosing']['present']['normal'] = {"Suggest":'5YVSD6XFV4I3Q457C56YRYLED5Q6E6ZK'}
 Tokens['presentchoosing']['present']['discount'] = {"Suggest Discount":'RNZHGD6QHWG6JOZF66W52XHU364H4B6Y'}
 Tokens['presentchoosing']['present']['loyal'] = {"Suggest loyal":'COHIUFQKSQMSGK6SNFLDR6D74CWZIJLZ'}
-Tokens['presentchoosing']['notFound'] = {}
-Tokens['presentchoosing']['notFound']['stop1'] = {"budget":'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'}
-Tokens['presentchoosing']['notFound']['stop2'] = {"budget":'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'}
-Tokens['presentchoosing']['notFound']['popular'] = {"budget":'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C0'}
-Tokens['presentchoosing']['notFound']['keyword1'] = {"budget":'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'}
-Tokens['presentchoosing']['notFound']['keyword2'] = {"budget":'5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'}
+# Tokens['presentchoosing']['notFound'] = {}
+# Tokens['presentchoosing']['notFound']['stop1'] = {"budget":'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'}
+# Tokens['presentchoosing']['notFound']['stop2'] = {"budget":'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'}
+# Tokens['presentchoosing']['notFound']['popular'] = {"budget":'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C0'}
+# Tokens['presentchoosing']['notFound']['keyword1'] = {"budget":'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'}
+# Tokens['presentchoosing']['notFound']['keyword2'] = {"budget":'5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'}
 Tokens['feedback'] = {}
 Tokens['feedback']['feedback1'] = {"budget":'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'}
 Tokens['feedback']['feedback2'] = {"budget":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'}
@@ -285,8 +285,10 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
+
     if data['Stage'] == 'present':
-        print(data['data'])
+        print('giving presents')
+        # print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
         budget = final_data['Budget'].split('-')
@@ -305,10 +307,10 @@ def checksuggest(token, recipient, data):
                 "template_type":"generic",
                 "elements":[
                   {
-                    "title":"Welcome to Peter\'s Hats",
+                    "title":x['title'],
                     "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                    "image_url":"http://static.intertoys.nl//BLKCAS/100x100/1391656.jpg",
-                    "subtitle":"We\'ve got the right hat for everyone.",
+                    "image_url":x['img_link'],
+                    "subtitle":x['description'],
                     "buttons":[
                       {
                         "type":"web_url",
@@ -322,7 +324,7 @@ def checksuggest(token, recipient, data):
                       }
                     ]
                   }
-                ]
+                ]for x in presents]
               }
             }
           }
@@ -331,6 +333,37 @@ def checksuggest(token, recipient, data):
         if r.status_code != requests.codes.ok:
             print r.text
 
+def findToken(recipient, data):
+  data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+  print('new id :' + data['session'])
+  oldToken = data['token']
+  Stage = get_keys(Tokens, oldToken)[0]
+  if Stage == 'decisions' and len(data['data']) < 4:
+      data['token'] = random.choice(allValues(Tokens[Stage]))
+    #   data['starter'] = get_keys(Tokens, data['token'])[-1]
+      while get_keys(Tokens, data['token'])[-1] in data['data']:
+          data['token'] = random.choice(allValues(Tokens[Stage]))
+      data['starter'] = get_keys(Tokens, data['token'])[-1]
+      response, data = getResponse(recipient, data['starter'], data)
+  elif Stage == 'Start':
+      if data['data']['distinction'].lower() == 'ja':
+          data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+      else:
+          data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+  elif TokenStages.index(Stage) < len(TokenStages)-1:
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['token'] = random.choice(allValues(Tokens[NextStage]))
+      if isinstance(data['token'], dict):
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+      data['stage'] = NextStage
+      response, data = getResponse(recipient, data['starter'], data)
+  else:
+      print('end of conversation')
+  return response, data
+
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
@@ -338,43 +371,7 @@ def send_message(token, recipient, text, data):
   global user_data
   response, data = getResponse(recipient, text, data)
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
-    #   response,data = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-    #   if response['type'] == 'stop':
-      data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-      print('new id :' + data['session'])
-      oldToken = data['token']
-      Stage = get_keys(Tokens, oldToken)[0]
-
-      if Stage == 'decisions' and len(data['data']) < 4:
-          print(data['data'])
-          print(data['token'], oldToken)
-
-          data['token'] = random.choice(allValues(Tokens[Stage]))
-        #   data['starter'] = get_keys(Tokens, data['token'])[-1]
-          while get_keys(Tokens, data['token'])[-1] in data['data']:
-              data['token'] = random.choice(allValues(Tokens[Stage]))
-          data['starter'] = get_keys(Tokens, data['token'])[-1]
-
-          response, data = getResponse(recipient, data['starter'], data)
-      elif Stage == 'Start':
-          if data['data']['distinction'].lower() == 'ja':
-              data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-              data['starter'] = get_keys(Tokens, data['token'])[-1]
-          else:
-              data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-              data['starter'] = get_keys(Tokens, data['token'])[-1]
-      elif TokenStages.index(Stage) < len(TokenStages)-1:
-          NextStage = TokenStages[TokenStages.index(Stage)+1]
-          data['token'] = random.choice(allValues(Tokens[NextStage]))
-          if isinstance(data['token'], dict):
-              data['token'] = random.choice(allValues(Tokens[NextStage]))
-              data['starter'] = get_keys(Tokens, data['token'])[-1]
-        #   token = data['token']
-        #   print(token)
-          data['stage'] = NextStage
-          response, data = getResponse(recipient, data['starter'], data)
-      else:
-          print('end of conversation')
+      response, data = findToken(recipient, data)
   checksuggest(token, recipient, data)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
@@ -399,10 +396,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print(r.json)
             print r.text
-
       else:
-
-        #   print(response)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({

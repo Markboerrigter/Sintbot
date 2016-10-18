@@ -1571,7 +1571,7 @@ def findByTrinity(geslacht,budget,bedrag,jaar):
         # return output
 
         data = list(catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} }))
-        return str(data)
+        return (data)
 
     except Exception, e:
         return 'Not found an article'
@@ -2285,7 +2285,7 @@ def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
         # return output
 
         data = list(catalogus.find({ '$or': query, 'gender': query2, 'price': {[{'price': {'$lt':bedragl}},{'price': {'$gt':bedragh}} ]} }))
-        return str(data)
+        return (data)
 
     except Exception, e:
         return 'Not found an article'
