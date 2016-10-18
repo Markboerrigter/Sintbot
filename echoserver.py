@@ -95,7 +95,7 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAC696lXEV4ZCR16ZC28uh2Eu2ZBhWZAwwXpZBZALmSMY5X0xWkiBJ0j7AagYLEZCNlqcClC2TrionlshUOwxmHzqZC8maMJmuJJdmDvzlzaG4JGODgb409R9ZCN0V9KYZB1KIE8ZAlCWLhkhrMTCjaNfWwZD'
+PAT = 'EAAEkTt8L730BAEfBH4Dl1tlY2DE6bMd82B3XBSJtMrqJJ8J97jcZApfUj0VK35RN3ZAwtimAMtlIbpQaXKMnSVt54ZAboeNkiNkK7pEgGUkf4CdnZBsBZCl8jIsPK86sFSf0k1FjheeRUXkOzTMNwpQlJp8zXiNoZD'
 # EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
 def get_keys(d,target):
     result = []
