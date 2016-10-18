@@ -148,7 +148,6 @@ def handle_messages():
   print('message events')
   for sender, message in messaging_events(payload):
     print(sender, message)
-    checksuggest(PAT, sender, {})
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
