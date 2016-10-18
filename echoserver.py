@@ -264,15 +264,17 @@ def getInformation(response):
     if 'entities' in response:
 
         entities = response['entities']
-        out  = []
+        out  = {}
 
         # print(entities)
         if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
-            out.append(['Budget', entities['Budget'][0]['value']])
+            out['Budget'] =  entities['Budget'][0]['value']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
-            out.append(['Gender', entities['Gender'][0]['value']])
+            out['Gender'] = entities['Gender'][0]['value']
+        if 'Age' in entities and entities['Age'][0]['confidence'] > 0.8:
+            out['Age'] = entities['Age'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
-            out.append(['distinction', entities['distinction'][0]['value']])
+            out['distinction'] = entities['distinction'][0]['value']
         return out
     else:
         return []
@@ -294,6 +296,53 @@ def allValues(dictionary):
             ans.append(v)
     return ans
 
+def checksuggest(token, recipient, data):
+    if 'present' in get_keys(Tokens, oldToken)[0]:
+        print(data['data'])
+        final_data = data['data']
+        geslacht = final_data['Gender']
+        budget = final_data['Budget'].split('-')
+        jaar = final_data['Age']
+        presents = mg.findByTrinityRange(geslacht,budget[0], budget[1],jaar)[:5]
+        print(presents)
+
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+          "recipient":{"id": recipient},
+          "message":{
+            "attachment":{
+              "type":"template",
+              "payload":{
+                "template_type":"generic",
+                "elements":[
+                  {
+                    "title":"Welcome to Peter\'s Hats",
+                    "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+                    "image_url":"http://static.intertoys.nl//BLKCAS/100x100/1391656.jpg",
+                    "subtitle":"We\'ve got the right hat for everyone.",
+                    "buttons":[
+                      {
+                        "type":"web_url",
+                        "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+                        "title":"View Website"
+                      },
+                      {
+                        "type":"postback",
+                        "title":"Start Chatting",
+                        "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            print r.text
+
 def send_message(token, recipient, text, data):
   # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
@@ -307,18 +356,21 @@ def send_message(token, recipient, text, data):
       print('new id :' + data['session'])
       oldToken = data['token']
       Stage = get_keys(Tokens, oldToken)[0]
-      if TokenStages.index(Stage) < len(TokenStages)-1:
+      if Stage == 'decisions' and len(data['data']) < 4:
+          print(data['data'])
+          data['token'] = random.choice(allValues(Tokens[Stage]))
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+      elif TokenStages.index(Stage) < len(TokenStages)-1:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
-          data['token'] = Tokens[NextStage]
           if isinstance(data['token'], dict):
-              data['token'] = random.choice(allValues(data['token']))
+              data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   token = data['token']
         #   print(token)
           response, data = getResponse(recipient, '', data)
       else:
           print('end of conversation')
-
+  checksuggest(token, recipient, data)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
@@ -342,42 +394,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print(r.json)
             print r.text
-        #   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        #     params={"access_token": token},
-        #     data=json.dumps({
-        #       "recipient":{"id": recipient},
-        #       "message":{
-        #         "attachment":{
-        #           "type":"template",
-        #           "payload":{
-        #             "template_type":"generic",
-        #             "elements":[
-        #               {
-        #                 "title":"Welcome to Peter\'s Hats",
-        #                 "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-        #                 "image_url":"http://static.intertoys.nl//BLKCAS/100x100/1391656.jpg",
-        #                 "subtitle":"We\'ve got the right hat for everyone.",
-        #                 "buttons":[
-        #                   {
-        #                     "type":"web_url",
-        #                     "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-        #                     "title":"View Website"
-        #                   },
-        #                   {
-        #                     "type":"postback",
-        #                     "title":"Start Chatting",
-        #                     "payload":"DEVELOPER_DEFINED_PAYLOAD"
-        #                   }
-        #                 ]
-        #               }
-        #             ]
-        #           }
-        #         }
-        #       }
-        #     }),
-        #     headers={'Content-type': 'application/json'})
-        #   if r.status_code != requests.codes.ok:
-        #     print r.text
+
       else:
 
         #   print(response)
