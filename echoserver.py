@@ -212,7 +212,7 @@ def getInformation(response):
         entities = response['entities']
         out  = {}
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
-            out['budget'] =  entities['amount_of_money'][0]['value']*-1
+            out['budget'] =  abs(entities['amount_of_money'][0]['value'])
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
