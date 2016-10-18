@@ -297,7 +297,7 @@ def allValues(dictionary):
     return ans
 
 def checksuggest(token, recipient, data):
-    if 'present' in get_keys(Tokens, oldToken)[0]:
+    if data['Stage'] = 'present':
         print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
@@ -367,6 +367,7 @@ def send_message(token, recipient, text, data):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   token = data['token']
         #   print(token)
+          data['stage'] = NextStage
           response, data = getResponse(recipient, '', data)
       else:
           print('end of conversation')
