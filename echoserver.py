@@ -326,42 +326,42 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-          r = requests.post("https://graph.facebook.com/v2.8/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient":{"id": recipient},
-              "message":{
-                "attachment":{
-                  "type":"template",
-                  "payload":{
-                    "template_type":"generic",
-                    "elements":[
-                      {
-                        "title":"Welcome to Peter\'s Hats",
-                        "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                        "image_url":"http://static.intertoys.nl//BLKCAS/100x100/1391656.jpg",
-                        "subtitle":"We\'ve got the right hat for everyone.",
-                        "buttons":[
-                          {
-                            "type":"web_url",
-                            "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                            "title":"View Website"
-                          },
-                          {
-                            "type":"postback",
-                            "title":"Start Chatting",
-                            "payload":"DEVELOPER_DEFINED_PAYLOAD"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                }
-              }
-            }),
-            headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-            print r.text
+        #   r = requests.post("https://graph.facebook.com/v2.8/me/messages",
+        #     params={"access_token": token},
+        #     data=json.dumps({
+        #       "recipient":{"id": recipient},
+        #       "message":{
+        #         "attachment":{
+        #           "type":"template",
+        #           "payload":{
+        #             "template_type":"generic",
+        #             "elements":[
+        #               {
+        #                 "title":"Welcome to Peter\'s Hats",
+        #                 "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+        #                 "image_url":"http://static.intertoys.nl//BLKCAS/100x100/1391656.jpg",
+        #                 "subtitle":"We\'ve got the right hat for everyone.",
+        #                 "buttons":[
+        #                   {
+        #                     "type":"web_url",
+        #                     "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+        #                     "title":"View Website"
+        #                   },
+        #                   {
+        #                     "type":"postback",
+        #                     "title":"Start Chatting",
+        #                     "payload":"DEVELOPER_DEFINED_PAYLOAD"
+        #                   }
+        #                 ]
+        #               }
+        #             ]
+        #           }
+        #         }
+        #       }
+        #     }),
+        #     headers={'Content-type': 'application/json'})
+        #   if r.status_code != requests.codes.ok:
+        #     print r.text
       else:
 
         #   print(response)
