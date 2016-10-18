@@ -114,7 +114,7 @@ def get_key(d, target, path, result):
         path.pop()
 
 def makeStartScreen(token):
-  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+  r = requests.post("https://graph.facebook.com/v2.6/321396144861053/thread_settings",
     params={"access_token": token},
     data=json.dumps({
           "setting_type":"call_to_actions",
