@@ -114,7 +114,7 @@ def get_key(d, target, path, result):
         path.pop()
 
 def makeStartScreen(token):
-  r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
+  r = requests.post("https://graph.facebook.com/v2.8/me/thread_settings",
     params={"access_token": token},
     data=json.dumps({
           "setting_type":"call_to_actions",
@@ -308,7 +308,7 @@ def send_message(token, recipient, text, data):
       print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
       if 'quickreplies' in response:
           replies = response['quickreplies']
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          r = requests.post("https://graph.facebook.com/v2.8/me/messages",
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
@@ -323,7 +323,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          r = requests.post("https://graph.facebook.com/v2.8/me/messages",
             params={"access_token": token},
             data=json.dumps({
               "recipient":{"id": recipient},
@@ -362,7 +362,7 @@ def send_message(token, recipient, text, data):
       else:
 
         #   print(response)
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          r = requests.post("https://graph.facebook.com/v2.8/me/messages",
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
@@ -396,7 +396,7 @@ def send_message(token, recipient, text, data):
         for message in messages:
             if isinstance(message,unicode) or isinstance(message,str):
 
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                r = requests.post("https://graph.facebook.com/v2.8/me/messages",
                 params={"access_token": token},
                 data=json.dumps({
                   "recipient": {"id": recipient},
@@ -407,7 +407,7 @@ def send_message(token, recipient, text, data):
 
                   print r.text
             else:
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                r = requests.post("https://graph.facebook.com/v2.8/me/messages",
                 params={"access_token": token},
                 data=json.dumps({
                   "recipient": {"id": recipient},
@@ -417,7 +417,7 @@ def send_message(token, recipient, text, data):
                 if r.status_code != requests.codes.ok:
                   print r.text
                 image = message[1].split('"')[1]
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                r = requests.post("https://graph.facebook.com/v2.8/me/messages",
                 params={"access_token": token},
                 data=json.dumps({
                   "recipient": {"id": recipient},
