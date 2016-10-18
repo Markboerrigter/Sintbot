@@ -147,16 +147,11 @@ def handle_messages():
   global user_data
   print('message events')
   for sender, message in messaging_events(payload):
-    print(sender, message)
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         send_message(PAT, sender, message,user_data[sender])
     else:
-        # """"
-        # First a introduction screen should be shown, this should happen whenever a user enters the chat.
-        # After clicking the get start screen, the screen will show the chat with a first introductory text, which can be found in the Startnew dict
-        # """"
         makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['oldmessage'] = ''
@@ -184,47 +179,21 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
 
 def findAnswer(response, question,witToken,data):
-    # if response['type'] == 'stop':
-    #     if 'ja_nee' in response['entities']:
-    #         text = response['entities']['ja_nee'][0]['value']
-    #         response = tb.response(text, witToken, session_id, {})
-    #         print(response)
     session_id = data['session']
     information = getInformation(response)
     response = mergeAns(response, witToken, session_id, question)
     information.update(getInformation(response))
-    # print('Response in find answer')
-    # print(response)
-    # if 'msg' in response:
-    #     msg = response['msg'].split(',')
-    #     # if msg[0] == 'Stop':
-    #     #     # global session_id
-    #     #     print(response)
-    #     #     print('Stop Message')
-    #     #     print(msg)
-    #     #     data['token'] = TokensSave[int(msg[2]):][0]
-    #     #     # pickle.dump(tokenWit,(open("tokenWit.p", "wb")))
-    #     #     #  app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-    #     #     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    #     #     print('new id :' + data['session'])
-    #     #     #  pickle.dump(session_id,(open("tokenWit.p", "wb")))
-    #     #     return tb.response(msg[1], data['token'], data['session']), data
-    #     # else:
-    #     return response, data
-    # else:
     return response,data, information
 
 def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
         action = response['type']
         if action == 'merge':
-            # print(response['entities'])
             return tb.response('', witToken, session_id)
         else:
             return response
@@ -239,14 +208,9 @@ def replace_value_with_definition(key_to_find, definition, current_dict):
     return current_dict
 
 def getInformation(response):
-    # print('Response in getInformation')
-    # print(response)
     if 'entities' in response:
-
         entities = response['entities']
         out  = {}
-        print(entities)
-        # print(entities)
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
             out['budget'] =  entities['amount_of_money'][0]['value']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
@@ -255,7 +219,6 @@ def getInformation(response):
             out['Age'] = entities['age_of_person'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
             out['distinction'] = entities['distinction'][0]['value']
-        print(out)
         return out
     else:
         return []
@@ -279,12 +242,12 @@ def allValues(dictionary):
 def checksuggest(token, recipient, data):
     if data['Stage'] == 'present':
         print('giving presents')
-        print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
         budget = final_data['Budget'].split('-')
         jaar = final_data['Age']
         presents = random.sample(mg.findByTrinityRange('Jongen','minder', 45,9),5)
+        print(presents[0])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -319,12 +282,10 @@ def checksuggest(token, recipient, data):
 
 def findToken(recipient, data):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-  print('new id :' + data['session'])
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
   if Stage == 'decisions' and len(data['data']) < 4:
       data['token'] = random.choice(allValues(Tokens[Stage]))
-    #   data['starter'] = get_keys(Tokens, data['token'])[-1]
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
@@ -335,7 +296,6 @@ def findToken(recipient, data):
       else:
           data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -349,7 +309,6 @@ def findToken(recipient, data):
   return response, data
 
 def send_message(token, recipient, text, data):
-  # witToken = pickle.load( open( "tokenWit.p", "rb" ) )
   """Send the message text to recipient with id recipient.
   """
   global user_data
@@ -359,11 +318,7 @@ def send_message(token, recipient, text, data):
   checksuggest(token, recipient, data)
   if 'msg' in response:
       data['oldmessage'] = response['msg']
-    #   print('pos: ' + str(sentimentClassifier.prob_classify(word_feats((response['msg']))).prob('pos')))
-      print(response)
-      print(response['msg'])
       if 'quickreplies' in response:
-          print('quickreplies 2.6')
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
@@ -375,11 +330,9 @@ def send_message(token, recipient, text, data):
                             "title":x,
                             "payload":x
                           } for x in replies]}
-
             }),
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
-            print(r.json)
             print r.text
       else:
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -391,67 +344,6 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-    #   print(response['msg'])
-    #   print(data['data'])
-      if response['msg'] == 'Bedankt!':
-        output = mg.findByTrinity(data['data']['Gender'].lower().split(' ')[1] ,data['data']['Budget'].lower().split(' ')[0],int(data['data']['Budget'].lower().split(' ')[2]),8)
-        output = output.split('<br>')
-        speelgoed = []
-        for x in output:
-            x = x.split(',')
-            # print(x)
-            if len(x[-1]) > 16 and len(speelgoed) < 6:
-                speelgoed.append([x[0],x[-1]])
-            # print(len(x))
-
-            # speelgoed.append(x[0] + ' voor maar ' + x[2] + ' euro.')
-        messages = ['Zocht u een kado voor ' + data['data']['Gender'].lower() + ' voor ' + data['data']['Budget'].lower() + '?',
-        'Dan bent u vast op zoek naar deze kadootjes:']
-        messages.extend(speelgoed)
-        messages.append('En tot de volgende keer')
-        # print(message)
-        data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-        print('new id :' + data['session'])
-        data['oldmessage'] = messages[-1]
-        for message in messages:
-            if isinstance(message,unicode) or isinstance(message,str):
-
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                params={"access_token": token},
-                data=json.dumps({
-                  "recipient": {"id": recipient},
-                  "message": {"text": message.decode('unicode_escape')}
-                }),
-                headers={'Content-type': 'application/json'})
-                if r.status_code != requests.codes.ok:
-
-                  print r.text
-            else:
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                params={"access_token": token},
-                data=json.dumps({
-                  "recipient": {"id": recipient},
-                  "message": {"text": message[0].decode('unicode_escape')}
-                }),
-                headers={'Content-type': 'application/json'})
-                if r.status_code != requests.codes.ok:
-                  print r.text
-                image = message[1].split('"')[1]
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                params={"access_token": token},
-                data=json.dumps({
-                  "recipient": {"id": recipient},
-                  "message":{
-                            "attachment":{
-                              "type":"image",
-                              "payload":{
-                                "url":image
-                              }
-                            }
-                          }}),
-                headers={'Content-type': 'application/json'})
-                if r.status_code != requests.codes.ok:
-                  print r.text
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
