@@ -266,12 +266,12 @@ def getInformation(response):
         out  = {}
 
         # print(entities)
-        if 'Budget' in entities and entities['Budget'][0]['confidence'] > 0.8:
-            out['Budget'] =  entities['Budget'][0]['value']
+        if 'Budget' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
+            out['Budget'] =  entities['amount_of_money'][0]['value']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
-        if 'Age' in entities and entities['Age'][0]['confidence'] > 0.8:
-            out['Age'] = entities['Age'][0]['value']
+        if 'Age' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
+            out['Age'] = entities['age_of_person'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
             out['distinction'] = entities['distinction'][0]['value']
         return out
@@ -356,6 +356,7 @@ def send_message(token, recipient, text, data):
       Stage = get_keys(Tokens, oldToken)[0]
       if Stage == 'decisions' and len(data['data']) < 4:
           print(data['data'])
+          print(data['token'], oldToken)
           data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           response, data = getResponse(recipient, data['starter'], data)
