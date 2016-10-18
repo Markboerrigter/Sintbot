@@ -293,7 +293,7 @@ def checksuggest(token, recipient, data):
         geslacht = final_data['Gender']
         budget = final_data['Budget'].split('-')
         jaar = final_data['Age']
-        presents = mg.findByTrinityRange(geslacht,budget[0], budget[1],jaar)[:5]
+        presents = mg.findByTrinity(geslacht,'minder', budget[1],jaar)[:5]
         print(presents)
 
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
