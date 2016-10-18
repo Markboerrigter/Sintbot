@@ -309,7 +309,7 @@ def send_message(token, recipient, text, data):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = Tokens[NextStage]
           if isinstance(data['token'], dict):
-              data['token'] = random.choice(allValues(data['token]))
+              data['token'] = random.choice(allValues(data['token']))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   token = data['token']
         #   print(token)
