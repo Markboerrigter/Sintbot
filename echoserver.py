@@ -139,6 +139,31 @@ def handle_verification():
   else:
     print "Verification failed!"
     return 'Error, wrong validation token'
+def typing(opt, token, recipient):
+    if opt == 'on'':
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+                    "recipient":{
+                    "id":recipient
+                    },
+                    "sender_action":"typing_on"
+                    }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            print r.text
+    if opt == 'off':
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+                    "recipient":{
+                    "id":recipient
+                    },
+                    "sender_action":"typing_off"
+                    }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
@@ -173,6 +198,7 @@ def handle_messages():
         if message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
+            typing('on')
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
@@ -377,6 +403,7 @@ def send_message(token, recipient, text, data):
       response, data = findToken(recipient, data, text)
   checksuggest(token, recipient, data)
   if 'msg' in response:
+      typing('off')
       data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
       if 'quickreplies' in response:
