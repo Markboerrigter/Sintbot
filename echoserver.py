@@ -224,7 +224,14 @@ def getInformation(response):
     if 'entities' in response:
         entities = response['entities']
         out  = {}
-
+        if 'hobby' in entities:
+            for x in entities['hobby']:
+                if x['confidence'] > 0.8:
+                    out['hobby'] =  x['value']
+        if 'product' in entities:
+            for x in entities['product']:
+                if x['confidence'] > 0.8:
+                    out['product'] =  x['value']
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
             out['budget'] =  abs(entities['amount_of_money'][0]['value'])
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
@@ -263,7 +270,16 @@ def checksuggest(token, recipient, data):
         budget = (final_data['budget'])
         print(budget)
         jaar = str(final_data['Age']).split(' ')[0]
-        presents = random.sample(mg.findByTrinityRange(geslacht,35, 45,jaar),5)
+        presentstasks = random.sample(mg.findByTrinityRange(geslacht,35, 45,jaar),5)
+        if 'product' in data:
+            presentsproduct = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
+            presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+        if 'hobby' in data:
+            presentshobby = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
+            presentshobby = list(set([item for sublist in presentshobby for item in sublist]))
+        final_present = presentsproduct + presentshobby + presentstasks
+        final_present = list(set(final_present))
+
         print(presents[0])
         # print(type(presents))
         # print(presents)
