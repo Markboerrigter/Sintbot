@@ -244,9 +244,9 @@ def messaging_events(payload):
 
 def findAnswer(response, question,witToken,data):
     session_id = data['session']
-    information = getInformation(response)
+    information = getInformation(response,question)
     response = mergeAns(response, witToken, session_id, question)
-    information.update(getInformation(response))
+    information.update(getInformation(response,question))
     return response,data, information
 
 def mergeAns(response, witToken, session_id, question):
@@ -266,7 +266,7 @@ def replace_value_with_definition(key_to_find, definition, current_dict):
             current_dict[key] = definition
     return current_dict
 
-def getInformation(response):
+def getInformation(response, tekst):
     print(response)
     if 'entities' in response:
         entities = response['entities']
@@ -280,7 +280,9 @@ def getInformation(response):
                 if x['confidence'] > 0.8:
                     out['product'] =  x['value']
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
-            out['budget'] =  abs(entities['amount_of_money'][0]['value'])
+            num = tekst.split()[0]
+            num = num.split('-')
+            out['budget'] = num
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
@@ -296,7 +298,7 @@ def getResponse(recipient, text, data):
   if 'msg' not in response:
       response, data, information = findAnswer(response,text,data['token'],data)
       data['data'].update(information)
-  information = getInformation(response)
+  information = getInformation(response, text)
   data['data'].update(information)
   return response, data
 
@@ -325,9 +327,10 @@ def checksuggest(token, recipient, data):
         final_data = data['data']
         geslacht = final_data['Gender']
         budget = (final_data['budget'])
-        print(budget)
+        if len(budget) <=1:
+            budget = [45,1000]
         jaar = str(final_data['Age']).split(' ')[0]
-        presentstasks = mg.findByTrinityRange(geslacht,35, 45,jaar)
+        presentstasks = mg.findByTrinityRange(geslacht,budget[0], budget[1],jaar)
         if 'product' in data:
             if isinstance(data['data']['product'], str):
                 presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
@@ -476,8 +479,5 @@ def send_message(token, recipient, text, data):
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
-
   # personality, sentiment = getIt()
-
-
   app.run()

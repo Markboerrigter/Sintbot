@@ -1,14 +1,51 @@
 from pymongo import MongoClient
+import datetime
 # from bson.son import SON
 # from bson.code import Code
 
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
 db = client.toys
 
+now = datetime.datetime.now()
+d = now.isoformat()
+
+
+
 # cursor = db.speelgoedboek.find()
 #
 # for document in cursor:
 #     print(document)
+
+# add data regarding usage of user in channel
+# define the payload now the example of a complete watson personality is being stored
+#
+# @app.route('/user/add/positive/<artnr>/<pamount>')
+def addPositive(artnr, pamount):
+    try:
+        catalogus = db.speelgoedboek
+        catalogus.update_one(
+            {'article_number':int(artnr)},
+            {'$set': {'updated': d}, '$inc': {'positive_amount':int(pamount)}}
+        )
+        return 'Added ' + pamount + ' positive point(s) to article :' + artnr
+    except Exception, e:
+        return 'Not found an article'
+
+# add data regarding usage of user in channel
+# define the payload now the example of a complete watson personality is being stored
+#
+# @app.route('/user/add/positive/<artnr>')
+# note this function works with one negative point extracted each time used
+def addDislike(artnr):
+    try:
+        catalogus = db.speelgoedboek
+        catalogus.update_one(
+            {'article_number':int(artnr)},
+            {'$set': {'updated': d}, '$inc': {'dislike_amount':1}}
+        )
+        return 'Extracted 1 dislike point to article :' + artnr
+    except Exception, e:
+        return 'Not found an article'
 
 # add data regarding usage of user in channel
 # define the payload now the example of a complete watson personality is being stored
@@ -2301,37 +2338,9 @@ get product(s) by keywords
 get populartiy
 get dislike
 """
-import random
-
-def mergedicts(L):
-    intersect = []
-
-    for item in L[0]:
-        # print(item)
-        # for y in L[1:]:
-        #     print(type(y))
-        # print(L[0:])
-        x = [True for y in L[0:] if item in y]
-        # print(x)
-        if len(x) == len(L):
-            intersect.append(item)
-    return intersect
 
 if __name__ == '__main__':
-    data = {'product': 'Lego'}
-    presentstasks = findByTrinityRange('Beide',35, 45,'9')
-    if isinstance(data['product'], str):
-        presentsproduct = findArticlesTitleAndDescription(data['product'])
-        print(presentsproduct[0])
-    else:
-        presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['product'])]
-        presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-    L = [presentsproduct,presentstasks]
-    if len(L[0])+len(L[1])==len(L[0]+L[1]):
-        presents = L[0]+L[1]
-    else:
-        presents = mergedics(L)
-    print(type(presents[0]))
+
 
 
 #     # app.run(debug=True)
