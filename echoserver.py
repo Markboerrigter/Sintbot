@@ -327,27 +327,12 @@ def checksuggest(token, recipient, data):
         budget = (final_data['budget'])
         print(budget)
         jaar = str(final_data['Age']).split(' ')[0]
-        presentstasks = random.sample(mg.findByTrinityRange(geslacht,35, 45,jaar),5)
-        if 'product' in data:
-            presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in data['data']['product']]
-            print(presentsproduct)
-            presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-            final_present = presentsproduct + presentstasks
-            final_present = list(set(final_present))
-        elif 'hobby' in data:
-            presentshobby = [mg.findArticlesTitleAndDescription(x) for x in data['data']['product']]
-            presentshobby = list(set([item for sublist in presentshobby for item in sublist]))
-            final_present =  presentshobby + presentstasks
-            final_present = list(set(final_present))
-        else:
-            final_present = presentstasks
-        final_present = list(set(final_present))
-        presentstasks = mg.findByTrinityRange('Beide',35, 45,'9')
+        presentstasks = mg.findByTrinityRange(geslacht,35, 45,jaar)
         if 'product' in data:
             if isinstance(data['data']['product'], str):
                 presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
             else:
-                presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['product'])]
+                presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['product'])]
                 presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
             L = [presentsproduct,presentstasks]
             if len(L[0])+len(L[1])==len(L[0]+L[1]):
@@ -358,7 +343,7 @@ def checksuggest(token, recipient, data):
             if isinstance(data['data']['hobby'], str):
                 presentsproduct = mg.findArticlesTitleAndDescription(data['data']['hobby'])
             else:
-                presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
+                presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
                 presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
             L = [presentshobby,presentstasks]
             if len(L[0])+len(L[1])==len(L[0]+L[1]):
@@ -367,6 +352,8 @@ def checksuggest(token, recipient, data):
                 presents = mergedics(L)
         else:
             presents = presentstasks
+
+        presents = random.sample(presents,5)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -481,6 +468,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
+
+  print('sendmessage',time1)
   time1 = time.time()-time1
   print('sendmessage', time1)
   user_data[recipient] = data
