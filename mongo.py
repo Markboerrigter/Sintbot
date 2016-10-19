@@ -2256,7 +2256,6 @@ def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
             query.append({'age': 'Vanaf 9 maanden'})
             query.append({'age': 'Vanaf 10 maanden'})
             query.append({'age': ''})
-
         query2 = ''
         if geslacht == 'jongen':
             query2 = 'Jongen'
@@ -2264,16 +2263,15 @@ def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
             query2 = 'Meisje'
         else:
             query2 = 'Beide'
-
+        # print(query, query2)
         query31 = ''
         query32 = ''
-        if isinstance(int, bedragh):
+        if isinstance(bedragh, int):
             query31 = bedragh
-        if isinstance(int, bedragl):
+        if isinstance(bedragl, int):
             query32 = bedragl
         else:
             query32 = 0
-
 
         catalogus = db.speelgoedboek
         # results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
@@ -2283,8 +2281,7 @@ def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
         # for r in ordered:
         #     output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] + ', ' + str(r['page']) + ', <a href="' + r['img_link'] + '">' + r['img_link'] + '</a><br>'
         # return output
-
-        data = list(catalogus.find({ '$or': query, 'gender': query2, 'price': {[{'price': {'$lt':bedragl}},{'price': {'$gt':bedragh}} ]} }))
+        data = list(catalogus.find({ '$or': query, 'gender': query2, '$and': [{'price': {'$lt':query31}},{'price': {'$gt':query32}} ] }))
         return (data)
 
     except Exception, e:
@@ -2304,7 +2301,14 @@ get product(s) by keywords
 get populartiy
 get dislike
 """
-#
-# if __name__ == '__main__':
+
+
+if __name__ == '__main__':
+    # print(findByTrinityRange('Jongen',35, 45,'9'))
+    presentlist = findByTrinityRange('Jongen',35, 45,10)
+    print(len(presentlist))
+    # for x in presentlist:
+    #     print(x)
+    # print(presentlist[:10])
 #     # app.run(debug=True)
 #     app.run(host='0.0.0.0', debug=True)
