@@ -279,10 +279,8 @@ def getInformation(response, tekst):
             for x in entities['product']:
                 if x['confidence'] > 0.8:
                     out['product'] =  x['value']
-        if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
-            num = tekst.split()[0]
-            num = num.split('-')
-            out['budget'] = num
+        if 'budget' in entities and entities['budget'][0]['confidence'] > 0.8:
+            out['budget'] = entities['Gender'][0]['budget']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
@@ -326,11 +324,15 @@ def checksuggest(token, recipient, data):
         print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender']
-        budget = (final_data['budget'])
-        if len(budget) <=1:
-            budget = [45,1000]
+        budget = (final_data['budget']).split('-')
+        if len(budget) >1:
+            budgetl = budget[0]
+            budgeth = budget[1]
+        else:
+            budgetl = budget.split(' ')[0]
+            budgeth = 1000
         jaar = str(final_data['Age']).split(' ')[0]
-        presentstasks = mg.findByTrinityRange(geslacht,budget[0], budget[1],jaar)
+        presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
         if 'product' in data:
             if isinstance(data['data']['product'], str):
                 presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
