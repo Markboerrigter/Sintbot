@@ -11,6 +11,7 @@ import datetime
 import mongo as mg
 import pprint
 from copy import copy
+import time
 
 # personality, sentiment = getIt()
 
@@ -322,10 +323,13 @@ def checksuggest(token, recipient, data):
         if 'product' in data:
             presentsproduct = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
             presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-        if 'hobby' in data:
+            final_present = presentsproduct + presentstasks
+        elif 'hobby' in data:
             presentshobby = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
             presentshobby = list(set([item for sublist in presentshobby for item in sublist]))
-        final_present = presentsproduct + presentshobby + presentstasks
+            final_present =  presentshobby + presentstasks
+        else:
+            final_present = presentstasks
         final_present = list(set(final_present))
 
         print(presents[0])
@@ -402,11 +406,18 @@ def findToken(recipient, data, text):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+  time = time.time()
   global user_data
   response, data = getResponse(recipient, text, data)
+  time = time.time()-time
+  print('getresponse',time)
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
       response, data = findToken(recipient, data, text)
+      time = time.time()-time
+      print('stopthing',time)
   checksuggest(token, recipient, data)
+  time = time.time()-time
+  print('checksuggest',time)
   if 'msg' in response:
       print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
@@ -438,6 +449,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
+  time = time.time()-time
+  print('sendmessage', time)
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
