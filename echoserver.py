@@ -15,8 +15,8 @@ from copy import copy
 # personality, sentiment = getIt()
 
 from flask import g
-x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
+# x = dict()
+# pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
@@ -155,20 +155,38 @@ def handle_messages():
     # print(presents)
     # print(presents[0])
     if sender in user_data:
+        if user_data[sender]['log'] == 'end':
+            user_data[sender]['log'] = {}
+            user_data[sender]['log']['text'].update(user_data[sender]['text'])
+            user_data[sender]['log']['feedback'].update('')
+            user_data[sender]['log']['presents'].update('')
+            user_data[sender]['Stage'] = TokenStages[0]
+            user_data[sender]['text'] = []
+            user_data[sender]['oldincoming'] = ''
+            user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+            user_data[sender]['starter'] = ''
+            user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+            user_data[sender]['data'] = {}
+
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         if message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
+            user_data[sender]['text'].append(message)
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
         makeStartScreen(PAT)
-
         user_data[sender] = dict()
+        user_data[sender]['log'] = {}
+        user_data[sender]['log']['text']= {}
+        user_data[sender]['log']['feedback']= {}
+        user_data[sender]['log']['presents']= {}
         user_data[sender]['Stage'] = TokenStages[0]
+        user_data[sender]['text'] = []
+        user_data[sender]['personality'] = ''
         user_data[sender]['oldincoming'] = ''
         user_data[sender]['oldmessage'] = ''
-        # user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
         user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -345,6 +363,7 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
   else:
       print('end of conversation')
+      data['log'] = 'end'
       response = {}
   response, data = getResponse(recipient, data['starter'], data)
   return response, data
@@ -358,6 +377,7 @@ def send_message(token, recipient, text, data):
       response, data = findToken(recipient, data, text)
   checksuggest(token, recipient, data)
   if 'msg' in response:
+      data['text'] = response['msg']
       data['oldmessage'] = response['msg']
       if 'quickreplies' in response:
           replies = response['quickreplies']
@@ -389,18 +409,8 @@ def send_message(token, recipient, text, data):
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
 if __name__ == '__main__':
-  # for i in range(len(Tokens)):
-  #     Stop = False
-  #
-  #     while not Stop:
-  #         keuze =
-  #         witToken = Tokens[i]
-
 
   # personality, sentiment = getIt()
-  # recipient = find_sender()
-  # print(sentiment)
-  # send_message(PAT, recipient, 'Welkom bij Spotta, waarmee kan ik u van dienst zijn?')
 
 
   app.run()
