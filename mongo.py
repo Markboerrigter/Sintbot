@@ -2301,11 +2301,11 @@ get product(s) by keywords
 get populartiy
 get dislike
 """
-
+import random
 
 if __name__ == '__main__':
-    # print(findByTrinityRange('Jongen',35, 45,'9'))
-    presentlist = findByTrinityRange('Jongen',35, 45,10)
+    print(len(findByTrinityRange('Jongen',35, 45,'7 jaar'.split(' ')[0])))
+    presentlist = random.sample(findByTrinityRange('Jongen',35, 45,'7 jaar'),5)
     print(len(presentlist))
     # for x in presentlist:
     #     print(x)

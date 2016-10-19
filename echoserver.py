@@ -255,8 +255,9 @@ def checksuggest(token, recipient, data):
         geslacht = final_data['Gender']
         budget = (final_data['budget'])
         print(budget)
-        jaar = str(final_data['Age'])
+        jaar = str(final_data['Age']).split(' ')[0]
         presents = random.sample(mg.findByTrinityRange(geslacht,35, 45,jaar),5)
+        print(presents[0])
         # print(type(presents))
         # print(presents)
         # print(presents[0])
