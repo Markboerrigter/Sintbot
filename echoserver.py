@@ -406,18 +406,18 @@ def findToken(recipient, data, text):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  time = time.time()
+  time1 = time.time()
   global user_data
   response, data = getResponse(recipient, text, data)
-  time = time.time()-time
+  time1 = time.time()-time1
   print('getresponse',time)
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
       response, data = findToken(recipient, data, text)
-      time = time.time()-time
-      print('stopthing',time)
+      time1 = time.time()-time1
+      print('stopthing',time1)
   checksuggest(token, recipient, data)
-  time = time.time()-time
-  print('checksuggest',time)
+  time1 = time.time()-time1
+  print('checksuggest',time1)
   if 'msg' in response:
       print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
@@ -449,8 +449,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-  time = time.time()-time
-  print('sendmessage', time)
+  time1 = time.time()-time1
+  print('sendmessage', time1)
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
