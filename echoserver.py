@@ -217,9 +217,11 @@ def replace_value_with_definition(key_to_find, definition, current_dict):
     return current_dict
 
 def getInformation(response):
+    print(response)
     if 'entities' in response:
         entities = response['entities']
         out  = {}
+
         if 'amount_of_money' in entities and entities['amount_of_money'][0]['confidence'] > 0.8:
             out['budget'] =  abs(entities['amount_of_money'][0]['value'])
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
