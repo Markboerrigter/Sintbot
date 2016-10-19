@@ -238,7 +238,7 @@ def getInformation(response):
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
             out['Age'] = entities['age_of_person'][0]['value']
-        if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8:
+        if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8 and entities['distinction'][0]['value'] in ['Ja', 'Nee']:
             out['distinction'] = entities['distinction'][0]['value']
         return out
     else:
