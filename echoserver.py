@@ -245,8 +245,10 @@ def getInformation(response):
         return []
 
 def getResponse(recipient, text, data):
-  response, data, information = findAnswer(tb.response(text, data['token'], data['session']),text,data['token'],data)
-  data['data'].update(information)
+  response = tb.response(text, data['token'], data['session'])
+  if 'msg' not in response:
+      response, data, information = findAnswer(response,text,data['token'],data)
+      data['data'].update(information)
   information = getInformation(response)
   data['data'].update(information)
   return response, data
