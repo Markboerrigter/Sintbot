@@ -321,7 +321,7 @@ def findToken(recipient, data, text):
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
   NextStage = TokenStages[TokenStages.index(Stage)+1]
-  if Stage == 'decisions' and len(data['data']) < 4:
+  if Stage == 'decisions' and (k in data['data'] for k in ['budget', 'Age', 'Gender']):
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
