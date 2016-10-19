@@ -157,16 +157,18 @@ def handle_messages():
     if sender in user_data:
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
-        send_message(PAT, sender, message,user_data[sender])
+        if message != user_data[sender]['oldincoming']:
+            send_message(PAT, sender, message,user_data[sender])
+            user_data[sender]['oldincoming'] = message
     else:
         makeStartScreen(PAT)
         user_data[sender] = dict()
+        user_data[sender]['oldincoming] = ''
         user_data[sender]['oldmessage'] = ''
         # user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
         user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-        user_data[sender]['Stage'] = 'StartNew'
         user_data[sender]['data'] = {}
         send_message(PAT, sender, message, user_data[sender])
   return "ok"
@@ -279,7 +281,7 @@ def checksuggest(token, recipient, data):
                     "buttons":[
                       {
                         "type":"web_url",
-                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + x['page'],
+                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
                         "title":"View Website"
                       }
                     ]
