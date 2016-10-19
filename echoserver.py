@@ -410,8 +410,9 @@ def send_message(token, recipient, text, data):
   global user_data
   response, data = getResponse(recipient, text, data)
   time1 = time.time()-time1
-  print('getresponse',time)
-  if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
+  print('getresponse',time1)
+   # or response['msg'] == data['oldmessage']
+  if response['type'] == 'stop':
       response, data = findToken(recipient, data, text)
       time1 = time.time()-time1
       print('stopthing',time1)
