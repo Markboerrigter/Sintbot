@@ -149,7 +149,7 @@ def handle_messages():
   for sender, message in messaging_events(payload):
     presentlist = mg.findByTrinityRange('Jongen',35, 45,9)
     print(type(presentlist))
-    print(presentlist[:10])
+    print(presentlist)
     presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
     print(type(presents))
     print(presents)
