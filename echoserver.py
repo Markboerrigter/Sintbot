@@ -172,7 +172,7 @@ def handle_messages():
         print(sender, message)
         if message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
-            user_data[sender]['text'].append(message)
+            user_data[sender]['text'].append(('user',message))
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
@@ -377,7 +377,7 @@ def send_message(token, recipient, text, data):
       response, data = findToken(recipient, data, text)
   checksuggest(token, recipient, data)
   if 'msg' in response:
-      data['text'] = response['msg']
+      data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
       if 'quickreplies' in response:
           replies = response['quickreplies']
