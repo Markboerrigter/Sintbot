@@ -163,7 +163,7 @@ def handle_messages():
     else:
         makeStartScreen(PAT)
         user_data[sender] = dict()
-        user_data[sender]['oldincoming] = ''
+        user_data[sender]['oldincoming'] = ''
         user_data[sender]['oldmessage'] = ''
         # user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
