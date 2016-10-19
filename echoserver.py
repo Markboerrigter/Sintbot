@@ -328,6 +328,7 @@ def findToken(recipient, data, text):
       data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
       data['Stage'] = NextStage
+      print(data['data'])
       if 'distinction' in data['data'] and text.lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
