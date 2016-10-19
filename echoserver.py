@@ -15,8 +15,8 @@ from copy import copy
 # personality, sentiment = getIt()
 
 from flask import g
-# x = dict()
-# pickle.dump(x, open('user_data.p', 'wb'))
+x = dict()
+pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
@@ -405,6 +405,7 @@ def send_message(token, recipient, text, data):
       response, data = findToken(recipient, data, text)
   checksuggest(token, recipient, data)
   if 'msg' in response:
+      print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
       data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
