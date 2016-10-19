@@ -309,6 +309,14 @@ def allValues(dictionary):
             ans.append(v)
     return ans
 
+def mergedicts(L):
+    intersect = []
+    for item in L[0]:
+        x = [True for y in L[0:] if item in y]
+        if len(x) == len(L):
+            intersect.append(item)
+    return intersect
+
 def checksuggest(token, recipient, data):
     print('in checksuggest' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
@@ -321,21 +329,44 @@ def checksuggest(token, recipient, data):
         jaar = str(final_data['Age']).split(' ')[0]
         presentstasks = random.sample(mg.findByTrinityRange(geslacht,35, 45,jaar),5)
         if 'product' in data:
-            presentsproduct = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
+            presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in data['data']['product']]
+            print(presentsproduct)
             presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
             final_present = presentsproduct + presentstasks
+            final_present = list(set(final_present))
         elif 'hobby' in data:
-            presentshobby = [findArticlesTitleAndDescription(x) for x in data['data']['product']]
+            presentshobby = [mg.findArticlesTitleAndDescription(x) for x in data['data']['product']]
             presentshobby = list(set([item for sublist in presentshobby for item in sublist]))
             final_present =  presentshobby + presentstasks
+            final_present = list(set(final_present))
         else:
             final_present = presentstasks
         final_present = list(set(final_present))
-
-        print(presents[0])
-        # print(type(presents))
-        # print(presents)
-        # print(presents[0])
+        presentstasks = mg.findByTrinityRange('Beide',35, 45,'9')
+        if 'product' in data:
+            if isinstance(data['data']['product'], str):
+                presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
+            else:
+                presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['product'])]
+                presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+            L = [presentsproduct,presentstasks]
+            if len(L[0])+len(L[1])==len(L[0]+L[1]):
+                presents = L[0]+L[1]
+            else:
+                presents = mergedics(L)
+        elif 'hobby' in data:
+            if isinstance(data['data']['hobby'], str):
+                presentsproduct = mg.findArticlesTitleAndDescription(data['data']['hobby'])
+            else:
+                presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
+                presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+            L = [presentshobby,presentstasks]
+            if len(L[0])+len(L[1])==len(L[0]+L[1]):
+                presents = L[0]+L[1]
+            else:
+                presents = mergedics(L)
+        else:
+            presents = presentstasks
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({

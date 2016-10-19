@@ -62,7 +62,7 @@ def findArticlesTitleAndDescription(the_query):
     try:
         catalogus = db.speelgoedboek
         data = list(catalogus.find({'$or': [{'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}},{'description_extended': {'$regex': '.*'+the_query+'.*','$options' : 'i'}} ]}))
-        return str(data)
+        return (data)
     except Exception, e:
         return 'Not found'
 
@@ -2303,12 +2303,36 @@ get dislike
 """
 import random
 
+def mergedicts(L):
+    intersect = []
+
+    for item in L[0]:
+        # print(item)
+        # for y in L[1:]:
+        #     print(type(y))
+        # print(L[0:])
+        x = [True for y in L[0:] if item in y]
+        # print(x)
+        if len(x) == len(L):
+            intersect.append(item)
+    return intersect
+
 if __name__ == '__main__':
-    print(len(findByTrinityRange('Jongen',35, 45,'7 jaar'.split(' ')[0])))
-    presentlist = random.sample(findByTrinityRange('Jongen',35, 45,'7 jaar'),5)
-    print(len(presentlist))
-    # for x in presentlist:
-    #     print(x)
-    # print(presentlist[:10])
+    data = {'product': 'Lego'}
+    presentstasks = findByTrinityRange('Beide',35, 45,'9')
+    if isinstance(data['product'], str):
+        presentsproduct = findArticlesTitleAndDescription(data['product'])
+        print(presentsproduct[0])
+    else:
+        presentsproduct = [findArticlesTitleAndDescription(x) for x in (data['product'])]
+        presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+    L = [presentsproduct,presentstasks]
+    if len(L[0])+len(L[1])==len(L[0]+L[1]):
+        presents = L[0]+L[1]
+    else:
+        presents = mergedics(L)
+    print(type(presents[0]))
+
+
 #     # app.run(debug=True)
 #     app.run(host='0.0.0.0', debug=True)
