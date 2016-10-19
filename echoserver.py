@@ -278,7 +278,7 @@ def checksuggest(token, recipient, data):
                     "buttons":[
                       {
                         "type":"web_url",
-                        "url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
+                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + x['page'],
                         "title":"View Website"
                       }
                     ]
