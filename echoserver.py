@@ -158,6 +158,7 @@ def handle_messages():
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         if message != user_data[sender]['oldincoming']:
+            print(message, user_data[sender]['oldincoming'])
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
