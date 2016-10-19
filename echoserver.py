@@ -162,7 +162,9 @@ def handle_messages():
             user_data[sender]['oldincoming'] = message
     else:
         makeStartScreen(PAT)
+
         user_data[sender] = dict()
+        user_data[sender]['Stage'] = TokenStages[0]
         user_data[sender]['oldincoming'] = ''
         user_data[sender]['oldmessage'] = ''
         # user_data[sender]['token'] = 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'
