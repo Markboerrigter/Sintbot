@@ -210,7 +210,15 @@ def handle_messages():
     print(sender,message)
     if sender in user_data:
         if user_data[sender]['dolog'] == 'end':
+            print(user_data[sender])
             user_data[sender]['log'] = {}
+            try:
+                user_data[sender]['log']['text']
+            except:
+                try:
+                    user_data[sender]['text']
+                except:
+                    print('not found')
             user_data[sender]['log']['text'].update({str(max(list(newdict.keys()))+1):user_data[sender]['text']})
             user_data[sender]['log']['feedback'].update('')
             user_data[sender]['log']['presents'].update('')
