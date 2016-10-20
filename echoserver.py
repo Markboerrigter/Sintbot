@@ -210,6 +210,8 @@ def handle_messages():
     print(sender,message)
     if sender in user_data:
         if user_data[sender]['dolog'] == 'end':
+            print(user_data[sender]['log']['text'])
+            print(user_data[sender]['text'])
             # print(user_data[sender])
             # # user_data[sender]['log'] = {}
             # try:
