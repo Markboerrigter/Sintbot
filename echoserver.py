@@ -487,13 +487,10 @@ def send_message(token, recipient, text, data):
       response, data = findToken(recipient, data, text)
       time2 = time.time()
       print('stopthing',time2 - time1)
+      time1 = time2
   checksuggest(token, recipient, data)
-  if time2:
-      time3 = time.time()
-      print('checksuggest',time3- time2)
-  else:
-      time3 = time.time()
-      print('checksuggest',time3- time1)
+  time3 = time.time()
+  print('checksuggest',time3- time1)
   if 'msg' in response:
       print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
