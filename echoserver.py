@@ -248,7 +248,7 @@ def handle_messages():
         #   message = ''
         #   print('end of conversation')
         #   data['dolog'] = 'end'
-        elif message != user_data[sender]['oldincoming']:
+        if message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
             user_data[sender]['message-id'] = mid
