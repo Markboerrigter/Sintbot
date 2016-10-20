@@ -136,13 +136,13 @@ def makeStartScreen(token):
   if r.status_code != requests.codes.ok:
     print r.text
 
-@app.route('/', methods=['GET'])
-def verify():
-    if request.args.get('hub.mode') == 'subscribe' and request.args.get('hub.challenge'):
-        if not request.args.get('hub.verify_token') == os.environ['FB_VERIFY_TOKEN']:
-            return 'Verification token mismatch', 403
-        return request.args['hub.challenge'], 200
-    return 'Hello world', 200
+# @app.route('/', methods=['GET'])
+# def verify():
+#     if request.args.get('hub.mode') == 'subscribe' and request.args.get('hub.challenge'):
+#         if not request.args.get('hub.verify_token') == os.environ['FB_VERIFY_TOKEN']:
+#             return 'Verification token mismatch', 403
+#         return request.args['hub.challenge'], 200
+#     return 'Hello world', 200
 
 @app.route('/', methods=['GET'])
 def handle_verification():
