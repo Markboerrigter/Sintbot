@@ -183,9 +183,10 @@ def typing(opt, token, recipient):
 
 def postdashbot(id, payload):
   if id == 'human':
+      pp
       print('send to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-        data=json.dumps(payload),
+        data=payload,
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
@@ -403,7 +404,7 @@ def checksuggest(token, recipient, data):
                 presents = mergedics(L)
         else:
             presents = presentstasks
-
+        print(presents)
         presents = random.sample(presents,min(len(presents),5))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
