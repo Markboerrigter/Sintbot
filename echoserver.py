@@ -98,11 +98,11 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
+PAT = 'EAAEkTt8L730BANwXH5ytYkuWrSCFWLygvbI7zcthiVZCBt2ZBR348BGotDiECCerdSkdg2giuQWEPcDH3yJkZCKtxJhE1uRjVlx71mgGLjP7g7TfsZBlLROauZAXhqqDINZBM5xnEDBWm5znVDhy6RiYiMQGOjxAmGUaZBXkufcKwZDZD'
 # PAT for vraag het sint
 # EAAEkTt8L730BANPCJJhg4eAQQgp4Wyuvffs5lapcavGmH0xpYGyF7scpv3x9JrSL9MBDJaWJDb8Euy65DVfug9SuKm2IdRBH2JwoK8MaRhWe9LQcWCMPusLtmENggpfmw9LFcqPNHo1QNDUZAhMwGEavXGVdsbEYCoVhu7AZDZD
-# PAT for vraag het sint
-# EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
+# PAT for echoobotje
+# EAAEkTt8L730BANlcI1tKFulZAyNgQjyZCvvpxCr0yT7b7rLuBvcp6exQqofOsxGmz6wbmZBwuJoYpsBqPzxHZBGQkPK6ZAMZB4bzQ9nqGeHfldt0uqaJ5LgjpVJZCM3uBvjzWIXozlsTrZCW8P5hR7IN3I4XoImMsjizZAPBy5W7ZAogZDZD'
 
 def get_keys(d,target):
     result = []
@@ -363,7 +363,7 @@ def mergedicts(L):
     return intersect
 
 def checksuggest(token, recipient, data):
-    print('in checksuggest' + data['Stage'])
+    print('in checksuggest ' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
         print('giving presents')
         print(data['data'])
@@ -493,7 +493,7 @@ def send_message(token, recipient, text, data):
       typing('off', token, recipient)
       data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
-      postdashbot('bot',(sender,response['msg'], data['message-id']) )
+      postdashbot('bot',(recipient,response['msg'], data['message-id']) )
       if 'quickreplies' in response:
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -510,6 +510,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
+            print(recipient)
       else:
           postdashbot('bot', payload)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
