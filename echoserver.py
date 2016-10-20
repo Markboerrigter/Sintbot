@@ -211,7 +211,7 @@ def handle_messages():
     if sender in user_data:
         if user_data[sender]['dolog'] == 'end':
             user_data[sender]['log'] = {}
-            user_data[sender]['log']['text'].update(user_data[sender]['text'])
+            user_data[sender]['log']['text'].update({str(max(list(newdict.keys()))+1):user_data[sender]['text']})
             user_data[sender]['log']['feedback'].update('')
             user_data[sender]['log']['presents'].update('')
             user_data[sender]['Stage'] = TokenStages[0]
