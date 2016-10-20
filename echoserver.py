@@ -213,15 +213,6 @@ def handle_messages():
         if user_data[sender]['dolog'] == 'end':
             print(user_data[sender]['log']['text'])
             print(user_data[sender]['text'])
-            # print(user_data[sender])
-            # # user_data[sender]['log'] = {}
-            # try:
-            #     user_data[sender]['log']['text']
-            # except:
-            #     try:
-            #         user_data[sender]['text']
-            #     except:
-            #         print('not found')
             user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
             user_data[sender]['log']['feedback'].update('')
             user_data[sender]['log']['presents'].update('')
@@ -292,9 +283,6 @@ def messaging_events(payload):
   if "messaging" in data["entry"][0]:
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
-        print('event', event)
-        if "message" in event and 'is_echo' in event["message"]:
-            print('echoooo')
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid']
         # if 'postback' in payload['entry'][0]['messaging'][0]:
