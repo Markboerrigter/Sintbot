@@ -235,19 +235,19 @@ def handle_messages():
 
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
-        if message in stoplist:
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": 'Je hebt Sint zo laten schrikken dat je hem een hartaanval hebt bezorgd. Hoe durf je..'}
-            }),
-            headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-            print r.text
-          message = ''
-          print('end of conversation')
-          data['dolog'] = 'end'
+        # if message in stoplist:
+        #   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        #     params={"access_token": PAT},
+        #     data=json.dumps({
+        #       "recipient": {"id": sender},
+        #       "message": {"text": 'Je hebt Sint zo laten schrikken dat je hem een hartaanval hebt bezorgd. Hoe durf je..'}
+        #     }),
+        #     headers={'Content-type': 'application/json'})
+        #   if r.status_code != requests.codes.ok:
+        #     print r.text
+        #   message = ''
+        #   print('end of conversation')
+        #   data['dolog'] = 'end'
         elif message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
