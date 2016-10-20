@@ -373,7 +373,7 @@ def checksuggest(token, recipient, data):
             budgetl = int(budget[0])
             budgeth = int(budget[1])
         else:
-            budgetl = [int(s) for s in budget.split() if s.isdigit()][0]
+            budgetl = [int(s) for s in budget[0].split() if s.isdigit()][0]
             budgeth = 1000
         jaar = str(final_data['Age']).split(' ')[0]
         print(geslacht,budgetl, budgeth,jaar)
