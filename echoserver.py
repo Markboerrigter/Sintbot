@@ -177,7 +177,7 @@ def typing(opt, token, recipient):
 def postdashbot(id, payload):
   if id == 'human':
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-        data=json.dumps(payload)
+        data=json.dumps(payload),
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
@@ -190,7 +190,7 @@ def postdashbot(id, payload):
         "recipient":{"id":"975099989272315"}},
         "method":"POST",
         "responseBody":{"recipient_id":"975099989272315",
-        "message_id":"mid.1470371655004:4727480467538e9450"}})
+        "message_id":"mid.1470371655004:4727480467538e9450"}}),
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
@@ -234,7 +234,7 @@ def handle_messages():
           message = ''
           print('end of conversation')
           data['log'] = 'end'
-      elif message != user_data[sender]['oldincoming']:
+        elif message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
             typing('on', PAT, sender)
