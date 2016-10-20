@@ -183,20 +183,21 @@ def typing(opt, token, recipient):
 
 
 def postdashbot(id, payload):
-  if id == 'human':
-      print('send to dashbot ')
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-        data=payload,
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
-  if id == 'bot':
-      print('send botshit to dashbot ')
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-        data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
+    print('boe')
+  # if id == 'human':
+  #     print('send to dashbot ')
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+  #       data=payload,
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
+  # if id == 'bot':
+  #     print('send botshit to dashbot ')
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
@@ -205,7 +206,7 @@ def handle_messages():
 
   print(payload)
   global user_data
-  # print('message events')
+  print('message events')
   for sender, message, mid in messaging_events(payload):
     postdashbot('human', payload)
     print(sender,message)
