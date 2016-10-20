@@ -280,7 +280,7 @@ def getInformation(response, tekst):
                 if x['confidence'] > 0.8:
                     out['product'] =  x['value']
         if 'budget' in entities and entities['budget'][0]['confidence'] > 0.8:
-            out['budget'] = entities['Gender'][0]['budget']
+            out['budget'] = entities['budget'][0]['value']
         if 'Gender' in entities and entities['Gender'][0]['confidence'] > 0.8:
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
