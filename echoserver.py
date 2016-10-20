@@ -246,6 +246,7 @@ def handle_messages():
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
+        print('NEWUSER')
         makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['log'] = {}
