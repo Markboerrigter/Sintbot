@@ -196,8 +196,8 @@ def postdashbot(id, payload):
         "json":{"message":{"text":payload[1]},
         "recipient":{"id":payload[0]}},
         "method":"POST",
-        "responseBody":{"recipient_id":"payload[0]",
-        "message_id":"mid.1470371655004:4727480467538e9450"}}),
+        "responseBody":{"recipient_id":payload[0],
+        "message_id":payload[2]}}),
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
@@ -283,7 +283,7 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid]']
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid']
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
 
