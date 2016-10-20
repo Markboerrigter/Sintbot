@@ -25,6 +25,7 @@ def word_feats(words):
     return dict([(word, True) for word in words])
 
 import pickle
+stoplist = []
 
 sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
@@ -184,12 +185,12 @@ def postdashbot(id, payload):
   if id == 'bot':
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
         data=json.dumps({
-        "qs":{"access_token":"<YOUR ACCESS TOKEN>"},
+        "qs":{"access_token":PAT},
         "uri":"https://graph.facebook.com/v2.6/me/messages",
-        "json":{"message":{"text":"Hello, my human pet"},
-        "recipient":{"id":"975099989272315"}},
+        "json":{"message":{"text":payload[1]},
+        "recipient":{"id":payload[0]}},
         "method":"POST",
-        "responseBody":{"recipient_id":"975099989272315",
+        "responseBody":{"recipient_id":"payload[0]",
         "message_id":"mid.1470371655004:4727480467538e9450"}}),
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
@@ -203,7 +204,7 @@ def handle_messages():
   print(payload)
   global user_data
   # print('message events')
-  for sender, message in messaging_events(payload):
+  for sender, message, mid in messaging_events(payload):
     print(sender,message)
     if sender in user_data:
         if user_data[sender]['log'] == 'end':
@@ -237,6 +238,7 @@ def handle_messages():
         elif message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
+            user_data[sender]['message-id'] = mid
             typing('on', PAT, sender)
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
@@ -249,6 +251,7 @@ def handle_messages():
         user_data[sender]['log']['presents']= {}
         user_data[sender]['Stage'] = TokenStages[0]
         user_data[sender]['text'] = []
+        user_data[sender]['message-id'] = mid
         user_data[sender]['personality'] = ''
         user_data[sender]['oldincoming'] = ''
         user_data[sender]['oldmessage'] = ''
@@ -274,7 +277,7 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape')
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid]']
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
 
@@ -395,6 +398,7 @@ def checksuggest(token, recipient, data):
             presents = presentstasks
 
         presents = random.sample(presents,5)
+        postdashbot('bot',(recipient,'presents', data['message-id']) )
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -483,9 +487,9 @@ def send_message(token, recipient, text, data):
       typing('off', token, recipient)
       data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
+      postdashbot('bot',(sender,response['msg'], data['message-id']) )
       if 'quickreplies' in response:
           replies = response['quickreplies']
-          postdashbot('bot', payload)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
