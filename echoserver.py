@@ -209,7 +209,7 @@ def handle_messages():
   for sender, message, mid in messaging_events(payload):
     print(sender,message)
     if sender in user_data:
-        if user_data[sender]['log'] == 'end':
+        if user_data[sender]['dolog'] == 'end':
             user_data[sender]['log'] = {}
             user_data[sender]['log']['text'].update(user_data[sender]['text'])
             user_data[sender]['log']['feedback'].update('')
@@ -236,7 +236,7 @@ def handle_messages():
             print r.text
           message = ''
           print('end of conversation')
-          data['log'] = 'end'
+          data['dolog'] = 'end'
         elif message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
@@ -467,7 +467,7 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
   else:
       print('end of conversation')
-      data['log'] = 'end'
+      data['dolog'] = 'end'
       response = {}
   response, data = getResponse(recipient, data['starter'], data)
   return response, data
@@ -475,19 +475,23 @@ def findToken(recipient, data, text):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  time1 = time.time()
+  time0 = time.time()
   global user_data
   response, data = getResponse(recipient, text, data)
-  time1 = time.time()-time1
-  print('getresponse',time1)
+  time1 = time.time()
+  print('getresponse',time1-time0)
    # or response['msg'] == data['oldmessage']
   if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
       response, data = findToken(recipient, data, text)
-      time1 = time.time()-time1
-      print('stopthing',time1)
+      time2 = time.time()
+      print('stopthing',time2 - time1)
   checksuggest(token, recipient, data)
-  time2 = time.time() - time1
-  print('checksuggest',time1)
+  if time2:
+      time3 = time.time()
+      print('checksuggest',time3- time2)
+  else:
+      time3 = time.time()
+      print('checksuggest',time3- time1)
   if 'msg' in response:
       print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
@@ -522,9 +526,8 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.text
 
-  print('sendmessage',time1)
-  time1 = time.time()-time1
-  print('sendmessage', time1)
+  time4 = time.time()
+  print('sendmessage', time4 - time3)
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
