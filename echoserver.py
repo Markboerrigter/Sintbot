@@ -175,13 +175,7 @@ def handle_messages():
   global user_data
   # print('message events')
   for sender, message in messaging_events(payload):
-    # presentlist = mg.findByTrinityRange('Jongen',35, 45,9)
-    # print(type(presentlist))
-    # print(presentlist)
-    # presents = random.sample(mg.findByTrinityRange('Jongen',35, 45,9),5)
-    # print(type(presents))
-    # print(presents)
-    # print(presents[0])
+    print(sender,message)
     if sender in user_data:
         if user_data[sender]['log'] == 'end':
             user_data[sender]['log'] = {}
