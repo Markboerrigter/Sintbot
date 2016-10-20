@@ -491,7 +491,7 @@ def send_message(token, recipient, text, data):
   checksuggest(token, recipient, data)
   time3 = time.time()
   print('checksuggest',time3- time1)
-  if 'msg' in response:
+  if 'msg' in response and response['msg'] != data['oldmessage']:
       print(response['msg'].decode('unicode_escape'))
       typing('off', token, recipient)
       data['text'].append(('bot',response['msg']))
