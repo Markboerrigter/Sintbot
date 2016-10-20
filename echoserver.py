@@ -16,8 +16,8 @@ import time
 # personality, sentiment = getIt()
 
 from flask import g
-# x = dict()
-# pickle.dump(x, open('user_data.p', 'wb'))
+x = dict()
+pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
