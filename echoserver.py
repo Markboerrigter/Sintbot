@@ -267,7 +267,7 @@ def handle_messages():
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['data'] = {}
         send_message(PAT, sender, message, user_data[sender])
-  return "ok"
+  return "ok", 200
 
 def find_sender():
     payload = request.get_data()
