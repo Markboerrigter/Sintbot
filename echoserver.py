@@ -190,6 +190,7 @@ def postdashbot(id, payload):
       if r.status_code != requests.codes.ok:
         print r.text
   if id == 'bot':
+      print('send botshit to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
         data={
         "qs":{"access_token":PAT},
@@ -378,6 +379,7 @@ def checksuggest(token, recipient, data):
             budgetl = budget.split(' ')[0]
             budgeth = 1000
         jaar = str(final_data['Age']).split(' ')[0]
+        print(geslacht,budgetl, budgeth,jaar)
         presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
         if 'product' in data:
             if isinstance(data['data']['product'], str):
@@ -389,6 +391,7 @@ def checksuggest(token, recipient, data):
             if len(L[0])+len(L[1])==len(L[0]+L[1]):
                 presents = L[0]+L[1]
             else:
+
                 presents = mergedics(L)
         elif 'hobby' in data:
             if isinstance(data['data']['hobby'], str):
