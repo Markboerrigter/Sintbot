@@ -83,7 +83,7 @@ Tokens['feedback']['feedback2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 
 
 
-
+dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 
 TokenStages = ['Start','GiveIdea','decisions', 'presentchoosing', 'feedback']
 
@@ -98,7 +98,11 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
+# PAT for vraag het sint
+# EAAEkTt8L730BANPCJJhg4eAQQgp4Wyuvffs5lapcavGmH0xpYGyF7scpv3x9JrSL9MBDJaWJDb8Euy65DVfug9SuKm2IdRBH2JwoK8MaRhWe9LQcWCMPusLtmENggpfmw9LFcqPNHo1QNDUZAhMwGEavXGVdsbEYCoVhu7AZDZD
+# PAT for vraag het sint
 # EAAEkTt8L730BAEsnAA5irYU48u4v83NZBVHFluAGNhTzJXeNMZBRdmUNohTxJ92qYGlxq6PYXc7NuF8kZBCI1QMW8aWEPESMRTKXM3NjgnQZB3nK2Ct5IBsEorZBZB47JE6cv9X1KuuZBPOAKKzsdHnYp3ShKYhldpbpeklc6MybwZDZD'
+
 def get_keys(d,target):
     result = []
     path = []
@@ -130,6 +134,8 @@ def makeStartScreen(token):
     headers={'Content-type': 'application/json'})
   if r.status_code != requests.codes.ok:
     print r.text
+
+
 
 @app.route('/', methods=['GET'])
 def handle_verification():
@@ -168,10 +174,33 @@ def typing(opt, token, recipient):
         if r.status_code != requests.codes.ok:
             print r.text
 
+def postdashbot(id, payload):
+  if id == 'human':
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+        data=json.dumps(payload)
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
+  if id == 'bot':
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+        data=json.dumps({
+        "qs":{"access_token":"<YOUR ACCESS TOKEN>"},
+        "uri":"https://graph.facebook.com/v2.6/me/messages",
+        "json":{"message":{"text":"Hello, my human pet"},
+        "recipient":{"id":"975099989272315"}},
+        "method":"POST",
+        "responseBody":{"recipient_id":"975099989272315",
+        "message_id":"mid.1470371655004:4727480467538e9450"}})
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
+
 @app.route('/', methods=['POST'])
 def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
+  postdashbot('human', payload)
+  print(payload)
   global user_data
   # print('message events')
   for sender, message in messaging_events(payload):
@@ -192,7 +221,20 @@ def handle_messages():
 
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
-        if message != user_data[sender]['oldincoming']:
+        if message in stoplist:
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": PAT},
+            data=json.dumps({
+              "recipient": {"id": sender},
+              "message": {"text": 'Je hebt Sint zo laten schrikken dat je hem een hartaanval hebt bezorgd. Hoe durf je..'}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          message = ''
+          print('end of conversation')
+          data['log'] = 'end'
+      elif message != user_data[sender]['oldincoming']:
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
             typing('on', PAT, sender)
@@ -443,6 +485,7 @@ def send_message(token, recipient, text, data):
       data['oldmessage'] = response['msg']
       if 'quickreplies' in response:
           replies = response['quickreplies']
+          postdashbot('bot', payload)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -458,6 +501,7 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
             print r.text
       else:
+          postdashbot('bot', payload)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
