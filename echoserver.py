@@ -193,8 +193,7 @@ def postdashbot(id, payload):
   if id == 'bot':
       print('send botshit to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-        data={
-        "qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+        data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
         headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
@@ -367,11 +366,11 @@ def checksuggest(token, recipient, data):
         final_data = data['data']
         geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
-        if len(budget) >1:
+        if len(budget) == 2:
             budgetl = int(budget[0])
             budgeth = int(budget[1])
         else:
-            budgetl = int(budget)
+            budgetl = [int(s) for s in budget.split() if s.isdigit()][0]
             budgeth = 1000
         jaar = str(final_data['Age']).split(' ')[0]
         print(geslacht,budgetl, budgeth,jaar)
