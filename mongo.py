@@ -2341,3 +2341,4 @@ get dislike
 
 if __name__ == '__main__':
     print('hoi')
+    print(findByTrinityRange('jongen', 30, 45, '8'))
