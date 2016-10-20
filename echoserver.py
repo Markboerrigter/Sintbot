@@ -282,7 +282,7 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         print('event', event)
-        if 'is_echo' not in event["message"]:
+        if "message" in event and 'is_echo' in event["message"]:
             print('echoooo')
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid']
