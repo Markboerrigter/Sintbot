@@ -216,6 +216,7 @@ def handle_messages():
             user_data[sender]['log']['presents'].update('')
             user_data[sender]['Stage'] = TokenStages[0]
             user_data[sender]['text'] = []
+            user_data[sender]['dolog'] = ''
             user_data[sender]['oldincoming'] = ''
             user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
             user_data[sender]['starter'] = ''
@@ -251,6 +252,7 @@ def handle_messages():
         user_data[sender]['log']['text']= {}
         user_data[sender]['log']['feedback']= {}
         user_data[sender]['log']['presents']= {}
+        user_data[sender]['dolog'] = ''
         user_data[sender]['Stage'] = TokenStages[0]
         user_data[sender]['text'] = []
         user_data[sender]['message-id'] = mid
