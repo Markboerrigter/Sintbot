@@ -221,7 +221,7 @@ def handle_messages():
             #         user_data[sender]['text']
             #     except:
             #         print('not found')
-            user_data[sender]['log']['text'].update({str(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+            user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1:user_data[sender]['text']})
             user_data[sender]['log']['feedback'].update('')
             user_data[sender]['log']['presents'].update('')
             user_data[sender]['Stage'] = TokenStages[0]
