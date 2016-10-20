@@ -308,7 +308,6 @@ def replace_value_with_definition(key_to_find, definition, current_dict):
     return current_dict
 
 def getInformation(response, tekst):
-    print(response)
     if 'entities' in response:
         entities = response['entities']
         out  = {}
@@ -328,6 +327,8 @@ def getInformation(response, tekst):
             out['Age'] = entities['age_of_person'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8 and entities['distinction'][0]['value'] in ['Ja', 'Nee']:
             out['distinction'] = entities['distinction'][0]['value']
+        if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.8:
+            out['Feedback'] = entities['Feedback'][0]['value']
         return out
     else:
         return []
@@ -485,7 +486,7 @@ def send_message(token, recipient, text, data):
       time1 = time.time()-time1
       print('stopthing',time1)
   checksuggest(token, recipient, data)
-  time1 = time.time()-time1
+  time2 = time.time() - time1
   print('checksuggest',time1)
   if 'msg' in response:
       print(response['msg'].decode('unicode_escape'))
