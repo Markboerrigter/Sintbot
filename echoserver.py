@@ -369,7 +369,7 @@ def checksuggest(token, recipient, data):
         print('giving presents')
         print(data['data'])
         final_data = data['data']
-        geslacht = final_data['Gender']
+        geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
         if len(budget) >1:
             budgetl = budget[0]
@@ -442,7 +442,7 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
-  NextStage = TokenStages[TokenStages.index(Stage)+1]
+
   print(data['data'])
   print((k in data['data'] for k in ['budget', 'Age', 'Gender']))
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
@@ -452,7 +452,7 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
-      data['Stage'] = NextStage
+      data['Stage'] = TokenStages[TokenStages.index(Stage)+1]
       print(data['data'])
       if 'distinction' in data['data'] and text.lower() == 'ja':
           data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
@@ -461,6 +461,7 @@ def findToken(recipient, data, text):
           data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
       if isinstance(data['token'], dict):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
