@@ -213,7 +213,7 @@ def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
   global user_data
-  for sender, message, mid in messaging_events(payload):
+  for sender, message, mid, recipient in messaging_events(payload):
     print('message events')
     print(payload)
     postdashbot('human', payload)
@@ -256,7 +256,7 @@ def handle_messages():
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
-        user_info = getdata(sender)
+        user_info = getdata(recipient)
         print(user_info)
         print('NEWUSER')
         makeStartScreen(PAT)
@@ -295,7 +295,7 @@ def messaging_events(payload):
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid']
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
         # if 'postback' in payload['entry'][0]['messaging'][0]:
         #   yield event["sender"]["id"], 'Get started'
 
