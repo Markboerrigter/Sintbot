@@ -548,11 +548,11 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-      print('number of tries', data['try'])
-      if data['try'] <2:
-          if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
-
-              send_message(token, recipient, response['msg'], data)
+	    #   print('number of tries', data['try'])
+	    #   if data['try'] <2:
+	    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
+		  #
+	    #           send_message(token, recipient, response['msg'], data)
   time4 = time.time()
   print('sendmessage', time4 - time3)
   user_data[recipient] = data
