@@ -54,7 +54,7 @@ Starttext['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de fam
 Starttext['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
 Starttext['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
 Starttext['Nee']['Ja']['Nee'] = {}
-Starttext['Nee']['Ja']['Nee']['final'] = 'Je wil me echt geen pijn doen hè! Weet je al welk kado je wil kopen?'
+Starttext['Nee']['Ja']['Nee']['final'] = 'Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?'
 Starttext['Nee']['Nee'] = {}
 Starttext['Nee']['Nee']['begin'] = {'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'}
 Starttext['Nee']['Nee']['Ja'] = {}
@@ -254,27 +254,27 @@ def handle_messages():
 	if sender in user_data:
 		if mid is not user_data[sender]['message-id']:
 		  	if data['Stage'] == 'Start':
-			  data['startans'].append(text)
-		    if user_data[sender]['dolog'] == 'end':
-		        print(user_data[sender]['log']['text'])
-		        print(user_data[sender]['text'])
-		        user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
-		        user_data[sender]['log']['feedback'].update('')
-		        user_data[sender]['log']['presents'].update('')
-		        user_data[sender]['Stage'] = TokenStages[0]
-		        user_data[sender]['text'] = []
+			    data['startans'].append(text)
+			if user_data[sender]['dolog'] == 'end':
+				print(user_data[sender]['log']['text'])
+				print(user_data[sender]['text'])
+				user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+				user_data[sender]['log']['feedback'].update('')
+				user_data[sender]['log']['presents'].update('')
+				user_data[sender]['Stage'] = TokenStages[0]
+				user_data[sender]['text'] = []
 				user_data[sender]['Startpos'] = False
-		        user_data[sender]['dolog'] = ''
-		        user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
-		        user_data[sender]['starter'] = ''
-		        user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-		        user_data[sender]['data'] = {}
+				user_data[sender]['dolog'] = ''
+				user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+				user_data[sender]['starter'] = ''
+				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+				user_data[sender]['data'] = {}
 			if user_data[sender]['Startpos'] == True:
 				user_data[sender]['data']['distinction'] = message
 				user_data[sender]['token'] = Tokens['GiveIdea'][message]
 				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-		    print("Incoming from %s: %s" % (sender, message))
-		    print(sender, message)
+			print("Incoming from %s: %s" % (sender, message))
+			print(sender, message)
 		    # if message in stoplist:
 		    #   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 		    #     params={"access_token": PAT},
@@ -288,40 +288,40 @@ def handle_messages():
 		    #   message = ''
 		    #   print('end of conversation')
 		    #   data['dolog'] = 'end'
-	        user_data[sender]['try'] = 0
-	        print(message, user_data[sender]['oldincoming'])
-	        print(mid,user_data[sender]['message-id'])
-	        user_data[sender]['text'].append(('user',message))
-	        user_data[sender]['message-id'] = mid
-	        typing('on', PAT, sender)
-	        send_message(PAT, sender, message,user_data[sender])
-	        user_data[sender]['oldincoming'] = message
+			user_data[sender]['try'] = 0
+			print(message, user_data[sender]['oldincoming'])
+			print(mid,user_data[sender]['message-id'])
+			user_data[sender]['text'].append(('user',message))
+			user_data[sender]['message-id'] = mid
+			typing('on', PAT, sender)
+			send_message(PAT, sender, message,user_data[sender])
+			user_data[sender]['oldincoming'] = message
 	else:
-	    user_info = getdata(sender)
-	    print(user_info)
-	    print('NEWUSER')
-	    makeStartScreen(PAT)
-	    user_data[sender] = dict()
-	    user_data[sender]['log'] = {}
-	    user_data[sender]['try'] = 0
+		user_info = getdata(sender)
+		print(user_info)
+		print('NEWUSER')
+		makeStartScreen(PAT)
+		user_data[sender] = dict()
+		user_data[sender]['log'] = {}
+		user_data[sender]['try'] = 0
 		user_data[sender]['Startpos'] = False
-	    user_data[sender]['log']['text']= {0:'first conversation'}
-	    user_data[sender]['log']['feedback']= {}
-	    user_data[sender]['log']['presents']= {}
-	    user_data[sender]['dolog'] = ''
+		user_data[sender]['log']['text']= {0:'first conversation'}
+		user_data[sender]['log']['feedback']= {}
+		user_data[sender]['log']['presents']= {}
+		user_data[sender]['dolog'] = ''
 		user_data[sender]['startans'] = []
-	    user_data[sender]['Stage'] = TokenStages[0]
-	    user_data[sender]['text'] = []
-	    user_data[sender]['message-id'] = mid
-	    user_data[sender]['personality'] = ''
-	    user_data[sender]['oldincoming'] = message
-	    user_data[sender]['oldmessage'] = ''
-	    user_data[sender]['token'] = Tokens['Start']['Personalities']['Extraversion'].values()[0]
-	    user_data[sender]['starter'] = ''
-	    user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-	    user_data[sender]['data'] = {}
-	    typing('on', PAT, sender)
-	    send_message(PAT, sender, message, user_data[sender])
+		user_data[sender]['Stage'] = TokenStages[0]
+		user_data[sender]['text'] = []
+		user_data[sender]['message-id'] = mid
+		user_data[sender]['personality'] = ''
+		user_data[sender]['oldincoming'] = message
+		user_data[sender]['oldmessage'] = ''
+		user_data[sender]['token'] = Tokens['Start']['Personalities']['Extraversion'].values()[0]
+		user_data[sender]['starter'] = ''
+		user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+		user_data[sender]['data'] = {}
+		typing('on', PAT, sender)
+		send_message(PAT, sender, message, user_data[sender])
   return "ok", 200
 
 def find_sender():
@@ -547,57 +547,57 @@ def send_message(token, recipient, text, data):
   """
   if data['Stage'] == 'Start':
 
-	  d = findValue(data['startans'],Starttext)
-	  if 'begin' in d:
-		  postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-	      typing('off', token, recipient)
-	      if 'quickreplies' in response:
-	          replies = response['quickreplies']
-	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-	            params={"access_token": token},
-	            data=json.dumps({
-	              "recipient": {"id": recipient},
-	              "message": {"text": d['begin'],
-	              "quick_replies":[{
-	                            "content_type":"text",
-	                            "title":'Ja',
-	                            "payload":'Nee'
-	                          },
+		d = findValue(data['startans'],Starttext)
+		if 'begin' in d:
+			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+			typing('off', token, recipient)
+			if 'quickreplies' in response:
+				replies = response['quickreplies']
+				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+				params={"access_token": token},
+				data=json.dumps({
+				  "recipient": {"id": recipient},
+				  "message": {"text": d['begin'],
+				  "quick_replies":[{
+				                "content_type":"text",
+				                "title":'Ja',
+				                "payload":'Nee'
+				              },
 							  {
-	                            "content_type":"text",
-	                            "title":'Ja',
-	                            "payload":'Nee'}
-	            }),
-	            headers={'Content-type': 'application/json'})
-	          if r.status_code != requests.codes.ok:
-	            print r.text
-	            print(recipient)
-	  elif 'final' in d:
-		  user_data[sender]['Startpos'] = True
-		  user_data[sender]['Stage'] = 'GiveIdea'
-  		  postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-  	      typing('off', token, recipient)
-  	      if 'quickreplies' in response:
-  	          replies = response['quickreplies']
-  	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-  	            params={"access_token": token},
-  	            data=json.dumps({
-  	              "recipient": {"id": recipient},
-  	              "message": {"text": d['begin'],
-  	              "quick_replies":[{
-  	                            "content_type":"text",
-  	                            "title":'Ja',
-  	                            "payload":'Nee'
-  	                          },
-  							  {
-  	                            "content_type":"text",
-  	                            "title":'Ja',
-  	                            "payload":'Nee'}
-  	            }),
-  	            headers={'Content-type': 'application/json'})
-  	          if r.status_code != requests.codes.ok:
-  	            print r.text
-  	            print(recipient)
+				                "content_type":"text",
+				                "title":'Ja',
+				                "payload":'Nee'}
+								]}},
+				headers={'Content-type': 'application/json'}))
+			if r.status_code != requests.codes.ok:
+				print r.text
+				print(recipient)
+		elif 'final' in d:
+			user_data[sender]['Startpos'] = True
+			user_data[sender]['Stage'] = 'GiveIdea'
+			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+			typing('off', token, recipient)
+			if 'quickreplies' in response:
+				replies = response['quickreplies']
+				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+				params={"access_token": token},
+				data=json.dumps({
+				"recipient": {"id": recipient},
+				"message": {"text": d['begin'],
+				"quick_replies":[{
+							  "content_type":"text",
+							  "title":'Ja',
+							  "payload":'Nee'
+							},
+							{
+							  "content_type":"text",
+							  "title":'Ja',
+							  "payload":'Nee'}
+							  ]}},
+			  headers={'Content-type': 'application/json'}))
+			if r.status_code != requests.codes.ok:
+				print r.text
+				print(recipient)
   else:
 	  data['try'] +=1
 	  time0 = time.time()
