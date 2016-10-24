@@ -253,8 +253,8 @@ def handle_messages():
 
 	if sender in user_data:
 		if mid is not user_data[sender]['message-id']:
-		  	if data['Stage'] == 'Start':
-			    data['startans'].append(text)
+		  	if user_data[sender]['Stage'] == 'Start':
+			    user_data[sender]['startans'].append(text)
 			if user_data[sender]['dolog'] == 'end':
 				print(user_data[sender]['log']['text'])
 				print(user_data[sender]['text'])
