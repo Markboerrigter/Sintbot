@@ -98,7 +98,7 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAVJQyYb958BAFhDaklbgbh4HX1qU3lsYZAkeM7Aerd9ZBoJPqkGb27nZAt4wZAPrWqulgRGOO0hKhdZBholZA0REccqQd0Jil3dZAZCR9LaMnbwBCiSIpb1xZApn5WJHhKpMJasd5SPXHr9TakVseYMnxFcsEeMb57JBeuG9aTLw5AZDZD'
+PAT = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 # PAT for vraag het sint
 # EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
 # PAT for echoobotje
