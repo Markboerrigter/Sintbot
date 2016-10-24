@@ -204,10 +204,12 @@ def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
 
-  print(payload)
+
   global user_data
-  print('message events')
+
   for sender, message, mid in messaging_events(payload):
+    print('message events')
+    print(payload)
     postdashbot('human', payload)
     print(sender,message)
     if sender in user_data:
