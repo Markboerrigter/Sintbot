@@ -12,6 +12,8 @@ import mongo as mg
 import pprint
 from copy import copy
 import time
+import os
+import sys
 
 # personality, sentiment = getIt()
 
