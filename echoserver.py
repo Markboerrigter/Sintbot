@@ -205,6 +205,9 @@ def postdashbot(id, payload):
   #     if r.status_code != requests.codes.ok:
   #       print r.text
 
+def getdata(id):
+    return requests.get('https://graph.facebook.com/v2.6/<'+ sender+ '>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT)
+
 @app.route('/', methods=['POST'])
 def handle_messages():
   # print "Handling Messages"
@@ -253,6 +256,8 @@ def handle_messages():
             send_message(PAT, sender, message,user_data[sender])
             user_data[sender]['oldincoming'] = message
     else:
+        user_info = getdata(sender)
+        print(user_info)
         print('NEWUSER')
         makeStartScreen(PAT)
         user_data[sender] = dict()
