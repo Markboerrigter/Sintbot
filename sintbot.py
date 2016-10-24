@@ -84,7 +84,10 @@ Tokens['feedback']['feedback2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 #         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
 # }
 
+
+
 # dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
+
 TokenStages = ['Start','GiveIdea','decisions', 'presentchoosing', 'feedback']
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
@@ -95,6 +98,7 @@ def get_keys(d,target):
     path = []
     get_key(d,target, path, result)
     return result[0]
+
 
 def get_key(d, target, path, result):
     for k, v in d.iteritems():
@@ -154,6 +158,25 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+
+
+def postdashbot(id, payload):
+    print('payload triggered')
+  # if id == 'human':
+  #     print('send to dashbot ')
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+  #       data=payload,
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
+  # if id == 'bot':
+  #     print('send botshit to dashbot ')
+  #     print('payload: ', payload)
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
