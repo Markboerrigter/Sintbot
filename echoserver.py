@@ -203,10 +203,7 @@ def postdashbot(id, payload):
 def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
-
-
   global user_data
-
   for sender, message, mid in messaging_events(payload):
     print('message events')
     print(payload)
@@ -263,7 +260,7 @@ def handle_messages():
         user_data[sender]['text'] = []
         user_data[sender]['message-id'] = mid
         user_data[sender]['personality'] = ''
-        user_data[sender]['oldincoming'] = ''
+        user_data[sender]['oldincoming'] = message
         user_data[sender]['oldmessage'] = ''
         user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
         user_data[sender]['starter'] = ''
