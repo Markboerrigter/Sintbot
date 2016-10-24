@@ -233,7 +233,7 @@ def handle_messages():
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
-        user_data[sender]['try'] = 0
+
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         # if message in stoplist:
@@ -250,6 +250,7 @@ def handle_messages():
         #   print('end of conversation')
         #   data['dolog'] = 'end'
         if message != user_data[sender]['oldincoming']:
+            user_data[sender]['try'] = 0
             print(message, user_data[sender]['oldincoming'])
             user_data[sender]['text'].append(('user',message))
             user_data[sender]['message-id'] = mid
