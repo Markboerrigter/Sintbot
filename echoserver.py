@@ -267,7 +267,7 @@ def handle_messages():
         user_data[sender]['personality'] = ''
         user_data[sender]['oldincoming'] = message
         user_data[sender]['oldmessage'] = ''
-        user_data[sender]['token'] = Tokens['Personalities']['Extraversion'].values()[0]
+        user_data[sender]['token'] = Tokens['Start']['Personalities']['Extraversion'].values()[0]
         user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['data'] = {}
@@ -472,8 +472,8 @@ def findToken(recipient, data, text):
   #         data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
   #         data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
-      if data['token'] == Tokens['Personalities']['Extraversion'].values()[0]:
-          data['token'] = Tokens['Personalities']['Agreeableness'].values()[0]
+      if data['token'] == Tokens['Start']['Personalities']['Extraversion'].values()[0]:
+          data['token'] = Tokens['Start']['Personalities']['Agreeableness'].values()[0]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
