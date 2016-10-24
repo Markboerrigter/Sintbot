@@ -214,9 +214,11 @@ def handle_messages():
   payload = request.get_data()
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
+	print(payload)
 	print('message events')
 	postdashbot('human', payload)
 	print(sender,message)
+
 	if sender in user_data:
 		if mid != user_data[sender]['message-id']:
 		    if user_data[sender]['dolog'] == 'end':
