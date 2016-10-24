@@ -213,7 +213,7 @@ def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
   global user_data
-  for sender, message, mid, recipient in messaging_events(payload):
+  for sender, message, mid, recipient in messaging_events(payload) if mid != user_data[sender]['message-id']:
     print('message events')
     print(payload)
     print(recipient)
