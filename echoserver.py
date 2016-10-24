@@ -539,6 +539,7 @@ def findToken(recipient, data, text):
   return response, data
 
 def findValue(L,d):
+	newdict = d
 	for x in L:
 		newdict = d[x]
 	return newdict
