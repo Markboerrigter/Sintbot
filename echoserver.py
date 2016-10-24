@@ -248,14 +248,13 @@ def handle_messages():
 		    #   message = ''
 		    #   print('end of conversation')
 		    #   data['dolog'] = 'end'
-		    if message != user_data[sender]['oldincoming']:
-		        user_data[sender]['try'] = 0
-		        print(message, user_data[sender]['oldincoming'])
-		        user_data[sender]['text'].append(('user',message))
-		        user_data[sender]['message-id'] = mid
-		        typing('on', PAT, sender)
-		        send_message(PAT, sender, message,user_data[sender])
-		        user_data[sender]['oldincoming'] = message
+	        user_data[sender]['try'] = 0
+	        print(message, user_data[sender]['oldincoming'])
+	        user_data[sender]['text'].append(('user',message))
+	        user_data[sender]['message-id'] = mid
+	        typing('on', PAT, sender)
+	        send_message(PAT, sender, message,user_data[sender])
+	        user_data[sender]['oldincoming'] = message
 	else:
 	    user_info = getdata(sender)
 	    print(user_info)
