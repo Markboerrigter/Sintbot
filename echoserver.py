@@ -220,7 +220,7 @@ def handle_messages():
 	print(sender,message)
 
 	if sender in user_data:
-		if mid != user_data[sender]['message-id']:
+		if mid is not user_data[sender]['message-id']:
 		    if user_data[sender]['dolog'] == 'end':
 		        print(user_data[sender]['log']['text'])
 		        print(user_data[sender]['text'])
