@@ -98,11 +98,11 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 #VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD'
+PAT = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 # PAT for vraag het sint
-# EAAEkTt8L730BANPCJJhg4eAQQgp4Wyuvffs5lapcavGmH0xpYGyF7scpv3x9JrSL9MBDJaWJDb8Euy65DVfug9SuKm2IdRBH2JwoK8MaRhWe9LQcWCMPusLtmENggpfmw9LFcqPNHo1QNDUZAhMwGEavXGVdsbEYCoVhu7AZDZD
+# EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
 # PAT for echoobotje
-# EAAEkTt8L730BANlcI1tKFulZAyNgQjyZCvvpxCr0yT7b7rLuBvcp6exQqofOsxGmz6wbmZBwuJoYpsBqPzxHZBGQkPK6ZAMZB4bzQ9nqGeHfldt0uqaJ5LgjpVJZCM3uBvjzWIXozlsTrZCW8P5hR7IN3I4XoImMsjizZAPBy5W7ZAogZDZD'
+# EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 
 def get_keys(d,target):
     result = []
@@ -184,20 +184,20 @@ def typing(opt, token, recipient):
 
 def postdashbot(id, payload):
     print('boe')
-  # if id == 'human':
-  #     print('send to dashbot ')
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-  #       data=payload,
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
-  # if id == 'bot':
-  #     print('send botshit to dashbot ')
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
+  if id == 'human':
+      print('send to dashbot ')
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+        data=payload,
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
+  if id == 'bot':
+      print('send botshit to dashbot ')
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+        data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
@@ -473,6 +473,7 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
   else:
       print('end of conversation')
+      typing('off', token, recipient)
       data['dolog'] = 'end'
       response = {}
   response, data = getResponse(recipient, data['starter'], data)
