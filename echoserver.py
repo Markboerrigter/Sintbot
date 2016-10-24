@@ -554,24 +554,23 @@ def send_message(token, recipient, text, data):
 		if 'begin' in d:
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
-			if 'quickreplies' in response:
-				replies = response['quickreplies']
-				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-				params={"access_token": token},
-				data=json.dumps({
-				  "recipient": {"id": recipient},
-				  "message": {"text": d['begin'],
-				  "quick_replies":[{
-				                "content_type":"text",
-				                "title":'Ja',
-				                "payload":'Nee'
-				              },
-							  {
-				                "content_type":"text",
-				                "title":'Ja',
-				                "payload":'Nee'}
-								]}},
-				headers={'Content-type': 'application/json'}))
+			replies = response['quickreplies']
+			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+			params={"access_token": token},
+			data=json.dumps({
+			  "recipient": {"id": recipient},
+			  "message": {"text": d['begin'],
+			  "quick_replies":[{
+			                "content_type":"text",
+			                "title":'Ja',
+			                "payload":'Nee'
+			              },
+						  {
+			                "content_type":"text",
+			                "title":'Ja',
+			                "payload":'Nee'}
+							]}},
+			headers={'Content-type': 'application/json'}))
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
@@ -580,24 +579,24 @@ def send_message(token, recipient, text, data):
 			user_data[sender]['Stage'] = 'GiveIdea'
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
-			if 'quickreplies' in response:
-				replies = response['quickreplies']
-				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-				params={"access_token": token},
-				data=json.dumps({
-				"recipient": {"id": recipient},
-				"message": {"text": d['begin'],
-				"quick_replies":[{
-							  "content_type":"text",
-							  "title":'Ja',
-							  "payload":'Nee'
-							},
-							{
-							  "content_type":"text",
-							  "title":'Ja',
-							  "payload":'Nee'}
-							  ]}},
-			  headers={'Content-type': 'application/json'}))
+
+			replies = response['quickreplies']
+			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+			params={"access_token": token},
+			data=json.dumps({
+			"recipient": {"id": recipient},
+			"message": {"text": d['begin'],
+			"quick_replies":[{
+						  "content_type":"text",
+						  "title":'Ja',
+						  "payload":'Nee'
+						},
+						{
+						  "content_type":"text",
+						  "title":'Ja',
+						  "payload":'Nee'}
+						  ]}},
+			headers={'Content-type': 'application/json'}))
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
