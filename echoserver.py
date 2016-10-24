@@ -50,6 +50,10 @@ Tokens['Start']['Old']['recognized'] = {"Ja": 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 Tokens['Start']['Old']['oldFashioned'] = {"Ja": 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'}
 Tokens['Start']['Old']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
 Tokens['Start']['Old']['sintQuestioning'] = {"Ja": 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'}
+Tokens['Start']['Personalities']['Extraversion'] = {'Get Started', 'XXZ45IGCPW35BP2BO2HGZ7F7MZMQWHYR'}
+Tokens['Start']['Personalities']['Agreeableness'] = {'Agreeableness', 'WQD3FULNTPZYX5LEKXPV4SQFBKIO4S3X'}
+Tokens['Start']['Personalities']['Openess'] = {'Openess', 'RF2EW7WPKNNBXOVOMPIHN6WKWPBKSWKK'}
+Tokens['Start']['Personalities']['Conciousness'] = {'Conciousness', 'DV53ZSWVLJXO25PV3TLSRTIYHQ2DZWSU'}
 Tokens['GiveIdea'] = {}
 Tokens['GiveIdea']['Ja'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
 Tokens['GiveIdea']['Nee'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
@@ -184,21 +188,21 @@ def typing(opt, token, recipient):
 
 def postdashbot(id, payload):
   print('boe')
-  if id == 'human':
-      print('send to dashbot ')
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-        data=payload,
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
-  if id == 'bot':
-      print('send botshit to dashbot ')
-      print('payload: ', payload)
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-        data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
+  # if id == 'human':
+  #     print('send to dashbot ')
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+  #       data=payload,
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
+  # if id == 'bot':
+  #     print('send botshit to dashbot ')
+  #     print('payload: ', payload)
+  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+  #       headers={'Content-type': 'application/json'})
+  #     if r.status_code != requests.codes.ok:
+  #       print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
@@ -220,7 +224,6 @@ def handle_messages():
             user_data[sender]['Stage'] = TokenStages[0]
             user_data[sender]['text'] = []
             user_data[sender]['dolog'] = ''
-            user_data[sender]['oldincoming'] = ''
             user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -263,7 +266,7 @@ def handle_messages():
         user_data[sender]['personality'] = ''
         user_data[sender]['oldincoming'] = message
         user_data[sender]['oldmessage'] = ''
-        user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+        user_data[sender]['token'] = Tokens['Personalities']['Extraversion'].values()[0]
         user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['data'] = {}
@@ -449,7 +452,7 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
-
+  
   print(data['data'])
   print((k in data['data'] for k in ['budget', 'Age', 'Gender']))
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
@@ -458,15 +461,18 @@ def findToken(recipient, data, text):
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
+  # elif Stage == 'Start':
+  #     data['Stage'] = TokenStages[TokenStages.index(Stage)+1]
+  #     print(data['data'])
+  #     if 'distinction' in data['data'] and text.lower() == 'ja':
+  #         data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+  #         data['starter'] = get_keys(Tokens, data['token'])[-1]
+  #     else:
+  #         data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
+  #         data['starter'] = get_keys(Tokens, data['token'])[-1]
   elif Stage == 'Start':
-      data['Stage'] = TokenStages[TokenStages.index(Stage)+1]
-      print(data['data'])
-      if 'distinction' in data['data'] and text.lower() == 'ja':
-          data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-          data['starter'] = get_keys(Tokens, data['token'])[-1]
-      else:
-          data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-          data['starter'] = get_keys(Tokens, data['token'])[-1]
+      if data['token'] == Tokens['Personalities']['Extraversion'].values()[0]:
+          data['token'] = Tokens['Personalities']['Agreeableness'].values()[0]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
