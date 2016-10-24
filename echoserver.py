@@ -552,7 +552,7 @@ def send_message(token, recipient, text, data):
 
 		d = findValue(data['startans'],Starttext)
 		if 'begin' in d:
-			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
 			if 'quickreplies' in response:
 				replies = response['quickreplies']
@@ -578,7 +578,7 @@ def send_message(token, recipient, text, data):
 		elif 'final' in d:
 			user_data[sender]['Startpos'] = True
 			user_data[sender]['Stage'] = 'GiveIdea'
-			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
 			if 'quickreplies' in response:
 				replies = response['quickreplies']
