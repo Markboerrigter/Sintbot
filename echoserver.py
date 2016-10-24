@@ -50,6 +50,7 @@ Tokens['Start']['Old']['recognized'] = {"Ja": 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 Tokens['Start']['Old']['oldFashioned'] = {"Ja": 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'}
 Tokens['Start']['Old']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
 Tokens['Start']['Old']['sintQuestioning'] = {"Ja": 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'}
+Tokens['Start']['Personalities'] = {}
 Tokens['Start']['Personalities']['Extraversion'] = {'Get Started', 'XXZ45IGCPW35BP2BO2HGZ7F7MZMQWHYR'}
 Tokens['Start']['Personalities']['Agreeableness'] = {'Agreeableness', 'WQD3FULNTPZYX5LEKXPV4SQFBKIO4S3X'}
 Tokens['Start']['Personalities']['Openess'] = {'Openess', 'RF2EW7WPKNNBXOVOMPIHN6WKWPBKSWKK'}
@@ -452,7 +453,7 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = get_keys(Tokens, oldToken)[0]
-  
+
   print(data['data'])
   print((k in data['data'] for k in ['budget', 'Age', 'Gender']))
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
