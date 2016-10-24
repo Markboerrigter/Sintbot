@@ -354,7 +354,6 @@ def getInformation(response, tekst):
 def getResponse(recipient, text, data):
   response = tb.response(text, data['token'], data['session'])
   if 'msg' not in response:
-      print(response)
       response, data, information = findAnswer(response,text,data['token'],data)
       data['data'].update(information)
   information = getInformation(response, text)
@@ -502,6 +501,7 @@ def send_message(token, recipient, text, data):
   time0 = time.time()
   global user_data
   response, data = getResponse(recipient, text, data)
+  print(response)
   time1 = time.time()
   print('getresponse',time1-time0)
    # or response['msg'] == data['oldmessage']
