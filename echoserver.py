@@ -193,6 +193,7 @@ def postdashbot(id, payload):
         print r.text
   if id == 'bot':
       print('send botshit to dashbot ')
+      print('payload: ', payload)
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
         data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
         headers={'Content-type': 'application/json'})
@@ -410,7 +411,6 @@ def checksuggest(token, recipient, data):
                 presents = mergedics(L)
         else:
             presents = presentstasks
-        print(presents)
         presents = random.sample(presents,min(len(presents),5))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -476,7 +476,7 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
   else:
       print('end of conversation')
-      typing('off', token, recipient)
+      typing('off', PAT, recipient)
       data['dolog'] = 'end'
       response = {}
   response, data = getResponse(recipient, data['starter'], data)
@@ -502,10 +502,11 @@ def send_message(token, recipient, text, data):
   print('checksuggest',time3- time1)
   if 'msg' in response and response['msg'] != data['oldmessage']:
       print(response['msg'].decode('unicode_escape'))
-      typing('off', token, recipient)
+
       data['text'].append(('bot',response['msg']))
       data['oldmessage'] = response['msg']
       postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+      typing('off', token, recipient)
       if 'quickreplies' in response:
           replies = response['quickreplies']
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
