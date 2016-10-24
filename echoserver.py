@@ -280,7 +280,7 @@ def handle_messages():
 	    user_data[sender]['data'] = {}
 	    typing('on', PAT, sender)
 	    send_message(PAT, sender, message, user_data[sender])
-	return "ok", 200
+  return "ok", 200
 
 def find_sender():
     payload = request.get_data()
