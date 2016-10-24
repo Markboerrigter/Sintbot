@@ -31,6 +31,38 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
+Starttext = {}
+Starttext['begin'] = 'Hallo ik ben de hulp piet en ga je vandaag helpen met het zoeken van een kadotje.  Heb je al zin om Sinterklaas te vieren met je familie? :)'
+Starttext['Ja'] = {}
+Starttext['Ja']['begin'] = 'Natuurlijk haha! Ben jij dan ook altijd lekker aan het praten tijdens de viering?'
+Starttext['Ja']['Ja'] = {}
+Starttext['Ja']['Ja']['final'] = 'Altijd gezellig, weet je ook al welk cadeau je zoekt?'
+Starttext['Ja']['Ja']['distinction'] = 'ans'
+Starttext['Ja']['Nee'] = {}
+Starttext['Ja']['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
+
+Starttext['Nee'] = {}
+Starttext['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
+Starttext['Nee']['Ja'] = {}
+Starttext['Nee']['Ja']['begin'] = 'Als je mijn kadootje niet leuk vindt, zou je het me dan eerlijk vertellen?'
+Starttext['Nee']['Ja']['Ja'] = {}
+Starttext['Nee']['Ja']['Ja']['begin'] = {'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'}
+Starttext['Nee']['Ja']['Ja']['Ja'] = {}
+Starttext['Nee']['Ja']['Ja']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Nee']['Ja']['Ja']['Nee'] = {}
+Starttext['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
+Starttext['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
+Starttext['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Nee']['Ja']['Nee'] = {}
+Starttext['Nee']['Ja']['Nee']['final'] = 'Je wil me echt geen pijn doen hè! Weet je al welk kado je wil kopen?'
+Starttext['Nee']['Nee'] = {}
+Starttext['Nee']['Nee']['begin'] = {'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'}
+Starttext['Nee']['Nee']['Ja'] = {}
+Starttext['Nee']['Nee']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Nee']['Nee']['Nee'] = {}
+Starttext['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
+Starttext['Nee']['Nee']['Nee']['Ja'] = {}
+Starttext['Nee']['Nee']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
@@ -50,11 +82,11 @@ Tokens['Start']['Old']['recognized'] = {"Ja": 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'
 Tokens['Start']['Old']['oldFashioned'] = {"Ja": 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'}
 Tokens['Start']['Old']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
 Tokens['Start']['Old']['sintQuestioning'] = {"Ja": 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'}
-Tokens['Start']['Personalities'] = {}
-Tokens['Start']['Personalities']['Extraversion'] = {'Get Started': 'XXZ45IGCPW35BP2BO2HGZ7F7MZMQWHYR'}
-Tokens['Start']['Personalities']['Agreeableness'] = {'Agreeableness': 'WQD3FULNTPZYX5LEKXPV4SQFBKIO4S3X'}
-Tokens['Start']['Personalities']['Openess'] = {'Openess': 'RF2EW7WPKNNBXOVOMPIHN6WKWPBKSWKK'}
-Tokens['Start']['Personalities']['Conciousness'] = {'Conciousness': 'DV53ZSWVLJXO25PV3TLSRTIYHQ2DZWSU'}
+# Tokens['Start']['Personalities'] = {}
+# Tokens['Start']['Personalities']['Extraversion'] = {'Get Started': 'XXZ45IGCPW35BP2BO2HGZ7F7MZMQWHYR'}
+# Tokens['Start']['Personalities']['Agreeableness'] = {'Agreeableness': 'WQD3FULNTPZYX5LEKXPV4SQFBKIO4S3X'}
+# Tokens['Start']['Personalities']['Openess'] = {'Openess': 'RF2EW7WPKNNBXOVOMPIHN6WKWPBKSWKK'}
+# Tokens['Start']['Personalities']['Conciousness'] = {'Conciousness': 'DV53ZSWVLJXO25PV3TLSRTIYHQ2DZWSU'}
 Tokens['GiveIdea'] = {}
 Tokens['GiveIdea']['Ja'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
 Tokens['GiveIdea']['Nee'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
@@ -221,6 +253,8 @@ def handle_messages():
 
 	if sender in user_data:
 		if mid is not user_data[sender]['message-id']:
+		  	if data['Stage'] == 'Start':
+			  data['startans'].append(text)
 		    if user_data[sender]['dolog'] == 'end':
 		        print(user_data[sender]['log']['text'])
 		        print(user_data[sender]['text'])
@@ -229,12 +263,16 @@ def handle_messages():
 		        user_data[sender]['log']['presents'].update('')
 		        user_data[sender]['Stage'] = TokenStages[0]
 		        user_data[sender]['text'] = []
+				user_data[sender]['Startpos'] = False
 		        user_data[sender]['dolog'] = ''
 		        user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
 		        user_data[sender]['starter'] = ''
 		        user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 		        user_data[sender]['data'] = {}
-
+			if user_data[sender]['Startpos'] == True:
+				user_data[sender]['data']['distinction'] = message
+				user_data[sender]['token'] = Tokens['GiveIdea'][message]
+				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 		    print("Incoming from %s: %s" % (sender, message))
 		    print(sender, message)
 		    # if message in stoplist:
@@ -266,10 +304,12 @@ def handle_messages():
 	    user_data[sender] = dict()
 	    user_data[sender]['log'] = {}
 	    user_data[sender]['try'] = 0
+		user_data[sender]['Startpos'] = False
 	    user_data[sender]['log']['text']= {0:'first conversation'}
 	    user_data[sender]['log']['feedback']= {}
 	    user_data[sender]['log']['presents']= {}
 	    user_data[sender]['dolog'] = ''
+		user_data[sender]['startans'] = []
 	    user_data[sender]['Stage'] = TokenStages[0]
 	    user_data[sender]['text'] = []
 	    user_data[sender]['message-id'] = mid
@@ -497,65 +537,124 @@ def findToken(recipient, data, text):
   response, data = getResponse(recipient, data['starter'], data)
   return response, data
 
+def findValue(L,d):
+	for x in L:
+		newdict = d[x]
+	return newdict
+
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  data['try'] +=1
-  time0 = time.time()
-  global user_data
-  response, data = getResponse(recipient, text, data)
-  print(response)
-  time1 = time.time()
-  print('getresponse',time1-time0)
-   # or response['msg'] == data['oldmessage']
-  if response['type'] == 'stop':
-      response, data = findToken(recipient, data, text)
-      time2 = time.time()
-      print('stopthing',time2 - time1)
-      time1 = time2
-  print(data['data'])
-  checksuggest(token, recipient, data)
-  time3 = time.time()
-  print('checksuggest',time3- time1)
-  if 'msg' in response and response['msg'] != data['oldmessage']:
-      print(response['msg'].decode('unicode_escape'))
+  if data['Stage'] == 'Start':
 
-      data['text'].append(('bot',response['msg']))
-      data['oldmessage'] = response['msg']
-      postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-      typing('off', token, recipient)
-      if 'quickreplies' in response:
-          replies = response['quickreplies']
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": response['msg'].decode('unicode_escape'),
-              "quick_replies":[{
-                            "content_type":"text",
-                            "title":x,
-                            "payload":x
-                          } for x in replies]}
-            }),
-            headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-            print r.text
-            print(recipient)
-      else:
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": response['msg'].decode('unicode_escape')}
-            }),
-            headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-            print r.text
-	    #   print('number of tries', data['try'])
-	    #   if data['try'] <2:
-	    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
-		  #
-	    #           send_message(token, recipient, response['msg'], data)
+	  d = findValue(data['startans'],Starttext)
+	  if 'begin' in d:
+		  postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+	      typing('off', token, recipient)
+	      if 'quickreplies' in response:
+	          replies = response['quickreplies']
+	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+	            params={"access_token": token},
+	            data=json.dumps({
+	              "recipient": {"id": recipient},
+	              "message": {"text": d['begin'],
+	              "quick_replies":[{
+	                            "content_type":"text",
+	                            "title":'Ja',
+	                            "payload":'Nee'
+	                          },
+							  {
+	                            "content_type":"text",
+	                            "title":'Ja',
+	                            "payload":'Nee'}
+	            }),
+	            headers={'Content-type': 'application/json'})
+	          if r.status_code != requests.codes.ok:
+	            print r.text
+	            print(recipient)
+	  elif 'final' in d:
+		  user_data[sender]['Startpos'] = True
+		  user_data[sender]['Stage'] = 'GiveIdea'
+  		  postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+  	      typing('off', token, recipient)
+  	      if 'quickreplies' in response:
+  	          replies = response['quickreplies']
+  	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+  	            params={"access_token": token},
+  	            data=json.dumps({
+  	              "recipient": {"id": recipient},
+  	              "message": {"text": d['begin'],
+  	              "quick_replies":[{
+  	                            "content_type":"text",
+  	                            "title":'Ja',
+  	                            "payload":'Nee'
+  	                          },
+  							  {
+  	                            "content_type":"text",
+  	                            "title":'Ja',
+  	                            "payload":'Nee'}
+  	            }),
+  	            headers={'Content-type': 'application/json'})
+  	          if r.status_code != requests.codes.ok:
+  	            print r.text
+  	            print(recipient)
+  else:
+	  data['try'] +=1
+	  time0 = time.time()
+	  global user_data
+	  response, data = getResponse(recipient, text, data)
+	  print(response)
+	  time1 = time.time()
+	  print('getresponse',time1-time0)
+	   # or response['msg'] == data['oldmessage']
+	  if response['type'] == 'stop':
+	      response, data = findToken(recipient, data, text)
+	      time2 = time.time()
+	      print('stopthing',time2 - time1)
+	      time1 = time2
+	  print(data['data'])
+	  checksuggest(token, recipient, data)
+	  time3 = time.time()
+	  print('checksuggest',time3- time1)
+	  if 'msg' in response and response['msg'] != data['oldmessage']:
+	      print(response['msg'].decode('unicode_escape'))
+
+	      data['text'].append(('bot',response['msg']))
+	      data['oldmessage'] = response['msg']
+	      postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+	      typing('off', token, recipient)
+	      if 'quickreplies' in response:
+	          replies = response['quickreplies']
+	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+	            params={"access_token": token},
+	            data=json.dumps({
+	              "recipient": {"id": recipient},
+	              "message": {"text": response['msg'].decode('unicode_escape'),
+	              "quick_replies":[{
+	                            "content_type":"text",
+	                            "title":x,
+	                            "payload":x
+	                          } for x in replies]}
+	            }),
+	            headers={'Content-type': 'application/json'})
+	          if r.status_code != requests.codes.ok:
+	            print r.text
+	            print(recipient)
+	      else:
+	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+	            params={"access_token": token},
+	            data=json.dumps({
+	              "recipient": {"id": recipient},
+	              "message": {"text": response['msg'].decode('unicode_escape')}
+	            }),
+	            headers={'Content-type': 'application/json'})
+	          if r.status_code != requests.codes.ok:
+	            print r.text
+		    #   print('number of tries', data['try'])
+		    #   if data['try'] <2:
+		    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
+			  #
+		    #           send_message(token, recipient, response['msg'], data)
   time4 = time.time()
   print('sendmessage', time4 - time3)
   user_data[recipient] = data
