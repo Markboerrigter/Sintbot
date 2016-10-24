@@ -206,7 +206,7 @@ def postdashbot(id, payload):
   #       print r.text
 
 def getdata(id):
-    return requests.get('https://graph.facebook.com/v2.6/<'+ id+ '>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text()
+    return requests.get('https://graph.facebook.com/v2.6/<'+ id+ '>?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
