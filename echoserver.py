@@ -266,6 +266,7 @@ def handle_messages():
         user_data[sender]['starter'] = ''
         user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         user_data[sender]['data'] = {}
+        typing('on', PAT, sender)
         send_message(PAT, sender, message, user_data[sender])
   return "ok", 200
 
@@ -492,6 +493,7 @@ def send_message(token, recipient, text, data):
       time2 = time.time()
       print('stopthing',time2 - time1)
       time1 = time2
+  print(data['data'])
   checksuggest(token, recipient, data)
   time3 = time.time()
   print('checksuggest',time3- time1)
