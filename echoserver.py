@@ -215,8 +215,6 @@ def handle_messages():
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
 	print('message events')
-	print(payload)
-	print(recipient)
 	postdashbot('human', payload)
 	print(sender,message)
 	if sender in user_data:
