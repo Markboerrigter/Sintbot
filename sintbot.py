@@ -1,28 +1,26 @@
-from flask import Flask, request
+from flask import Flask, request, g
 import json
 import requests
 
 from wit import Wit
 import talkBot as tb
-from runLogin import getIt
 import pickle
 
-import datetime
 import mongo as mg
 import pprint
 from copy import copy
 
 import time
-import sys
 import os
+import sys
+import datetime
 import random
 
 # personality, sentiment = getIt()
 
-from flask import g
 x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
 
+pickle.dump(x, open('user_data.p', 'wb'))
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
 def word_feats(words):
@@ -86,34 +84,17 @@ Tokens['feedback']['feedback2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'
 #         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
 # }
 
-
-
-dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
-
+# dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 TokenStages = ['Start','GiveIdea','decisions', 'presentchoosing', 'feedback']
-
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
-
-# returns = ['Hallo, ik ben Spot, de chatbot van Spotta! Waar kan ik u mee helpen?', 'Hallo daar, ik ben Sinterklaas. Zullen wij samen op zoek gaan naar het juiste kadootje?', ['Kent u het verhaal over Sinterklaas en het verloren kadootje?', ],
-#                     'Welcome back, why are you in this screen?', 'Hi, welcombe back in the Sinterklaas chat! Bent u weer op zoek naar een kado?', 'Goedendag, ik zie dat u ons weer gevonden heeft! Kan ik u helpen met het vinden van een kadootje?',
-#                     "Sorry, ik houd niet zo van die lange antwoorden. Ik stel voor om er nog eens rustig overheen te gaan. Bent u op zoek naar een kado?"]
-
-#VERLORENKADOOTJE ID ##
-# This needs to be filled with the Page Access Token that will be provided
-# by the Facebook App that will be created.
 PAT = 'EAAVJQyYb958BAFhDaklbgbh4HX1qU3lsYZAkeM7Aerd9ZBoJPqkGb27nZAt4wZAPrWqulgRGOO0hKhdZBholZA0REccqQd0Jil3dZAZCR9LaMnbwBCiSIpb1xZApn5WJHhKpMJasd5SPXHr9TakVseYMnxFcsEeMb57JBeuG9aTLw5AZDZD'
-# PAT for vraag het sint
-# EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
-# PAT for echoobotje
-# EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 
 def get_keys(d,target):
     result = []
     path = []
     get_key(d,target, path, result)
     return result[0]
-
 
 def get_key(d, target, path, result):
     for k, v in d.iteritems():
@@ -148,17 +129,6 @@ def verify():
         return request.args['hub.challenge'], 200
     return 'Hello world', 200
 
-# @app.route('/', methods=['GET'])
-# def handle_verification():
-#   print "Handling Verification."
-#   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-#     print "Verification successful!"
-#     return request.args.get('hub.challenge', '')
-#   else:
-#     print "Verification failed!"
-#     return 'Error, wrong validation token'
-
-
 def typing(opt, token, recipient):
     if opt == 'on':
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -184,25 +154,6 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
-
-
-def postdashbot(id, payload):
-  print('boe')
-  # if id == 'human':
-  #     print('send to dashbot ')
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-  #       data=payload,
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
-  # if id == 'bot':
-  #     print('send botshit to dashbot ')
-  #     print('payload: ', payload)
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
 
 @app.route('/', methods=['POST'])
 def handle_messages():
