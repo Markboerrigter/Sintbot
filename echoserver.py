@@ -229,7 +229,7 @@ def handle_messages():
             user_data[sender]['Stage'] = TokenStages[0]
             user_data[sender]['text'] = []
             user_data[sender]['dolog'] = ''
-            user_data[sender]['token'] = Tokens['Start']['New'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+            user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
@@ -549,8 +549,9 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-  if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']) and data['try'] <2:
-      send_message(token, recipient, response['msg'], data)
+
+      if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']) and data['try'] <2:
+          send_message(token, recipient, response['msg'], data)
   time4 = time.time()
   print('sendmessage', time4 - time3)
   user_data[recipient] = data
