@@ -540,7 +540,9 @@ def findToken(recipient, data, text):
 
 def findValue(L,d):
 	newdict = d
+
 	for x in L:
+		if
 		newdict = d[x]
 	return newdict
 
@@ -549,7 +551,7 @@ def send_message(token, recipient, text, data):
   """
   global user_data
   if data['Stage'] == 'Start':
-
+	  	print(data['startans'])
 		d = findValue(data['startans'],Starttext)
 		if 'begin' in d:
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
