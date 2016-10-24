@@ -545,6 +545,7 @@ def findValue(L,d):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+  global user_data
   if data['Stage'] == 'Start':
 
 		d = findValue(data['startans'],Starttext)
@@ -599,57 +600,57 @@ def send_message(token, recipient, text, data):
 				print r.text
 				print(recipient)
   else:
-	  data['try'] +=1
-	  time0 = time.time()
-	  global user_data
-	  response, data = getResponse(recipient, text, data)
-	  print(response)
-	  time1 = time.time()
-	  print('getresponse',time1-time0)
-	   # or response['msg'] == data['oldmessage']
-	  if response['type'] == 'stop':
-	      response, data = findToken(recipient, data, text)
-	      time2 = time.time()
-	      print('stopthing',time2 - time1)
-	      time1 = time2
-	  print(data['data'])
-	  checksuggest(token, recipient, data)
-	  time3 = time.time()
-	  print('checksuggest',time3- time1)
-	  if 'msg' in response and response['msg'] != data['oldmessage']:
-	      print(response['msg'].decode('unicode_escape'))
+		data['try'] +=1
+		time0 = time.time()
 
-	      data['text'].append(('bot',response['msg']))
-	      data['oldmessage'] = response['msg']
-	      postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-	      typing('off', token, recipient)
-	      if 'quickreplies' in response:
-	          replies = response['quickreplies']
-	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-	            params={"access_token": token},
-	            data=json.dumps({
-	              "recipient": {"id": recipient},
-	              "message": {"text": response['msg'].decode('unicode_escape'),
-	              "quick_replies":[{
-	                            "content_type":"text",
-	                            "title":x,
-	                            "payload":x
-	                          } for x in replies]}
-	            }),
-	            headers={'Content-type': 'application/json'})
-	          if r.status_code != requests.codes.ok:
-	            print r.text
-	            print(recipient)
-	      else:
-	          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-	            params={"access_token": token},
-	            data=json.dumps({
-	              "recipient": {"id": recipient},
-	              "message": {"text": response['msg'].decode('unicode_escape')}
-	            }),
-	            headers={'Content-type': 'application/json'})
-	          if r.status_code != requests.codes.ok:
-	            print r.text
+		response, data = getResponse(recipient, text, data)
+		print(response)
+		time1 = time.time()
+		print('getresponse',time1-time0)
+		# or response['msg'] == data['oldmessage']
+		if response['type'] == 'stop':
+			response, data = findToken(recipient, data, text)
+			time2 = time.time()
+			print('stopthing',time2 - time1)
+			time1 = time2
+		print(data['data'])
+		checksuggest(token, recipient, data)
+		time3 = time.time()
+		print('checksuggest',time3- time1)
+		if 'msg' in response and response['msg'] != data['oldmessage']:
+			print(response['msg'].decode('unicode_escape'))
+
+			data['text'].append(('bot',response['msg']))
+			data['oldmessage'] = response['msg']
+			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+			typing('off', token, recipient)
+			if 'quickreplies' in response:
+				replies = response['quickreplies']
+				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+				params={"access_token": token},
+				data=json.dumps({
+				  "recipient": {"id": recipient},
+				  "message": {"text": response['msg'].decode('unicode_escape'),
+				  "quick_replies":[{
+				                "content_type":"text",
+				                "title":x,
+				                "payload":x
+				              } for x in replies]}
+				}),
+				headers={'Content-type': 'application/json'})
+			if r.status_code != requests.codes.ok:
+				print r.text
+				print(recipient)
+			else:
+				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+				params={"access_token": token},
+				data=json.dumps({
+				  "recipient": {"id": recipient},
+				  "message": {"text": response['msg'].decode('unicode_escape')}
+				}),
+				headers={'Content-type': 'application/json'})
+			if r.status_code != requests.codes.ok:
+				print r.text
 		    #   print('number of tries', data['try'])
 		    #   if data['try'] <2:
 		    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
