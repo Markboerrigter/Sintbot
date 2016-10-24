@@ -136,23 +136,23 @@ def makeStartScreen(token):
   if r.status_code != requests.codes.ok:
     print r.text
 
-# @app.route('/', methods=['GET'])
-# def verify():
-#     if request.args.get('hub.mode') == 'subscribe' and request.args.get('hub.challenge'):
-#         if not request.args.get('hub.verify_token') == os.environ['FB_VERIFY_TOKEN']:
-#             return 'Verification token mismatch', 403
-#         return request.args['hub.challenge'], 200
-#     return 'Hello world', 200
-
 @app.route('/', methods=['GET'])
-def handle_verification():
-  print "Handling Verification."
-  if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-    print "Verification successful!"
-    return request.args.get('hub.challenge', '')
-  else:
-    print "Verification failed!"
-    return 'Error, wrong validation token'
+def verify():
+    if request.args.get('hub.mode') == 'subscribe' and request.args.get('hub.challenge'):
+        if not request.args.get('hub.verify_token') == os.environ['FB_VERIFY_TOKEN']:
+            return 'Verification token mismatch', 403
+        return request.args['hub.challenge'], 200
+    return 'Hello world', 200
+
+# @app.route('/', methods=['GET'])
+# def handle_verification():
+#   print "Handling Verification."
+#   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
+#     print "Verification successful!"
+#     return request.args.get('hub.challenge', '')
+#   else:
+#     print "Verification failed!"
+#     return 'Error, wrong validation token'
 
 
 def typing(opt, token, recipient):
@@ -314,6 +314,7 @@ def replace_value_with_definition(key_to_find, definition, current_dict):
     return current_dict
 
 def getInformation(response, tekst):
+
     if 'entities' in response:
         entities = response['entities']
         out  = {}
@@ -342,9 +343,11 @@ def getInformation(response, tekst):
 def getResponse(recipient, text, data):
   response = tb.response(text, data['token'], data['session'])
   if 'msg' not in response:
+      print(response)
       response, data, information = findAnswer(response,text,data['token'],data)
       data['data'].update(information)
   information = getInformation(response, text)
+
   data['data'].update(information)
   return response, data
 
