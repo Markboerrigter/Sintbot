@@ -547,8 +547,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-  if 'msg' in tb.respronse(response['msg'], data['token'], data['session']):
-      print(tb.respronse(response['msg'], data['token'], data['session'])['msg'])
+  if 'msg' in tb.response(response['msg'], data['token'], data['session']):
+      print(tb.response(response['msg'], data['token'], data['session'])['msg'])
   time4 = time.time()
   print('sendmessage', time4 - time3)
   user_data[recipient] = data
