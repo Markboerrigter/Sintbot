@@ -233,7 +233,7 @@ def handle_messages():
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
-
+        user_data[sender]['try'] = 0
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         # if message in stoplist:
@@ -263,6 +263,7 @@ def handle_messages():
         makeStartScreen(PAT)
         user_data[sender] = dict()
         user_data[sender]['log'] = {}
+        user_data[sender]['try'] = 0
         user_data[sender]['log']['text']= {0:'first conversation'}
         user_data[sender]['log']['feedback']= {}
         user_data[sender]['log']['presents']= {}
@@ -498,6 +499,7 @@ def findToken(recipient, data, text):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+  data['try'] +=1
   time0 = time.time()
   global user_data
   response, data = getResponse(recipient, text, data)
@@ -547,7 +549,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
             print r.text
-  if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
+  if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']) and data['try'] <2:
       send_message(token, recipient, response['msg'], data)
   time4 = time.time()
   print('sendmessage', time4 - time3)
