@@ -507,7 +507,7 @@ def send_message(token, recipient, text, data):
   time1 = time.time()
   print('getresponse',time1-time0)
    # or response['msg'] == data['oldmessage']
-  if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
+  if response['type'] == 'stop':
       response, data = findToken(recipient, data, text)
       time2 = time.time()
       print('stopthing',time2 - time1)
