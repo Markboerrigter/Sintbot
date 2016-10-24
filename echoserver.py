@@ -252,7 +252,7 @@ def handle_messages():
 		    #   data['dolog'] = 'end'
 	        user_data[sender]['try'] = 0
 	        print(message, user_data[sender]['oldincoming'])
-			print(mid,user_data[sender]['message-id'] )
+	        print(mid,user_data[sender]['message-id'])
 	        user_data[sender]['text'].append(('user',message))
 	        user_data[sender]['message-id'] = mid
 	        typing('on', PAT, sender)
