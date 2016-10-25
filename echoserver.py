@@ -579,6 +579,7 @@ def findNo(L):
 		pers = 'Conciousness'
 	elif num == 4:
 		pers = 'Default'
+	return pers
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
@@ -624,7 +625,7 @@ def send_message(token, recipient, text, data):
 			params={"access_token": token},
 			data=json.dumps({
 			"recipient": {"id": recipient},
-			"message": {"text": d['begin'],
+			"message": {"text": d['final'],
 			"quick_replies":[{
 						  "content_type":"text",
 						  "title":'Ja',
