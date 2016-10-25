@@ -538,10 +538,10 @@ def checksuggest(token, recipient, data):
 def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
-  Stage = get_keys(Tokens, oldToken)[0]
+  Stage = data['Stage']
 
   print(data['data'])
-  print(data['Stage'])
+  print(Stage)
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
@@ -664,7 +664,7 @@ def send_message(token, recipient, text, data):
 		time1 = time.time()
 		print('getresponse',time1-time0)
 		# or response['msg'] == data['oldmessage']
-		if response['type'] == 'stop':
+		if response['type'] == 'stop' or response['msg'] != data['oldmessage']:
 			response, data = findToken(recipient, data, text)
 			time2 = time.time()
 			print('stopthing',time2 - time1)
