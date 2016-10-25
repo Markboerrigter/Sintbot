@@ -74,7 +74,7 @@ def getIt(sender):
     personality_text = ('\n'.join(text))
 
 
-    personality = getPersonality(personality_text, profile['name'], 'facebook')
+    personality = getPersonality(personality_text, profile['first_name'], 'facebook')
     pprint.pprint(personality)
     # print(json.dumps(json.loads(personality), indent =4, sort_keys=True))
     def word_feats(words):
