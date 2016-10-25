@@ -557,7 +557,6 @@ def send_message(token, recipient, text, data):
 		if 'begin' in d:
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
-			replies = response['quickreplies']
 			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 			params={"access_token": token},
 			data=json.dumps({
@@ -582,8 +581,6 @@ def send_message(token, recipient, text, data):
 			user_data[sender]['Stage'] = 'GiveIdea'
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
-
-			replies = response['quickreplies']
 			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 			params={"access_token": token},
 			data=json.dumps({
