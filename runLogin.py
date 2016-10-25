@@ -13,7 +13,11 @@ from PersonalityTest import getPersonality
 
 from translateGoogle import trans, detect, allEng
 
+
+
+
 # print(translate.translate('hallo ik ben Mark'))
+
 
 from nltk.tokenize import TweetTokenizer
 tknzr = TweetTokenizer()
@@ -36,29 +40,28 @@ def get_fb_token(app_id, app_secret):
     #print file.text #to test the TOKEN
     return result
 
-def getIt(sender):
+def getIt():
     # print(trans('hoi ik ben mark', 'nl', 'en'))
     # print(detect('hoi ik ben mark'))
     #
     # print(allEng('Ik ben op zoek naar een huis'))
     token = 'EAAEkTt8L730BALOjocPDecaQ16Cj8pSW2ZCqakfOXUY5aPAJ8OWZCjf58s54djmZCYI8hrdTsnwVQaYKEwhNaBVaFMbqATdzbZAZBdU7lfMXxr8ZC1ggyKPu0xxCvrZA5jVIoIl3HzOpQMW2TiZA3WlS99gRLZBvKZB6clXHZCRa1MBQwZDZD'
     # token = get_fb_token(FB_APP_ID,FB_APP_SECRET)
-    perm =requests.get('https://www.facebook.com/v2.8/dialog/oauth?client_id='+ FB_APP_ID + '&redirect_uri=https://www.facebook.com/connect/login_success.html')
+
     # Set the users profile FBML
-    print(perm)
+
     facebook_graph = facebook.GraphAPI(token)
-    permissions = requests.get('https://graph.facebook.com/v2.6/'+sender + '/permissions')
 
-    # permissions = facebook_graph.request(sender + '/permissions')
-    print(permissions.text)
+    permissions = facebook_graph.request('me/permissions')
+    # print(permissions)
 
-    profile = facebook_graph.get_object(sender)
-    print(profile)
+    profile = facebook_graph.get_object("me")
+    # print(profile)
 
     text = []
     # Try to post something on the wall.
     try:
-        fb_response = facebook_graph.get_connections(sender, "posts", limit = 200)
+        fb_response = facebook_graph.get_connections("me", "posts", limit = 200)
         for x in fb_response['data']:
             if 'message' in x:
                 text.append(x['message'])
@@ -74,7 +77,7 @@ def getIt(sender):
     personality_text = ('\n'.join(text))
 
 
-    personality = getPersonality(personality_text, profile['first_name'], 'facebook')
+    personality = getPersonality(personality_text, profile['name'], 'facebook')
     pprint.pprint(personality)
     # print(json.dumps(json.loads(personality), indent =4, sort_keys=True))
     def word_feats(words):
@@ -94,4 +97,4 @@ def getIt(sender):
     # ['children']['children'])
 
 if __name__ == '__main__':
-    getIt('me')
+    getIt()
