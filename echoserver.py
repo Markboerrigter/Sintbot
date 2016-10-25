@@ -333,7 +333,7 @@ def handle_messages():
 			send_message(PAT, sender, message,user_data[sender])
 			user_data[sender]['oldincoming'] = message
 	else:
-		user_info = getdata(sender)
+		user_info = getdata()
 		print(user_info)
 		print('NEWUSER')
 		makeStartScreen(PAT)
