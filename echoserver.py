@@ -432,6 +432,7 @@ def getInformation(response, tekst):
         return []
 
 def getResponse(recipient, text, data):
+  print(text, data['token'], data['session'])
   response = tb.response(text, data['token'], data['session'])
   if 'msg' not in response:
       response, data, information = findAnswer(response,text,data['token'],data)
