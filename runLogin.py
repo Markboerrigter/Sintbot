@@ -53,7 +53,7 @@ def getIt(sender):
     print(permissions.text)
 
     profile = facebook_graph.get_object(sender)
-    print(profile.text)
+    print(profile)
 
     text = []
     # Try to post something on the wall.
