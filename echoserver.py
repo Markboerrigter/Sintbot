@@ -284,9 +284,11 @@ def handle_messages():
 				if message.lower() == 'ja':
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
 				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+				  message = user_data[sender]['starter']
 				else:
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
 				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+				  message = user_data[sender]['starter']
 		  	if user_data[sender]['Stage'] == 'Start':
 			    user_data[sender]['startans'].append(message)
 			if user_data[sender]['dolog'] == 'end':
