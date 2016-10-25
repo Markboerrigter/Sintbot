@@ -337,8 +337,8 @@ def handle_messages():
 		print(user_info)
 		print('NEWUSER')
 		makeStartScreen(PAT)
-		persFB = getIt(sender)
-
+		persFB, sent = getIt(sender)
+		pprint(persFB)
 		user_data[sender] = dict()
 		user_data[sender]['log'] = {}
 		user_data[sender]['try'] = 0
