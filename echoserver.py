@@ -521,9 +521,9 @@ def findToken(recipient, data, text):
   #     else:
   #         data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
   #         data['starter'] = get_keys(Tokens, data['token'])[-1]
-  elif Stage == 'Start':
-      if data['token'] == Tokens['Start']['Personalities']['Extraversion'].values()[0]:
-          data['token'] = Tokens['Start']['Personalities']['Agreeableness'].values()[0]
+  # elif Stage == 'Start':
+  #     if data['token'] == Tokens['Start']['Personalities']['Extraversion'].values()[0]:
+  #         data['token'] = Tokens['Start']['Personalities']['Agreeableness'].values()[0]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -546,6 +546,19 @@ def findValue(L,d):
 		newdict = d[x]
 	return newdict
 
+def findNo(L):
+	num = L.count('Nee')
+	if num == 0:
+		pers = 'Extraverion'
+	elif num == 1:
+		pers = 'Agreebableness'
+	elif num == 2:
+		pers = 'Openess'
+	elif num == 3:
+		pers = 'Conciousness'
+	elif num == 4:
+		pers = 'Default'
+
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
@@ -555,6 +568,7 @@ def send_message(token, recipient, text, data):
   if data['Stage'] == 'Start':
 	  	print(data['startans'])
 		d = findValue(data['startans'],Starttext)
+		print(d)
 		if 'begin' in d:
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
@@ -583,6 +597,8 @@ def send_message(token, recipient, text, data):
 			user_data[sender]['Stage'] = 'GiveIdea'
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
+			personality = findNo(data['startans'])
+			print(personality)
 			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 			params={"access_token": token},
 			data=json.dumps({
