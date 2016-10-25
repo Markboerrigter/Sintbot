@@ -549,6 +549,8 @@ def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
   global user_data
+  if message == 'Get started':
+	  data['startans'] = []
   if data['Stage'] == 'Start':
 	  	print(data['startans'])
 		d = findValue(data['startans'],Starttext)
