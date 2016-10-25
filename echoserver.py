@@ -541,7 +541,7 @@ def findToken(recipient, data, text):
   Stage = get_keys(Tokens, oldToken)[0]
 
   print(data['data'])
-  print((k in data['data'] for k in ['budget', 'Age', 'Gender']))
+  print(data['Stage'])
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
