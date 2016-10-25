@@ -281,6 +281,8 @@ def handle_messages():
 		print(mid,user_data[sender]['message-id'])
 		if mid != user_data[sender]['message-id']:
 			if user_data[sender]['Stage'] == 'GiveIdea':
+				user_data[sender]['data']['distinction'] = message
+				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 				if message.lower() == 'ja':
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
 				  print(user_data[sender]['token'])
@@ -307,10 +309,6 @@ def handle_messages():
 				user_data[sender]['starter'] = ''
 				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 				user_data[sender]['data'] = {}
-			if user_data[sender]['Startpos'] == True:
-				user_data[sender]['data']['distinction'] = message
-				user_data[sender]['token'] = Tokens['GiveIdea'][message]
-				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 			print("Incoming from %s: %s" % (sender, message))
 			print(sender, message)
 		    # if message in stoplist:
