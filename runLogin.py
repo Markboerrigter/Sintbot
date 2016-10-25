@@ -48,7 +48,7 @@ def getIt(sender):
 
     facebook_graph = facebook.GraphAPI(token)
 
-    permissions = facebook_graph.request(sender'/permissions')
+    permissions = facebook_graph.request(sender + '/permissions')
     # print(permissions)
 
     profile = facebook_graph.get_object(sender)
