@@ -13,11 +13,7 @@ from PersonalityTest import getPersonality
 
 from translateGoogle import trans, detect, allEng
 
-
-
-
 # print(translate.translate('hallo ik ben Mark'))
-
 
 from nltk.tokenize import TweetTokenizer
 tknzr = TweetTokenizer()
@@ -40,7 +36,7 @@ def get_fb_token(app_id, app_secret):
     #print file.text #to test the TOKEN
     return result
 
-def getIt():
+def getIt(sender):
     # print(trans('hoi ik ben mark', 'nl', 'en'))
     # print(detect('hoi ik ben mark'))
     #
@@ -52,16 +48,16 @@ def getIt():
 
     facebook_graph = facebook.GraphAPI(token)
 
-    permissions = facebook_graph.request('me/permissions')
+    permissions = facebook_graph.request(sender'/permissions')
     # print(permissions)
 
-    profile = facebook_graph.get_object("me")
+    profile = facebook_graph.get_object(sender)
     # print(profile)
 
     text = []
     # Try to post something on the wall.
     try:
-        fb_response = facebook_graph.get_connections("me", "posts", limit = 200)
+        fb_response = facebook_graph.get_connections(sender, "posts", limit = 200)
         for x in fb_response['data']:
             if 'message' in x:
                 text.append(x['message'])
@@ -97,4 +93,4 @@ def getIt():
     # ['children']['children'])
 
 if __name__ == '__main__':
-    getIt()
+    getIt('me')
