@@ -43,7 +43,7 @@ def getIt(sender):
     # print(allEng('Ik ben op zoek naar een huis'))
     token = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
     # token = get_fb_token(FB_APP_ID,FB_APP_SECRET)
-	perm =requests.get('https://www.facebook.com/v2.8/dialog/oauth?client_id='+ FB_APP_ID + '&redirect_uri=https://www.facebook.com/connect/login_success.html')
+    perm =requests.get('https://www.facebook.com/v2.8/dialog/oauth?client_id='+ FB_APP_ID + '&redirect_uri=https://www.facebook.com/connect/login_success.html')
     # Set the users profile FBML
     print(perm)
     facebook_graph = facebook.GraphAPI(token)
