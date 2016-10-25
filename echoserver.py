@@ -694,9 +694,9 @@ def send_message(token, recipient, text, data):
 				              } for x in replies]}
 				}),
 				headers={'Content-type': 'application/json'})
-			if r.status_code != requests.codes.ok:
-				print r.text
-				print(recipient)
+				if r.status_code != requests.codes.ok:
+					print r.text
+					print(recipient)
 			else:
 				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 				params={"access_token": token},
@@ -705,8 +705,8 @@ def send_message(token, recipient, text, data):
 				  "message": {"text": response['msg'].decode('unicode_escape')}
 				}),
 				headers={'Content-type': 'application/json'})
-			if r.status_code != requests.codes.ok:
-				print r.text
+				if r.status_code != requests.codes.ok:
+					print r.text
 			time4 = time.time()
 			print('sendmessage', time4 - time3)
 		    #   print('number of tries', data['try'])
