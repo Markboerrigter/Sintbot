@@ -611,11 +611,11 @@ def send_message(token, recipient, text, data):
 				print r.text
 				print(recipient)
 		elif 'final' in d:
-			user_data[sender]['Startpos'] = True
-			user_data[sender]['Stage'] = 'GiveIdea'
+			data['Startpos'] = True
+			data['Stage'] = 'GiveIdea'
 			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
 			typing('off', token, recipient)
-			personality = findNo(data['startans'])
+			data['personality'] = findNo(data['startans'])
 			print(personality)
 			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 			params={"access_token": token},
