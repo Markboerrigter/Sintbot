@@ -36,7 +36,7 @@ Starttext['begin'] = 'Hallo ik ben de hulp piet en ga je vandaag helpen met het 
 Starttext['Ja'] = {}
 Starttext['Ja']['begin'] = 'Natuurlijk haha! Ben jij dan ook altijd lekker aan het praten tijdens de viering?'
 Starttext['Ja']['Ja'] = {}
-Starttext['Ja']['Ja']['final'] = 'Altijd gezellig, weet je ook al welk cadeau je zoekt?'
+Starttext['Ja']['Ja']['final'] = ['Altijd gezellig, weet je ook al welk cadeau je zoekt?', 'Extraversion']
 Starttext['Ja']['Ja']['distinction'] = 'ans'
 Starttext['Ja']['Nee'] = {}
 Starttext['Ja']['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
@@ -45,21 +45,24 @@ Starttext['Ja']['Nee']['Ja']['begin'] = 'Als je mijn kadootje niet leuk vindt, z
 Starttext['Ja']['Nee']['Ja']['Ja'] = {}
 Starttext['Ja']['Nee']['Ja']['Ja']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
 Starttext['Ja']['Nee']['Ja']['Ja']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Ja']['Nee']['Ja']['Ja']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
 Starttext['Ja']['Nee']['Ja']['Ja']['Nee'] = {}
 Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
 Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
 Starttext['Ja']['Nee']['Ja']['Nee'] = {}
-Starttext['Ja']['Nee']['Ja']['Nee']['final'] = 'Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?'
+Starttext['Ja']['Nee']['Ja']['Nee']['final'] = ['Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?','Agreeableness']
 Starttext['Ja']['Nee']['Nee'] = {}
 Starttext['Ja']['Nee']['Nee']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
 Starttext['Ja']['Nee']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Nee']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Ja']['Nee']['Nee']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
 Starttext['Ja']['Nee']['Nee']['Nee'] = {}
 Starttext['Ja']['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
 Starttext['Ja']['Nee']['Nee']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Nee']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Ja']['Nee']['Nee']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
+Starttext['Ja']['Nee']['Nee']['Nee']['Nee'] = {}
+Starttext['Ja']['Nee']['Nee']['Nee']['Nee']['final'] = ['Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?', 'default']
+
 
 Starttext['Nee'] = {}
 Starttext['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
@@ -68,23 +71,23 @@ Starttext['Nee']['Ja']['begin'] = 'Als je mijn kadootje niet leuk vindt, zou je 
 Starttext['Nee']['Ja']['Ja'] = {}
 Starttext['Nee']['Ja']['Ja']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
 Starttext['Nee']['Ja']['Ja']['Ja'] = {}
-Starttext['Nee']['Ja']['Ja']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Nee']['Ja']['Ja']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
 Starttext['Nee']['Ja']['Ja']['Nee'] = {}
 Starttext['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
 Starttext['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
-Starttext['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
 Starttext['Nee']['Ja']['Nee'] = {}
-Starttext['Nee']['Ja']['Nee']['final'] = 'Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?'
+Starttext['Nee']['Ja']['Nee']['final'] = ['Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?','Agreeableness']
 Starttext['Nee']['Nee'] = {}
 Starttext['Nee']['Nee']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
 Starttext['Nee']['Nee']['Ja'] = {}
-Starttext['Nee']['Nee']['Ja']['final'] = 'Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)'
+Starttext['Nee']['Nee']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
 Starttext['Nee']['Nee']['Nee'] = {}
 Starttext['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
 Starttext['Nee']['Nee']['Nee']['Ja'] = {}
-Starttext['Nee']['Nee']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Nee']['Nee']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
 Starttext['Nee']['Nee']['Nee']['Nee'] = {}
-Starttext['Nee']['Nee']['Nee']['Nee']['final'] = 'Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?'
+Starttext['Nee']['Nee']['Nee']['Nee']['final'] = ['Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?', 'default']
 
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
@@ -280,10 +283,10 @@ def handle_messages():
 			if user_data[sender]['Stage'] == 'GiveIdea':
 				if message.lower() == 'ja':
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-				  user_data[sender]['starter'] = get_keys(Tokens, data['token'])[-1]
+				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
 				else:
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-				  user_data[sender]['starter'] = get_keys(Tokens, data['token'])[-1]
+				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
 		  	if user_data[sender]['Stage'] == 'Start':
 			    user_data[sender]['startans'].append(message)
 			if user_data[sender]['dolog'] == 'end':
@@ -575,6 +578,7 @@ def findValue(L,d):
 	return d
 
 def findNo(L):
+
 	num = L.count('Nee')
 	if num == 0:
 		pers = 'Extraverion'
@@ -626,13 +630,13 @@ def send_message(token, recipient, text, data):
 			data['Stage'] = 'GiveIdea'
 			postdashbot('bot',(recipient,d['final'], data['message-id']) )
 			typing('off', token, recipient)
-			data['personality'] = findNo(data['startans'])
+			data['personality'] = d['final'][1]
 			print(data['personality'])
 			r = requests.post("https://graph.facebook.com/v2.6/me/messages",
 			params={"access_token": token},
 			data=json.dumps({
 			"recipient": {"id": recipient},
-			"message": {"text": d['final'],
+			"message": {"text": d['final'][0],
 			"quick_replies":[{
 						  "content_type":"text",
 						  "title":'Ja',
