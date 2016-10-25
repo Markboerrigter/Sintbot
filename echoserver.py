@@ -280,12 +280,12 @@ def handle_messages():
 	if sender in user_data:
 		print(mid,user_data[sender]['message-id'])
 		if mid != user_data[sender]['message-id']:
-			if user_data[sender]['Stage'] == 'GiveIdea':
+			if user_data[sender]['Startpos']:
+				user_data[sender]['Startpos'] = False
 				user_data[sender]['data']['distinction'] = message
 				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
 				if message.lower() == 'ja':
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-				  print(user_data[sender]['token'])
 				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
 				  message = user_data[sender]['starter']
 				else:
