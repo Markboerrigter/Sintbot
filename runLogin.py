@@ -41,7 +41,7 @@ def getIt(sender):
     # print(detect('hoi ik ben mark'))
     #
     # print(allEng('Ik ben op zoek naar een huis'))
-    token = 'EAAEkTt8L730BAOlWwmFSEBmYBGRxHANGmQZBj9jJgGi5P2MWvavI9YSYPk4TUzJ2KfuYQBOFZAIWGHOyG9adCZAKliWrMBvbAvByneLVAagsuwkDFZCijsaJiZAU1kCD0sWkKhRx9RpXIvZBiUhXQJNHlHi4laFUQZD'
+    token = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
     # token = get_fb_token(FB_APP_ID,FB_APP_SECRET)
 
     # Set the users profile FBML
