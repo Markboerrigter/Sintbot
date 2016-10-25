@@ -252,6 +252,7 @@ def handle_messages():
 	print(sender,message)
 
 	if sender in user_data:
+		print(mid,user_data[sender]['message-id'])
 		if mid is not user_data[sender]['message-id']:
 		  	if user_data[sender]['Stage'] == 'Start':
 			    user_data[sender]['startans'].append(message)
@@ -565,14 +566,15 @@ def send_message(token, recipient, text, data):
 			  "quick_replies":[{
 			                "content_type":"text",
 			                "title":'Ja',
-			                "payload":'Nee'
+			                "payload":'Ja'
 			              },
 						  {
 			                "content_type":"text",
-			                "title":'Ja',
+			                "title":'Nee',
 			                "payload":'Nee'}
 							]}}),
 			headers={'Content-type': 'application/json'})
+			print('message send')
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
@@ -589,14 +591,15 @@ def send_message(token, recipient, text, data):
 			"quick_replies":[{
 						  "content_type":"text",
 						  "title":'Ja',
-						  "payload":'Nee'
+						  "payload":'Ja'
 						},
 						{
 						  "content_type":"text",
-						  "title":'Ja',
+						  "title":'Nee',
 						  "payload":'Nee'}
 						  ]}}),
 			headers={'Content-type': 'application/json'})
+			print('message send')
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
