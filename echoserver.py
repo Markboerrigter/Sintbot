@@ -283,10 +283,12 @@ def handle_messages():
 			if user_data[sender]['Stage'] == 'GiveIdea':
 				if message.lower() == 'ja':
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+				  print(user_data[sender]['token'])
 				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
 				  message = user_data[sender]['starter']
 				else:
 				  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
+				  print(user_data[sender]['token'])
 				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
 				  message = user_data[sender]['starter']
 		  	if user_data[sender]['Stage'] == 'Start':
