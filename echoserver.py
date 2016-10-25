@@ -653,7 +653,7 @@ def send_message(token, recipient, text, data):
 			if r.status_code != requests.codes.ok:
 				print r.text
 			time4 = time.time()
-		    print('sendmessage', time4 - time3)
+			print('sendmessage', time4 - time3)
 		    #   print('number of tries', data['try'])
 		    #   if data['try'] <2:
 		    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
