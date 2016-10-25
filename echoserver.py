@@ -571,8 +571,8 @@ def send_message(token, recipient, text, data):
 			                "content_type":"text",
 			                "title":'Ja',
 			                "payload":'Nee'}
-							]}},
-			headers={'Content-type': 'application/json'}))
+							]}}),
+			headers={'Content-type': 'application/json'})
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
@@ -595,8 +595,8 @@ def send_message(token, recipient, text, data):
 						  "content_type":"text",
 						  "title":'Ja',
 						  "payload":'Nee'}
-						  ]}},
-			headers={'Content-type': 'application/json'}))
+						  ]}}),
+			headers={'Content-type': 'application/json'})
 			if r.status_code != requests.codes.ok:
 				print r.text
 				print(recipient)
