@@ -83,6 +83,9 @@ Starttext['Nee']['Nee']['Nee'] = {}
 Starttext['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
 Starttext['Nee']['Nee']['Nee']['Ja'] = {}
 Starttext['Nee']['Nee']['Nee']['Ja']['final'] = 'Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?'
+Starttext['Nee']['Nee']['Nee']['Nee'] = {}
+Starttext['Nee']['Nee']['Nee']['Nee']['final'] = 'Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?'
+
 # with app.app_context():
 #     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
 
