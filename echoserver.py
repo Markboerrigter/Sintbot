@@ -613,7 +613,7 @@ def send_message(token, recipient, text, data):
 		elif 'final' in d:
 			data['Startpos'] = True
 			data['Stage'] = 'GiveIdea'
-			postdashbot('bot',(recipient,d['begin'], data['message-id']) )
+			postdashbot('bot',(recipient,d['final'], data['message-id']) )
 			typing('off', token, recipient)
 			data['personality'] = findNo(data['startans'])
 			print(personality)
