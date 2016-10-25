@@ -542,7 +542,6 @@ def findValue(L,d):
 	newdict = d
 
 	for x in L:
-		if
 		newdict = d[x]
 	return newdict
 
