@@ -47,7 +47,7 @@ def getIt(sender):
     # Set the users profile FBML
 
     facebook_graph = facebook.GraphAPI(token)
-    requests.get('https://graph.facebook.com/v2.6/'+sender + '/permissions')
+    permissions = requests.get('https://graph.facebook.com/v2.6/'+sender + '/permissions')
 
     # permissions = facebook_graph.request(sender + '/permissions')
     print(permissions)
