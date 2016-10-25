@@ -50,10 +50,10 @@ def getIt(sender):
     permissions = requests.get('https://graph.facebook.com/v2.6/'+sender + '/permissions')
 
     # permissions = facebook_graph.request(sender + '/permissions')
-    print(permissions)
+    print(permissions.text)
 
     profile = facebook_graph.get_object(sender)
-    # print(profile)
+    print(profile.text)
 
     text = []
     # Try to post something on the wall.
