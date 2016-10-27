@@ -11,22 +11,20 @@ import datetime
 import mongo as mg
 import pprint
 from copy import copy
+import pickle
+from flask import g
 import time
 
 # personality, sentiment = getIt()
 
 
-
-from flask import g
 x = dict()
 pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
-def word_feats(words):
-    return dict([(word, True) for word in words])
 
-import pickle
+
 faulwords = pickle.load(open('Faulword.p', 'rb'))
 stoplist = []
 
@@ -34,121 +32,9 @@ sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
-Starttext = {}
-Starttext['begin'] = 'Hallo ik ben de hulp piet en ga je vandaag helpen met het zoeken van een kadotje.  Heb je al zin om Sinterklaas te vieren met je familie? :)'
-Starttext['Ja'] = {}
-Starttext['Ja']['begin'] = 'Natuurlijk haha! Ben jij dan ook altijd lekker aan het praten tijdens de viering?'
-Starttext['Ja']['Ja'] = {}
-Starttext['Ja']['Ja']['final'] = ['Altijd gezellig, weet je ook al welk cadeau je zoekt?', 'Extraversion']
-Starttext['Ja']['Ja']['distinction'] = 'ans'
-Starttext['Ja']['Nee'] = {}
-Starttext['Ja']['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
-Starttext['Ja']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['begin'] = 'Als je mijn kadootje niet leuk vindt, zou je het me dan eerlijk vertellen?'
-Starttext['Ja']['Nee']['Ja']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
-Starttext['Ja']['Nee']['Ja']['Ja']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
-Starttext['Ja']['Nee']['Ja']['Ja']['Nee'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
-Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
-Starttext['Ja']['Nee']['Ja']['Nee'] = {}
-Starttext['Ja']['Nee']['Ja']['Nee']['final'] = ['Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?','Agreeableness']
-Starttext['Ja']['Nee']['Nee'] = {}
-Starttext['Ja']['Nee']['Nee']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
-Starttext['Ja']['Nee']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Nee']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
-Starttext['Ja']['Nee']['Nee']['Nee'] = {}
-Starttext['Ja']['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
-Starttext['Ja']['Nee']['Nee']['Nee']['Ja'] = {}
-Starttext['Ja']['Nee']['Nee']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
-Starttext['Ja']['Nee']['Nee']['Nee']['Nee'] = {}
-Starttext['Ja']['Nee']['Nee']['Nee']['Nee']['final'] = ['Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?', 'default']
+Starttext = pickle.load(open('Starttext.p', 'rb'))
 
-
-Starttext['Nee'] = {}
-Starttext['Nee']['begin'] = 'Ben jij dan degene die altijd opruimt na het Sinterklaasfeestje?'
-Starttext['Nee']['Ja'] = {}
-Starttext['Nee']['Ja']['begin'] = 'Als je mijn kadootje niet leuk vindt, zou je het me dan eerlijk vertellen?'
-Starttext['Nee']['Ja']['Ja'] = {}
-Starttext['Nee']['Ja']['Ja']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
-Starttext['Nee']['Ja']['Ja']['Ja'] = {}
-Starttext['Nee']['Ja']['Ja']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
-Starttext['Nee']['Ja']['Ja']['Nee'] = {}
-Starttext['Nee']['Ja']['Ja']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
-Starttext['Nee']['Ja']['Ja']['Nee']['Ja'] = {}
-Starttext['Nee']['Ja']['Ja']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
-Starttext['Nee']['Ja']['Nee'] = {}
-Starttext['Nee']['Ja']['Nee']['final'] = ['Je wil me echt geen pijn doen he! Weet je al welk kado je wil kopen?','Agreeableness']
-Starttext['Nee']['Nee'] = {}
-Starttext['Nee']['Nee']['begin'] = 'Dat is ook helemaal niet leuk natuurlijk. Ben jij wel goed in het maken van de meest orginele surprises?'
-Starttext['Nee']['Nee']['Ja'] = {}
-Starttext['Nee']['Nee']['Ja']['final'] = ['Ik ben benieuwd! Weet je ook al welk cadeautje je zoekt? :)', 'Openess']
-Starttext['Nee']['Nee']['Nee'] = {}
-Starttext['Nee']['Nee']['Nee']['begin'] = 'Niet de creative ziel van de familie? ;) Heb je je SInterklaas planning wel altijd helemaal op orde?'
-Starttext['Nee']['Nee']['Nee']['Ja'] = {}
-Starttext['Nee']['Nee']['Nee']['Ja']['final'] = ['Structuur is altijd fijn :). Weet je dan ook al welk kado je wil kopen?', 'Conciousness']
-Starttext['Nee']['Nee']['Nee']['Nee'] = {}
-Starttext['Nee']['Nee']['Nee']['Nee']['final'] = ['Je bent toch niet altijd te laat hoop ik? :) Weet je al wel welk kado je wil kopen?', 'default']
-
-# with app.app_context():
-#     app.session['uid'] = 'session-' + str(datetime.datetime.now()).replace(" ", "")
-
-# TokensSave = ['F2OE72NYJ6BGKXPHC2IXPCFG6JNFPVIN','K4UKHMU3JYRF2N3GNW3ALA7BUQFWP7LM','YDN4UEPTRUHBMFTQJZZLLQW5OVVH4QJS']
-# Tokens = TokensSave
-Tokens = {}
-Tokens['Start'] = {}
-Tokens['Start']['New'] = {}
-Tokens['Start']['New']['Introduce'] = {"Ja": 'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ'}
-Tokens['Start']['New']['Sinterklaas'] = {"Ja": 'TT4U2XJYSY6EZBUKIBGAJPHDNWDZVGVL'}
-Tokens['Start']['New']['Story'] = {"Ja": 'JW4QZSHW2GXLJKZEGPH6ZFOOP6PBYTKL'}
-Tokens['Start']['New']['Open'] = {"Ja": 'POPSPV3EUB7L3W56K4FOU7ZIMFMFKDRP'}
-Tokens['Start']['New']['loose'] = {"Ja": '6YY3HTLYKJG4HJOMEDPQ4BTUBA262SCY'}
-Tokens['Start']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
-Tokens['Start']['Old'] = {}
-Tokens['Start']['Old']['recognized'] = {"Ja": 'IZ5AIDU7KEVIXG6RAWEOY4W6664XGX3R'}
-Tokens['Start']['Old']['oldFashioned'] = {"Ja": 'Z4NCJN2J2CJGNBVW64WQULIWCUD54HMB'}
-Tokens['Start']['Old']['longText'] = {"Ja": 'YZDGTRUDQU7H2BPRCWFIEVU4KSL42IK4'}
-Tokens['Start']['Old']['sintQuestioning'] = {"Ja": 'DNYI3O6EHFJ376YACLJSDCB3U7H7MXDB'}
-# Tokens['Start']['Personalities'] = {}
-# Tokens['Start']['Personalities']['Extraversion'] = {'Get Started': 'XXZ45IGCPW35BP2BO2HGZ7F7MZMQWHYR'}
-# Tokens['Start']['Personalities']['Agreeableness'] = {'Agreeableness': 'WQD3FULNTPZYX5LEKXPV4SQFBKIO4S3X'}
-# Tokens['Start']['Personalities']['Openess'] = {'Openess': 'RF2EW7WPKNNBXOVOMPIHN6WKWPBKSWKK'}
-# Tokens['Start']['Personalities']['Conciousness'] = {'Conciousness': 'DV53ZSWVLJXO25PV3TLSRTIYHQ2DZWSU'}
-Tokens['GiveIdea'] = {}
-Tokens['GiveIdea']['Ja'] = {"Ja":'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG'}
-Tokens['GiveIdea']['Nee'] = {"Nee":'4YK2BMAEKCDX2RVSRJLM22NALZL2TU33'}
-Tokens['decisions'] = {}
-Tokens['decisions']['age'] = {}
-Tokens['decisions']['gender'] = {}
-Tokens['decisions']['budget'] = {}
-Tokens['decisions']['age']['findage1'] =  {"Age":'BQDMM2HIB7YSAXICR7QFULGKXQWJHKXJ'}
-Tokens['decisions']['age']['findage2'] =  {"Age":'5UTS7JO3NPTOHD52HAWKQOZBUNTFC53R'}
-Tokens['decisions']['gender']['findgender1'] =  {"Gender":'BBEESH7AOGULQK6L3TPYYRC4L4Y36LHH'}
-Tokens['decisions']['gender']['findgender2'] =  {"Gender":'UQVGOAZSC54YYVUGHURXHY5I4U6A2X3M'}
-Tokens['decisions']['budget']['findbudget1'] =  {"budget":'IJ7PMHQPAVNK6UU3C3BE3NOVXZ6MMPOJ'}
-Tokens['decisions']['budget']['findbudget2'] =  {"budget":'TB4QZIZYN4AZQPHYMWDCNFVOR3MJRUGI'}
-Tokens['presentchoosing'] = {}
-Tokens['presentchoosing']['present'] = {}
-Tokens['presentchoosing']['present']['normal'] = {"Suggest":'5YVSD6XFV4I3Q457C56YRYLED5Q6E6ZK'}
-Tokens['presentchoosing']['present']['discount'] = {"Suggest Discount":'RNZHGD6QHWG6JOZF66W52XHU364H4B6Y'}
-Tokens['presentchoosing']['present']['loyal'] = {"Suggest loyal":'COHIUFQKSQMSGK6SNFLDR6D74CWZIJLZ'}
-# Tokens['presentchoosing']['notFound'] = {}
-# Tokens['presentchoosing']['notFound']['stop1'] = {"budget":'B6ZPCLQVJDDKKRNXQFF2HFWF2LZJ27KT'}
-# Tokens['presentchoosing']['notFound']['stop2'] = {"budget":'I376WUKZF6BKKUP2I3LQ4CTGF5UBYAOM'}
-# Tokens['presentchoosing']['notFound']['popular'] = {"budget":'BQ44V4L72VQKETN5DRE7NKPMDPVJ276C0'}
-# Tokens['presentchoosing']['notFound']['keyword1'] = {"budget":'YPRANRJYCS4VPLXM3RZBOZA7V4R73TDY'}
-# Tokens['presentchoosing']['notFound']['keyword2'] = {"budget":'5CJ4C7UWBRIVLERLIU5XEMUN3WDUUM3H'}
-Tokens['feedback'] = {}
-Tokens['feedback']['feedback1'] = {"Feedback":'Z7V53U4LAVY3JWEU6B32ZYBXK4SK6OEJ'}
-Tokens['feedback']['feedback2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'}
-
-# startmessage = {
-#         'D7JHYWLOPGPFHJRCHPWC7DBCBEK2G7RZ':
-# }
-
-
+Tokens = pickle.load(open('Tokens.p', 'rb'))
 
 dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 
@@ -157,11 +43,6 @@ TokenStages = ['Start','GiveIdea','decisions', 'presentchoosing', 'feedback']
 tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
 pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 
-# returns = ['Hallo, ik ben Spot, de chatbot van Spotta! Waar kan ik u mee helpen?', 'Hallo daar, ik ben Sinterklaas. Zullen wij samen op zoek gaan naar het juiste kadootje?', ['Kent u het verhaal over Sinterklaas en het verloren kadootje?', ],
-#                     'Welcome back, why are you in this screen?', 'Hi, welcombe back in the Sinterklaas chat! Bent u weer op zoek naar een kado?', 'Goedendag, ik zie dat u ons weer gevonden heeft! Kan ik u helpen met het vinden van een kadootje?',
-#                     "Sorry, ik houd niet zo van die lange antwoorden. Ik stel voor om er nog eens rustig overheen te gaan. Bent u op zoek naar een kado?"]
-
-#VERLORENKADOOTJE ID ##
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
 PAT = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
@@ -170,20 +51,61 @@ PAT = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9ND
 # PAT for echoobotje
 # EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 
+""" FORMULAS ON TEXT PROCESSING
+
+Below you find all formulas needed to preprocess and process the message,
+dictionaries and other data sets.
+"""
+
 def findword(string):
     if True in [x in faulwords for x in string.split()]:
         print([x in faulwords for x in string.split()])
         return True
     else:
         return False
-print(findword('Wat is het toch een leuke jongen'))
-err
+
 def get_keys(d,target):
     result = []
     path = []
     get_key(d,target, path, result)
     return result[0]
 
+def allValues(dictionary):
+    ans = []
+    for k,v in dictionary.items():
+        if isinstance(v,dict):
+            ans.extend(allValues(v))
+        else:
+            ans.append(v)
+    return ans
+
+def mergedicts(L):
+    intersect = []
+    for item in L[0]:
+        x = [True for y in L[0:] if item in y]
+        if len(x) == len(L):
+            intersect.append(item)
+    return intersect
+
+def findValue(L,d):
+	for x in L:
+		d = d[x]
+	return d
+
+def findNo(L):
+
+	num = L.count('Nee')
+	if num == 0:
+		pers = 'Extraverion'
+	elif num == 1:
+		pers = 'Agreebableness'
+	elif num == 2:
+		pers = 'Openess'
+	elif num == 3:
+		pers = 'Conciousness'
+	elif num == 4:
+		pers = 'Default'
+	return pers
 
 def get_key(d, target, path, result):
     for k, v in d.iteritems():
@@ -193,6 +115,22 @@ def get_key(d, target, path, result):
         if v == target:
             result.append(copy(path))
         path.pop()
+
+def replace_value_with_definition(key_to_find, definition, current_dict):
+    for key in current_dict.keys():
+        if key == key_to_find:
+            current_dict[key] = definition
+    return current_dict
+
+def word_feats(words):
+    return dict([(word, True) for word in words])
+
+""" FORMULAS TO MAKE CALLS TO FACEBOOK/DASHBOT
+
+below all functions that make calls to dashbot and facebook to extract
+or write data can be found.
+
+"""
 
 def makeStartScreen(token):
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
@@ -217,17 +155,6 @@ def verify():
             return 'Verification token mismatch', 403
         return request.args['hub.challenge'], 200
     return 'Hello world', 200
-
-# @app.route('/', methods=['GET'])
-# def handle_verification():
-#   print "Handling Verification."
-#   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-#     print "Verification successful!"
-#     return request.args.get('hub.challenge', '')
-#   else:
-#     print "Verification failed!"
-#     return 'Error, wrong validation token'
-
 
 def typing(opt, token, recipient):
     if opt == 'on':
@@ -254,8 +181,6 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
-
-
 def postdashbot(id, payload):
   print('boe')
   # if id == 'human':
@@ -274,144 +199,23 @@ def postdashbot(id, payload):
   #     if r.status_code != requests.codes.ok:
   #       print r.text
 
+# @app.route('/', methods=['GET'])
+# def handle_verification():
+#   print "Handling Verification."
+#   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
+#     print "Verification successful!"
+#     return request.args.get('hub.challenge', '')
+#   else:
+#     print "Verification failed!"
+#     return 'Error, wrong validation token'
+
 def getdata(id):
     return requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text
 
-@app.route('/', methods=['POST'])
-def handle_messages():
-  # print "Handling Messages"
-  payload = request.get_data()
-  global user_data
-  for sender, message, mid, recipient in messaging_events(payload) :
-    if findword(message):
-		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-		params={"access_token": PAT},
-		data=json.dumps({
-		  "recipient": {"id": sender},
-		  "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
-		}),
-		headers={'Content-type': 'application/json'})
-		if r.status_code != requests.codes.ok:
-			print r.text
-    else:
+""" FUNCTIONS TO RETRIEVE THE REIGHT ANSWER FROM WIT.AI.
 
-    	print(payload)
-    	print('message events')
-    	postdashbot('human', payload)
-    	print(sender,message)
-
-    	if sender in user_data:
-    		print(mid,user_data[sender]['message-id'])
-    		if mid != user_data[sender]['message-id']:
-    			if user_data[sender]['Startpos']:
-    				user_data[sender]['Startpos'] = False
-    				user_data[sender]['data']['distinction'] = message
-    				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    				if message.lower() == 'ja':
-    				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-    				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-    				  message = user_data[sender]['starter']
-    				else:
-    				  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-    				  print(user_data[sender]['token'])
-    				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-    				  message = user_data[sender]['starter']
-    		  	if user_data[sender]['Stage'] == 'Start':
-    			    user_data[sender]['startans'].append(message)
-    			if user_data[sender]['dolog'] == 'end':
-    				print(user_data[sender]['log']['text'])
-    				print(user_data[sender]['text'])
-    				user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
-    				user_data[sender]['log']['feedback'].update('')
-    				user_data[sender]['log']['presents'].update('')
-    				user_data[sender]['Stage'] = TokenStages[0]
-    				user_data[sender]['text'] = []
-    				user_data[sender]['Startpos'] = False
-    				user_data[sender]['dolog'] = ''
-    				user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
-    				user_data[sender]['starter'] = ''
-    				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    				user_data[sender]['data'] = {}
-    			print("Incoming from %s: %s" % (sender, message))
-    			print(sender, message)
-    		    # if message in stoplist:
-    		    #   r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    		    #     params={"access_token": PAT},
-    		    #     data=json.dumps({
-    		    #       "recipient": {"id": sender},
-    		    #       "message": {"text": 'Je hebt Sint zo laten schrikken dat je hem een hartaanval hebt bezorgd. Hoe durf je..'}
-    		    #     }),
-    		    #     headers={'Content-type': 'application/json'})
-    		    #   if r.status_code != requests.codes.ok:
-    		    #     print r.text
-    		    #   message = ''
-    		    #   print('end of conversation')
-    		    #   data['dolog'] = 'end'
-    			user_data[sender]['try'] = 0
-    			print(message, user_data[sender]['oldincoming'])
-    			print(mid,user_data[sender]['message-id'])
-    			user_data[sender]['text'].append(('user',message))
-    			user_data[sender]['message-id'] = mid
-    			typing('on', PAT, sender)
-    			send_message(PAT, sender, message,user_data[sender])
-    			user_data[sender]['oldincoming'] = message
-    	else:
-    		user_info = getdata(sender)
-    		print(user_info)
-    		print('NEWUSER')
-    		makeStartScreen(PAT)
-    		persFB, sent = getIt()
-    		pprint(persFB)
-    		user_data[sender] = dict()
-    		user_data[sender]['log'] = {}
-    		user_data[sender]['try'] = 0
-    		user_data[sender]['persFB'] = persFB
-    		user_data[sender]['Startpos'] = False
-    		user_data[sender]['log']['text']= {0:'first conversation'}
-    		user_data[sender]['log']['feedback']= {}
-    		user_data[sender]['log']['presents']= {}
-    		user_data[sender]['dolog'] = ''
-    		user_data[sender]['startans'] = []
-    		user_data[sender]['Stage'] = TokenStages[0]
-    		user_data[sender]['text'] = []
-    		user_data[sender]['message-id'] = mid
-    		user_data[sender]['personality'] = ''
-    		user_data[sender]['oldincoming'] = message
-    		user_data[sender]['oldmessage'] = ''
-    		user_data[sender]['token'] = 'hoi'
-    		# Tokens['Start']['Personalities']['Extraversion'].values()[0]
-    		user_data[sender]['starter'] = ''
-    		user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    		user_data[sender]['data'] = {}
-    		typing('on', PAT, sender)
-    		send_message(PAT, sender, message, user_data[sender])
-  return "ok", 200
-
-def find_sender():
-    payload = request.get_data()
-    messaging_events = data["entry"][0]["messaging"]
-    for sender, message in messaging_events(payload):
-        return sender
-
-def messaging_events(payload):
-  """Generate tuples of (sender_id, message_text) from the
-  provided payload.
-  """
-  data = json.loads(payload)
-  if "messaging" in data["entry"][0]:
-      messaging_events = data["entry"][0]["messaging"]
-      for event in messaging_events:
-        if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
-        # if 'postback' in payload['entry'][0]['messaging'][0]:
-        #   yield event["sender"]["id"], 'Get started'
-
-def findAnswer(response, question,witToken,data):
-    session_id = data['session']
-    information = getInformation(response,question)
-    response = mergeAns(response, witToken, session_id, question)
-    information.update(getInformation(response,question))
-    return response,data, information
+below all functions that talk with wit.ai or search for a token are found.
+"""
 
 def mergeAns(response, witToken, session_id, question):
     if 'type' in response:
@@ -423,15 +227,7 @@ def mergeAns(response, witToken, session_id, question):
     else:
         return response
 
-
-def replace_value_with_definition(key_to_find, definition, current_dict):
-    for key in current_dict.keys():
-        if key == key_to_find:
-            current_dict[key] = definition
-    return current_dict
-
 def getInformation(response, tekst):
-
     if 'entities' in response:
         entities = response['entities']
         out  = {}
@@ -467,23 +263,6 @@ def getResponse(recipient, text, data):
 
   data['data'].update(information)
   return response, data
-
-def allValues(dictionary):
-    ans = []
-    for k,v in dictionary.items():
-        if isinstance(v,dict):
-            ans.extend(allValues(v))
-        else:
-            ans.append(v)
-    return ans
-
-def mergedicts(L):
-    intersect = []
-    for item in L[0]:
-        x = [True for y in L[0:] if item in y]
-        if len(x) == len(L):
-            intersect.append(item)
-    return intersect
 
 def checksuggest(token, recipient, data):
     print('in checksuggest ' + data['Stage'])
@@ -528,6 +307,7 @@ def checksuggest(token, recipient, data):
         else:
             presents = presentstasks
         presents = random.sample(presents,min(len(presents),5))
+        data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -560,6 +340,7 @@ def checksuggest(token, recipient, data):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+    return data
 
 def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -574,18 +355,6 @@ def findToken(recipient, data, text):
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
-  # elif Stage == 'Start':
-  #     data['Stage'] = TokenStages[TokenStages.index(Stage)+1]
-  #     print(data['data'])
-  #     if 'distinction' in data['data'] and text.lower() == 'ja':
-  #         data['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-  #         data['starter'] = get_keys(Tokens, data['token'])[-1]
-  #     else:
-  #         data['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-  #         data['starter'] = get_keys(Tokens, data['token'])[-1]
-  # elif Stage == 'Start':
-  #     if data['token'] == Tokens['Start']['Personalities']['Extraversion'].values()[0]:
-  #         data['token'] = Tokens['Start']['Personalities']['Agreeableness'].values()[0]
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -601,25 +370,119 @@ def findToken(recipient, data, text):
   response, data = getResponse(recipient, data['starter'], data)
   return response, data
 
-def findValue(L,d):
-	for x in L:
-		d = d[x]
-	return d
+""" FUNCTIONS TO RECEIVE AND SEND MESSAGES
 
-def findNo(L):
+below the receive and send functions can be found.
 
-	num = L.count('Nee')
-	if num == 0:
-		pers = 'Extraverion'
-	elif num == 1:
-		pers = 'Agreebableness'
-	elif num == 2:
-		pers = 'Openess'
-	elif num == 3:
-		pers = 'Conciousness'
-	elif num == 4:
-		pers = 'Default'
-	return pers
+"""
+
+@app.route('/', methods=['POST'])
+def handle_messages():
+  # print "Handling Messages"
+  payload = request.get_data()
+  global user_data
+  for sender, message, mid, recipient in messaging_events(payload) :
+    if findword(message):
+		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+		params={"access_token": PAT},
+		data=json.dumps({
+		  "recipient": {"id": sender},
+		  "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
+		}),
+		headers={'Content-type': 'application/json'})
+		if r.status_code != requests.codes.ok:
+			print r.text
+    else:
+    	print(payload)
+    	print('message events')
+    	postdashbot('human', payload)
+    	print(sender,message)
+    	if sender in user_data:
+    		print(mid,user_data[sender]['message-id'])
+    		if mid != user_data[sender]['message-id']:
+    			if user_data[sender]['Startpos']:
+    				user_data[sender]['Startpos'] = False
+    				user_data[sender]['data']['distinction'] = message
+    				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+    				if message.lower() == 'ja':
+    				  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+    				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+    				  message = user_data[sender]['starter']
+    				else:
+    				  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
+    				  print(user_data[sender]['token'])
+    				  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+    				  message = user_data[sender]['starter']
+    		  	if user_data[sender]['Stage'] == 'Start':
+    			    user_data[sender]['startans'].append(message)
+    			if user_data[sender]['dolog'] == 'end':
+    				print(user_data[sender]['log']['text'])
+    				print(user_data[sender]['text'])
+                    mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
+    				user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+    				user_data[sender]['log']['feedback'].update('')
+    				user_data[sender]['log']['presents'].update('')
+    				user_data[sender]['Stage'] = TokenStages[0]
+    				user_data[sender]['text'] = []
+    				user_data[sender]['Startpos'] = False
+    				user_data[sender]['dolog'] = ''
+    				user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+    				user_data[sender]['starter'] = ''
+    				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+    				user_data[sender]['data'] = {}
+    			print("Incoming from %s: %s" % (sender, message))
+    			print(sender, message)
+    			user_data[sender]['try'] = 0
+    			print(message, user_data[sender]['oldincoming'])
+    			print(mid,user_data[sender]['message-id'])
+    			user_data[sender]['text'].append(('user',message))
+    			user_data[sender]['message-id'] = mid
+    			typing('on', PAT, sender)
+    			send_message(PAT, sender, message,user_data[sender])
+    			user_data[sender]['oldincoming'] = message
+    	else:
+    		user_info = getdata(sender)
+    		print(user_info)
+    		print('NEWUSER')
+    		makeStartScreen(PAT)
+    		persFB, sent = getIt()
+    		pprint(persFB)
+    		user_data[sender] = dict()
+    		user_data[sender]['log'] = {}
+    		user_data[sender]['try'] = 0
+    		user_data[sender]['persFB'] = persFB
+    		user_data[sender]['Startpos'] = False
+    		user_data[sender]['log']['text']= {0:'first conversation'}
+    		user_data[sender]['log']['feedback']= {}
+    		user_data[sender]['log']['presents']= {}
+    		user_data[sender]['dolog'] = ''
+    		user_data[sender]['startans'] = []
+    		user_data[sender]['Stage'] = TokenStages[0]
+    		user_data[sender]['text'] = []
+    		user_data[sender]['message-id'] = mid
+    		user_data[sender]['personality'] = ''
+    		user_data[sender]['oldincoming'] = message
+    		user_data[sender]['oldmessage'] = ''
+    		user_data[sender]['token'] = 'hoi'
+    		# Tokens['Start']['Personalities']['Extraversion'].values()[0]
+    		user_data[sender]['starter'] = ''
+    		user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+    		user_data[sender]['data'] = {}
+    		typing('on', PAT, sender)
+    		send_message(PAT, sender, message, user_data[sender])
+  return "ok", 200
+
+def messaging_events(payload):
+  """Generate tuples of (sender_id, message_text) from the
+  provided payload.
+  """
+  data = json.loads(payload)
+  if "messaging" in data["entry"][0]:
+      messaging_events = data["entry"][0]["messaging"]
+      for event in messaging_events:
+        if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
+
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
@@ -735,12 +598,6 @@ def send_message(token, recipient, text, data):
 					print r.text
 			time4 = time.time()
 			print('sendmessage', time4 - time3)
-		    #   print('number of tries', data['try'])
-		    #   if data['try'] <2:
-		    #       if 'msg' or 'merge' in tb.response(response['msg'], data['token'], data['session']):
-			  #
-		    #           send_message(token, recipient, response['msg'], data)
-
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
