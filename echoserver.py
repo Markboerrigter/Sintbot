@@ -35,8 +35,8 @@ app = Flask(__name__)
 Starttext = pickle.load(open('Starttext.p', 'rb'))
 
 responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende keer!', 'Bedankt dat ik je kon helpen en een fijne pakjesavond', 'Bedankt voor het fijne gesprek!', 'Tot de 5de van December!', 'Bedankt voor het gesprek, ik zie je op mijn verjaardag!']
-presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeën opzoeken!']
-presentmessage3 = ['Ben je tevreden met deze ideëen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
+presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
+presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
 personalitymessages = ["""json.dumps({
   "recipient": {"id": recipient},
   "message":{
@@ -65,7 +65,7 @@ personalitymessages = ["""json.dumps({
       }
     }
 })'
-"""",
+""",
 """json.dumps({
   "recipient": {"id": recipient},
   "message":{
@@ -94,8 +94,8 @@ personalitymessages = ["""json.dumps({
       }
     }
 })
-""""
-,""""
+"""
+,"""
 json.dumps({
   "recipient": {"id": recipient},
   "message":{
@@ -124,7 +124,7 @@ json.dumps({
       }
     }
 })
-""""]
+"""]
 Tokens = pickle.load(open('Tokens.p', 'rb'))
 
 dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
@@ -479,95 +479,95 @@ def handle_messages():
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
     if findword(message):
-		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-		params={"access_token": PAT},
-		data=json.dumps({
-		  "recipient": {"id": sender},
-		  "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
-		}),
-		headers={'Content-type': 'application/json'})
-		if r.status_code != requests.codes.ok:
-			print r.text
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
     else:
-    	print(payload)
-    	print('message events')
-    	postdashbot('human', payload)
-    	print(sender,message)
-    	if sender in user_data:
-    		print(mid,user_data[sender]['message-id'])
-    		if mid != user_data[sender]['message-id']:
-    			# if user_data[sender]['Startpos']:
-    			# 	user_data[sender]['Startpos'] = False
-    			# 	user_data[sender]['data']['distinction'] = message
-    			# 	user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    			# 	if message.lower() == 'ja':
-    			# 	  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-    			# 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-    			# 	  message = user_data[sender]['starter']
-    			# 	else:
-    			# 	  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-    			# 	  print(user_data[sender]['token'])
-    			# 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-    			# 	  message = user_data[sender]['starter']
+        print(payload)
+        print('message events')
+        postdashbot('human', payload)
+        print(sender,message)
+        if sender in user_data:
+            print(mid,user_data[sender]['message-id'])
+            if mid != user_data[sender]['message-id']:
+                # if user_data[sender]['Startpos']:
+                # 	user_data[sender]['Startpos'] = False
+                # 	user_data[sender]['data']['distinction'] = message
+                # 	user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                # 	if message.lower() == 'ja':
+                # 	  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
+                # 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+                # 	  message = user_data[sender]['starter']
+                # 	else:
+                # 	  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
+                # 	  print(user_data[sender]['token'])
+                # 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
+                # 	  message = user_data[sender]['starter']
                 # _data[sender]['Stage'] == 'Start':
-    			#     user_data[sender]['startans'].append(message)
-    			if user_data[sender]['dolog'] == 'end':
-    				print(user_data[sender]['log']['text'])
-    				print(user_data[sender]['text'])
+                #     user_data[sender]['startans'].append(message)
+                if user_data[sender]['dolog'] == 'end':
+                    print(user_data[sender]['log']['text'])
+                    print(user_data[sender]['text'])
                     mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
-    				user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
-    				user_data[sender]['log']['feedback'].update('')
-    				user_data[sender]['log']['presents'].update('')
-    				user_data[sender]['Stage'] = TokenStages[0]
-    				user_data[sender]['text'] = []
-    				user_data[sender]['Startpos'] = False
-    				user_data[sender]['dolog'] = ''
-    				user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
-    				user_data[sender]['starter'] = ''
-    				user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    				user_data[sender]['data'] = {}
+                    user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+                    user_data[sender]['log']['feedback'].update('')
+                    user_data[sender]['log']['presents'].update('')
+                    user_data[sender]['Stage'] = TokenStages[0]
+                    user_data[sender]['text'] = []
+                    user_data[sender]['Startpos'] = False
+                    user_data[sender]['dolog'] = ''
+                    user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+                    user_data[sender]['starter'] = ''
+                    user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                    user_data[sender]['data'] = {}
                     user_data[sender]['personQuestions'] = []
-    			print("Incoming from %s: %s" % (sender, message))
-    			print(sender, message)
-    			user_data[sender]['try'] = 0
-    			print(message, user_data[sender]['oldincoming'])
-    			print(mid,user_data[sender]['message-id'])
-    			user_data[sender]['text'].append(('user',message))
-    			user_data[sender]['message-id'] = mid
-    			typing('on', PAT, sender)
-    			send_message(PAT, sender, message,user_data[sender])
-    			user_data[sender]['oldincoming'] = message
-    	else:
-    		user_info = getdata(sender)
-    		print(user_info)
-    		print('NEWUSER')
-    		makeStartScreen(PAT)
-    		# persFB, sent = getIt()
-    		pprint(persFB)
-    		user_data[sender] = dict()
-    		user_data[sender]['log'] = {}
-    		user_data[sender]['try'] = 0
-    		# user_data[sender]['persFB'] = persFB
-    		user_data[sender]['Startpos'] = False
-    		user_data[sender]['log']['text']= {0:'first conversation'}
-    		user_data[sender]['log']['feedback']= {}
-    		user_data[sender]['log']['presents']= {}
-    		user_data[sender]['dolog'] = ''
-    		user_data[sender]['startans'] = []
-    		user_data[sender]['Stage'] = TokenStages[0]
-    		user_data[sender]['text'] = []
+                print("Incoming from %s: %s" % (sender, message))
+                print(sender, message)
+                user_data[sender]['try'] = 0
+                print(message, user_data[sender]['oldincoming'])
+                print(mid,user_data[sender]['message-id'])
+                user_data[sender]['text'].append(('user',message))
+                user_data[sender]['message-id'] = mid
+                typing('on', PAT, sender)
+                send_message(PAT, sender, message,user_data[sender])
+                user_data[sender]['oldincoming'] = message
+        else:
+            user_info = getdata(sender)
+            print(user_info)
+            print('NEWUSER')
+            makeStartScreen(PAT)
+            # persFB, sent = getIt()
+            pprint(persFB)
+            user_data[sender] = dict()
+            user_data[sender]['log'] = {}
+            user_data[sender]['try'] = 0
+            # user_data[sender]['persFB'] = persFB
+            user_data[sender]['Startpos'] = False
+            user_data[sender]['log']['text']= {0:'first conversation'}
+            user_data[sender]['log']['feedback']= {}
+            user_data[sender]['log']['presents']= {}
+            user_data[sender]['dolog'] = ''
+            user_data[sender]['startans'] = []
+            user_data[sender]['Stage'] = TokenStages[0]
+            user_data[sender]['text'] = []
             user_data[sender]['personQuestions'] = []
-    		user_data[sender]['message-id'] = mid
-    		user_data[sender]['personality'] = ''
-    		user_data[sender]['oldincoming'] = message
-    		user_data[sender]['oldmessage'] = ''
-    		user_data[sender]['token'] = 'hoi'
-    		# Tokens['Start']['Personalities']['Extraversion'].values()[0]
-    		user_data[sender]['starter'] = ''
-    		user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-    		user_data[sender]['data'] = {}
-    		typing('on', PAT, sender)
-    		send_message(PAT, sender, message, user_data[sender])
+            user_data[sender]['message-id'] = mid
+            user_data[sender]['personality'] = ''
+            user_data[sender]['oldincoming'] = message
+            user_data[sender]['oldmessage'] = ''
+            user_data[sender]['token'] = 'hoi'
+            # Tokens['Start']['Personalities']['Extraversion'].values()[0]
+            user_data[sender]['starter'] = ''
+            user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+            user_data[sender]['data'] = {}
+            typing('on', PAT, sender)
+            send_message(PAT, sender, message, user_data[sender])
   return "ok", 200
 
 def messaging_events(payload):
@@ -631,7 +631,7 @@ def send_message(token, recipient, text, data):
     if r.status_code != requests.codes.ok:
         	print r.text
     typing('on', PAT, recipient)
-    checksuggest(PAT, recipient, data
+    checksuggest(PAT, recipient, data)
     message = random.choice(presentmessage3)
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
