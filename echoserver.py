@@ -672,7 +672,6 @@ def send_message(token, recipient, text, data):
   else:
 		data['try'] +=1
 		time0 = time.time()
-        print(recipient, text, data)
 		response, data = getResponse(recipient, text, data)
 		print(response)
 		time1 = time.time()
