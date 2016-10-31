@@ -700,11 +700,11 @@ def send_message(token, recipient, text, data):
     	time1 = time2
         print(data['data'])
         # checksuggest(token, recipient, data)
-        time3 = time.time()
-        print('checksuggest',time3- time1)
+
     elif 'msg' in response and response['msg'] != data['oldmessage']:
     	print(response['msg'].decode('unicode_escape', 'ignore'))
-
+        time3 = time.time()
+        print('checksuggest',time3- time1)
     	data['text'].append(('bot',response['msg']))
     	data['oldmessage'] = response['msg']
     	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
