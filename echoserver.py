@@ -502,7 +502,7 @@ below the receive and send functions can be found.
 def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
-  print(payload)
+  pprint(payload)
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
     if findword(message):
@@ -607,7 +607,8 @@ def messaging_events(payload):
       for event in messaging_events:
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
-
+        if "messaging" in event and "attachment" in event["messaging"] and event["messaging"]['attachment']['type'] == 'postback':
+          yield event["messaging"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
