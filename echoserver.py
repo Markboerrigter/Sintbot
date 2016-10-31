@@ -450,6 +450,7 @@ def findToken(recipient, data, text):
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           data['Stage'] = 'GiveIdea'
+          response = {}
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -461,6 +462,7 @@ def findToken(recipient, data, text):
   elif Stage == 'Connection':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
+      response = {}
   elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
@@ -471,6 +473,7 @@ def findToken(recipient, data, text):
   elif Stage == 'decisions':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
+      response = {}
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
