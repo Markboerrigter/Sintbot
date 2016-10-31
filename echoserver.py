@@ -452,12 +452,18 @@ def findToken(recipient, data, text):
           data['Stage'] = 'decisions'
   print(data['data'])
   print(Stage)
+  if Stage == 'Connection':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['Stage'] = NextStage
   if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
+  elif Stage == 'decisions':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['Stage'] = NextStage
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -677,58 +683,58 @@ def send_message(token, recipient, text, data):
 
 
   else:
-		data['try'] +=1
-		time0 = time.time()
-		response, data = getResponse(recipient, text, data)
-		print(response)
-		time1 = time.time()
-		print('getresponse',time1-time0)
-		# or response['msg'] == data['oldmessage']
-		if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
-			response, data = findToken(recipient, data, text)
-			time2 = time.time()
-			print('stopthing',time2 - time1)
-			time1 = time2
-		print(data['data'])
-		# checksuggest(token, recipient, data)
-		time3 = time.time()
-		print('checksuggest',time3- time1)
-		if 'msg' in response and response['msg'] != data['oldmessage']:
-			print(response['msg'].decode('unicode_escape', 'ignore'))
+    data['try'] +=1
+    time0 = time.time()
+    response, data = getResponse(recipient, text, data)
+    print(response)
+    time1 = time.time()
+    print('getresponse',time1-time0)
+    # or response['msg'] == data['oldmessage']
+    if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
+    	response, data = findToken(recipient, data, text)
+    	time2 = time.time()
+    	print('stopthing',time2 - time1)
+    	time1 = time2
+    print(data['data'])
+    # checksuggest(token, recipient, data)
+    time3 = time.time()
+    print('checksuggest',time3- time1)
+    if 'msg' in response and response['msg'] != data['oldmessage']:
+    	print(response['msg'].decode('unicode_escape', 'ignore'))
 
-			data['text'].append(('bot',response['msg']))
-			data['oldmessage'] = response['msg']
-			postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-			typing('off', token, recipient)
-			if 'quickreplies' in response:
-				replies = response['quickreplies']
-				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-				params={"access_token": token},
-				data=json.dumps({
-				  "recipient": {"id": recipient},
-				  "message": {"text": response['msg'].decode('unicode_escape'),
-				  "quick_replies":[{
-				                "content_type":"text",
-				                "title":x,
-				                "payload":x
-				              } for x in replies]}
-				}),
-				headers={'Content-type': 'application/json'})
-				if r.status_code != requests.codes.ok:
-					print r.text
-					print(recipient)
-			else:
-				r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-				params={"access_token": token},
-				data=json.dumps({
-				  "recipient": {"id": recipient},
-				  "message": {"text": response['msg'].decode('unicode_escape')}
-				}),
-				headers={'Content-type': 'application/json'})
-				if r.status_code != requests.codes.ok:
-					print r.text
-			time4 = time.time()
-			print('sendmessage', time4 - time3)
+    	data['text'].append(('bot',response['msg']))
+    	data['oldmessage'] = response['msg']
+    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    	typing('off', token, recipient)
+    	if 'quickreplies' in response:
+    		replies = response['quickreplies']
+    		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    		params={"access_token": token},
+    		data=json.dumps({
+    		  "recipient": {"id": recipient},
+    		  "message": {"text": response['msg'].decode('unicode_escape'),
+    		  "quick_replies":[{
+    		                "content_type":"text",
+    		                "title":x,
+    		                "payload":x
+    		              } for x in replies]}
+    		}),
+    		headers={'Content-type': 'application/json'})
+    		if r.status_code != requests.codes.ok:
+    			print r.text
+    			print(recipient)
+    	else:
+    		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    		params={"access_token": token},
+    		data=json.dumps({
+    		  "recipient": {"id": recipient},
+    		  "message": {"text": response['msg'].decode('unicode_escape')}
+    		}),
+    		headers={'Content-type': 'application/json'})
+    		if r.status_code != requests.codes.ok:
+    			print r.text
+    	time4 = time.time()
+    	print('sendmessage', time4 - time3)
   user_data[recipient] = data
   pickle.dump(user_data, open('user_data.p', 'wb'))
 
