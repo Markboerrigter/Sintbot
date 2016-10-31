@@ -37,67 +37,61 @@ Starttext = pickle.load(open('Starttext.p', 'rb'))
 responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende keer!', 'Bedankt dat ik je kon helpen en een fijne pakjesavond', 'Bedankt voor het fijne gesprek!', 'Tot de 5de van December!', 'Bedankt voor het gesprek, ik zie je op mijn verjaardag!']
 presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
 presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
-personalitymessages = ["""json.dumps({
-  "recipient": {"id": recipient},
-  "message":{
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"generic",
-          "elements":[
-            {
-              "image_url":"http://nl.stockfresh.com/thumbs/nickylarson974/5847697_vakantie-werk-keuze-illustratie-Blauw-Rood.jpg",
-              "buttons":[
-                {
-                  "type":"postback",
-                  "title":"Boven",
-                  "payload":"Boven1"
-                },
-                {
-                  "type":"postback",
-                  "title":"Onder",
-                  "payload":"Onder2"
-                }
-              ]
-            }
-          ]
-        }
+personalitymessages = ["""
+"message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "image_url":"http://nl.stockfresh.com/thumbs/nickylarson974/5847697_vakantie-werk-keuze-illustratie-Blauw-Rood.jpg",
+            "buttons":[
+              {
+                "type":"postback",
+                "title":"Boven",
+                "payload":"Boven1"
+              },
+              {
+                "type":"postback",
+                "title":"Onder",
+                "payload":"Onder2"
+              }
+            ]
+          }
+        ]
       }
     }
-})'
+  }
 """,
-"""json.dumps({
-  "recipient": {"id": recipient},
-  "message":{
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"generic",
-          "elements":[
-            {
-              "image_url":"https://pixabay.com/static/uploads/photo/2015/10/06/08/46/directory-973992_960_720.jpg",
-              "buttons":[
-                {
-                  "type":"postback",
-                  "title":"Boven",
-                  "payload":"Boven3"
-                },
-                {
-                  "type":"postback",
-                  "title":"Onder",
-                  "payload":"Onder4"
-                }
-              ]
-            }
-          ]
-        }
+"""
+"message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "image_url":"https://pixabay.com/static/uploads/photo/2015/10/06/08/46/directory-973992_960_720.jpg",
+            "buttons":[
+              {
+                "type":"postback",
+                "title":"Boven",
+                "payload":"Boven3"
+              },
+              {
+                "type":"postback",
+                "title":"Onder",
+                "payload":"Onder4"
+              }
+            ]
+          }
+        ]
       }
     }
-})
+  }
 """
 ,"""
-json.dumps({
-  "recipient": {"id": recipient},
   "message":{
       "attachment":{
         "type":"template",
@@ -123,7 +117,6 @@ json.dumps({
         }
       }
     }
-})
 """]
 Tokens = pickle.load(open('Tokens.p', 'rb'))
 
@@ -626,7 +619,10 @@ def send_message(token, recipient, text, data):
     typing('off', PAT, recipient)
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
-        data=messages,
+        data=json.dumps({
+          "recipient": {"id": recipient},
+
+        }),
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
