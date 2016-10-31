@@ -456,6 +456,7 @@ def findToken(recipient, data, text):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
           response, data = getResponse(recipient, data['starter'], data)
+          send_message(PAT, recipient, response['msg'], data)
   elif Stage == 'Connection':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
@@ -468,6 +469,7 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
       response, data = getResponse(recipient, data['starter'], data)
+      send_message(PAT, recipient, response['msg'], data)
   elif Stage == 'decisions':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
@@ -481,6 +483,7 @@ def findToken(recipient, data, text):
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['Stage'] = NextStage
       response, data = getResponse(recipient, data['starter'], data)
+      send_message(PAT, recipient, response['msg'], data)
   else:
       print('end of conversation')
       typing('off', PAT, recipient)
@@ -708,11 +711,11 @@ def send_message(token, recipient, text, data):
     	time2 = time.time()
     	print('stopthing',time2 - time1)
     	time1 = time2
-    print(data['data'])
-    # checksuggest(token, recipient, data)
-    time3 = time.time()
-    print('checksuggest',time3- time1)
-    if 'msg' in response and response['msg'] != data['oldmessage']:
+        print(data['data'])
+        # checksuggest(token, recipient, data)
+        time3 = time.time()
+        print('checksuggest',time3- time1)
+    elif 'msg' in response and response['msg'] != data['oldmessage']:
     	print(response['msg'].decode('unicode_escape', 'ignore'))
 
     	data['text'].append(('bot',response['msg']))
