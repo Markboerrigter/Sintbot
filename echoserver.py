@@ -583,93 +583,112 @@ def send_message(token, recipient, text, data):
   #  data['startans'] = []
   # if data['Stage'] in ['Personality', 'GiveIdea', 'presentchoosing', 'response']:
   if data['Stage'] == 'Personality':
-
-    message = random.choice(personalitymessages)
-    while personalitymessages.index(message) in data['personQuestions']:
+    if len(data['personQuestions']) > 2:
+        response, data = findToken(recipient, data, text)
+    else:
         message = random.choice(personalitymessages)
-    data['personQuestions'].append(personalitymessages.index(message))
-    typing('off', PAT, recipient)
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        while personalitymessages.index(message) in data['personQuestions']:
+            message = random.choice(personalitymessages)
+        data['personQuestions'].append(personalitymessages.index(message))
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message":message[0]}),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+        typing('on', PAT, recipient)
+        time.sleep(1.5)
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
           "recipient": {"id": recipient},
-          "message":message[0]}),
+          "message": {"text": message[1],
+          "quick_replies":[{
+                        "content_type":"text",
+                        "title":message[2],
+                        "payload":message[2]
+                      },{	                "content_type":"text",
+                      	                "title":message[3],
+                      	                "payload":message[3]}]}
+        }),
         headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
+        if r.status_code != requests.codes.ok:
         	print r.text
-    typing('on', PAT, recipient)
-    time.sleep(1.5)
-    typing('off', PAT, recipient)
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    params={"access_token": token},
-    data=json.dumps({
-      "recipient": {"id": recipient},
-      "message": {"text": message[1],
-      "quick_replies":[{
-                    "content_type":"text",
-                    "title":message[2],
-                    "payload":message[2]
-                  },{	                "content_type":"text",
-                  	                "title":message[3],
-                  	                "payload":message[3]}]}
-    }),
-    headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-    	print r.text
-    	print(recipient)
-    print('send personality')
+        	print(recipient)
+        print('send personality')
 
 
   elif data['Stage'] == 'GiveIdea':
     typing('off', PAT, recipient)
     message = 'Waar ben je naar op zoek?'
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": token},
-        data=json.dumps({
-          "recipient": {"id": recipient},
-          "message": {"text": message}
-        }),
-        headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-        	print r.text
+    if message == data['oldmessage']:
+        response, data = findToken(recipient, data, text)
+    else:
+    	data['text'].append(('bot',response['msg']))
+    	data['oldmessage'] = response['msg']
+    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+
   elif data['Stage'] == 'presentchoosing':
-    typing('off', PAT, recipient)
-    message = random.choice(presentmessage1)
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": token},
-        data=json.dumps({
-          "recipient": {"id": recipient},
-          "message": {"text": message}
-        }),
-        headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-        	print r.text
-    typing('on', PAT, recipient)
-    checksuggest(PAT, recipient, data)
-    message = random.choice(presentmessage3)
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": token},
-        data=json.dumps({
-          "recipient": {"id": recipient},
-          "message": {"text": message},
-          "quick_replies":[{
-                        "content_type":"text",
-                        "title":'Ja',
-                        "payload":'Ja'
-                      },{
-                        "content_type":"text",
-                        "title":'Nee',
-                        "payload":'Nee'
-                      }
-                      ]
-        }),
-        headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-        	print r.text
-    response, data = findToken(recipient, data, text)
+    if text == 'Ja' or text == 'Nee':
+        response, data = findToken(recipient, data, text)
+    else:
+        typing('off', PAT, recipient)
+        message = random.choice(presentmessage1)
+    	data['text'].append(('bot',response['msg']))
+    	data['oldmessage'] = response['msg']
+    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+        typing('on', PAT, recipient)
+        checksuggest(PAT, recipient, data)
+        message = random.choice(presentmessage3)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message},
+              "quick_replies":[{
+                            "content_type":"text",
+                            "title":'Ja',
+                            "payload":'Ja'
+                          },{
+                            "content_type":"text",
+                            "title":'Nee',
+                            "payload":'Nee'
+                          }
+                          ]
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+            # response, data = findToken(recipient, data, text)
   elif data['Stage'] == 'response':
+
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
+	data['text'].append(('bot',response['msg']))
+	data['oldmessage'] = response['msg']
+	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
