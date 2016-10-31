@@ -451,6 +451,7 @@ def findToken(recipient, data, text):
       if text.lower() == 'ja':
           data['Stage'] = 'GiveIdea'
           response = {}
+          send_message(PAT, recipient, '', data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -463,6 +464,7 @@ def findToken(recipient, data, text):
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
       response = {}
+      send_message(PAT, recipient, '', data)
   elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
@@ -474,6 +476,7 @@ def findToken(recipient, data, text):
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
       response = {}
+      send_message(PAT, recipient, '', data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
