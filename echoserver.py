@@ -451,7 +451,13 @@ def findToken(recipient, data, text):
       if text.lower() == 'ja':
           data['Stage'] = 'GiveIdea'
       else:
-          data['Stage'] = 'decisions'
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          if isinstance(data['token'], dict):
+              data['token'] = random.choice(allValues(Tokens[NextStage]))
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
+          data['Stage'] = NextStage
+          response, data = getResponse(recipient, data['starter'], data)
   elif Stage == 'Connection':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
@@ -461,6 +467,7 @@ def findToken(recipient, data, text):
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
+      response, data = getResponse(recipient, data['starter'], data)
   elif Stage == 'decisions':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
@@ -471,12 +478,13 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['Stage'] = NextStage
+      response, data = getResponse(recipient, data['starter'], data)
   else:
       print('end of conversation')
       typing('off', PAT, recipient)
       data['dolog'] = 'end'
       response = {}
-  response, data = getResponse(recipient, data['starter'], data)
+
   return response, data
 
 """ FUNCTIONS TO RECEIVE AND SEND MESSAGES
