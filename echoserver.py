@@ -612,6 +612,7 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+  print('And now we will send a message to: '+ recipient)
   global user_data
   # if text == 'Get started':
   #  data['startans'] = []
