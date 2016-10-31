@@ -543,7 +543,7 @@ def handle_messages():
             print('NEWUSER')
             makeStartScreen(PAT)
             # persFB, sent = getIt()
-            pprint(persFB)
+            # pprint(persFB)
             user_data[sender] = dict()
             user_data[sender]['log'] = {}
             user_data[sender]['try'] = 0
