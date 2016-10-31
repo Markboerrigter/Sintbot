@@ -445,17 +445,17 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
+  print(data['data'])
+  print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           data['Stage'] = 'GiveIdea'
       else:
           data['Stage'] = 'decisions'
-  print(data['data'])
-  print(Stage)
-  if Stage == 'Connection':
+  elif Stage == 'Connection':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
-  if Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
+  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
