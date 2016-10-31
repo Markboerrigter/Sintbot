@@ -7,6 +7,7 @@ for word in file1:
      x.append(word)
 
 import pickle
+import pprint
 
 pickle.dump(x, open('Faulword.p', 'wb'))
 
@@ -140,3 +141,6 @@ Tokens['feedback']['2'] = {"Feedback":'6ZUZHBITRTWR3PEJE26DZE6ZX3HHGGES'}
 Tokens['feedback']['3'] = {"Feedback":'IJUVMKFS4HEGLIKP25ORZ5UCVVBJGW3Q'}
 
 pickle.dump(Tokens, open('Tokens.p', 'wb'))
+# x = {"object":"page","entry":[{"id":"1036938909752245","time":1477923783353,"messaging":[{"sender":{"id":"1036938909752245"},"recipient":{"id":"1100393156681613"},"timestamp":1477923783064,"message":{"is_echo":True,"app_id":1487927634556831,"mid":"mid.1477923783064:3a1a5dd402","seq":7222,"attachments":[{"title":"What do you prefer?","url":'',"type":"template","payload":{"template_type":"generic","sharable":False,"elements":[{"title":"What do you prefer?","image_url":"http:\/\/nl.stockfresh.com\/thumbs\/nickylarson974\/5847697_vakantie-werk-keuze-illustratie-Blauw-Rood.jpg","buttons":[{"type":"postback","title":"Boven","payload":"Boven1"},{"type":"postback","title":"Onder","payload":"Onder2"}]}]}}]}}]}]}
+#
+# pprint(x)
