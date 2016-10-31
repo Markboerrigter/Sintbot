@@ -618,8 +618,7 @@ def send_message(token, recipient, text, data):
     	print r.text
     	print(recipient)
     print('send personality')
-    if len(data['personQuestions']) > 2:
-        response, data = findToken(recipient, data, text)
+
 
   elif data['Stage'] == 'GiveIdea':
     typing('off', PAT, recipient)
@@ -633,7 +632,6 @@ def send_message(token, recipient, text, data):
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
-    response, data = findToken(recipient, data, text)
   elif data['Stage'] == 'presentchoosing':
     typing('off', PAT, recipient)
     message = random.choice(presentmessage1)
