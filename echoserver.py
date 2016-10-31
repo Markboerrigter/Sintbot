@@ -601,23 +601,23 @@ def send_message(token, recipient, text, data):
     typing('on', PAT, recipient)
     time.sleep(1.5)
     typing('off', PAT, recipient)
-	r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-	params={"access_token": token},
-	data=json.dumps({
-	  "recipient": {"id": recipient},
-	  "message": {"text": message[1],
-	  "quick_replies":{
-	                "content_type":"text",
-	                "title":message[2],
-	                "payload":message[2]
-	              },{	                "content_type":"text",
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    params={"access_token": token},
+    data=json.dumps({
+      "recipient": {"id": recipient},
+      "message": {"text": message[1],
+      "quick_replies":{
+                    "content_type":"text",
+                    "title":message[2],
+                    "payload":message[2]
+                  },{	                "content_type":"text",
                   	                "title":message[3],
                   	                "payload":message[3]}}
-	}),
-	headers={'Content-type': 'application/json'})
-	if r.status_code != requests.codes.ok:
-		print r.text
-		print(recipient)
+    }),
+    headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+    	print r.text
+    	print(recipient)
     print('send personality')
     if len(data['personQuestions']) > 2:
         response, data = findToken(recipient, data, text)
