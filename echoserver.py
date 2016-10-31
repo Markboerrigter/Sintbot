@@ -502,6 +502,7 @@ below the receive and send functions can be found.
 def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
+  print(payload)
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
     if findword(message):
@@ -632,6 +633,7 @@ def send_message(token, recipient, text, data):
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
+    print('send personality')
     if len(data['personQuestions']) > 2:
         response, data = findToken(recipient, data, text)
 
