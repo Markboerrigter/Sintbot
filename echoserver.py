@@ -344,6 +344,13 @@ def getInformation(response, tekst):
     else:
         return []
 
+def findAnswer(response, question,witToken,data):
+    session_id = data['session']
+    information = getInformation(response,question)
+    response = mergeAns(response, witToken, session_id, question)
+    information.update(getInformation(response,question))
+    return response,data, information
+    
 def getResponse(recipient, text, data):
   print(text, data['token'], data['session'])
   response = tb.response(text, data['token'], data['session'])
