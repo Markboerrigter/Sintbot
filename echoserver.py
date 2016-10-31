@@ -612,16 +612,16 @@ def send_message(token, recipient, text, data):
   # if data['Stage'] in ['Personality', 'GiveIdea', 'presentchoosing', 'response']:
   if data['Stage'] == 'Personality':
 
-    messages = random.choice(personalitymessages)
-    while personalitymessages.index(messages) in data['personQuestions']:
-        messages = random.choice(personalitymessages)
-    data['personQuestions'].append(personalitymessages.index(messages))
+    message = random.choice(personalitymessages)
+    while personalitymessages.index(message) in data['personQuestions']:
+        message = random.choice(personalitymessages)
+    data['personQuestions'].append(personalitymessages.index(message))
     typing('off', PAT, recipient)
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
           "recipient": {"id": recipient},
-
+          message
         }),
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
