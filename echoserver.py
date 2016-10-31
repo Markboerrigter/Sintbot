@@ -45,6 +45,7 @@ personalitymessages = ["""
         "template_type":"generic",
         "elements":[
           {
+            "title": "What do you prefer?",
             "image_url":"http://nl.stockfresh.com/thumbs/nickylarson974/5847697_vakantie-werk-keuze-illustratie-Blauw-Rood.jpg",
             "buttons":[
               {
@@ -72,6 +73,7 @@ personalitymessages = ["""
         "template_type":"generic",
         "elements":[
           {
+            "title": "What do you prefer?",
             "image_url":"https://pixabay.com/static/uploads/photo/2015/10/06/08/46/directory-973992_960_720.jpg",
             "buttons":[
               {
@@ -99,6 +101,7 @@ personalitymessages = ["""
           "template_type":"generic",
           "elements":[
             {
+              "title": "What do you prefer?",
               "image_url":"http://us.123rf.com/450wm/draganmilenkovic/draganmilenkovic1604/draganmilenkovic160400014/55164130-beste-prijs-en-keuze-illustratie-in-kleurrijke.jpg?ver=6",
               "buttons":[
                 {
