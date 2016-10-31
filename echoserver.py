@@ -561,7 +561,7 @@ def handle_messages():
             user_data[sender]['personality'] = ''
             user_data[sender]['oldincoming'] = message
             user_data[sender]['oldmessage'] = ''
-            user_data[sender]['token'] = 'hoi'
+            user_data[sender]['token'] = random.choice(allValues(Tokens[user_data[sender]['Stage']]))
             # Tokens['Start']['Personalities']['Extraversion'].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -672,7 +672,7 @@ def send_message(token, recipient, text, data):
   else:
 		data['try'] +=1
 		time0 = time.time()
-
+        print(recipient, text, data)
 		response, data = getResponse(recipient, text, data)
 		print(response)
 		time1 = time.time()
