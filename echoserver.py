@@ -606,13 +606,13 @@ def send_message(token, recipient, text, data):
     data=json.dumps({
       "recipient": {"id": recipient},
       "message": {"text": message[1],
-      "quick_replies":{
+      "quick_replies":[{
                     "content_type":"text",
                     "title":message[2],
                     "payload":message[2]
                   },{	                "content_type":"text",
                   	                "title":message[3],
-                  	                "payload":message[3]}}
+                  	                "payload":message[3]}]}
     }),
     headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
