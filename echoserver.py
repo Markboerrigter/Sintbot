@@ -38,7 +38,7 @@ responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende
 presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
 presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
 personalitymessages = ["""
-"message":{
+{
     "attachment":{
       "type":"template",
       "payload":{
@@ -65,7 +65,7 @@ personalitymessages = ["""
   }
 """,
 """
-"message":{
+{
     "attachment":{
       "type":"template",
       "payload":{
@@ -92,7 +92,7 @@ personalitymessages = ["""
   }
 """
 ,"""
-  "message":{
+  {
       "attachment":{
         "type":"template",
         "payload":{
@@ -621,8 +621,7 @@ def send_message(token, recipient, text, data):
         params={"access_token": token},
         data=json.dumps({
           "recipient": {"id": recipient},
-          message
-        }),
+          "message":message}),
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
