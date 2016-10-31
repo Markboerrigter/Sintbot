@@ -350,7 +350,7 @@ def findAnswer(response, question,witToken,data):
     response = mergeAns(response, witToken, session_id, question)
     information.update(getInformation(response,question))
     return response,data, information
-    
+
 def getResponse(recipient, text, data):
   print(text, data['token'], data['session'])
   response = tb.response(text, data['token'], data['session'])
@@ -694,7 +694,7 @@ def send_message(token, recipient, text, data):
 		time3 = time.time()
 		print('checksuggest',time3- time1)
 		if 'msg' in response and response['msg'] != data['oldmessage']:
-			print(response['msg'].decode('unicode_escape'))
+			print(response['msg'].decode('unicode_escape', 'ignore'))
 
 			data['text'].append(('bot',response['msg']))
 			data['oldmessage'] = response['msg']
