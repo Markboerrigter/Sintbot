@@ -731,7 +731,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": response['msg'].decode('unicode_escape'),
+              "message": {"text": response['msg'],
               "quick_replies":[{
                             "content_type":"text",
                             "title":x,
@@ -748,7 +748,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": response['msg'].decode('unicode_escape')}
+              "message": {"text": response['msg']}
             }),
             headers={'Content-type': 'application/json'})
             if r.status_code != requests.codes.ok:
