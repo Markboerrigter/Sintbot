@@ -115,6 +115,7 @@ Tokens['decisions'] = {}
 Tokens['decisions']['age'] = {}
 Tokens['decisions']['gender'] = {}
 Tokens['decisions']['budget'] = {}
+Tokens['decisions']['type'] = {}
 Tokens['decisions']['age']['1'] =  {"Age":'BQDMM2HIB7YSAXICR7QFULGKXQWJHKXJ'}
 Tokens['decisions']['age']['2'] =  {"Age":'5UTS7JO3NPTOHD52HAWKQOZBUNTFC53R'}
 Tokens['decisions']['age']['3'] =  {"Age":'ZSH2KSPXJBWLDR6YJDG5EHRVXM26ZEUU'}

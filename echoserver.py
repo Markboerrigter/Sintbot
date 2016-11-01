@@ -461,46 +461,46 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
       response = {}
       send_message(PAT, recipient, '', data)
-  # elif Stage == 'personality':
-  #     NextStage = TokenStages[TokenStages.index(Stage)+2]
-  #     data['Stage'] = NextStage
-  #     if data['personality'][1:] == ['Een kado geven', 'Een originele surprise']:
-  #         data['token'] == Tokens[Nextstage]['1'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado geven', 'Een gedicht van internet']:
-  #         data['token'] == Tokens[Nextstage]['2'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado geven', 'Een gedicht schrijven']:
-  #         data['token'] == Tokens[Nextstage]['3'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado geven', 'Een gedicht voorlezen']:
-  #         data['token'] == Tokens[Nextstage]['4'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado krijgen', 'Een originele surprise']:
-  #         data['token'] == Tokens[Nextstage]['5'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado krijgen', 'Een gedicht van internet']:
-  #         data['token'] == Tokens[Nextstage]['6'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado krijgen', 'Een gedicht schrijven']:
-  #         data['token'] == Tokens[Nextstage]['7'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een kado krijgen',  'Een gedicht voorlezen']:
-  #         data['token'] == Tokens[Nextstage]['8'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een gedicht schrijven', 'Een originele surprise']:
-  #         data['token'] == Tokens[Nextstage]['9'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een gedicht schrijven', 'Een gedicht van internet']:
-  #         data['token'] == Tokens[Nextstage]['10'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een gedicht voorlezen', 'Een originele surprise']:
-  #         data['token'] == Tokens[Nextstage]['11'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     if data['personality'][1:] == ['Een gedicht voorlezen', 'Een gedicht van internet']:
-  #         data['token'] == Tokens[Nextstage]['12'].values()[0]
-  #         data['starter'] == get_keys(Tokens, data['token'])[-1]
-  #     send_message(PAT, recipient, data['starter'], data)
+  elif Stage == 'personality':
+      NextStage = TokenStages[TokenStages.index(Stage)+2]
+      data['Stage'] = NextStage
+      if data['personality'][1:] == ['Geven', 'Surprise']:
+          data['token'] == Tokens[Nextstage]['1'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Geven', 'Gedichtje']:
+          data['token'] == Tokens[Nextstage]['2'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Geven', 'Schrijven']:
+          data['token'] == Tokens[Nextstage]['3'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Geven', 'Lezen']:
+          data['token'] == Tokens[Nextstage]['4'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Krijgen', 'Surprise']:
+          data['token'] == Tokens[Nextstage]['5'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Krijgen', 'Gedichtje']:
+          data['token'] == Tokens[Nextstage]['6'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Krijgen', 'Schrijven']:
+          data['token'] == Tokens[Nextstage]['7'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Krijgen',  'Lezen']:
+          data['token'] == Tokens[Nextstage]['8'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Schrijven', 'Surprise']:
+          data['token'] == Tokens[Nextstage]['9'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Schrijven', 'Gedichtje']:
+          data['token'] == Tokens[Nextstage]['10'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Lezen', 'Surprise']:
+          data['token'] == Tokens[Nextstage]['11'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      if data['personality'][1:] == ['Lezen', 'Gedichtje']:
+          data['token'] == Tokens[Nextstage]['12'].values()[0]
+          data['starter'] == get_keys(Tokens, data['token'])[-1]
+      send_message(PAT, recipient, data['starter'], data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
