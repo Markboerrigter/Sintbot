@@ -366,8 +366,8 @@ def checksuggest(token, recipient, data):
             presents = presentstasks
         presents = random.sample(presents,min(len(presents),5))
         data['presents'] = presents
-        typing('off', PAT, recipient)
         postdashbot('bot',(recipient,'presents', data['message-id']) )
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -413,7 +413,7 @@ def findToken(recipient, data, text):
           response = {}
           send_message(PAT, recipient, '', data)
       else:
-          NextStage = TokenStages[TokenStages.index(Stage)+1]
+          NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           if isinstance(data['token'], dict):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -623,7 +623,7 @@ def send_message(token, recipient, text, data):
 
 
   elif data['Stage'] == 'GiveIdea':
-    typing('off', PAT, recipient)
+
     message = 'Waar ben je naar op zoek?'
     if message == data['oldmessage']:
         response, data = findToken(recipient, data, text)
@@ -631,6 +631,7 @@ def send_message(token, recipient, text, data):
     	data['text'].append(('bot',response['msg']))
     	data['oldmessage'] = response['msg']
     	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -645,11 +646,12 @@ def send_message(token, recipient, text, data):
     if text == 'Ja' or text == 'Nee':
         response, data = findToken(recipient, data, text)
     else:
-        typing('off', PAT, recipient)
+
         message = random.choice(presentmessage1)
     	data['text'].append(('bot',response['msg']))
     	data['oldmessage'] = response['msg']
     	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -662,6 +664,7 @@ def send_message(token, recipient, text, data):
         typing('on', PAT, recipient)
         checksuggest(PAT, recipient, data)
         message = random.choice(presentmessage3)
+
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -721,9 +724,9 @@ def send_message(token, recipient, text, data):
     	data['text'].append(('bot',response['msg']))
     	data['oldmessage'] = response['msg']
     	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-    	typing('off', token, recipient)
     	if 'quickreplies' in response:
     		replies = response['quickreplies']
+            typing('off', token, recipient)
     		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     		params={"access_token": token},
     		data=json.dumps({
@@ -740,6 +743,7 @@ def send_message(token, recipient, text, data):
     			print r.text
     			print(recipient)
     	else:
+            typing('off', token, recipient)
     		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     		params={"access_token": token},
     		data=json.dumps({
