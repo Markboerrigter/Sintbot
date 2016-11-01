@@ -734,7 +734,7 @@ def send_message(token, recipient, text, data):
 
 
   elif data['Stage'] == 'Personality':
-
+    print(data['personality'])
     if not data['personality']:
         message = 'Om je wat beter te leren kennen stel ik je nu een paar vragen.'
         data['text'].append(('bot',message))
