@@ -296,6 +296,8 @@ def getInformation(response, tekst):
             out['Gender'] = entities['Gender'][0]['value']
         if 'age_of_person' in entities and entities['age_of_person'][0]['confidence'] > 0.8:
             out['Age'] = entities['age_of_person'][0]['value']
+        if 'typeChild' in entities and entities['typeChild'][0]['confidence'] > 0.8:
+            out['typeChild'] = entities['typeChild'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8 and entities['distinction'][0]['value'] in ['Ja', 'Nee']:
             out['distinction'] = entities['distinction'][0]['value']
         if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.8:
@@ -439,13 +441,13 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
           response = {}
           send_message(PAT, recipient, '', data)
-  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
+  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'typeChild']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
-      response, data = getResponse(recipient, data['starter'], data)
+    #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, response['msg'], data)
   elif Stage == 'decisions':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
