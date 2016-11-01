@@ -668,7 +668,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": message}
+              "message": {"text": message.encode('utf-8')}
             }),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
@@ -681,7 +681,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": message},
+              "message": {"text": message.encode('utf-8')},
               "quick_replies":[{
                             "content_type":"text",
                             "title":'Ja',
