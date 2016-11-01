@@ -422,10 +422,16 @@ def findToken(recipient, data, text):
           response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, response['msg'], data)
   elif Stage == 'Connection':
-      NextStage = TokenStages[TokenStages.index(Stage)+1]
-      data['Stage'] = NextStage
-      response = {}
-      send_message(PAT, recipient, '', data)
+      if not data['personality']:
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
+          data['Stage'] = NextStage
+          response = {}
+          send_message(PAT, recipient, '', data)
+      else:
+          NextStage = TokenStages[TokenStages.index(Stage)+2]
+          data['Stage'] = NextStage
+          response = {}
+          send_message(PAT, recipient, '', data)
   elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
@@ -548,7 +554,7 @@ def handle_messages():
             user_data[sender]['text'] = []
             user_data[sender]['personQuestions'] = []
             user_data[sender]['message-id'] = mid
-            user_data[sender]['personality'] = ''
+            user_data[sender]['personality'] = []
             user_data[sender]['oldincoming'] = message
             user_data[sender]['oldmessage'] = ''
             user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
@@ -579,17 +585,23 @@ def send_message(token, recipient, text, data):
   print('And now we will send a message to: '+ recipient)
   print(data['Stage'])
   global user_data
+
   # if text == 'Get started':
   #  data['startans'] = []
   # if data['Stage'] in ['Personality', 'GiveIdea', 'presentchoosing', 'response']:
   if data['Stage'] == 'Personality':
+    data['personality'].append(text)
     if len(data['personQuestions']) > 2:
         response, data = findToken(recipient, data, text)
     else:
+
         message = random.choice(personalitymessages)
         while personalitymessages.index(message) in data['personQuestions']:
             message = random.choice(personalitymessages)
         data['personQuestions'].append(personalitymessages.index(message))
+        data['text'].append(('bot',message))
+    	data['oldmessage'] = message
+    	postdashbot('bot',(recipient,message, data['message-id']) )
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
@@ -628,9 +640,9 @@ def send_message(token, recipient, text, data):
     if message == data['oldmessage']:
         response, data = findToken(recipient, data, text)
     else:
-    	data['text'].append(('bot',response['msg']))
-    	data['oldmessage'] = response['msg']
-    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    	data['text'].append(('bot',message))
+    	data['oldmessage'] = message
+    	postdashbot('bot',(recipient,message, data['message-id']) )
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
@@ -648,9 +660,9 @@ def send_message(token, recipient, text, data):
     else:
 
         message = random.choice(presentmessage1)
-    	data['text'].append(('bot',response['msg']))
-    	data['oldmessage'] = response['msg']
-    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    	data['text'].append(('bot',message))
+    	data['oldmessage'] = message
+    	postdashbot('bot',(recipient,message, data['message-id']) )
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
