@@ -368,6 +368,13 @@ def checksuggest(token, recipient, data):
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
+
+        for x in presents:
+            if not x['img_link']:
+                if x['retailer'] == 'intertoys':
+                    x['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
+                else:
+                    x['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ str(x['page']) + '_p' + str(x['id']) + '.png'
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -743,7 +750,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": response['msg'],
+              "message": {"text": response['msg'].encode('utf-8'),
               "quick_replies":[{
                             "content_type":"text",
                             "title":x,
@@ -760,7 +767,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": response['msg']}
+              "message": {"text": response['msg'].encode('utf-8')}
             }),
             headers={'Content-type': 'application/json'})
             if r.status_code != requests.codes.ok:
