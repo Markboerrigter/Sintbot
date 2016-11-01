@@ -718,41 +718,41 @@ def send_message(token, recipient, text, data):
         # checksuggest(token, recipient, data)
 
     elif 'msg' in response and response['msg'] != data['oldmessage']:
-    	print(response['msg'].decode('unicode_escape', 'ignore'))
+        print(response['msg'].decode('unicode_escape', 'ignore'))
         time3 = time.time()
         print('checksuggest',time3- time1)
-    	data['text'].append(('bot',response['msg']))
-    	data['oldmessage'] = response['msg']
-    	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
-    	if 'quickreplies' in response:
-    		replies = response['quickreplies']
+        data['text'].append(('bot',response['msg']))
+        data['oldmessage'] = response['msg']
+        postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        if 'quickreplies' in response:
+            replies = response['quickreplies']
             typing('off', token, recipient)
-    		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    		params={"access_token": token},
-    		data=json.dumps({
-    		  "recipient": {"id": recipient},
-    		  "message": {"text": response['msg'].decode('unicode_escape'),
-    		  "quick_replies":[{
-    		                "content_type":"text",
-    		                "title":x,
-    		                "payload":x
-    		              } for x in replies]}
-    		}),
-    		headers={'Content-type': 'application/json'})
-    		if r.status_code != requests.codes.ok:
-    			print r.text
-    			print(recipient)
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": response['msg'].decode('unicode_escape'),
+              "quick_replies":[{
+                            "content_type":"text",
+                            "title":x,
+                            "payload":x
+                          } for x in replies]}
+            }),
+            headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+            	print r.text
+            	print(recipient)
     	else:
             typing('off', token, recipient)
-    		r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    		params={"access_token": token},
-    		data=json.dumps({
-    		  "recipient": {"id": recipient},
-    		  "message": {"text": response['msg'].decode('unicode_escape')}
-    		}),
-    		headers={'Content-type': 'application/json'})
-    		if r.status_code != requests.codes.ok:
-    			print r.text
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": response['msg'].decode('unicode_escape')}
+            }),
+            headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+            	print r.text
     	time4 = time.time()
     	print('sendmessage', time4 - time3)
   user_data[recipient] = data
