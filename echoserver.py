@@ -14,9 +14,16 @@ from copy import copy
 import pickle
 from flask import g
 import time
+import emoji
 
 # personality, sentiment = getIt()
+# print(emoji.emojize('Python is :thumbs_up_sign:'))
+childTypes = [emoji.emojize(u"\U0001F5A5" + ':game_die::video_game:'), emoji.emojize( ':family:'+ u"\U0001F914" + ':dog:'), emoji.emojize(u"\U0001F913"+ ':books::microscope:'), emoji.emojize(':guitar:' + u"\U000FE804"+ 	u"\U000FE517"), emoji.emojize(u"\U000FE7D4" + u"\U0001F6B5"+ u"\U000FE7E4")   ]
+typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
 
+# for x in childTypes:
+#     print(x)
+# err
 
 x = dict()
 pickle.dump(x, open('user_data.p', 'wb'))
@@ -45,14 +52,14 @@ personalitymessages = [["""
         "template_type":"generic",
         "elements":[
           {
-            "title": "What do you prefer?",
-            "image_url":"http://nl.stockfresh.com/thumbs/nickylarson974/5847697_vakantie-werk-keuze-illustratie-Blauw-Rood.jpg",
+            "title": "Liever creatief of lekker lui??",
+            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
           }
         ]
       }
     }
   }
-""", 'Do you prefer A or B', 'A', 'B'],[
+""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', 'Surprise', 'Gedichtje'],[
 """
 {
     "attachment":{
@@ -61,14 +68,14 @@ personalitymessages = [["""
         "template_type":"generic",
         "elements":[
           {
-            "title": "What do you prefer?",
-            "image_url":"https://pixabay.com/static/uploads/photo/2015/10/06/08/46/directory-973992_960_720.jpg",
+            "title": "Geef of krijg jij liever een kado?",
+            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
           }
         ]
       }
     }
   }
-""", 'Do you prefer A or B', 'A', 'B']
+""", 'Geef jij liever een kado, of krijg je liever iets? :)', 'Geven', 'Krijgen']
 ,["""
   {
       "attachment":{
@@ -77,14 +84,14 @@ personalitymessages = [["""
           "template_type":"generic",
           "elements":[
             {
-              "title": "What do you prefer?",
-              "image_url":"http://us.123rf.com/450wm/draganmilenkovic/draganmilenkovic1604/draganmilenkovic160400014/55164130-beste-prijs-en-keuze-illustratie-in-kleurrijke.jpg?ver=6",
+              "title": "Lees of Schrijf jij liever een gedicht?",
+              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
             }
           ]
         }
       }
     }
-""", 'Do you prefer A or B', 'A', 'B']]
+""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', 'Lezen', 'Schrijven']]
 Tokens = pickle.load(open('Tokens.p', 'rb'))
 
 dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
@@ -508,8 +515,9 @@ def findToken(recipient, data, text):
       typing('off', PAT, recipient)
       data['dolog'] = 'end'
       response = {}
+      send_message(PAT, recipient, '', data)
 
-  return response, data
+  # return response, data
 
 """ FUNCTIONS TO RECEIVE AND SEND MESSAGES
 
@@ -579,9 +587,12 @@ def handle_messages():
                 print(mid,user_data[sender]['message-id'])
                 user_data[sender]['text'].append(('user',message))
                 user_data[sender]['message-id'] = mid
-                typing('on', PAT, sender)
-                send_message(PAT, sender, message,user_data[sender])
                 user_data[sender]['oldincoming'] = message
+                typing('on', PAT, sender)
+                data = send_message(PAT, sender, message,user_data[sender])
+                user_data[recipient] = data
+                pickle.dump(user_data, open('user_data.p', 'wb'))
+
         else:
             user_info = getdata(sender)
             print(user_info)
@@ -612,7 +623,9 @@ def handle_messages():
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
             typing('on', PAT, sender)
-            send_message(PAT, sender, message, user_data[sender])
+            data = send_message(PAT, sender, message, user_data[sender])
+            user_data[recipient] = data
+            pickle.dump(user_data, open('user_data.p', 'wb'))
   return "ok", 200
 
 def messaging_events(payload):
@@ -638,7 +651,90 @@ def send_message(token, recipient, text, data):
   # if text == 'Get started':
   #  data['startans'] = []
   # if data['Stage'] in ['Personality', 'GiveIdea', 'presentchoosing', 'response']:
-  if data['Stage'] == 'Personality':
+  if data['dolog'] == 'end':
+      print('done')
+
+  elif data['token'] == '1':
+      if text in childTypes:
+          data['cat'] = text
+          data['childtypes'].remove(text)
+          message = typeResponse[childTypes.index(text)]
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Ja',
+                          "payload":'Ja'
+                        },
+            {
+                          "content_type":"text",
+                          "title":'Nee',
+                          "payload":'Nee'
+                        }
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          	print(recipient)
+
+      elif text == 'Ja':
+          data['data']['categorie'] == data['cat']
+          findToken(recipient, data, text)
+      elif text == 'Nee':
+          message = 'Oke, welke groep past dan het best denkje? ;)'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":x,
+                          "payload":x
+                        } for x in data['childtypes']]
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          	print(recipient)
+      else:
+          data['childtypes'] = childTypes
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieën behoort het kind het best?'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":x,
+                          "payload":x
+                        } for x in childTypes]
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          	print(recipient)
+
+
+  elif data['Stage'] == 'Personality':
+
+
     data['personality'].append(text)
     if len(data['personQuestions']) > 2:
         response, data = findToken(recipient, data, text)
@@ -687,7 +783,7 @@ def send_message(token, recipient, text, data):
 
     message = 'Waar ben je naar op zoek?'
     if message == data['oldmessage']:
-        response, data = findToken(recipient, data, text)
+        findToken(recipient, data, text)
     else:
     	data['text'].append(('bot',message))
     	data['oldmessage'] = message
@@ -705,9 +801,8 @@ def send_message(token, recipient, text, data):
 
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja' or text == 'Nee':
-        response, data = findToken(recipient, data, text)
+        findToken(recipient, data, text)
     else:
-
         message = random.choice(presentmessage1)
     	data['text'].append(('bot',message))
     	data['oldmessage'] = message
@@ -745,7 +840,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-        response, data = findToken(recipient, data, text)
+        findToken(recipient, data, text)
   elif data['Stage'] == 'response':
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
@@ -761,7 +856,7 @@ def send_message(token, recipient, text, data):
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
-    response, data = findToken(recipient, data, text)
+    findToken(recipient, data, text)
   else:
     data['try'] +=1
     time0 = time.time()
@@ -771,7 +866,8 @@ def send_message(token, recipient, text, data):
     print('getresponse',time1-time0)
     # or response['msg'] == data['oldmessage']
     if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
-    	response, data = findToken(recipient, data, text)
+    	findToken(recipient, data, text)
+
     	time2 = time.time()
     	print('stopthing',time2 - time1)
     	time1 = time2
@@ -816,8 +912,7 @@ def send_message(token, recipient, text, data):
             	print r.text
     	time4 = time.time()
     	print('sendmessage', time4 - time3)
-  user_data[recipient] = data
-  pickle.dump(user_data, open('user_data.p', 'wb'))
+  return data
 
 if __name__ == '__main__':
   # personality, sentiment = getIt()
