@@ -500,6 +500,7 @@ def findToken(recipient, data, text):
       if data['personality'][1:] == ['Lezen', 'Gedichtje']:
           data['token'] == Tokens[Nextstage]['12'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
+      print(data['token'])
       send_message(PAT, recipient, data['starter'], data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
