@@ -681,14 +681,13 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-            # response, data = findToken(recipient, data, text)
+            response, data = findToken(recipient, data, text)
   elif data['Stage'] == 'response':
-
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
-	data['text'].append(('bot',response['msg']))
-	data['oldmessage'] = response['msg']
-	postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    data['text'].append(('bot',response['msg']))
+    data['oldmessage'] = response['msg']
+    postdashbot('bot',(recipient,response['msg'], data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
