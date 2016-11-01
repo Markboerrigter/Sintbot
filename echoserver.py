@@ -428,8 +428,8 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
-          response, data = getResponse(recipient, data['starter'], data)
-          send_message(PAT, recipient, response['msg'], data)
+        #   response, data = getResponse(recipient, data['starter'], data)
+          send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'Connection':
       if not data['personality']:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -448,7 +448,7 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[Stage]))
       data['starter'] = get_keys(Tokens, data['token'])[-1]
     #   response, data = getResponse(recipient, data['starter'], data)
-      send_message(PAT, recipient, response['msg'], data)
+      send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
@@ -461,8 +461,8 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['Stage'] = NextStage
-      response, data = getResponse(recipient, data['starter'], data)
-      send_message(PAT, recipient, response['msg'], data)
+    #   response, data = getResponse(recipient, data['starter'], data)
+      send_message(PAT, recipient, data['starter'], data)
   else:
       print('end of conversation')
       typing('off', PAT, recipient)
