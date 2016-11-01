@@ -681,7 +681,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-            response, data = findToken(recipient, data, text)
+        response, data = findToken(recipient, data, text)
   elif data['Stage'] == 'response':
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
@@ -698,9 +698,6 @@ def send_message(token, recipient, text, data):
     if r.status_code != requests.codes.ok:
         	print r.text
     response, data = findToken(recipient, data, text)
-
-
-
   else:
     data['try'] +=1
     time0 = time.time()
