@@ -677,7 +677,7 @@ def send_message(token, recipient, text, data):
                           "content_type":"text",
                           "title":'Nee',
                           "payload":'Nee'
-                        }
+                        }]}
           }),
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
@@ -702,7 +702,7 @@ def send_message(token, recipient, text, data):
                           "content_type":"text",
                           "title":x,
                           "payload":x
-                        } for x in data['childtypes']]
+                        } for x in data['childtypes']]}
           }),
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
@@ -710,7 +710,7 @@ def send_message(token, recipient, text, data):
           	print(recipient)
       else:
           data['childtypes'] = childTypes
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieën behoort het kind het best?'
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best?'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
@@ -724,7 +724,7 @@ def send_message(token, recipient, text, data):
                           "content_type":"text",
                           "title":x,
                           "payload":x
-                        } for x in childTypes]
+                        } for x in childTypes]}
           }),
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
