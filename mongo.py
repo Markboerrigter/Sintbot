@@ -11,7 +11,7 @@ d = now.isoformat()
 
 
 
-# cursor = db.speelgoedboek.find()
+# cursor = db.speelgoed.find()
 #
 # for document in cursor:
 #     print(document)
@@ -22,7 +22,7 @@ d = now.isoformat()
 # @app.route('/user/add/positive/<artnr>/<pamount>')
 def addPositive(artnr, pamount):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
             {'$set': {'updated': d}, '$inc': {'positive_amount':int(pamount)}}
@@ -38,7 +38,7 @@ def addPositive(artnr, pamount):
 # note this function works with one negative point extracted each time used
 def addDislike(artnr):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
             {'$set': {'updated': d}, '$inc': {'dislike_amount':1}}
@@ -69,7 +69,7 @@ def addUserScore(ref):
 # @app.route('/article/number/<artnr>')
 def findArticle(artnr):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         toy = catalogus.find_one({'article_number':int(artnr)})
         # return str(toy['price'])
         return 'The article you found: ' + toy['title'] + ', ' + toy['brand'] + ', ' + str(toy['price']) + ', ' + toy['age'] + ', ' + toy['gender'] +', ' + str(toy['page']) + '<br>'
@@ -81,7 +81,7 @@ def findArticle(artnr):
 # @app.route('/articles/title/<the_query>')
 def findArticlesTitle(the_query):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find(
         {'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}
         )
@@ -97,7 +97,7 @@ def findArticlesTitle(the_query):
 # @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         data = list(catalogus.find({'$or': [{'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}},{'description_extended': {'$regex': '.*'+the_query+'.*','$options' : 'i'}} ]}))
         return (data)
     except Exception, e:
@@ -107,7 +107,7 @@ def findArticlesTitleAndDescription(the_query):
 # @app.route('/articles')
 def findAllArticles():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find()
         output = ''
         for r in results:
@@ -122,7 +122,7 @@ def findByPrice(the_price):
     try:
         the_price_low = float(the_price) - float(the_price)/6.6
         the_price_high = float(the_price)/6.6 + float(the_price)
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'$and': [{'price': {'$lt':the_price_high}},{'price': {'$gt':the_price_low}} ]})
         ordered = results.sort('price')
         output = ''
@@ -137,7 +137,7 @@ def findByPrice(the_price):
 # @app.route('/articles/under')
 def findUndervalue():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'$and': [{'price': {'$lt':50}},{'price': {'$gt':0}} ]})
         ordered = results.sort('price')
         output = ''
@@ -151,7 +151,7 @@ def findUndervalue():
 # @app.route('/articles/above')
 def findAbovevalue():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'price': {'$gt':50}})
         ordered = results.sort('price')
         output = ''
@@ -167,7 +167,7 @@ def findFromRange(start, end):
     try:
         aa = float(start)
         bb = float(end)
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]})
         ordered = results.sort('price')
         output = ''
@@ -181,7 +181,7 @@ def findFromRange(start, end):
 # @app.route('/articles/gender/<sex>')
 def findArticlesGender(sex):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'gender': sex})
         ordered = results.sort('price')
         output = ''
@@ -195,7 +195,7 @@ def findArticlesGender(sex):
 # @app.route('/articles/brand/<the_brand>')
 def findArticlesBrand(the_brand):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'brand': {'$regex': '.*'+the_brand+'.*','$options' : 'i'}})
         ordered = results.sort('price')
         output = ''
@@ -889,7 +889,7 @@ def findByAge(jaar):
             query.append({'age': 'Vanaf 10 maanden'})
             query.append({'age': ''})
 
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         # get query dict working
         results = catalogus.find({'$or': query})
         ordered = results.sort('price')
@@ -1598,7 +1598,7 @@ def findByTrinity(geslacht,budget,bedrag,jaar):
         else:
             query3 = '$gte'
 
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         # results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
         # ordered = results.sort('price')
         #
@@ -2310,7 +2310,7 @@ def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
         else:
             query32 = 0
 
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         # results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
         # ordered = results.sort('price')
         #
