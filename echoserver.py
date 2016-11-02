@@ -462,7 +462,6 @@ def findToken(recipient, data, text):
       response = {}
       send_message(PAT, recipient, '', data)
   elif Stage == 'Personality':
-      data['personality'].append(text)
       print(data['personality'])
       print("let's go to the bridge")
       NextStage = TokenStages[TokenStages.index(Stage)+2]
