@@ -3,7 +3,7 @@ import datetime
 import sys
 sys.path.insert(0, sys.path[0]+'/kpss/kpss')
 
-# import file
+# import file kpss
 import kpss
 # from bson.son import SON
 # from bson.code import Code
