@@ -1,5 +1,10 @@
 from pymongo import MongoClient
 import datetime
+import sys
+sys.path.insert(0, sys.path[0]+'/kpss/kpss')
+
+# import file
+import kpss
 # from bson.son import SON
 # from bson.code import Code
 
@@ -9,7 +14,7 @@ db = client.toys
 now = datetime.datetime.now()
 d = now.isoformat()
 
-# cursor = db.speelgoedboek.find()
+# cursor = db.speelgoed.find()
 #
 # for document in cursor:
 #     print(document)
@@ -20,7 +25,7 @@ d = now.isoformat()
 # @app.route('/user/add/positive/<artnr>/<pamount>')
 def addPositive(artnr, pamount):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
             {'$set': {'updated': d}, '$inc': {'positive_amount':int(pamount)}}
@@ -36,7 +41,7 @@ def addPositive(artnr, pamount):
 # note this function works with one negative point extracted each time used
 def addDislike(artnr):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
             {'$set': {'updated': d}, '$inc': {'dislike_amount':1}}
@@ -63,25 +68,11 @@ def addUserScore(ref, pers, text, prod, feedback):
     except Exception, e:
         return 'Not found an user'
 
-def getUserData(ref):
-    try:
-        user = db.users
-        user.insert({
-        'facebook_id': ref, # facebook id gebruiken
-        'personality': pers,
-        'qa': text,
-        'products': prod,
-        'feedback': feedback
-        })
-        return 'Added ' + ref
-    except Exception, e:
-        return 'Not found an user'
-
 # # finding one unique toy by article number [title, brand, price, age, gender, page]
 # @app.route('/article/number/<artnr>')
 def findArticle(artnr):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         toy = catalogus.find_one({'article_number':int(artnr)})
         # return str(toy['price'])
         return 'The article you found: ' + toy['title'] + ', ' + toy['brand'] + ', ' + str(toy['price']) + ', ' + toy['age'] + ', ' + toy['gender'] +', ' + str(toy['page']) + '<br>'
@@ -93,15 +84,11 @@ def findArticle(artnr):
 # @app.route('/articles/title/<the_query>')
 def findArticlesTitle(the_query):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find(
         {'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}
         )
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
-        return output
+        return list(results)
     except Exception, e:
         return 'Not found'
 
@@ -109,9 +96,9 @@ def findArticlesTitle(the_query):
 # @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         data = list(catalogus.find({'$or': [{'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}},{'description_extended': {'$regex': '.*'+the_query+'.*','$options' : 'i'}} ]}))
-        return str(data)
+        return data
     except Exception, e:
         return 'Not found'
 
@@ -119,12 +106,13 @@ def findArticlesTitleAndDescription(the_query):
 # @app.route('/articles')
 def findAllArticles():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find()
-        output = ''
-        for r in results:
-            output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
-        return output
+        return(list(results))
+        # output = ''
+        # for r in results:
+        #     output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
+        # return output
     except Exception, e:
         return 'Not found'
 
@@ -134,7 +122,7 @@ def findByPrice(the_price):
     try:
         the_price_low = float(the_price) - float(the_price)/6.6
         the_price_high = float(the_price)/6.6 + float(the_price)
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'$and': [{'price': {'$lt':the_price_high}},{'price': {'$gt':the_price_low}} ]})
         ordered = results.sort('price')
         output = ''
@@ -149,7 +137,7 @@ def findByPrice(the_price):
 # @app.route('/articles/under')
 def findUndervalue():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'$and': [{'price': {'$lt':50}},{'price': {'$gt':0}} ]})
         ordered = results.sort('price')
         output = ''
@@ -163,7 +151,7 @@ def findUndervalue():
 # @app.route('/articles/above')
 def findAbovevalue():
     try:
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         results = catalogus.find({'price': {'$gt':50}})
         ordered = results.sort('price')
         output = ''
@@ -179,13 +167,9 @@ def findFromRange(start, end):
     try:
         aa = float(start)
         bb = float(end)
-        catalogus = db.speelgoedboek
-        results = catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        catalogus = db.speelgoed
+        results = list(catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]}))
+        return results
     except Exception, e:
         return 'Not found'
 
@@ -193,8 +177,22 @@ def findFromRange(start, end):
 # @app.route('/articles/gender/<sex>')
 def findArticlesGender(sex):
     try:
-        catalogus = db.speelgoedboek
-        results = catalogus.find({'gender': sex})
+        catalogus = db.speelgoed
+        results = list(catalogus.find({'gender': sex}))
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' - '+ str(r['price']) + '<br>'
+        return results
+    except Exception, e:
+        return 'Not found'
+
+# getting all articles based on brand (regex part of string not case sensitive)
+# @app.route('/articles/brand/<the_brand>')
+def findArticlesBrand(the_brand):
+    try:
+        catalogus = db.speelgoed
+        results = catalogus.find({'brand': {'$regex': '.*'+the_brand+'.*','$options' : 'i'}})
         ordered = results.sort('price')
         output = ''
         for r in ordered:
@@ -203,17 +201,19 @@ def findArticlesGender(sex):
     except Exception, e:
         return 'Not found'
 
-# getting all articles based on brand (regex part of string not case sensitive)
-# @app.route('/articles/brand/<the_brand>')
-def findArticlesBrand(the_brand):
+def findArticlesCategory(category):
     try:
-        catalogus = db.speelgoedboek
-        results = catalogus.find({'brand': {'$regex': '.*'+the_brand+'.*','$options' : 'i'}})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        catalogus = db.speelgoed
+        results = list(catalogus.find({'folder_category': category}))
+        return results
+    except Exception, e:
+        return 'Not found'
+
+def findArticlesStemming(the_query):
+    try:
+        catalogus = db.speelgoed
+        data = list(catalogus.find({'stemming': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}))
+        return data
     except Exception, e:
         return 'Not found'
 
@@ -901,16 +901,86 @@ def findByAge(jaar):
             query.append({'age': 'Vanaf 10 maanden'})
             query.append({'age': ''})
 
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         # get query dict working
         results = catalogus.find({'$or': query})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' | '+ r['age'] + ' | ' + str(r['price']) +'<br>'
-        return output
+        return(list(results))
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' | '+ r['age'] + ' | ' + str(r['price']) +'<br>'
+        # return output
     except Exception, e:
         return 'Not found an article'
+
+
+def findRightProduct(geslacht, budget, age, category, idea,n):
+    ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
+    print(ideaStem)
+    geslachtQuery = findArticlesGender(geslacht)
+    budgetQuery = findFromRange(budget[0],budget[1])
+    ageQuery = findByAge(age)
+    ideaQuery = findArticlesTitleAndDescription(idea)
+    stemQuery = findArticlesStemming(ideaStem)
+    titleQuery = findArticlesTitle(idea)
+    categoryQuery = findArticlesCategory(category)
+    allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
+
+    print(len(geslachtQuery))
+    print(len(budgetQuery))
+    print(len(ageQuery ))
+    print(len(ideaQuery))
+    print(len(stemQuery))
+    print(len(titleQuery))
+    print(len(categoryQuery))
+    # for x in allProducts:
+    print(len(findAllArticles()))
+
+    #     print(x)
+    uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
+    uniqueProducts = [[x,0] for x in uniqueProducts]
+    print(len(uniqueProducts))
+    finalScore = []
+    for x in uniqueProducts:
+        a = 0
+        if x[0] in titleQuery:
+            a+=5
+        else:
+            a-=5
+        if x[0] in ideaQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in stemQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in categoryQuery:
+            a+=3
+        else:
+            a-=3
+        if x[0] in ageQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in budgetQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in geslachtQuery:
+            a+=4
+        else:
+            a-=4
+        finalScore.append([x[0],a])
+    finalScore = sorted(finalScore, key=lambda x: x[1])
+    high = finalScore[-1][1]
+    print(len([x for x in finalScore if x[1] == high]))
+    print(finalScore[-n:])
+    return finalScore[-n:]
+
+
+x = findRightProduct('Jongen', [15,30], '8', 'Kleine ontdekkers', 'Lego',1)
+
 #
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
@@ -1610,7 +1680,7 @@ def findByTrinity(geslacht,budget,bedrag,jaar):
         else:
             query3 = '$gte'
 
-        catalogus = db.speelgoedboek
+        catalogus = db.speelgoed
         # results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
         # ordered = results.sort('price')
         #

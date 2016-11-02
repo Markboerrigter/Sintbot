@@ -30,6 +30,8 @@ pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
+N = 3
+# Number of presented articles
 
 
 faulwords = pickle.load(open('Faulword.p', 'rb'))
@@ -339,41 +341,42 @@ def checksuggest(token, recipient, data):
         final_data = data['data']
         geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
-        if len(budget) == 2:
-            budgetl = int(budget[0])
-            budgeth = int(budget[1])
-        else:
-            budgetl = [int(s) for s in budget[0].split() if s.isdigit()][0]
-            budgeth = 1000
-        jaar = str(final_data['Age']).split(' ')[0]
-        print(geslacht,budgetl, budgeth,jaar)
-        presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
-        if 'product' in data:
-            if isinstance(data['data']['product'], str):
-                presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
-            else:
-                presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['product'])]
-                presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-            L = [presentsproduct,presentstasks]
-            if len(L[0])+len(L[1])==len(L[0]+L[1]):
-                presents = L[0]+L[1]
-            else:
-
-                presents = mergedics(L)
-        elif 'hobby' in data:
-            if isinstance(data['data']['hobby'], str):
-                presentsproduct = mg.findArticlesTitleAndDescription(data['data']['hobby'])
-            else:
-                presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
-                presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-            L = [presentshobby,presentstasks]
-            if len(L[0])+len(L[1])==len(L[0]+L[1]):
-                presents = L[0]+L[1]
-            else:
-                presents = mergedics(L)
-        else:
-            presents = presentstasks
-        presents = random.sample(presents,min(len(presents),5))
+        # if len(budget) == 2:
+        #     budgetl = int(budget[0])
+        #     budgeth = int(budget[1])
+        # else:
+        #     budgetl = [int(s) for s in budget[0].split() if s.isdigit()][0]
+        #     budgeth = 1000
+        age = str(final_data['Age']).split(' ')[0]
+        category = final_data['typeChild']
+        idea = final_data['product']
+        # presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
+        # if 'product' in data:
+        #     if isinstance(data['data']['product'], str):
+        #         presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
+        #     else:
+        #         presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['product'])]
+        #         presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+        #     L = [presentsproduct,presentstasks]
+        #     if len(L[0])+len(L[1])==len(L[0]+L[1]):
+        #         presents = L[0]+L[1]
+        #     else:
+        #
+        #         presents = mergedics(L)
+        # elif 'hobby' in data:
+        #     if isinstance(data['data']['hobby'], str):
+        #         presentsproduct = mg.findArticlesTitleAndDescription(data['data']['hobby'])
+        #     else:
+        #         presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
+        #         presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
+        #     L = [presentshobby,presentstasks]
+        #     if len(L[0])+len(L[1])==len(L[0]+L[1]):
+        #         presents = L[0]+L[1]
+        #     else:
+        #         presents = mergedics(L)
+        # else:
+        #     presents = presentstasks
+        presents = mg.findRightProduct(geslacht, budget, age, category, idea,N)
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
@@ -810,7 +813,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-        time.sleep(2)
+        time.sleep(3)
     else:
         data['personality'].append(text)
     if len(data['personQuestions']) > 2:
@@ -860,6 +863,8 @@ def send_message(token, recipient, text, data):
 
     message = 'Waar ben je naar op zoek?'
     if message == data['oldmessage']:
+        information = getInformation(tb.response(text, 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG' , 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')), text)
+        data['data'].update(information)
         findToken(recipient, data, text)
     else:
     	data['text'].append(('bot',message))
