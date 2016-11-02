@@ -681,6 +681,7 @@ def send_message(token, recipient, text, data):
 
   elif data['token'] == '1':
       print('text for this phase',text)
+      text = text.replace('//','/')
       print(text.encode('utf-8'))
       print(childTypes)
       if text in childTypes:
