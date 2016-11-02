@@ -750,7 +750,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-    data['personality'].append(text)
+    else:
+        data['personality'].append(text)
     if len(data['personQuestions']) > 2:
         findToken(recipient, data, text)
     else:
