@@ -448,7 +448,7 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
           response = {}
           send_message(PAT, recipient, '', data)
-  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'typeChild']):
+  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
       while get_keys(Tokens, data['token'])[-1] in data['data']:
@@ -495,11 +495,11 @@ def findToken(recipient, data, text):
           data['token'] = Tokens[Nextstage]['6'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
+      elif set(data['personality'][1:]) == set(['Krijgen', 'Lezen']):
           data['token'] = Tokens[Nextstage]['7'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Krijgen',  'Lezen']):
+      elif set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
           data['token'] = Tokens[Nextstage]['8'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
