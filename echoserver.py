@@ -474,39 +474,43 @@ def findToken(recipient, data, text):
       if set(data['personality'][1:]) == set(['Geven', 'Surprise']):
           data['token'] == Tokens[Nextstage]['1'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Geven', 'Gedichtje']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['2'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
           data['token'] == Tokens[Nextstage]['3'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Geven', 'Lezen']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
           data['token'] == Tokens[Nextstage]['4'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Krijgen', 'Surprise']):
+      elif set(data['personality'][1:]) == set(['Krijgen', 'Surprise']):
           data['token'] == Tokens[Nextstage]['5'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Krijgen', 'Gedichtje']):
+      elif set(data['personality'][1:]) == set(['Krijgen', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['6'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
+      elif set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
           data['token'] == Tokens[Nextstage]['7'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Krijgen',  'Lezen']):
+      elif set(data['personality'][1:]) == set(['Krijgen',  'Lezen']):
           data['token'] == Tokens[Nextstage]['8'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Schrijven', 'Surprise']):
+      elif set(data['personality'][1:]) == set(['Schrijven', 'Surprise']):
           data['token'] == Tokens[Nextstage]['9'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Schrijven', 'Gedichtje']):
+      elif set(data['personality'][1:]) == set(['Schrijven', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['10'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Lezen', 'Surprise']):
+      elif set(data['personality'][1:]) == set(['Lezen', 'Surprise']):
           data['token'] == Tokens[Nextstage]['11'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if set(data['personality'][1:]) == set(['Lezen', 'Gedichtje']):
+      elif set(data['personality'][1:]) == set(['Lezen', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['12'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
+      else:
+          print('something went wrong')
+          print(Nextstage)
+          print(data['personality'][1:])
       print(data['token'])
       send_message(PAT, recipient, data['starter'], data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
