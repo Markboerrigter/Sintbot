@@ -1,7 +1,10 @@
 from pymongo import MongoClient
-# from nltk.stem import SnowballStemmer
 import datetime
-import re
+import sys
+sys.path.insert(0, sys.path[0]+'/kpss/kpss')
+
+# import file
+import kpss
 # from bson.son import SON
 # from bson.code import Code
 
@@ -11,40 +14,15 @@ db = client.toys
 now = datetime.datetime.now()
 d = now.isoformat()
 
-# cursor = db.speelgoedboek.find()
+# cursor = db.speelgoed.find()
 #
 # for document in cursor:
 #     print(document)
 
-# add stem snowball stemmer
-# from nltk.stem import SnowballStemmer
-# stemmer = SnowballStemmer("dutch")
-# sentence = ' '.join([stem(word) for word in sentence.split()])
-
-# @app.route('/stemmer/<artnr>')
-# def doStemmer(artnr):
-#     try:
-#         # do specific search for article and get stemming results
-#         stemmer = SnowballStemmer("dutch")
+# add data regarding usage of user in channel
+# define the payload now the example of a complete watson personality is being stored
 #
-#         catalogus = mongo.db.speelgoed
-#         toy = catalogus.find_one({'article_number':int(artnr)})
-#
-#         part01 = toy['title'].lower()
-#         part02 = toy['description_extended'].lower()
-#
-#         sent = "This is an example showing sentence filtration.This is how it is done, in case of Python I want to learn more. So, that i can have some experience over it, by it I mean python."
-#         testleo = re.split(r'[.,]', sent)
-#
-#         sentence = [' '.join([stem(word) for word in sentence.split()]) for sentence in testleo]
-#
-#         return 'the stemming results are: ' + sentence
-#
-#     except Exception, e:
-#         return 'Could not found any data to stem.'
-
-
-@app.route('/user/add/positive/<artnr>/<pamount>')
+# @app.route('/user/add/positive/<artnr>/<pamount>')
 def addPositive(artnr, pamount):
     try:
         catalogus = db.speelgoed
@@ -76,15 +54,15 @@ def addDislike(artnr):
 # define the payload now the example of a complete watson personality is being stored
 #
 # @app.route('/user/add/score/<ref>')
-def addUserScore(ref):
+def addUserScore(ref, pers, text, prod, feedback):
     try:
         user = db.users
         user.insert({
-        'name': ref,
-        'personality': 'complete json',
-        'qa': 'send structured questions and answers',
-        'products': 'send a summary of delivered products',
-        'feedback':'send a summary of aggregated feedback'
+        'facebook_id': ref, # facebook id gebruiken
+        'personality': pers,
+        'qa': text,
+        'products': prod,
+        'feedback': feedback
         })
         return 'Added ' + ref
     except Exception, e:
@@ -110,11 +88,7 @@ def findArticlesTitle(the_query):
         results = catalogus.find(
         {'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}
         )
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
-        return output
+        return list(results)
     except Exception, e:
         return 'Not found'
 
@@ -124,7 +98,7 @@ def findArticlesTitleAndDescription(the_query):
     try:
         catalogus = db.speelgoed
         data = list(catalogus.find({'$or': [{'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}},{'description_extended': {'$regex': '.*'+the_query+'.*','$options' : 'i'}} ]}))
-        return (data)
+        return data
     except Exception, e:
         return 'Not found'
 
@@ -134,10 +108,11 @@ def findAllArticles():
     try:
         catalogus = db.speelgoed
         results = catalogus.find()
-        output = ''
-        for r in results:
-            output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
-        return output
+        return(list(results))
+        # output = ''
+        # for r in results:
+        #     output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] +', ' + str(r['page']) + '<br>'
+        # return output
     except Exception, e:
         return 'Not found'
 
@@ -193,12 +168,8 @@ def findFromRange(start, end):
         aa = float(start)
         bb = float(end)
         catalogus = db.speelgoed
-        results = catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        results = list(catalogus.find({'$and': [{'price': {'$lt':bb}},{'price': {'$gt':aa}} ]}))
+        return results
     except Exception, e:
         return 'Not found'
 
@@ -207,12 +178,12 @@ def findFromRange(start, end):
 def findArticlesGender(sex):
     try:
         catalogus = db.speelgoed
-        results = catalogus.find({'gender': sex})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        results = list(catalogus.find({'gender': sex}))
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' - '+ str(r['price']) + '<br>'
+        return results
     except Exception, e:
         return 'Not found'
 
@@ -227,6 +198,22 @@ def findArticlesBrand(the_brand):
         for r in ordered:
             output += r['title'] + ' - '+ str(r['price']) + '<br>'
         return output
+    except Exception, e:
+        return 'Not found'
+
+def findArticlesCategory(category):
+    try:
+        catalogus = db.speelgoed
+        results = list(catalogus.find({'folder_category': category}))
+        return results
+    except Exception, e:
+        return 'Not found'
+
+def findArticlesStemming(the_query):
+    try:
+        catalogus = db.speelgoed
+        data = list(catalogus.find({'stemming': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}))
+        return data
     except Exception, e:
         return 'Not found'
 
@@ -917,13 +904,83 @@ def findByAge(jaar):
         catalogus = db.speelgoed
         # get query dict working
         results = catalogus.find({'$or': query})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' | '+ r['age'] + ' | ' + str(r['price']) +'<br>'
-        return output
+        return(list(results))
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' | '+ r['age'] + ' | ' + str(r['price']) +'<br>'
+        # return output
     except Exception, e:
         return 'Not found an article'
+
+
+def findRightProduct(geslacht, budget, age, category, idea,n):
+    ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
+    print(ideaStem)
+    geslachtQuery = findArticlesGender(geslacht)
+    budgetQuery = findFromRange(budget[0],budget[1])
+    ageQuery = findByAge(age)
+    ideaQuery = findArticlesTitleAndDescription(idea)
+    stemQuery = findArticlesStemming(ideaStem)
+    titleQuery = findArticlesTitle(idea)
+    categoryQuery = findArticlesCategory(category)
+    allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
+
+    print(len(geslachtQuery))
+    print(len(budgetQuery))
+    print(len(ageQuery ))
+    print(len(ideaQuery))
+    print(len(stemQuery))
+    print(len(titleQuery))
+    print(len(categoryQuery))
+    # for x in allProducts:
+    print(len(findAllArticles()))
+
+    #     print(x)
+    uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
+    uniqueProducts = [[x,0] for x in uniqueProducts]
+    print(len(uniqueProducts))
+    finalScore = []
+    for x in uniqueProducts:
+        a = 0
+        if x[0] in titleQuery:
+            a+=5
+        else:
+            a-=5
+        if x[0] in ideaQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in stemQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in categoryQuery:
+            a+=3
+        else:
+            a-=3
+        if x[0] in ageQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in budgetQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in geslachtQuery:
+            a+=4
+        else:
+            a-=4
+        finalScore.append([x[0],a])
+    finalScore = sorted(finalScore, key=lambda x: x[1])
+    high = finalScore[-1][1]
+    print(len([x for x in finalScore if x[1] == high]))
+    print(finalScore[-n:])
+    return finalScore[-n:]
+
+
+x = findRightProduct('Jongen', [15,30], '8', 'Kleine ontdekkers', 'Lego',1)
+
 #
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
@@ -1633,722 +1690,13 @@ def findByTrinity(geslacht,budget,bedrag,jaar):
         # return output
 
         data = list(catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} }))
-        return (data)
+        return data
 
     except Exception, e:
         return 'Not found an article'
-def findByTrinityRange(geslacht,bedragl, bedragh,jaar):
-    try:
-        # append this madness dictionary regarding age
-        query = [{'age': 'alle leeftijden'}]
-        if jaar == '0':
-            query.append({'age': 'Vanaf 0 maanden'})
-            query.append({'age': '0 jaar tot 1 jaar'})
-            query.append({'age': '0 jaar tot 2 jaar'})
-            query.append({'age': '0 jaar tot 3 jaar'})
-            query.append({'age': '0 maanden tot 3 jaar'})
-            query.append({'age': '0 maanden tot 4 jaar'})
-            query.append({'age': '0 maanden tot 5 jaar'})
-            query.append({'age': '3 maanden tot 1 jaar'})
-            query.append({'age': 'Tot 12 maanden'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '1':
-            query.append({'age': '1 jaar tot 3 jaar'})
-            query.append({'age': '1 jaar tot 4 jaar'})
-            query.append({'age': '1 jaar tot 5 jaar'})
-            query.append({'age': '1 jaar tot 6 jaar'})
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': '1,5 jaar tot 3 jaar'})
-            query.append({'age': '1,5 jaar tot 4 jaar'})
-            query.append({'age': '1,5 jaar tot 5 jaar'})
-            query.append({'age': '1,5 jaar tot 8 jaar'})
-            query.append({'age': '1,5 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '2':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': '1 jaar tot 3 jaar'})
-            query.append({'age': '1 jaar tot 4 jaar'})
-            query.append({'age': '1 jaar tot 5 jaar'})
-            query.append({'age': '1 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 3 jaar'})
-            query.append({'age': '2 jaar tot 4 jaar'})
-            query.append({'age': '2 jaar tot 5 jaar'})
-            query.append({'age': '2 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '2,5 jaar tot 4 jaar'})
-            query.append({'age': '2,5 jaar tot 5 jaar'})
-            query.append({'age': '2,5 jaar tot 6 jaar'})
-            query.append({'age': '6 maanden tot 3 jaar'})
-            query.append({'age': '6 maanden tot 4 jaar'})
-            query.append({'age': '10 maanden tot 3 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '3':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': '1 jaar tot 4 jaar'})
-            query.append({'age': '1 jaar tot 5 jaar'})
-            query.append({'age': '1 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 4 jaar'})
-            query.append({'age': '2 jaar tot 5 jaar'})
-            query.append({'age': '2 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '2,5 jaar tot 4 jaar'})
-            query.append({'age': '2,5 jaar tot 5 jaar'})
-            query.append({'age': '2,5 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 4 jaar'})
-            query.append({'age': '3 jaar tot 5 jaar'})
-            query.append({'age': '3 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 3 tot 8 jaar'})
-            query.append({'age': 'Vanaf 3 tot 11 jaar'})
-            query.append({'age': 'Vanaf 3 tot 12 jaar'})
-            query.append({'age': 'Vanaf 3 tot 99 jaar'})
-            query.append({'age': '6 maanden tot 4 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '4':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': '1 jaar tot 5 jaar'})
-            query.append({'age': '1 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 5 jaar'})
-            query.append({'age': '2 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '2,5 jaar tot 5 jaar'})
-            query.append({'age': '2,5 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 5 jaar'})
-            query.append({'age': '3 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 6 jaar'})
-            query.append({'age': '4 jaar tot 8 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': 'Vanaf 4 tot 7 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 11 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '5':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': '1 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 6 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '2,5 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 6 jaar'})
-            query.append({'age': '3 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 6 jaar'})
-            query.append({'age': '4 jaar tot 8 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 8 jaar'})
-            query.append({'age': '5 jaar tot 10 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': '6 jaar tot 8 jaar'})
-            query.append({'age': '6 jaar tot 10 jaar'})
-            query.append({'age': '6 jaar tot 12 jaar'})
-            query.append({'age': 'Vanaf 4 tot 7 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 10 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '6':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 8 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 8 jaar'})
-            query.append({'age': '5 jaar tot 10 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 7 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 10 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '7':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': '2 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 8 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 8 jaar'})
-            query.append({'age': '5 jaar tot 10 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 10 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 12 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 12 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '8':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 10 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 10 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 12 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 12 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '9':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': '3 jaar tot 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 10 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 10 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 10 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 10 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 12 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 12 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '10':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 11 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 11 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 11 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 12 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 12 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-        elif jaar == '11':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': '3 jaar tot 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '4 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 12 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 4 tot 12 jaar'})
-            query.append({'age': 'Vanaf 5 tot 12 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 12 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 12 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '12':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '13':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 6 tot 14 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': 'vanaf 7 tot 14 jaar'})
-            query.append({'age': 'Vanaf 7 tot 14 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '14':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': 'vanaf 14 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': '5 jaar tot 15 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '15':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': 'vanaf 14 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '16':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': 'vanaf 14 jaar'})
-            query.append({'age': 'vanaf 16 jaar'})
-            query.append({'age': 'Vanaf 16 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        elif jaar == '17':
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': 'vanaf 14 jaar'})
-            query.append({'age': 'vanaf 16 jaar'})
-            query.append({'age': 'Vanaf 16 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        else:
-            query.append({'age': 'vanaf 1 jaar'})
-            query.append({'age': 'vanaf 1,5 jaar'})
-            query.append({'age': 'vanaf 2 jaar'})
-            query.append({'age': 'Vanaf 1 jaar'})
-            query.append({'age': 'Vanaf 1,5 jaar'})
-            query.append({'age': 'Vanaf 2 jaar'})
-            query.append({'age': 'vanaf 3 jaar'})
-            query.append({'age': 'Vanaf 3 jaar'})
-            query.append({'age': 'vanaf 4 jaar'})
-            query.append({'age': 'Vanaf 4 jaar'})
-            query.append({'age': 'vanaf 5 jaar'})
-            query.append({'age': 'Vanaf 5 jaar'})
-            query.append({'age': 'vanaf 6 jaar'})
-            query.append({'age': 'Vanaf 6 jaar'})
-            query.append({'age': 'vanaf 7 jaar'})
-            query.append({'age': 'Vanaf 7 jaar'})
-            query.append({'age': 'vanaf 8 jaar'})
-            query.append({'age': 'Vanaf 8 jaar'})
-            query.append({'age': 'vanaf 9 jaar'})
-            query.append({'age': 'Vanaf 9 jaar'})
-            query.append({'age': 'vanaf 10 jaar'})
-            query.append({'age': 'Vanaf 10 jaar'})
-            query.append({'age': 'vanaf 12 jaar'})
-            query.append({'age': 'Vanaf 12 jaar'})
-            query.append({'age': 'vanaf 13 jaar'})
-            query.append({'age': 'vanaf 14 jaar'})
-            query.append({'age': 'vanaf 16 jaar'})
-            query.append({'age': 'Vanaf 16 jaar'})
-            query.append({'age': 'vanaf 18 jaar'})
-            query.append({'age': 'Vanaf 18 jaar'})
-            query.append({'age': '3 jaar tot 99 jaar'})
-            query.append({'age': 'Vanaf 6 tot 99 jaar'})
-            query.append({'age': '10 maanden tot 99 jaar'})
-            query.append({'age': 'vanaf 9 tot 99 jaar'})
-            query.append({'age': 'Vanaf 9 maanden'})
-            query.append({'age': 'Vanaf 10 maanden'})
-            query.append({'age': ''})
-        query2 = ''
-        if geslacht == 'jongen':
-            query2 = 'Jongen'
-        elif geslacht == 'meisje':
-            query2 = 'Meisje'
-        else:
-            query2 = 'Beide'
-        # print(query, query2)
-        query31 = ''
-        query32 = ''
-        if isinstance(bedragh, int):
-            query31 = bedragh
-        if isinstance(bedragl, int):
-            query32 = bedragl
-        else:
-            query32 = 0
 
-        catalogus = db.speelgoed
-        # results = catalogus.find({ '$or': query, 'gender': query2, 'price': {query3: int(bedrag)} })
-        # ordered = results.sort('price')
-        #
-        # output = ''
-        # for r in ordered:
-        #     output += r['title'] + ', ' + r['brand'] + ', ' + str(r['price']) + ', ' + r['age'] + ', ' + r['gender'] + ', ' + str(r['page']) + ', <a href="' + r['img_link'] + '">' + r['img_link'] + '</a><br>'
-        # return output
-        data = list(catalogus.find({ '$or': query, 'gender': query2, '$and': [{'price': {'$lt':query31}},{'price': {'$gt':query32}} ] }))
-        return (data)
-
-    except Exception, e:
-        return 'Not found an article'
 """
+
 done> get product
 done> get products
 done> get product(s) by price
@@ -2359,11 +1707,12 @@ done> get product(s) by brand
 done> get product(s) by age
 get product(s) by category
 done> get product(s) by age+pricerange+gender
+get user data
 get product(s) by keywords
 get populartiy
 get dislike
 """
-
-if __name__ == '__main__':
-    print('hoi')
-    print(findByTrinityRange('jongen', 30, 45, '8'))
+#
+# if __name__ == '__main__':
+#     # app.run(debug=True)
+#     app.run(host='0.0.0.0', debug=True)
