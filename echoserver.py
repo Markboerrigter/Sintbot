@@ -466,40 +466,41 @@ def findToken(recipient, data, text):
       print("let's go to the bridge")
       Nextstage = TokenStages[TokenStages.index(Stage)+2]
       data['Stage'] = Nextstage
-      if data['personality'][1:] == ['Geven', 'Surprise']:
+      print(Nextstage)
+      if set(data['personality'][1:]) == set(['Geven', 'Surprise']):
           data['token'] == Tokens[Nextstage]['1'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Geven', 'Gedichtje']:
+      if set(data['personality'][1:]) == set(['Geven', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['2'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Geven', 'Schrijven']:
+      if set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
           data['token'] == Tokens[Nextstage]['3'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Geven', 'Lezen']:
+      if set(data['personality'][1:]) == set(['Geven', 'Lezen']):
           data['token'] == Tokens[Nextstage]['4'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Krijgen', 'Surprise']:
+      if set(data['personality'][1:]) == set(['Krijgen', 'Surprise']):
           data['token'] == Tokens[Nextstage]['5'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Krijgen', 'Gedichtje']:
+      if set(data['personality'][1:]) == set(['Krijgen', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['6'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Krijgen', 'Schrijven']:
+      if set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
           data['token'] == Tokens[Nextstage]['7'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Krijgen',  'Lezen']:
+      if set(data['personality'][1:]) == set(['Krijgen',  'Lezen']):
           data['token'] == Tokens[Nextstage]['8'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Schrijven', 'Surprise']:
+      if set(data['personality'][1:]) == set(['Schrijven', 'Surprise']):
           data['token'] == Tokens[Nextstage]['9'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Schrijven', 'Gedichtje']:
+      if set(data['personality'][1:]) == set(['Schrijven', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['10'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Lezen', 'Surprise']:
+      if set(data['personality'][1:]) == set(set(['Lezen', 'Surprise']):
           data['token'] == Tokens[Nextstage]['11'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
-      if data['personality'][1:] == ['Lezen', 'Gedichtje']:
+      if set(data['personality'][1:]) == set(['Lezen', 'Gedichtje']):
           data['token'] == Tokens[Nextstage]['12'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
       print(data['token'])
