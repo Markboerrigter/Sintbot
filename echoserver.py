@@ -753,9 +753,10 @@ def send_message(token, recipient, text, data):
             "buttons":[
         {
           "type":"web_url",
-          "url":"https://petersfancyapparel.com/criteria_selector",
+          "url":"https://google.com",
           "title":"Kies categorie",
-          "webview_height_ratio": "compact"
+          "webview_height_ratio": "compact",
+          "messenger_extensions": True
         }
   ]}
             ]
