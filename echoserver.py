@@ -642,6 +642,7 @@ def handle_messages():
             user_data[sender]['oldincoming'] = message
             user_data[sender]['oldmessage'] = ''
             user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
+            user_data[sender]['token'] ='1'
             # Tokens['Start']['Personalities']['Extraversion'].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -679,6 +680,8 @@ def send_message(token, recipient, text, data):
       print('done')
 
   elif data['token'] == '1':
+      print(text)
+      print(childTypes)
       if text in childTypes:
           data['cat'] = text
           data['childtypes'].remove(text)
