@@ -468,6 +468,8 @@ def findToken(recipient, data, text):
       data['Stage'] = Nextstage
       print(Nextstage)
       print(data['personality'][1:])
+      print(set(data['personality'][1:]))
+      print(set(['Geven', 'Gedichtje']))
       print(data['token'])
       if set(data['personality'][1:]) == set(['Geven', 'Surprise']):
           data['token'] == Tokens[Nextstage]['1'].values()[0]
