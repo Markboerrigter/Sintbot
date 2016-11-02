@@ -725,6 +725,18 @@ def send_message(token, recipient, text, data):
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
           typing('off', PAT, recipient)
+
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          	print(recipient)
+      else:
+          print('start cat')
+          data['childtypes'] = childTypes
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best?'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
           params={"access_token": token},
           data=json.dumps( { "recipient":{
@@ -752,29 +764,6 @@ def send_message(token, recipient, text, data):
     }
   }),
 
-          headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-          	print r.text
-          	print(recipient)
-      else:
-          print('start cat')
-          data['childtypes'] = childTypes
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best?'
-          data['text'].append(('bot',message))
-          data['oldmessage'] = message
-          postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-          params={"access_token": token},
-          data=json.dumps({
-            "recipient": {"id": recipient},
-            "message": {"text": message,
-            "quick_replies":[{
-                          "content_type":"text",
-                          "title":x,
-                          "payload":x
-                        } for x in childTypes]}
-          }),
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
           	print r.text
