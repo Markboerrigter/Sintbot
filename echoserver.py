@@ -680,7 +680,7 @@ def send_message(token, recipient, text, data):
       print('done')
 
   elif data['token'] == '1':
-      print(text)
+      print(text.encode('utf-8'))
       print(childTypes)
       if text in childTypes:
           data['cat'] = text
@@ -712,7 +712,7 @@ def send_message(token, recipient, text, data):
           	print(recipient)
 
       elif text == 'Ja':
-          data['data']['categorie'] == data['cat']
+          data['data']['categorie'] = data['cat']
           findToken(recipient, data, text)
       elif text == 'Nee':
           message = 'Oke, welke groep past dan het best denkje? ;)'
