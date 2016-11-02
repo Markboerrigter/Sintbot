@@ -680,9 +680,11 @@ def send_message(token, recipient, text, data):
       print('done')
 
   elif data['token'] == '1':
+      print(text)
       print(text.encode('utf-8'))
       print(childTypes)
       if text in childTypes:
+          print('cat found')
           data['cat'] = text
           data['childtypes'].remove(text)
           message = typeResponse[childTypes.index(text)]
@@ -712,9 +714,11 @@ def send_message(token, recipient, text, data):
           	print(recipient)
 
       elif text == 'Ja':
+          print('cat agreed')
           data['data']['categorie'] = data['cat']
           findToken(recipient, data, text)
       elif text == 'Nee':
+          print('cat disagree')
           message = 'Oke, welke groep past dan het best denkje? ;)'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
@@ -736,6 +740,7 @@ def send_message(token, recipient, text, data):
           	print r.text
           	print(recipient)
       else:
+          print('start cat')
           data['childtypes'] = childTypes
           message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best?'
           data['text'].append(('bot',message))
