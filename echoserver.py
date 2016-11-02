@@ -462,6 +462,7 @@ def findToken(recipient, data, text):
       response = {}
       send_message(PAT, recipient, '', data)
   elif Stage == 'personality':
+      data['personality'].append(text)
       print(data['personality'])
       NextStage = TokenStages[TokenStages.index(Stage)+2]
       data['Stage'] = NextStage
@@ -736,7 +737,7 @@ def send_message(token, recipient, text, data):
 
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
-    if not data['personality']:
+    if not data['personQuestions']:
         data['personality'].append(text)
         print(text)
         message = 'Om je wat beter te leren kennen stel ik je nu een paar vragen.'
@@ -752,6 +753,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
+        time.sleep(1)
     else:
         data['personality'].append(text)
     if len(data['personQuestions']) > 2:
