@@ -465,7 +465,7 @@ def findToken(recipient, data, text):
       print(data['personality'])
       print("let's go to the bridge")
       Nextstage = TokenStages[TokenStages.index(Stage)+2]
-      data['Stage'] = NextStage
+      data['Stage'] = Nextstage
       if data['personality'][1:] == ['Geven', 'Surprise']:
           data['token'] == Tokens[Nextstage]['1'].values()[0]
           data['starter'] == get_keys(Tokens, data['token'])[-1]
