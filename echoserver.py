@@ -714,11 +714,11 @@ def send_message(token, recipient, text, data):
     #       	print r.text
     #       	print(recipient)
 
-      elif text == 'Ja':
+      if text == 'Ja' or text == 'Nee':
           print('cat agreed')
           data['data']['categorie'] = 'Kleine ontdekkers'
           findToken(recipient, data, text)
-      elif text == 'Nee':
+      elif
           print('cat disagree')
           message = 'Oke, welke groep past dan het best denkje? ;)'
           data['text'].append(('bot',message))
@@ -741,7 +741,18 @@ def send_message(token, recipient, text, data):
               params={"access_token": token},
               data=json.dumps({
                 "recipient": {"id": recipient},
-                "message":{"text": message}}),
+                "message":{"text": message},
+                "quick_replies":[{
+                              "content_type":"text",
+                              "title":'Ja',
+                              "payload":'Ja'
+                            },{
+                              "content_type":"text",
+                              "title":'Nee',
+                              "payload":'Nee'
+                            }
+                            ]
+              }),
               headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
               	print r.text
