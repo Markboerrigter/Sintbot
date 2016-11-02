@@ -753,7 +753,7 @@ def send_message(token, recipient, text, data):
             "buttons":[
         {
           "type":"web_url",
-          "url":"https://google.com",
+          "url":"http://www.eweek.com/it-management/ibm-buys-watson-based-expert-personal-shopper.html",
           "title":"Kies categorie",
           "webview_height_ratio": "compact",
           "messenger_extensions": True
