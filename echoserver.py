@@ -718,17 +718,6 @@ def send_message(token, recipient, text, data):
           print('cat agreed')
           data['data']['categorie'] = 'Kleine ontdekkers'
           findToken(recipient, data, text)
-      elif
-          print('cat disagree')
-          message = 'Oke, welke groep past dan het best denkje? ;)'
-          data['text'].append(('bot',message))
-          data['oldmessage'] = message
-          postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
-
-          if r.status_code != requests.codes.ok:
-          	print r.text
-          	print(recipient)
       else:
           print('start cat')
           data['childtypes'] = childTypes
