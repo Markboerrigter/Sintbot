@@ -1,5 +1,7 @@
 from pymongo import MongoClient
+from nltk.stem import SnowballStemmer
 import datetime
+import re
 # from bson.son import SON
 # from bson.code import Code
 
@@ -9,17 +11,40 @@ db = client.toys
 now = datetime.datetime.now()
 d = now.isoformat()
 
-
-
-# cursor = db.speelgoed.find()
+# cursor = db.speelgoedboek.find()
 #
 # for document in cursor:
 #     print(document)
 
-# add data regarding usage of user in channel
-# define the payload now the example of a complete watson personality is being stored
-#
-# @app.route('/user/add/positive/<artnr>/<pamount>')
+# add stem snowball stemmer
+# from nltk.stem import SnowballStemmer
+# stemmer = SnowballStemmer("dutch")
+# sentence = ' '.join([stem(word) for word in sentence.split()])
+
+@app.route('/stemmer/<artnr>')
+def doStemmer(artnr):
+    try:
+        # do specific search for article and get stemming results
+        stemmer = SnowballStemmer("dutch")
+
+        catalogus = mongo.db.speelgoed
+        toy = catalogus.find_one({'article_number':int(artnr)})
+
+        part01 = toy['title'].lower()
+        part02 = toy['description_extended'].lower()
+
+        sent = "This is an example showing sentence filtration.This is how it is done, in case of Python I want to learn more. So, that i can have some experience over it, by it I mean python."
+        testleo = re.split(r'[.,]', sent)
+
+        sentence = [' '.join([stem(word) for word in sentence.split()]) for sentence in testleo]
+
+        return 'the stemming results are: ' + sentence
+
+    except Exception, e:
+        return 'Could not found any data to stem.'
+
+
+@app.route('/user/add/positive/<artnr>/<pamount>')
 def addPositive(artnr, pamount):
     try:
         catalogus = db.speelgoed
