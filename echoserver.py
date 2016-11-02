@@ -680,7 +680,7 @@ def send_message(token, recipient, text, data):
       print('done')
 
   elif data['token'] == '1':
-      print(text)
+      print('text for this phase',text)
       print(text.encode('utf-8'))
       print(childTypes)
       if text in childTypes:
