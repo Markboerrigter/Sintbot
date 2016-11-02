@@ -727,15 +727,32 @@ def send_message(token, recipient, text, data):
           typing('off', PAT, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
           params={"access_token": token},
-          data=json.dumps({
-            "recipient": {"id": recipient},
-            "message": {"text": message,
-            "quick_replies":[{
-                          "content_type":"text",
-                          "title":x,
-                          "payload":x
-                        } for x in data['childtypes']]}
-          }),
+          data=json.dumps(  "recipient":{
+    "id":recipient
+  },
+  "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title":'Er zijn verschillende types kinderen, ik ben benieuwd in welke categorie het kind valt waar jij een kado voor zoekt!',
+            "buttons":[
+        {
+          "type":"web_url",
+          "url":"https://petersfancyapparel.com/criteria_selector",
+          "title":"Kies categorie",
+          "webview_height_ratio": "compact"
+        }
+  ]}
+            ]
+          }
+        ]
+      }
+    }
+  }),
+
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
           	print r.text
