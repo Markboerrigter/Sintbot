@@ -461,9 +461,10 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
       response = {}
       send_message(PAT, recipient, '', data)
-  elif Stage == 'personality':
+  elif Stage == 'Personality':
       data['personality'].append(text)
       print(data['personality'])
+      print("let's go to the bridge")
       NextStage = TokenStages[TokenStages.index(Stage)+2]
       data['Stage'] = NextStage
       if data['personality'][1:] == ['Geven', 'Surprise']:
@@ -738,7 +739,6 @@ def send_message(token, recipient, text, data):
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
-        data['personality'].append(text)
         print(text)
         message = 'Om je wat beter te leren kennen stel ik je nu een paar vragen.'
         data['text'].append(('bot',message))
