@@ -642,7 +642,6 @@ def handle_messages():
             user_data[sender]['oldincoming'] = message
             user_data[sender]['oldmessage'] = ''
             user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
-            user_data[sender]['token'] ='1'
             # Tokens['Start']['Personalities']['Extraversion'].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -730,7 +729,7 @@ def send_message(token, recipient, text, data):
               params={"access_token": token},
               data=json.dumps({
                 "recipient": {"id": recipient},
-                "message":{"text": message},
+                "message":{"text": message,
                 "quick_replies":[{
                               "content_type":"text",
                               "title":'Ja',
