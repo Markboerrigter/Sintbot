@@ -52,7 +52,7 @@ personalitymessages = [["""
         "template_type":"generic",
         "elements":[
           {
-            "title": "Liever creatief of lekker lui??",
+            "title": "Liever creatief of lekker lui?",
             "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
           }
         ]
@@ -84,7 +84,7 @@ personalitymessages = [["""
           "template_type":"generic",
           "elements":[
             {
-              "title": "Lees of Schrijf jij liever een gedicht?",
+              "title": "Lees of schrijf jij liever een gedicht?",
               "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
             }
           ]
@@ -684,39 +684,39 @@ def send_message(token, recipient, text, data):
       text = text.replace('//','/')
       print(text.encode('utf-8'))
       print(childTypes)
-      if text in childTypes:
-          print('cat found')
-          data['cat'] = text
-          data['childtypes'].remove(text)
-          message = typeResponse[childTypes.index(text)]
-          data['text'].append(('bot',message))
-          data['oldmessage'] = message
-          postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-          params={"access_token": token},
-          data=json.dumps({
-            "recipient": {"id": recipient},
-            "message": {"text": message,
-            "quick_replies":[{
-                          "content_type":"text",
-                          "title":'Ja',
-                          "payload":'Ja'
-                        },
-            {
-                          "content_type":"text",
-                          "title":'Nee',
-                          "payload":'Nee'
-                        }]}
-          }),
-          headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-          	print r.text
-          	print(recipient)
+    #   if text in childTypes:
+    #       print('cat found')
+    #       data['cat'] = text
+    #       data['childtypes'].remove(text)
+    #       message = typeResponse[childTypes.index(text)]
+    #       data['text'].append(('bot',message))
+    #       data['oldmessage'] = message
+    #       postdashbot('bot',(recipient,message, data['message-id']) )
+    #       typing('off', PAT, recipient)
+    #       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    #       params={"access_token": token},
+    #       data=json.dumps({
+    #         "recipient": {"id": recipient},
+    #         "message": {"text": message,
+    #         "quick_replies":[{
+    #                       "content_type":"text",
+    #                       "title":'Ja',
+    #                       "payload":'Ja'
+    #                     },
+    #         {
+    #                       "content_type":"text",
+    #                       "title":'Nee',
+    #                       "payload":'Nee'
+    #                     }]}
+    #       }),
+    #       headers={'Content-type': 'application/json'})
+    #       if r.status_code != requests.codes.ok:
+    #       	print r.text
+    #       	print(recipient)
 
       elif text == 'Ja':
           print('cat agreed')
-          data['data']['categorie'] = data['cat']
+          data['data']['categorie'] = 'Kleine ontdekkers'
           findToken(recipient, data, text)
       elif text == 'Nee':
           print('cat disagree')
@@ -738,44 +738,53 @@ def send_message(token, recipient, text, data):
           postdashbot('bot',(recipient,message, data['message-id']) )
           typing('off', PAT, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-          params={"access_token": token},
-          data=json.dumps( { "recipient":{
-    "id":recipient
-  },
-  "message":{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title":'Er zijn verschillende types kinderen, ik ben benieuwd in welke categorie het kind valt waar jij een kado voor zoekt!',
-            "buttons":[
-        {
-          "type":"web_url",
-          "url":"https://projecteuler.net/archives",
-          "title":"Kies categorie",
-          "webview_height_ratio": "compact",
-          "messenger_extensions": True
-        }
-  ]}
-            ]
-          }
-      }
-    }
-  }),
-
-          headers={'Content-type': 'application/json'})
+              params={"access_token": token},
+              data=json.dumps({
+                "recipient": {"id": recipient},
+                "message":{"text": message}}),
+              headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
-          	print r.text
-          	print(recipient)
+              	print r.text
+
+  #         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+  #         params={"access_token": token},
+  #         data=json.dumps( { "recipient":{
+  #   "id":recipient
+  # },
+  # "message":{
+  #   "attachment":{
+  #     "type":"template",
+  #     "payload":{
+  #       "template_type":"generic",
+  #       "elements":[
+  #         {
+  #           "title":'Er zijn verschillende types kinderen, ik ben benieuwd in welke categorie het kind valt waar jij een kado voor zoekt!',
+  #           "buttons":[
+  #       {
+  #         "type":"web_url",
+  #         "url":"https://projecteuler.net/archives",
+  #         "title":"Kies categorie",
+  #         "webview_height_ratio": "compact",
+  #         "messenger_extensions": True
+  #       }
+  # ]}
+  #           ]
+  #         }
+  #     }
+  #   }
+  # }),
+  #
+  #         headers={'Content-type': 'application/json'})
+  #         if r.status_code != requests.codes.ok:
+  #         	print r.text
+  #         	print(recipient)
 
 
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
         print(text)
-        message = 'Om je wat beter te leren kennen stel ik je nu een paar vragen.'
+        message = 'Ah, leuk idee! Om je wat beter te leren kennen stel ik je nu een paar vragen.'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
