@@ -761,7 +761,7 @@ def send_message(token, recipient, text, data):
   #           "buttons":[
   #       {
   #         "type":"web_url",
-  #         "url":"https://projecteuler.net/archives",
+  #         "url":"https://support.greenorange.com/sint/frame/category.html",
   #         "title":"Kies categorie",
   #         "webview_height_ratio": "compact",
   #         "messenger_extensions": True
@@ -783,7 +783,7 @@ def send_message(token, recipient, text, data):
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
         print(text)
-        message = 'Ah, leuk idee! Om je wat beter te leren kennen stel ik je nu een paar vragen.'
+        message = 'Ah, leuk idee!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
@@ -797,6 +797,20 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         time.sleep(1)
+        message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message":{"text": message}}),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+        time.sleep(2)
     else:
         data['personality'].append(text)
     if len(data['personQuestions']) > 2:
