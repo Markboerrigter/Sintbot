@@ -880,7 +880,7 @@ def send_message(token, recipient, text, data):
   #       if r.status_code != requests.codes.ok:
   #           	print r.text
 
-  elif data['token'] == '2'':
+  elif data['token'] == '2':
       if text == 'Oke!':
           findToken(recipient, data, text)
       else:
