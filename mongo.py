@@ -1,9 +1,7 @@
 from pymongo import MongoClient
 import datetime
-import sys
-# sys.path.insert(0, sys.path[0]+'/kpss/kpss')
+from difflib import SequenceMatcher
 
-# import file
 import kpss
 # from bson.son import SON
 # from bson.code import Code
@@ -914,73 +912,58 @@ def findByAge(jaar):
         return 'Not found an article'
 
 
-# def findRightProduct(geslacht, budget, age, category, idea,n):
-#     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
-#     print(ideaStem)
-#     geslachtQuery = findArticlesGender(geslacht)
-#     budgetQuery = findFromRange(budget[0],budget[1])
-#     ageQuery = findByAge(age)
-#     ideaQuery = findArticlesTitleAndDescription(idea)
-#     stemQuery = findArticlesStemming(ideaStem)
-#     titleQuery = findArticlesTitle(idea)
-#     categoryQuery = findArticlesCategory(category)
-#     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
+def findRightProduct(geslacht, budget, age, category, idea,n):
+    ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
+    geslachtQuery = findArticlesGender(geslacht)
+    budgetQuery = findFromRange(budget[0],budget[1])
+    ageQuery = findByAge(age)
+    ideaQuery = findArticlesTitleAndDescription(idea)
+    stemQuery = findArticlesStemming(ideaStem)
+    titleQuery = findArticlesTitle(idea)
+    categoryQuery = findArticlesCategory(category)
+    allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
+    #     print(x)
+    uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
+    uniqueProducts = [[x,0] for x in uniqueProducts]
+    # print(len(uniqueProducts))
+    finalScore = []
+    for x in uniqueProducts:
+        a = 0
+        if x[0] in titleQuery:
+            a+=5
+        else:
+            a-=5
+        if x[0] in ideaQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in stemQuery:
+            a+=2
+        else:
+            a-=2
+        if x[0] in categoryQuery:
+            a+=3
+        else:
+            a-=3
+        if x[0] in ageQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in budgetQuery:
+            a+=4
+        else:
+            a-=4
+        if x[0] in geslachtQuery:
+            a+=4
+        else:
+            a-=4
+        finalScore.append([x[0],a])
+    finalScore = sorted(finalScore, key=lambda x: x[1])
+    high = finalScore[-1][1]
+    # print(len([x for x in finalScore if x[1] == high]))
+    # print(finalScore[-n:])
+    return finalScore[-n:]
 #
-#     print(len(geslachtQuery))
-#     print(len(budgetQuery))
-#     print(len(ageQuery ))
-#     print(len(ideaQuery))
-#     print(len(stemQuery))
-#     print(len(titleQuery))
-#     print(len(categoryQuery))
-#     # for x in allProducts:
-#     print(len(findAllArticles()))
-#
-#     #     print(x)
-#     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
-#     uniqueProducts = [[x,0] for x in uniqueProducts]
-#     print(len(uniqueProducts))
-#     finalScore = []
-#     for x in uniqueProducts:
-#         a = 0
-#         if x[0] in titleQuery:
-#             a+=5
-#         else:
-#             a-=5
-#         if x[0] in ideaQuery:
-#             a+=2
-#         else:
-#             a-=2
-#         if x[0] in stemQuery:
-#             a+=2
-#         else:
-#             a-=2
-#         if x[0] in categoryQuery:
-#             a+=3
-#         else:
-#             a-=3
-#         if x[0] in ageQuery:
-#             a+=4
-#         else:
-#             a-=4
-#         if x[0] in budgetQuery:
-#             a+=4
-#         else:
-#             a-=4
-#         if x[0] in geslachtQuery:
-#             a+=4
-#         else:
-#             a-=4
-#         finalScore.append([x[0],a])
-#     finalScore = sorted(finalScore, key=lambda x: x[1])
-#     high = finalScore[-1][1]
-#     print(len([x for x in finalScore if x[1] == high]))
-#     print(finalScore[-n:])
-#     return finalScore[-n:]
-
-
-# x = findRightProduct('Jongen', [15,30], '8', 'Kleine ontdekkers', 'Lego',1)
-
 #
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
