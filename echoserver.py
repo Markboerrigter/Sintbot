@@ -18,9 +18,10 @@ import emoji
 
 # personality, sentiment = getIt()
 # print(emoji.emojize('Python is :thumbs_up_sign:'))
-childTypes = [emoji.emojize(u"\U0001F5A5" + ':game_die::video_game:'), emoji.emojize( ':family:'+ u"\U0001F914" + ':dog:'), emoji.emojize(u"\U0001F913"+ ':books::microscope:'), emoji.emojize(':guitar:' + u"\U000FE804"+ 	u"\U000FE517"), emoji.emojize(u"\U000FE7D4" + u"\U0001F6B5"+ u"\U000FE7E4")   ]
+childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", 'Knutselaars', 'Verhalenmakers en superhelden', 'Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans', 'Bouwers en onderzoekers', 'Sporters, stunters en stoere kids', 'Razende racers en stoere stuurders', 'Rocksterren en stijliconen', 'Gadget- en gamekings']
 typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
 childTypes = [x.encode('utf-8') for x in childTypes]
+
 # for x in childTypes:
 #     print(x)
 # err
@@ -348,7 +349,7 @@ def checksuggest(token, recipient, data):
         #     budgetl = [int(s) for s in budget[0].split() if s.isdigit()][0]
         #     budgeth = 1000
         age = str(final_data['Age']).split(' ')[0]
-        category = final_data['typeChild']
+        category = data['cat']
         idea = final_data['product']
         # presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
         # if 'product' in data:
@@ -602,6 +603,7 @@ def handle_messages():
                     user_data[sender]['text'] = []
                     user_data[sender]['Startpos'] = False
                     user_data[sender]['dolog'] = ''
+                    user_data[sender]['secondRow'] = False
                     user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
                     user_data[sender]['starter'] = ''
                     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -636,6 +638,7 @@ def handle_messages():
             user_data[sender]['log']['feedback']= {}
             user_data[sender]['log']['presents']= {}
             user_data[sender]['dolog'] = ''
+            user_data[sender]['secondRow'] = False
             user_data[sender]['startans'] = []
             user_data[sender]['Stage'] = TokenStages[0]
             user_data[sender]['text'] = []
@@ -686,44 +689,9 @@ def send_message(token, recipient, text, data):
       text = text.replace('//','/')
       print(text.encode('utf-8'))
       print(childTypes)
-    #   if text in childTypes:
-    #       print('cat found')
-    #       data['cat'] = text
-    #       data['childtypes'].remove(text)
-    #       message = typeResponse[childTypes.index(text)]
-    #       data['text'].append(('bot',message))
-    #       data['oldmessage'] = message
-    #       postdashbot('bot',(recipient,message, data['message-id']) )
-    #       typing('off', PAT, recipient)
-    #       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    #       params={"access_token": token},
-    #       data=json.dumps({
-    #         "recipient": {"id": recipient},
-    #         "message": {"text": message,
-    #         "quick_replies":[{
-    #                       "content_type":"text",
-    #                       "title":'Ja',
-    #                       "payload":'Ja'
-    #                     },
-    #         {
-    #                       "content_type":"text",
-    #                       "title":'Nee',
-    #                       "payload":'Nee'
-    #                     }]}
-    #       }),
-    #       headers={'Content-type': 'application/json'})
-    #       if r.status_code != requests.codes.ok:
-    #       	print r.text
-    #       	print(recipient)
-
-      if text == 'Ja' or text == 'Nee':
-          print('cat agreed')
-          data['data']['categorie'] = 'Kleine ontdekkers'
-          findToken(recipient, data, text)
-      else:
-          print('start cat')
-          data['childtypes'] = childTypes
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best?'
+      if data['secondRow'] == False and text == '6':
+          data['secondRow'] = True
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)]
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
@@ -735,52 +703,43 @@ def send_message(token, recipient, text, data):
                 "message":{"text": message,
                 "quick_replies":[{
                               "content_type":"text",
-                              "title":'Ja',
-                              "payload":'Ja'
-                            },{
-                              "content_type":"text",
-                              "title":'Nee',
-                              "payload":'Nee'
-                            }
+                              "title":str(x),
+                              "payload":str(x)
+                            } for x in range(6,12)
                             ]
               }}),
               headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
               	print r.text
+      elif int(text) in range(1,7):
+          x = int(text)-1
+          if data['secondRow'] == True:
+              x += 6
+          data['cat'] = childTypes[x-1]
+          findToken(recipient, data, text)
+      else:
 
-  #         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-  #         params={"access_token": token},
-  #         data=json.dumps( { "recipient":{
-  #   "id":recipient
-  # },
-  # "message":{
-  #   "attachment":{
-  #     "type":"template",
-  #     "payload":{
-  #       "template_type":"generic",
-  #       "elements":[
-  #         {
-  #           "title":'Er zijn verschillende types kinderen, ik ben benieuwd in welke categorie het kind valt waar jij een kado voor zoekt!',
-  #           "buttons":[
-  #       {
-  #         "type":"web_url",
-  #         "url":"https://support.greenorange.com/sint/frame/category.html",
-  #         "title":"Kies categorie",
-  #         "webview_height_ratio": "compact",
-  #         "messenger_extensions": True
-  #       }
-  # ]}
-  #           ]
-  #         }
-  #     }
-  #   }
-  # }),
-  #
-  #         headers={'Content-type': 'application/json'})
-  #         if r.status_code != requests.codes.ok:
-  #         	print r.text
-  #         	print(recipient)
-
+          print('start cat')
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)] + '\n 6: Een andere categorie.'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+              params={"access_token": token},
+              data=json.dumps({
+                "recipient": {"id": recipient},
+                "message":{"text": message,
+                "quick_replies":[{
+                              "content_type":"text",
+                              "title":str(x),
+                              "payload":str(x)
+                            } for x in range(1,7)
+                            ]
+              }}),
+              headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+              	print r.text
 
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
