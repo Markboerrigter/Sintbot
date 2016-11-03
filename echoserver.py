@@ -691,7 +691,7 @@ def send_message(token, recipient, text, data):
       print(childTypes)
       if data['secondRow'] == False and text == '6':
           data['secondRow'] = True
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)]
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
@@ -720,7 +720,7 @@ def send_message(token, recipient, text, data):
       else:
 
           print('start cat')
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)] + '\n 6: Een andere categorie.'
+          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)]) + '\n 6: Een andere categorie.'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
