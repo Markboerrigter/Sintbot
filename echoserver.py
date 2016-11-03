@@ -427,9 +427,15 @@ def findToken(recipient, data, text):
   print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
-          data['Stage'] = 'GiveIdea'
-          response = {}
-          send_message(PAT, recipient, '', data)
+          typing('on', PAT, recipient)
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          if isinstance(data['token'], dict):
+              data['token'] = random.choice(allValues(Tokens[NextStage]))
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
+          data['Stage'] = NextStage
+        #   response, data = getResponse(recipient, data['starter'], data)
+          send_message(PAT, recipient, data['starter'], data)
       else:
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
           params={"access_token": PAT},
