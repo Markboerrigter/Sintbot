@@ -690,36 +690,36 @@ def send_message(token, recipient, text, data):
       text = text.replace('//','/')
       print(text.encode('utf-8'))
       print(childTypes)
-      if data['secondRow'] == False and text == '6':
-          data['secondRow'] = True
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
-          data['text'].append(('bot',message))
-          data['oldmessage'] = message
-          postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-              params={"access_token": token},
-              data=json.dumps({
-                "recipient": {"id": recipient},
-                "message":{"text": message,
-                "quick_replies":[{
-                              "content_type":"text",
-                              "title":str(x),
-                              "payload":str(x)
-                            } for x in range(6,12)
-                            ]
-              }}),
-              headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-              	print r.text
-      elif int(text) in range(1,7):
-          x = int(text)-1
-          if data['secondRow'] == True:
-              x += 6
-          data['cat'] = childTypes[x-1]
-          findToken(recipient, data, text)
+      if text.isdigit():
+          if int(text) in range(1,7):
+              x = int(text)-1
+              if data['secondRow'] == True:
+                  x += 6
+              data['cat'] = childTypes[x-1]
+              findToken(recipient, data, text)
+              if data['secondRow'] == False and text == '6':
+                  data['secondRow'] = True
+                  message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
+                  data['text'].append(('bot',message))
+                  data['oldmessage'] = message
+                  postdashbot('bot',(recipient,message, data['message-id']) )
+                  typing('off', PAT, recipient)
+                  r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                      params={"access_token": token},
+                      data=json.dumps({
+                        "recipient": {"id": recipient},
+                        "message":{"text": message,
+                        "quick_replies":[{
+                                      "content_type":"text",
+                                      "title":str(x),
+                                      "payload":str(x)
+                                    } for x in range(6,12)
+                                    ]
+                      }}),
+                      headers={'Content-type': 'application/json'})
+                  if r.status_code != requests.codes.ok:
+                      	print r.text
       else:
-
           print('start cat')
           message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)]) + '\n 6: Een andere categorie.'
           data['text'].append(('bot',message))
