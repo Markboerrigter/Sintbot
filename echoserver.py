@@ -755,8 +755,11 @@ def send_message(token, recipient, text, data):
                 if r.status_code != requests.codes.ok:
                   	print r.text
             else:
+                if x>5:
+                    x+=1
                 data['cat'] = childTypes[x-1]
                 data['data']['type'] =  childTypes[x-1]
+                print(data['data'])
                 findToken(recipient, data, text)
     else:
       data['intype'] = True
