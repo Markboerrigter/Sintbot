@@ -632,7 +632,7 @@ def handle_messages():
                     user_data[sender]['Startpos'] = False
                     user_data[sender]['dolog'] = ''
                     user_data[sender]['secondRow'] = False
-                    user_data[sender]['token'] = Tokens['Start']['Old'][random.choice(Tokens['Start']['New'].keys())].values()[0]
+                    user_data[sender]['token'] = '2'
                     user_data[sender]['starter'] = ''
                     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     user_data[sender]['data'] = {}
@@ -879,6 +879,29 @@ def send_message(token, recipient, text, data):
   #           headers={'Content-type': 'application/json'})
   #       if r.status_code != requests.codes.ok:
   #           	print r.text
+
+  elif data['token'] == '2'':
+      if text == 'Oke!':
+          findToken(recipient, data, text)
+      else:
+          message = 'Welkom Terug, zullen we weer op zoek gaan naar een kado? :)'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+              params={"access_token": token},
+              data=json.dumps({
+                "recipient": {"id": recipient},
+                "message": {"text": message.encode('utf-8')},
+                "quick_replies":[{
+                              "content_type":"text",
+                              "title":'Oke!',
+                              "payload":'Oke!'
+                            }
+                            ]
+              }),
+              headers={'Content-type': 'application/json'})
 
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja' or text == 'Nee':
