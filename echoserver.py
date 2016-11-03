@@ -31,7 +31,7 @@ pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
-N = 3
+N = 10
 # Number of presented articles
 
 
@@ -377,8 +377,10 @@ def checksuggest(token, recipient, data):
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
+        print(presents)
 
         for x in presents:
+            print(x)
             if 'img_link' not in x:
                 if x['retailer'] == 'intertoys':
                     x['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
