@@ -381,11 +381,11 @@ def checksuggest(token, recipient, data):
 
         for x in presents:
             print(x)
-            if 'img_link' not in x:
-                if x['retailer'] == 'intertoys':
-                    x['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
+            if 'img_link' not in x[0]:
+                if x[0]['retailer'] == 'intertoys':
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
                 else:
-                    x['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ str(x['page']) + '_p' + str(x['id']) + '.png'
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ str(x['page']) + '_p' + str(x['id']) + '.png'
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -397,14 +397,14 @@ def checksuggest(token, recipient, data):
                 "template_type":"generic",
                 "elements":[
                   {
-                    "title":x['title'],
-                    "item_url":"http://www.intertoys.nl/eastpak-padded-pak-r-rugtas-rood",
-                    "image_url":x['img_link'],
-                    "subtitle":x['description'],
+                    "title":x[0]['title'],
+                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page'],
+                    "image_url":x[0]['img_link'],
+                    "subtitle":x[0]['description'],
                     "buttons":[
                       {
                         "type":"web_url",
-                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
+                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
                         "title":"View Website"
                       }
                     ]
