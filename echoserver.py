@@ -455,7 +455,13 @@ def findToken(recipient, data, text):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
         #   response, data = getResponse(recipient, data['starter'], data)
-          send_message(PAT, recipient, data['starter'], data)
+          send_message(PAT, recipient, data['starter'], data
+  elif Stage == 'presentchoosing':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['Stage'] = NextStage
+      response = {}
+      print(data['Stage'])
+      send_message(PAT, recipient, '', data)
   elif Stage == 'Connection':
       if not data['personality']:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -954,7 +960,6 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
-        findToken(recipient, data, text)
   elif data['Stage'] == 'response':
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
