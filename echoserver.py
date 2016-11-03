@@ -455,13 +455,14 @@ def findToken(recipient, data, text):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
         #   response, data = getResponse(recipient, data['starter'], data)
-          send_message(PAT, recipient, data['starter'], data
+          send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'presentchoosing':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
       response = {}
       print(data['Stage'])
       send_message(PAT, recipient, '', data)
+
   elif Stage == 'Connection':
       if not data['personality']:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
