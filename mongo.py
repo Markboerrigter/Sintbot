@@ -1,10 +1,10 @@
 from pymongo import MongoClient
 import datetime
 from difflib import SequenceMatcher
-import sys
-sys.path.insert(0, sys.path[0]+'/kpss/kpss')
-
-# import file
+# import sys
+# sys.path.insert(0, sys.path[0]+'/kpss/kpss')
+#
+# # import file
 import kpss
 # from bson.son import SON
 # from bson.code import Code
