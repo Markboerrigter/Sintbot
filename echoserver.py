@@ -916,7 +916,7 @@ def send_message(token, recipient, text, data):
                               "title":'Oke!',
                               "payload":'Oke!'
                             }
-                            ]
+                            ]}
               }),
               headers={'Content-type': 'application/json'})
 
