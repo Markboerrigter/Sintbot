@@ -725,7 +725,7 @@ def send_message(token, recipient, text, data):
         print(text)
         if int(text) in range(1,12):
             print('jeeeej')
-            # x = int(text)-1
+            x = int(text)
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
                 message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
