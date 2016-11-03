@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import datetime
+from difflib import SequenceMatcher
 import sys
 sys.path.insert(0, sys.path[0]+'/kpss/kpss')
 
@@ -212,7 +213,7 @@ def findArticlesCategory(category):
 def findArticlesStemming(the_query):
     try:
         catalogus = db.speelgoed
-        data = list(catalogus.find({'stemming': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}))
+        data = list(catalogus.find({'stemming.2': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}))
         return data
     except Exception, e:
         return 'Not found'
