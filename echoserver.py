@@ -435,6 +435,16 @@ def findToken(recipient, data, text):
           response = {}
           send_message(PAT, recipient, '', data)
       else:
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": PAT},
+          data=json.dumps({
+          "recipient": {"id": recipient},
+          "message": {"text": 'Oke, dan gaan we samen op zoek!'}
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          ime.sleep(1)
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           if isinstance(data['token'], dict):
@@ -453,15 +463,6 @@ def findToken(recipient, data, text):
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           response = {}
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-          params={"access_token": PAT},
-          data=json.dumps({
-          "recipient": {"id": recipient},
-          "message": {"text": 'Oke, dan gaan we samen op zoek!'}
-          }),
-          headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-          	print r.text
           send_message(PAT, recipient, '', data)
   elif Stage == 'GiveIdea':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
