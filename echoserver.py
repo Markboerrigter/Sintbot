@@ -721,10 +721,11 @@ def send_message(token, recipient, text, data):
 
   elif data['token'] == '1':
     print('text for this phase',text)
-    text = text.replace('//','/')
     print(text.encode('utf-8'))
     print(childTypes)
+    print(text)
     if text.isdigit() and data['intype']:
+        print(text)
         if int(text) in range(1,12):
             x = int(text)-1
             if data['secondRow'] == False and text == '6':
