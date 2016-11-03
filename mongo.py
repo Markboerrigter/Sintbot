@@ -917,7 +917,6 @@ def findByAge(jaar):
 
 def findRightProduct(geslacht, budget, age, category, idea,n):
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
-    print(ideaStem)
     geslachtQuery = findArticlesGender(geslacht)
     budgetQuery = findFromRange(budget[0],budget[1])
     ageQuery = findByAge(age)
@@ -926,21 +925,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     titleQuery = findArticlesTitle(idea)
     categoryQuery = findArticlesCategory(category)
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
-
-    print(len(geslachtQuery))
-    print(len(budgetQuery))
-    print(len(ageQuery ))
-    print(len(ideaQuery))
-    print(len(stemQuery))
-    print(len(titleQuery))
-    print(len(categoryQuery))
-    # for x in allProducts:
-    print(len(findAllArticles()))
-
     #     print(x)
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
-    print(len(uniqueProducts))
+    # print(len(uniqueProducts))
     finalScore = []
     for x in uniqueProducts:
         a = 0
@@ -975,13 +963,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])
     high = finalScore[-1][1]
-    print(len([x for x in finalScore if x[1] == high]))
-    print(finalScore[-n:])
+    # print(len([x for x in finalScore if x[1] == high]))
+    # print(finalScore[-n:])
     return finalScore[-n:]
-
-
-x = findRightProduct('Jongen', [15,30], '8', 'Kleine ontdekkers', 'Lego',1)
-
+#
 #
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')

@@ -78,8 +78,8 @@ def response(input,token, session_id):
 #     entities = request['entities']
 #     print('entities: ', entities)
 #
-# def send(request, response):
-#     print(response['text'])
+def send(request, response):
+    print(response['text'])
 #
 # # def merge(request):
 # #     context = request['context']
@@ -93,15 +93,15 @@ def response(input,token, session_id):
 # #
 # #
 # #     print(response['context'])
-#
-# actions = {
-#     'send': send,
-#     # 'merge': merge,
-#     # 'getOntvanger': getOntvanger
-#     'computeRes': computeRes,
-#     'first_entity_value': first_entity_value,
-#     'getForecast': get_forecast,
-# }
+
+actions = {
+    'send': send,
+    # 'merge': merge,
+    # 'getOntvanger': getOntvanger
+    # 'computeRes': computeRes,
+    'first_entity_value': first_entity_value,
+    # 'getForecast': get_forecast,
+}
 # #
 # # def interact(token):
 # #
