@@ -586,6 +586,7 @@ below the receive and send functions can be found.
 def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
+  print(payload)
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
     if findword(message):
