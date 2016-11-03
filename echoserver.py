@@ -398,7 +398,7 @@ def checksuggest(token, recipient, data):
                 "elements":[
                   {
                     "title":x[0]['title'],
-                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page'],
+                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
                     "image_url":x[0]['img_link'],
                     "subtitle":x[0]['description'],
                     "buttons":[
