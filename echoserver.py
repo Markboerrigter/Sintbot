@@ -456,7 +456,7 @@ def findToken(recipient, data, text):
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
           params={"access_token": PAT},
           data=json.dumps({
-          "recipient": {"id": sender},
+          "recipient": {"id": recipient},
           "message": {"text": 'Oke, dan gaan we samen op zoek!'}
           }),
           headers={'Content-type': 'application/json'})
@@ -473,7 +473,7 @@ def findToken(recipient, data, text):
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
       params={"access_token": PAT},
       data=json.dumps({
-      "recipient": {"id": sender},
+      "recipient": {"id": recipient},
       "message": {"text": 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'}
       }),
       headers={'Content-type': 'application/json'})
