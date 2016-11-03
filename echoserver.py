@@ -62,7 +62,7 @@ personalitymessages = [["""
       }
     }
   }
-""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', 'Surprise', 'Gedichtje'],[
+""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', "https://support.greenorange.com/sint/images/geel_suprise_maken.png"], ['Gedichtje', "https://support.greenorange.com/sint/images/rood_gedicht_internet.png"]],[
 """
 {
     "attachment":{
@@ -78,7 +78,7 @@ personalitymessages = [["""
       }
     }
   }
-""", 'Geef jij liever een kado, of krijg je liever iets? :)', 'Geven', 'Krijgen']
+""", 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', "https://support.greenorange.com/sint/images/blauw_kado_geven.png"], ['Krijgen', "https://support.greenorange.com/sint/images/groen_kado_krijgen.png"]]
 ,["""
   {
       "attachment":{
@@ -94,7 +94,7 @@ personalitymessages = [["""
         }
       }
     }
-""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', 'Lezen', 'Schrijven']]
+""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.png"]]
 Tokens = pickle.load(open('Tokens.p', 'rb'))
 
 dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
@@ -840,11 +840,13 @@ def send_message(token, recipient, text, data):
           "message": {"text": message[1],
           "quick_replies":[{
                         "content_type":"text",
-                        "title":message[2],
-                        "payload":message[2]
+                        "title":message[2][0],
+                        "payload":message[2][0],
+                        "image_url":message[2][1]
                       },{	                "content_type":"text",
-                      	                "title":message[3],
-                      	                "payload":message[3]}]}
+                      	                "title":message[3][0],
+                      	                "payload":message[3][0],
+                                        "image_url":message[3][1]}]}
         }),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
