@@ -728,6 +728,7 @@ def send_message(token, recipient, text, data):
     if text.isdigit() and data['intype']:
         print(text)
         if int(text) in range(1,12):
+            print('jeeeej')
             x = int(text)-1
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
@@ -753,6 +754,7 @@ def send_message(token, recipient, text, data):
                   	print r.text
             else:
                 data['cat'] = childTypes[x-1]
+                data['data']['type'] =  childTypes[x-1]
                 findToken(recipient, data, text)
     else:
       data['intype'] = True
