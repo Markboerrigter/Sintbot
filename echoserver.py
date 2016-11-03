@@ -500,8 +500,6 @@ def findToken(recipient, data, text):
           response = {}
           print(data['Stage'])
           send_message(PAT, recipient, '', data)
-  elif Stage == 'decisions':
-
   elif Stage == 'Personality':
       print(data['personality'])
       print("let's go to the bridge")
