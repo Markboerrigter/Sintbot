@@ -342,15 +342,9 @@ def checksuggest(token, recipient, data):
         final_data = data['data']
         geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
-        # if len(budget) == 2:
-        #     budgetl = int(budget[0])
-        #     budgeth = int(budget[1])
-        # else:
-        #     budgetl = [int(s) for s in budget[0].split() if s.isdigit()][0]
-        #     budgeth = 1000
         age = str(final_data['Age']).split(' ')[0]
         category = data['cat']
-        if final_data['product']:
+        if 'product' in final_data:
             idea = final_data['product']
         else: idea = ''
         # presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
@@ -764,7 +758,7 @@ def send_message(token, recipient, text, data):
     else:
       data['intype'] = True
       print('start cat')
-      message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)]) + '\n6: Een andere categorie'
+      message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(1,6)]) + '\n6: Een andere categorie'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -864,27 +858,27 @@ def send_message(token, recipient, text, data):
         print('send personality')
 
 
-  elif data['Stage'] == 'GiveIdea':
-
-    message = 'Waar ben je naar op zoek?'
-    if message == data['oldmessage']:
-        information = getInformation(tb.response(text, 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG' , 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')), text)
-        data['data'].update(information)
-        findToken(recipient, data, text)
-    else:
-    	data['text'].append(('bot',message))
-    	data['oldmessage'] = message
-    	postdashbot('bot',(recipient,message, data['message-id']) )
-        typing('off', PAT, recipient)
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": message}
-            }),
-            headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-            	print r.text
+  # elif data['Stage'] == 'GiveIdea':
+  #
+  #   message = 'Waar ben je naar op zoek?'
+  #   if message == data['oldmessage']:
+  #       information = getInformation(tb.response(text, 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG' , 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')), text)
+  #       data['data'].update(information)
+  #       findToken(recipient, data, text)
+  #   else:
+  #   	data['text'].append(('bot',message))
+  #   	data['oldmessage'] = message
+  #   	postdashbot('bot',(recipient,message, data['message-id']) )
+  #       typing('off', PAT, recipient)
+  #       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+  #           params={"access_token": token},
+  #           data=json.dumps({
+  #             "recipient": {"id": recipient},
+  #             "message": {"text": message}
+  #           }),
+  #           headers={'Content-type': 'application/json'})
+  #       if r.status_code != requests.codes.ok:
+  #           	print r.text
 
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja' or text == 'Nee':
