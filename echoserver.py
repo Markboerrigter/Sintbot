@@ -350,7 +350,9 @@ def checksuggest(token, recipient, data):
         #     budgeth = 1000
         age = str(final_data['Age']).split(' ')[0]
         category = data['cat']
-        idea = final_data['product']
+        if final_data['product']:
+            idea = final_data['product']
+        else: idea = ''
         # presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
         # if 'product' in data:
         #     if isinstance(data['data']['product'], str):
@@ -610,6 +612,7 @@ def handle_messages():
                     user_data[sender]['starter'] = ''
                     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     user_data[sender]['data'] = {}
+                    user_data[sender]['intype'] = False
                     user_data[sender]['personQuestions'] = []
                 print("Incoming from %s: %s" % (sender, message))
                 print(sender, message)
@@ -649,6 +652,7 @@ def handle_messages():
             user_data[sender]['personality'] = []
             user_data[sender]['oldincoming'] = message
             user_data[sender]['oldmessage'] = ''
+            user_data[sender]['intype'] = False
             user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
             # user_data[sender]['token'] = '1'
             # Tokens['Start']['Personalities']['Extraversion'].values()[0]
@@ -693,7 +697,7 @@ def send_message(token, recipient, text, data):
     text = text.replace('//','/')
     print(text.encode('utf-8'))
     print(childTypes)
-    if text.isdigit():
+    if text.isdigit() and data['intype']:
         if int(text) in range(1,7):
             x = int(text)-1
             if data['secondRow'] == False and text == '6':
@@ -723,28 +727,29 @@ def send_message(token, recipient, text, data):
                     x += 6
                 data['cat'] = childTypes[x-1]
                 findToken(recipient, data, text)
-        else:
-          print('start cat')
-          message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)]) + '\n6: Een andere categorie'
-          data['text'].append(('bot',message))
-          data['oldmessage'] = message
-          postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
-          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-              params={"access_token": token},
-              data=json.dumps({
-                "recipient": {"id": recipient},
-                "message":{"text": message,
-                "quick_replies":[{
-                              "content_type":"text",
-                              "title":str(x),
-                              "payload":str(x)
-                            } for x in range(1,7)
-                            ]
-              }}),
-              headers={'Content-type': 'application/json'})
-          if r.status_code != requests.codes.ok:
-              	print r.text
+    else:
+      data['intype'] = True
+      print('start cat')
+      message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i] for i in range(1,6)]) + '\n6: Een andere categorie'
+      data['text'].append(('bot',message))
+      data['oldmessage'] = message
+      postdashbot('bot',(recipient,message, data['message-id']) )
+      typing('off', PAT, recipient)
+      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message":{"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":str(x),
+                          "payload":str(x)
+                        } for x in range(1,7)
+                        ]
+          }}),
+          headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+          	print r.text
 
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
