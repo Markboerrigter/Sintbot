@@ -728,7 +728,7 @@ def send_message(token, recipient, text, data):
   if data['dolog'] == 'end':
       print('done')
 
-  elif data['token'] == '1':
+  elif data['token'] == '1' and data['Stage'] == 'decisions':
     print('text for this phase',text)
     print(text.encode('utf-8'))
     print(childTypes)
