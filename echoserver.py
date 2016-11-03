@@ -26,8 +26,8 @@ childTypes = [x.encode('utf-8') for x in childTypes]
 #     print(x)
 # err
 
-x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
+# x = dict()
+# pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
