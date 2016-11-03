@@ -578,6 +578,7 @@ def handle_messages():
         if sender in user_data:
             print(mid,user_data[sender]['message-id'])
             if mid != user_data[sender]['message-id']:
+
                 # if user_data[sender]['Startpos']:
                 # 	user_data[sender]['Startpos'] = False
                 # 	user_data[sender]['data']['distinction'] = message
