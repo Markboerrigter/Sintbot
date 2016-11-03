@@ -379,7 +379,7 @@ def checksuggest(token, recipient, data):
         typing('off', PAT, recipient)
 
         for x in presents:
-            if not x['img_link']:
+            if 'img_link' not in x:
                 if x['retailer'] == 'intertoys':
                     x['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
                 else:
