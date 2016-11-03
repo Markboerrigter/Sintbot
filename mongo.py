@@ -920,9 +920,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     geslachtQuery = findArticlesGender(geslacht)
     budgetQuery = findFromRange(budget[0],budget[1])
     ageQuery = findByAge(age)
-    ideaQuery = findArticlesTitleAndDescription(idea)
-    stemQuery = findArticlesStemming(ideaStem)
-    titleQuery = findArticlesTitle(idea)
+    if idea == '':
+        ideaStem = 'jaa'
+        ideaQuery = []
+        titleQuery = []
+        stemQuery = []
+    else:
+        ideaQuery = findArticlesTitleAndDescription(idea)
+        stemQuery = findArticlesStemming(ideaStem)
+        titleQuery = findArticlesTitle(idea)
     categoryQuery = findArticlesCategory(category)
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     #     print(x)
