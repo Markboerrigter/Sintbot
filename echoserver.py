@@ -669,6 +669,7 @@ def messaging_events(payload):
   if "messaging" in data["entry"][0]:
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
+        print(event)
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
         # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
