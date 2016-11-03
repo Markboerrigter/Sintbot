@@ -678,7 +678,7 @@ def handle_messages():
             user_data[sender]['oldmessage'] = ''
             user_data[sender]['intype'] = False
             user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
-            user_data[sender]['token'] = '1'
+            # user_data[sender]['token'] = '1'
             # Tokens['Start']['Personalities']['Extraversion'].values()[0]
             user_data[sender]['starter'] = ''
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -702,6 +702,8 @@ def messaging_events(payload):
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
         # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
         #   yield event["messaging"][0]["recipient"]['id'], event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['title'].encode('unicode_escape'), event["messaging"][0]["message"]['mid'], event['messaging'][0]['recipient']['id']
+
+print(childTypes[9])
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
@@ -749,8 +751,6 @@ def send_message(token, recipient, text, data):
                 if r.status_code != requests.codes.ok:
                   	print r.text
             else:
-                if x>5:
-                    x+=1
                 data['cat'] = childTypes[x-1]
                 data['data']['type'] =  childTypes[x-1]
                 print(data['data'])
