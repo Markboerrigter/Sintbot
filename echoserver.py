@@ -444,7 +444,8 @@ def findToken(recipient, data, text):
           headers={'Content-type': 'application/json'})
           if r.status_code != requests.codes.ok:
           	print r.text
-          ime.sleep(1)
+          typing('on', PAT, recipient)
+          time.sleep(1)
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           if isinstance(data['token'], dict):
