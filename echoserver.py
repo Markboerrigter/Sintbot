@@ -456,12 +456,12 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
-  elif Stage == 'presentchoosing':
-      NextStage = TokenStages[TokenStages.index(Stage)+1]
-      data['Stage'] = NextStage
-      response = {}
-      print(data['Stage'])
-      send_message(PAT, recipient, '', data)
+  # elif Stage == 'presentchoosing':
+  #     NextStage = TokenStages[TokenStages.index(Stage)+1]
+  #     data['Stage'] = NextStage
+  #     response = {}
+  #     print(data['Stage'])
+  #     send_message(PAT, recipient, '', data)
 
   elif Stage == 'Connection':
       if not data['personality']:
@@ -910,7 +910,7 @@ def send_message(token, recipient, text, data):
               params={"access_token": token},
               data=json.dumps({
                 "recipient": {"id": recipient},
-                "message": {"text": message.encode('utf-8')},
+                "message": {"text": message.encode('utf-8'),
                 "quick_replies":[{
                               "content_type":"text",
                               "title":'Oke!',
@@ -946,7 +946,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": message.encode('utf-8')},
+              "message": {"text": message.encode('utf-8'),
               "quick_replies":[{
                             "content_type":"text",
                             "title":'Ja',
