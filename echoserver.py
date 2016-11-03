@@ -570,6 +570,7 @@ def handle_messages():
         if r.status_code != requests.codes.ok:
         	print r.text
     else:
+        print(message)
         print(payload)
         print('message events')
         postdashbot('human', payload)
