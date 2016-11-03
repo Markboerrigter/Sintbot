@@ -716,7 +716,7 @@ def send_message(token, recipient, text, data):
                 if r.status_code != requests.codes.ok:
                   	print r.text
             else:
-                if data['secondRow'] = True:
+                if data['secondRow'] == True:
                     x += 6
                 data['cat'] = childTypes[x-1]
                 findToken(recipient, data, text)
