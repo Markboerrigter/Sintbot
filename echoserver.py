@@ -485,19 +485,23 @@ def findToken(recipient, data, text):
       	print r.text
     #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, data['starter'], data)
-  elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
-      print('next')
-      data['token'] = random.choice(allValues(Tokens[Stage]))
-      while get_keys(Tokens, data['token'])[-1] in data['data']:
-          data['token'] = random.choice(allValues(Tokens[Stage]))
-      data['starter'] = get_keys(Tokens, data['token'])[-1]
-    #   response, data = getResponse(recipient, data['starter'], data)
-      send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
-      NextStage = TokenStages[TokenStages.index(Stage)+1]
-      data['Stage'] = NextStage
-      response = {}
-      send_message(PAT, recipient, '', data)
+      if not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
+          print('next')
+          data['token'] = random.choice(allValues(Tokens[Stage]))
+          while get_keys(Tokens, data['token'])[-1] in data['data']:
+              data['token'] = random.choice(allValues(Tokens[Stage]))
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+        #   response, data = getResponse(recipient, data['starter'], data)
+          send_message(PAT, recipient, data['starter'], data)
+      else:
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
+          data['Stage'] = NextStage
+          response = {}
+          print(data['Stage'])
+          send_message(PAT, recipient, '', data)
+  elif Stage == 'decisions':
+
   elif Stage == 'Personality':
       print(data['personality'])
       print("let's go to the bridge")
