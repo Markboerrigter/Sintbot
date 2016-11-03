@@ -453,7 +453,34 @@ def findToken(recipient, data, text):
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           response = {}
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": PAT},
+          data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Oke, dan gaan we samen op zoek!'}
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
           send_message(PAT, recipient, '', data)
+  elif Stage == 'GiveIdea':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['token'] = random.choice(allValues(Tokens[NextStage]))
+      if isinstance(data['token'], dict):
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          data['starter'] = get_keys(Tokens, data['token'])[-1]
+      data['Stage'] = NextStage
+      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+      params={"access_token": PAT},
+      data=json.dumps({
+      "recipient": {"id": sender},
+      "message": {"text": 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'}
+      }),
+      headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+      	print r.text
+    #   response, data = getResponse(recipient, data['starter'], data)
+      send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions' and not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
       print('next')
       data['token'] = random.choice(allValues(Tokens[Stage]))
@@ -698,7 +725,7 @@ def send_message(token, recipient, text, data):
     print(text.encode('utf-8'))
     print(childTypes)
     if text.isdigit() and data['intype']:
-        if int(text) in range(1,7):
+        if int(text) in range(1,12):
             x = int(text)-1
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
@@ -723,8 +750,6 @@ def send_message(token, recipient, text, data):
                 if r.status_code != requests.codes.ok:
                   	print r.text
             else:
-                if data['secondRow'] == True:
-                    x += 6
                 data['cat'] = childTypes[x-1]
                 findToken(recipient, data, text)
     else:
