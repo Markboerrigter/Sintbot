@@ -201,7 +201,7 @@ def makeStartScreen(token):
           "thread_state":"new_thread",
           "call_to_actions":[
             {
-              "payload":"USER_DEFINED_PAYLOAD"
+              "payload":"START"
             }
           ]
         }),
