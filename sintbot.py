@@ -799,7 +799,7 @@ def send_message(token, recipient, text, data):
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
         print(text)
-        message = 'Ah, leuk idee!'
+        message = 'Ah, leuk!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
