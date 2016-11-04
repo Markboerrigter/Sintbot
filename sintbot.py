@@ -757,11 +757,11 @@ def send_message(token, recipient, text, data):
                     "recipient": {"id": recipient},
                     "message":{"text": message,
                     "quick_replies":[{
-                                  "content_type":"text",
-                                  "title":str(x),
-                                  "payload":str(x)
-                                } for x in range(6,12)
-                                ]
+                        "content_type":"text",
+                        "title":str(x),
+                        "payload":str(x)
+                    } for x in range(6,12)
+                    ]
                   }}),
                   headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
@@ -785,11 +785,11 @@ def send_message(token, recipient, text, data):
             "recipient": {"id": recipient},
             "message":{"text": message,
             "quick_replies":[{
-                          "content_type":"text",
-                          "title":str(x),
-                          "payload":str(x)
-                        } for x in range(1,7)
-                        ]
+                "content_type":"text",
+                "title":str(x),
+                "payload":str(x)
+            } for x in range(1,7)
+            ]
           }}),
           headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
@@ -858,14 +858,15 @@ def send_message(token, recipient, text, data):
           "recipient": {"id": recipient},
           "message": {"text": message[1],
           "quick_replies":[{
-                        "content_type":"text",
-                        "title":message[2][0],
-                        "payload":message[2][0],
-                        "image_url":message[2][1]
-                      },{	                "content_type":"text",
-                      	                "title":message[3][0],
-                      	                "payload":message[3][0],
-                                        "image_url":message[3][1]}]}
+            "content_type":"text",
+            "title":message[2][0],
+            "payload":message[2][0],
+            "image_url":message[2][1]
+            },{
+            "content_type":"text",
+            "title":message[3][0],
+            "payload":message[3][0],
+            "image_url":message[3][1]}]}
         }),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
