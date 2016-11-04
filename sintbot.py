@@ -376,7 +376,7 @@ def checksuggest(token, recipient, data):
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
-        print(presents)
+        return(presents)
 
         for x in presents:
             print(x)
