@@ -719,7 +719,7 @@ def messaging_events(payload):
         # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
         #   yield event["messaging"][0]["recipient"]['id'], event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['title'].encode('unicode_escape'), event["messaging"][0]["message"]['mid'], event['messaging'][0]['recipient']['id']
 
-print(childTypes[9])
+# print(childTypes[9])
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
