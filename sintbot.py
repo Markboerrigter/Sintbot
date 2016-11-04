@@ -18,7 +18,7 @@ import emoji
 
 # personality, sentiment = getIt()
 # print(emoji.emojize('Python is :thumbs_up_sign:'))
-childTypes = [emoji.emojize(u"\U0001F5A5" + ':game_die::video_game:'), emoji.emojize( ':family:'+ u"\U0001F914" + ':dog:'), emoji.emojize(u"\U0001F913"+ ':books::microscope:'), emoji.emojize(':guitar:' + u"\U000FE804"+ 	u"\U000FE517"), emoji.emojize(u"\U000FE7D4" + u"\U0001F6B5"+ u"\U000FE7E4")   ]
+childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", 'Knutselaars', 'Verhalenmakers en superhelden', 'Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans', 'Bouwers en onderzoekers', 'Sporters, stunters en stoere kids', 'Razende racers en stoere stuurders', 'Rocksterren en stijliconen', 'Gadget- en gamekings']
 typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
 childTypes = [x.encode('utf-8') for x in childTypes]
 
