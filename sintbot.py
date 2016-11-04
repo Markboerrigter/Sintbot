@@ -611,6 +611,16 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
+    elif findword('help'):
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Hoi ik probeer een leuke suggestie te geven.'}
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
     else:
         print(message)
         print(payload)
