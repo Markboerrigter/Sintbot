@@ -862,10 +862,13 @@ def send_message(token, recipient, text, data):
                         "title":message[2][0],
                         "payload":message[2][0],
                         "image_url":message[2][1]
-                      },{	                "content_type":"text",
-                      	                "title":message[3][0],
-                      	                "payload":message[3][0],
-                                        "image_url":message[3][1]}]}
+                      },{
+                        "content_type":"text",
+                      	"title":message[3][0],
+                      	"payload":message[3][0],
+                        "image_url":message[3][1]
+                        }
+                        ]}
         }),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
