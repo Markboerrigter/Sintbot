@@ -26,11 +26,11 @@ childTypes = [x.encode('utf-8') for x in childTypes]
 #     print(x)
 # err
 
-x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
+# x = dict()
+# pickle.dump(x, open('user_data.p', 'wb'))
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
-N = 3
+N = 10
 # Number of presented articles
 
 faulwords = pickle.load(open('Faulword.p', 'rb'))
