@@ -456,12 +456,12 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
-  # elif Stage == 'presentchoosing':
-  #     NextStage = TokenStages[TokenStages.index(Stage)+1]
-  #     data['Stage'] = NextStage
-  #     response = {}
-  #     print(data['Stage'])
-  #     send_message(PAT, recipient, '', data)
+  elif Stage == 'feedback':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      data['Stage'] = NextStage
+      response = {}
+      print(data['Stage'])
+      send_message(PAT, recipient, '', data)
 
   elif Stage == 'Connection':
       if not data['personality']:
