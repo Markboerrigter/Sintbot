@@ -608,6 +608,18 @@ def handle_messages():
   print(payload)
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
+    if mid == 'Postback':
+        print("Incoming from %s: %s" % (sender, message))
+        print(sender, message)
+        user_data[sender]['try'] = 0
+        print(message, user_data[sender]['oldincoming'])
+        print(mid,user_data[sender]['message-id'])
+        user_data[sender]['text'].append(('user',message))
+        user_data[sender]['message-id'] = mid
+        user_data[sender]['oldincoming'] = message
+        typing('on', PAT, sender)
+        data = send_message(PAT, sender, message,user_data[sender])
+
     if findword(message):
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -710,9 +722,9 @@ def handle_messages():
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
             typing('on', PAT, sender)
-            data = send_message(PAT, sender, message, user_data[sender])
             user_data[recipient] = data
             pickle.dump(user_data, open('user_data.p', 'wb'))
+
   return "ok", 200
 
 def messaging_events(payload):
@@ -728,7 +740,10 @@ def messaging_events(payload):
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
         # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
         #   yield event["messaging"][0]["recipient"]['id'], event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['title'].encode('unicode_escape'), event["messaging"][0]["message"]['mid'], event['messaging'][0]['recipient']['id']
-
+  elif 'postback'in data["entry"][0]:
+      messaging_events = data["entry"][0]
+      for event in messaging_events:
+          yield event["sender"]["id"], event["postback"]["payload"].encode('unicode_escape'), 'Postback', event["recipient"]['id']
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
