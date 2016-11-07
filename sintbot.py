@@ -609,7 +609,7 @@ def handle_messages():
   global user_data
 
   for sender, message, mid, recipient in messaging_events(payload) :
-    print(user_data[sender])
+
     if sender not in user_data:
         user_info = getdata(sender)
         user_data[sender] = {}
@@ -668,6 +668,7 @@ def handle_messages():
     #     data = send_message(PAT, sender, message,user_data[sender])
     #     pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
+        print(user_data[sender])
         print(message)
         print('message events')
         postdashbot('human', payload)
