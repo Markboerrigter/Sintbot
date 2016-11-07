@@ -20,6 +20,36 @@ d = now.isoformat()
 # for document in cursor:
 #     print(document)
 
+def findConfig(x):
+    try:
+        catalogus = db.configs
+        ans = list(catalogus.find({'number': x}))[0]
+        for x in ans:
+            if x != '_id' and x != 'number':
+                return(ans[x])
+    except Exception, e:
+        return 'Not found any configuration'
+
+def findUser(id):
+    try:
+        catalogus = db.users
+        ans = list(catalogus.find({'sender': x}))[0]
+        for x in ans:
+            if x != '_id' and x != 'number':
+                return(ans[x])
+    except Exception, e:
+        return 'Not found any configuration'
+
+def updateUser(id, newInformation):
+    try:
+        catalogus = db.users
+        catalogus.update_one({'sender':id}, {'$set': {'updated': d}, '$inc': {'information':newInformation}})
+        return 'id: ' +id + 'has been updated'
+    except Exception, e:
+        return 'Not found user'
+
+
+
 # add data regarding usage of user in channel
 # define the payload now the example of a complete watson personality is being stored
 #

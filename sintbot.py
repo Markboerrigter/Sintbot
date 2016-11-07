@@ -607,7 +607,9 @@ def handle_messages():
   payload = request.get_data()
   print(payload)
   global user_data
+
   for sender, message, mid, recipient in messaging_events(payload) :
+    print(user_data[sender])
     if sender not in user_data:
         user_info = getdata(sender)
         user_data[sender] = {}
