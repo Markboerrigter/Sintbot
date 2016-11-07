@@ -633,6 +633,7 @@ def handle_messages():
         if r.status_code != requests.codes.ok:
         	print r.text
     if not mg.findUser(sender):
+        print(sender)
         user_info = getdata(sender)
         data = {}
         data['info'] = user_info
