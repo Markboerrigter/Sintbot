@@ -621,7 +621,6 @@ def handle_messages():
         typing('on', PAT, sender)
         data = send_message(PAT, sender, message,user_data[sender])
         pickle.dump(user_data, open('user_data.p', 'wb'))
-
     if findword(message):
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -724,6 +723,9 @@ def handle_messages():
             user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             user_data[sender]['data'] = {}
             typing('on', PAT, sender)
+            data = send_message(PAT, sender, message,user_data[sender])
+            user_data[recipient] = data
+            pickle.dump(user_data, open('user_data.p', 'wb'))
 
 
   return "ok", 200
