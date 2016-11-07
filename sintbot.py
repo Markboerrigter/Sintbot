@@ -694,7 +694,7 @@ def handle_messages():
             print(user_info)
             print(sender)
             print('NEWUSER')
-            makeStartScreen(PAT)
+            # makeStartScreen(PAT)
             # persFB, sent = getIt()
             # pprint(persFB)
             user_data[sender] = dict()
