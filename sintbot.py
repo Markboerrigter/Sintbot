@@ -388,9 +388,9 @@ def checksuggest(token, recipient, data,n):
                 print('image is missing')
 
                 if x[0]['retailer'] == 'intertoys':
-                    x.append('http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
+                    x.append('http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
                 else:
-                    x.append('http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
+                    x.append('http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
             else:
                 x.append(x[0]['img_link'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -847,7 +847,7 @@ def send_message(token, recipient, text, data):
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
         print(text)
-        message = 'Ah, leuk idee!'
+        message = 'Ah, leuk!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
