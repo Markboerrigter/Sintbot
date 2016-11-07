@@ -386,11 +386,13 @@ def checksuggest(token, recipient, data,n):
         for x in presents:
             if not x[0]['img_link']:
                 print('image is missing')
-                print(x)
+
                 if x[0]['retailer'] == 'intertoys':
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg'
+                    x.append('http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
                 else:
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png'
+                    x.append('http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
+            else:
+                x.append(x[0]['img_link'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -404,7 +406,7 @@ def checksuggest(token, recipient, data,n):
                   {
                     "title":x[0]['title'],
                     "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
-                    "image_url":x[0]['img_link'],
+                    "image_url":x[2],
                     "subtitle":x[0]['description'],
                     "buttons":[
                       {
@@ -530,11 +532,11 @@ def findToken(recipient, data, text):
           data['token'] = Tokens[Nextstage]['2'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
           data['token'] = Tokens[Nextstage]['3'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
           data['token'] = Tokens[Nextstage]['4'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
@@ -1076,7 +1078,7 @@ def send_message(token, recipient, text, data):
     message = random.choice(responsemessage)
     data['text'].append(('bot',message))
     data['oldmessage'] = message
-    postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    postdashbot('bot',(recipient,message, data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
