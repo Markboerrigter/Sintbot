@@ -677,6 +677,7 @@ def handle_messages():
         else:
             user_info = getdata(sender)
             print(user_info)
+            print(sender)
             print('NEWUSER')
             makeStartScreen(PAT)
             # persFB, sent = getIt()
