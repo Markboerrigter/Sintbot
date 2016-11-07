@@ -56,16 +56,16 @@ def insertUser(id, newInformation):
     except Exception, e:
         return 'Not found user because ',e
 oldinf = information
-for keys in information.keys():
-
-    print(keys)
-    information = oldinf
-    while isinstance(information[keys], dict):
-        print(keys)
-        print(information[keys].keys())
-        information = information[keys]
-        keys = information.keys()
-        print(information)
+# for keys in information.keys():
+#
+#     print(keys)
+#     information = oldinf
+#     while isinstance(information[keys], dict):
+#         print(keys)
+#         print(information[keys].keys())
+#         information = information[keys]
+#         keys = information.keys()
+#         print(information)
 
 # print(information.keys())
 
