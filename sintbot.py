@@ -1,11 +1,10 @@
-
 from flask import Flask, request
 import json
 import requests
 import sys
 from wit import Wit
 import talkBot as tb
-from runLogin import getIt
+# from runLogin import getIt
 import pickle
 import random
 import datetime
@@ -479,7 +478,7 @@ def findToken(recipient, data, text):
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           response = {}
-          send_message(PAT, recipient, '', data)
+          send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -800,6 +799,27 @@ def send_message(token, recipient, text, data):
                         } for x in range(1,7)
                         ]
           }}),
+          headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+          	print r.text
+  elif text == 'we weten de persoonlijkheid al':
+      message = 'Weet je dit keer al wat je zoekt? :)'
+      data['text'].append(('bot',message))
+      data['oldmessage'] = message
+      postdashbot('bot',(recipient,message, data['message-id']) )
+      typing('off', PAT, recipient)
+      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message":{"text": message "quick_replies":[{
+                           "content_type":"text",
+                           "title":'Ja',
+                           "payload":'Ja'
+                         },{	                "content_type":"text",
+                         	                "title":'Nee',
+                         	                "payload":'Nee'
+                                           }]}}),
           headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
           	print r.text

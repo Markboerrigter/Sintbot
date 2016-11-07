@@ -5,7 +5,7 @@ import requests
 import sys
 from wit import Wit
 
-from runLogin import getIt
+# from runLogin import getIt
 import pickle
 import random
 import datetime
