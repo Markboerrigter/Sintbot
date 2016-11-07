@@ -66,7 +66,7 @@ personalitymessages = [["""
         }
       }
     }
-""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.png"]]]
+""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg"]]]
 
 
 # personality, sentiment = getIt()
