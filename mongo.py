@@ -6,9 +6,9 @@ from difflib import SequenceMatcher
 #
 # # import file
 import kpss
+information = {'personQuestions': [0, 2, 1], 'token': 'QVOQXFPTO3YVO5RNS36KAZSVPUNQ2KF6', 'session': 'GreenOrange-session-2016-11-0714:19:02.494234', 'dolog': '', 'secondchoice': False, 'try': 1, 'oldmessage': u'Kadootjes zijn leuk, maar voorlezen kan ook alleen maar fout gaan he! Weet je al wat je de gelukkige gaat geven dit jaar? :)', 'starter': 'bridge', 'Stage': 'bridge', 'intype': False, 'oldincoming': 'Krijgen', 'data': {}, 'startans': [], 'secondRow': False, 'log': {'feedback': {}, 'presents': {}, 'text': {0: 'first conversation'}}, 'personality': ['Gedichtje', 'Schrijven', 'Krijgen'], 'Startpos': False, 'message-id': u'mid.1478528342000:34cc456122', 'text': [('bot', u'Goedendag, dit is de hulppiet! Voordat we een kado gaan zoeken heb ik een paar vraagjes oke? :) '), ('user', 'Oke!'), ('bot', u'Het is altijd zo fijn om iedereen weer gelukkig te maken. Wat was jouw favoriete Sinterklaas kadootje eigenlijk? '), ('user', 'Een trein'), ('bot', 'Ah, leuk!'), ('bot', 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Liever creatief of lekker lui?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', 'https://support.greenorange.com/sint/images/geel_suprise_maken.png'], ['Gedichtje', 'https://support.greenorange.com/sint/images/rood_gedicht_internet.png']]), ('user', 'Gedichtje'), ('bot', ['\n  {\n      "attachment":{\n        "type":"template",\n        "payload":{\n          "template_type":"generic",\n          "elements":[\n            {\n              "title": "Lees of schrijf jij liever een gedicht?",\n              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",\n            }\n          ]\n        }\n      }\n    }\n', 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', 'https://support.greenorange.com/sint/images/groen_gedicht_lezen.png'], ['Schrijven', 'https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg']]), ('user', 'Schrijven'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Geef of krijg jij liever een kado?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', 'https://support.greenorange.com/sint/images/blauw_kado_geven.png'], ['Krijgen', 'https://support.greenorange.com/sint/images/groen_kado_krijgen.png']]), ('user', 'Krijgen'), ('bot', u'Kadootjes zijn leuk, maar voorlezen kan ook alleen maar fout gaan he! Weet je al wat je de gelukkige gaat geven dit jaar? :)')]}
 # from bson.son import SON
 # from bson.code import Code
-
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
 db = client.toys
 
@@ -47,6 +47,29 @@ def updateUser(id, newInformation):
         return 'id: ' +id + 'has been updated'
     except Exception, e:
         return 'Not found user'
+
+def insertUser(id, newInformation):
+    try:
+        catalogus = db.users
+        catalogus.insert_one(newInformation)
+        return 'id: ' +id + 'has been updated'
+    except Exception, e:
+        return 'Not found user because ',e
+oldinf = information
+for keys in information.keys():
+
+    print(keys)
+    information = oldinf
+    while isinstance(information[keys], dict):
+        print(keys)
+        print(information[keys].keys())
+        information = information[keys]
+        keys = information.keys()
+        print(information)
+
+# print(information.keys())
+
+print(insertUser(1042410335857237, information))
 
 
 

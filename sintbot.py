@@ -629,7 +629,7 @@ def handle_messages():
         user_data[sender]['try'] = 0
         # user_data[sender]['persFB'] = persFB
         user_data[sender]['Startpos'] = False
-        user_data[sender]['log']['text']= {0:'first conversation'}
+        user_data[sender]['log']['text']= {'0':'first conversation'}
         user_data[sender]['log']['feedback']= {}
         user_data[sender]['log']['presents']= {}
         user_data[sender]['dolog'] = ''
@@ -666,7 +666,7 @@ def handle_messages():
                 print(user_data[sender]['log']['text'])
                 print(user_data[sender]['text'])
                 mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
-                user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+                user_data[sender]['log']['text'].update({str(max([ int(x) for x in list(user_data[sender]['log']['text'].keys())])+1):user_data[sender]['text']})
                 user_data[sender]['log']['feedback'].update('')
                 user_data[sender]['log']['presents'].update('')
                 user_data[sender]['Stage'] = TokenStages[0]
