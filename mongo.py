@@ -6,7 +6,18 @@ from difflib import SequenceMatcher
 #
 # # import file
 import kpss
-information = {'personQuestions': [0, 2, 1], 'token': 'QVOQXFPTO3YVO5RNS36KAZSVPUNQ2KF6', 'session': 'GreenOrange-session-2016-11-0714:19:02.494234', 'dolog': '', 'secondchoice': False, 'try': 1, 'oldmessage': u'Kadootjes zijn leuk, maar voorlezen kan ook alleen maar fout gaan he! Weet je al wat je de gelukkige gaat geven dit jaar? :)', 'starter': 'bridge', 'Stage': 'bridge', 'intype': False, 'oldincoming': 'Krijgen', 'data': {}, 'startans': [], 'secondRow': False, 'log': {'feedback': {}, 'presents': {}, 'text': {0: 'first conversation'}}, 'personality': ['Gedichtje', 'Schrijven', 'Krijgen'], 'Startpos': False, 'message-id': u'mid.1478528342000:34cc456122', 'text': [('bot', u'Goedendag, dit is de hulppiet! Voordat we een kado gaan zoeken heb ik een paar vraagjes oke? :) '), ('user', 'Oke!'), ('bot', u'Het is altijd zo fijn om iedereen weer gelukkig te maken. Wat was jouw favoriete Sinterklaas kadootje eigenlijk? '), ('user', 'Een trein'), ('bot', 'Ah, leuk!'), ('bot', 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Liever creatief of lekker lui?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', 'https://support.greenorange.com/sint/images/geel_suprise_maken.png'], ['Gedichtje', 'https://support.greenorange.com/sint/images/rood_gedicht_internet.png']]), ('user', 'Gedichtje'), ('bot', ['\n  {\n      "attachment":{\n        "type":"template",\n        "payload":{\n          "template_type":"generic",\n          "elements":[\n            {\n              "title": "Lees of schrijf jij liever een gedicht?",\n              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",\n            }\n          ]\n        }\n      }\n    }\n', 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', 'https://support.greenorange.com/sint/images/groen_gedicht_lezen.png'], ['Schrijven', 'https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg']]), ('user', 'Schrijven'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Geef of krijg jij liever een kado?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', 'https://support.greenorange.com/sint/images/blauw_kado_geven.png'], ['Krijgen', 'https://support.greenorange.com/sint/images/groen_kado_krijgen.png']]), ('user', 'Krijgen'), ('bot', u'Kadootjes zijn leuk, maar voorlezen kan ook alleen maar fout gaan he! Weet je al wat je de gelukkige gaat geven dit jaar? :)')]}
+information = {'oldincoming': '15-30 euro', 'Stage': 'presentchoosing', 'startans': [], 'dolog': '', 'text': [('bot', u'Hallo, ik ben spot, de chatbot van spotta. Ik ga je vandaag helpen met het vinden van het juiste kado. Maar eerst gaan we elkaar wat beter leren kennen oke? :) '), ('user', 'Oke!'), ('bot', u'Weet je al welke surprise je bij het cadeau gaat maken?  '), ('user', 'Ja, leuk!'), ('bot', 'Ah, leuk!'), ('bot', 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Liever creatief of lekker lui?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', 'https://support.greenorange.com/sint/images/geel_suprise_maken.png'], ['Gedichtje', 'https://support.greenorange.com/sint/images/rood_gedicht_internet.png']]), ('user', 'Surprise'), ('bot', ['\n  {\n      "attachment":{\n        "type":"template",\n        "payload":{\n          "template_type":"generic",\n          "elements":[\n            {\n              "title": "Lees of schrijf jij liever een gedicht?",\n              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",\n            }\n          ]\n        }\n      }\n    }\n', 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', 'https://support.greenorange.com/sint/images/groen_gedicht_lezen.png'], ['Schrijven', 'https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg']]), ('user', 'Schrijven'), ('bot', ['\n{\n    "attachment":{\n      "type":"template",\n      "payload":{\n        "template_type":"generic",\n        "elements":[\n          {\n            "title": "Geef of krijg jij liever een kado?",\n            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",\n          }\n        ]\n      }\n    }\n  }\n', 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', 'https://support.greenorange.com/sint/images/blauw_kado_geven.png'], ['Krijgen', 'https://support.greenorange.com/sint/images/groen_kado_krijgen.png']]), ('user', 'Geven'), ('bot', u'Dus jouw familie gaat weer lange gedichten mogen voorlezen? Weet je al welk kadootje je daarbij gaat geven?'), ('user', 'Nee'), ('bot', u'Ik vroeg me af, hoe oud is de gelukkige dit jaar geworden? \U0001f389'), ('user', '8 jaar oud'), ('bot', "Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n1: Kleine ontdekkers\n2: Kleine papa's, mama's en dierenvriendjes\n3: Knutselaars\n4: Verhalenmakers en superhelden\n5: Knappe koppen en boekenwurmen\n6: Een andere categorie"), ('user', '3'), ('bot', u'Is het voor een jongen of een meisje? '), ('user', 'Een meisje'), ('bot', u'Voor sinterklaas zijn heel veel kadootjes in de aanbieding, hoe hoog is uw budget? \U0001f4b0\U0001f4b0'), ('user', '15-30 euro'), ('bot', 'Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.')], 'try': 1, 'message-id': u'mid.1478529445681:70fefe9267', 'data': {'type': 'Knutselaars', 'Age': u'oud', 'budget': u'15-30', 'distinction': u'Nee', 'Gender': u'Een meisje'}, 'cat': 'Knutselaars', 'Startpos': False, 'starter': 'budget', 'presents': [[{u'description_extended': u'Schilder jij dit romantische schilderij met dolfijnen bij zonsondergang?\n\nHet was nog nooit zo makkelijk om een schilderij te maken als met schilderen op nummer van Ravensburger!\n\nDe cijfers in de vakjes geven aan welke kleur verf je moet gebruiken. Volg de instructies open maak dit romantische schilderij!\n\nInhoud\n\u2022 11 Kleuren acrylverf\n\u2022 Kwast\n\u2022 Glittereffect\n\u2022 Lijst\n\u2022 Schilderij op nummer\n\nEigenschappen\n\u2022 Afmetingen verpakking: 20x27x5 cm (LxBxH)\n\u2022 Met glittereffect en bijpassende lijst\n\u2022 Schilderpaneel op leeftijd (11+)\n\u2022 15 kleuren acrylverf op waterbasis\n\u2022 Serie: R', u'page_link': u'http://www.intertoys.nl/schilderen-op-nummer-dolfijnen-1', u'age': u'Vanaf 7 jaar', u'discount_price': u'', u'article_number': 1182534, u'brand': u'Ravensburger', u'title': u'Schilderen Op Nummer Dolfijnen', u'price': 17.99, u'gender': u'Beide', u'retailer': u'intertoys', u'page': 55, u'website_category': u'School & Boeken', u'description': u'Schilder jij dit romantische schilderij met dolfijnen bij zonsondergang?', u'stemming': [u'Schilderen Op Nummer Dolfijnen', u'Schilder jij dit romantische schilderij met dolfijnen bij zonsondergang?\n\nHet was nog nooit zo makkelijk om een schilderij te maken als met schilderen op nummer van Ravensburger!\n\nDe cijfers in de vakjes geven aan welke kleur verf je moet gebruiken. Volg de instructies open maak dit romantische schilderij!\n\nInhoud\n\u2022 11 Kleuren acrylverf\n\u2022 Kwast\n\u2022 Glittereffect\n\u2022 Lijst\n\u2022 Schilderij op nummer\n\nEigenschappen\n\u2022 Afmetingen verpakking: 20x27x5 cm (LxBxH)\n\u2022 Met glittereffect en bijpassende lijst\n\u2022 Schilderpaneel op leeftijd (11+)\n\u2022 15 kleuren acrylverf op waterbasis\n\u2022 Serie: R', u'schilder op nummer dolfijn schilder jij dit romantisch schild met dolfijn bij zonsondergang? het was nog nooit zo makkelijk om een schild te maak al met schilder op nummer van ravensburger! de cijfer in de vak geef aan welke kleur verf je moet bruik volg de instructie oop maak dit romantisch schilderij! inhoud \u2022 11 kleur acrylverf \u2022 kwast \u2022 glittereffect \u2022 lijst \u2022 schild op nummer einschap \u2022 afmeet verpakking: 20x27x5 cm (lxbxh) \u2022 met glittereffect en bijpas lijst \u2022 schilderpaneel op leeftijd (11+) \u2022 15 kleur acrylverf op waterbasis \u2022 serie: r'], u'folder_category': u'Knutselaars', u'img_link': u'http://static.intertoys.nl//BLKCAS/960x960/1182534.jpg'}, -2, u'http://static.intertoys.nl//BLKCAS/960x960/1182534.jpg'], [{u'description_extended': u"Bouw je ontwerp Qixel per Qixel op! Qixels zijn de blokjes die je aan elkaar hecht met water. Cre\xeber je eigen wereld met de thema-navulpakketten en kies uit drie fantastische nieuwe thema's!\nGa nu aan de slag met het thema ruimte.  \nInhoud:  \n500 x blokjes.\n1 x werkblad.\n4 x ontwerpsjablonen.\n1 x standaard.\n1 x displaystandaard.\n2 x accessoires.\n1 x tashanger met touwtje.\n1 x verstuiver.\n1 instructieboekje.\nAssortiment van 3: Ruimte, Zee, Dino.", u'page_link': u'http://www.intertoys.nl/qixels-themapakket-ruimte', u'age': u'Vanaf 4 jaar', u'discount_price': u'', u'article_number': 1389741, u'brand': u'Qixels', u'title': u'Qixels themapakket ruimte', u'price': 29.99, u'gender': u'Beide', u'retailer': u'intertoys', u'page': 54, u'website_category': u'School & Boeken', u'description': u'Qixels zijn de blokjes die je aan elkaar hecht met water. Cre\xeber je eigen wereld met de thema-navulpakketten. Ga aan de slag met het themapakket ruimte.', u'stemming': [u'Qixels themapakket ruimte', u"Bouw je ontwerp Qixel per Qixel op! Qixels zijn de blokjes die je aan elkaar hecht met water. Cre\xeber je eigen wereld met de thema-navulpakketten en kies uit drie fantastische nieuwe thema's!\nGa nu aan de slag met het thema ruimte.  \nInhoud:  \n500 x blokjes.\n1 x werkblad.\n4 x ontwerpsjablonen.\n1 x standaard.\n1 x displaystandaard.\n2 x accessoires.\n1 x tashanger met touwtje.\n1 x verstuiver.\n1 instructieboekje.\nAssortiment van 3: Ruimte, Zee, Dino.", u"qixel themapakket ruimt bouw je ontwerp qixel per qixel op! qixel zijn de blok die je aan elkaar hecht met water cre\xeber je eig wereld met de thema-navulpakket en kies uit drie fantastisch nieuwe thema's! ga nu aan de slag met het thema ruimt inhoud: 500 x blok 1 x werkblad 4 x ontwerpsjabloon 1 x standaard 1 x displaystandaard 2 x accessoir 1 x tashanger met touw 1 x verstuiver 1 instructieboek assortiment van 3: ruimte, zee, dino"], u'folder_category': u'Knutselaars', u'img_link': u'http://static.intertoys.nl//BLKCAS/960x960/1389741.jpg'}, -2, u'http://static.intertoys.nl//BLKCAS/960x960/1389741.jpg'], [{u'description_extended': u"Mandala-Designer van Ravensburger: gewoon zelf leuke Mandala's schilderen! Met maar \xe9\xe9n Ravensburger Mandala-Designer-sjabloon van Trolls kan je honderden verschillende mandala's ontwerpen. En met de bijgeleverde stiften kleur je ze vervolgens prachtig in. Gewoon de speciale sjablonen plaatsen en streep voor streep de omtrekken natekenen. Daarna kan de Mandala in verschillende kleuren ingekleurd worden. Zo maakt je stap voor stap een zelfgemaakte Mandala.", u'page_link': u'http://www.intertoys.nl/ravensburger-trolls-mandala-designer-2-in-1', u'age': u'Vanaf 6 jaar', u'discount_price': 14.99, u'article_number': 1391549, u'brand': u'Ravensburger', u'title': u'Ravensburger Trolls mandala designer 2-in-1', u'price': 17.99, u'gender': u'Beide', u'retailer': u'intertoys', u'page': 55, u'website_category': u'School & Boeken', u'description': u"Mandala-Designer van Ravensburger: gewoon zelf leuke Trolls mandala's schilderen!", u'stemming': [u'Ravensburger Trolls mandala designer 2-in-1', u"Mandala-Designer van Ravensburger: gewoon zelf leuke Mandala's schilderen! Met maar \xe9\xe9n Ravensburger Mandala-Designer-sjabloon van Trolls kan je honderden verschillende mandala's ontwerpen. En met de bijgeleverde stiften kleur je ze vervolgens prachtig in. Gewoon de speciale sjablonen plaatsen en streep voor streep de omtrekken natekenen. Daarna kan de Mandala in verschillende kleuren ingekleurd worden. Zo maakt je stap voor stap een zelfgemaakte Mandala.", u'ravensburger trol mandala designer 2-in-1 mandala-designer van ravensburger: woon zelf leuke mandala schilderen! met maar ravensburger mandala-designer-sjabloon van trol kan je honder verschil mandala ontwerp en met de bijlever stif kleur je ze vervolgen pracht in woon de special sjabloon plaats en streep voor streep de omtrek natekeen daarna kan de mandala in verschil kleur inkleur wor zo maak je stap voor stap een zelfmaak mandala'], u'folder_category': u'Knutselaars', u'img_link': u'http://static.intertoys.nl//BLKCAS/960x960/1391549.jpg'}, -2, u'http://static.intertoys.nl//BLKCAS/960x960/1391549.jpg']], 'secondRow': False, 'token': 'IJ7PMHQPAVNK6UU3C3BE3NOVXZ6MMPOJ', 'session': 'GreenOrange-session-2016-11-0714:37:26.343327', 'intype': True, 'secondchoice': False, 'log': {'feedback':'' , 'presents': '' , 'text': {'0': 'first conversation'}}, 'personality': ['Surprise', 'Schrijven', 'Geven'], 'oldmessage': 'Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'personQuestions': [0, 2, 1]}
+# information = endodings('' ,information)
+# print(information)
+
+# def encodings(L,oldL):
+#     for key, value in oldL.items():
+#         key = key.encode('ascii', 'ignore')
+#         if isinstance(value,str):
+#             L[key] = value.encode('ascii', 'ignore')
+#         else:
+#             L[key] = encodings(value)
+#     return L
 # from bson.son import SON
 # from bson.code import Code
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
@@ -19,7 +30,7 @@ d = now.isoformat()
 #
 # for document in cursor:
 #     print(document)
-
+tryout = {'foo': 'bar', 'baz': {'1': {'a': 'B'}}, '_id': 'AB123456789'}
 def findConfig(x):
     try:
         catalogus = db.configs
@@ -38,40 +49,28 @@ def findUser(id):
             if x != '_id' and x != 'number':
                 return(ans[x])
     except Exception, e:
-        return 'Not found any configuration'
+        return None
+
 
 def updateUser(id, newInformation):
     try:
         catalogus = db.users
-        catalogus.update_one({'sender':id}, {'$set': {'updated': d}, '$inc': {'information':newInformation}})
-        return 'id: ' +id + 'has been updated'
+        catalogus.update({'_id': str(id)},newInformation)
+        return 'id: ' +str(id) + 'has been updated'
     except Exception, e:
-        return 'Not found user'
+        return 'Not found user',e
 
 def insertUser(id, newInformation):
     try:
+        newInformation['_id'] = str(id)
         catalogus = db.users
-        catalogus.insert_one(newInformation)
-        return 'id: ' +id + 'has been updated'
+        print(type(newInformation))
+        catalogus.insert(newInformation)
+        return 'id: ' +str(id) + 'has been updated'
     except Exception, e:
         return 'Not found user because ',e
-oldinf = information
-# for keys in information.keys():
-#
-#     print(keys)
-#     information = oldinf
-#     while isinstance(information[keys], dict):
-#         print(keys)
-#         print(information[keys].keys())
-#         information = information[keys]
-#         keys = information.keys()
-#         print(information)
 
-# print(information.keys())
-
-print(insertUser(1042410335857237, information))
-
-
+# print(updateUser(1042410335857237, information))
 
 # add data regarding usage of user in channel
 # define the payload now the example of a complete watson personality is being stored
@@ -969,7 +968,7 @@ def findByAge(jaar):
 
 
 def findRightProduct(geslacht, budget, age, category, idea,n):
-    print((geslacht, budget, age, category, idea,n))
+    # print((geslacht, budget, age, category, idea,n))
     idea = idea.lower()
     idea = idea.replace('een ', '').replace('de ', '' ).replace('het ', '')
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
@@ -1032,7 +1031,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
-printprod(findRightProduct('Jongen', [30,45], '14', 'Gadget- en gamekings', 'Een drone',3))
+# printprod(findRightProduct('Jongen', [30,45], '14', 'Gadget- en gamekings', 'Een drone',3))
 #
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
