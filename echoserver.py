@@ -569,6 +569,7 @@ def handle_messages():
         postdashbot('human', payload)
         print(sender,message)
         if sender in user_data:
+            print(user_data[sender])
             print(mid,user_data[sender]['message-id'])
             if mid != user_data[sender]['message-id']:
 
