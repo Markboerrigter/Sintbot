@@ -626,6 +626,7 @@ def handle_messages():
         	print r.text
     print(mg.findUser(sender))
     if not mg.findUser(sender):
+        print('NewUser')
         print(sender)
         user_info = getdata(sender)
         data = {}

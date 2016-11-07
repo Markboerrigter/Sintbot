@@ -64,7 +64,6 @@ def insertUser(id, newInformation):
     try:
         newInformation['_id'] = str(id)
         catalogus = db.users
-        print(type(newInformation))
         catalogus.insert(newInformation)
         return 'id: ' +str(id) + 'has been updated'
     except Exception, e:
