@@ -610,6 +610,16 @@ def handle_messages():
 
   for sender, message, mid, recipient in messaging_events(payload) :
 
+    if findword(message):
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
     if sender not in user_data:
         user_info = getdata(sender)
         user_data[sender] = {}
@@ -644,69 +654,45 @@ def handle_messages():
         data = send_message(PAT, sender, message,user_data[sender])
         user_data[recipient] = data
         pickle.dump(user_data, open('user_data.p', 'wb'))
-    if findword(message):
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-        params={"access_token": PAT},
-        data=json.dumps({
-          "recipient": {"id": sender},
-          "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
-        }),
-        headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-        	print r.text
-    # elif mid == 'Postback':
-    #     print('postback binnen')
-    #     print("Incoming from %s: %s" % (sender, message))
-    #     print(sender, message)
-    #     user_data[sender]['try'] = 0
-    #     print(message, user_data[sender]['oldincoming'])
-    #     print(mid,user_data[sender]['message-id'])
-    #     user_data[sender]['text'].append(('user',message))
-    #     user_data[sender]['message-id'] = mid
-    #     user_data[sender]['oldincoming'] = message
-    #     typing('on', PAT, sender)
-    #     data = send_message(PAT, sender, message,user_data[sender])
-    #     pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
         print(user_data[sender])
         print(message)
         print('message events')
         postdashbot('human', payload)
         print(sender,message)
-        if sender in user_data:
+        print(mid,user_data[sender]['message-id'])
+        if mid != user_data[sender]['message-id']:
+            if user_data[sender]['dolog'] == 'end':
+                print(user_data[sender]['log']['text'])
+                print(user_data[sender]['text'])
+                mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
+                user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
+                user_data[sender]['log']['feedback'].update('')
+                user_data[sender]['log']['presents'].update('')
+                user_data[sender]['Stage'] = TokenStages[0]
+                user_data[sender]['text'] = []
+                user_data[sender]['Startpos'] = False
+                user_data[sender]['dolog'] = ''
+                user_data[sender]['secondRow'] = False
+                user_data[sender]['token'] = '2'
+                user_data[sender]['starter'] = ''
+                user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                user_data[sender]['data'] = {}
+                user_data[sender]['secondchoice'] = False
+                user_data[sender]['intype'] = False
+                user_data[sender]['personQuestions'] = []
+            print("Incoming from %s: %s" % (sender, message))
+            print(sender, message)
+            user_data[sender]['try'] = 0
+            print(message, user_data[sender]['oldincoming'])
             print(mid,user_data[sender]['message-id'])
-            if mid != user_data[sender]['message-id']:
-                if user_data[sender]['dolog'] == 'end':
-                    print(user_data[sender]['log']['text'])
-                    print(user_data[sender]['text'])
-                    mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
-                    user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
-                    user_data[sender]['log']['feedback'].update('')
-                    user_data[sender]['log']['presents'].update('')
-                    user_data[sender]['Stage'] = TokenStages[0]
-                    user_data[sender]['text'] = []
-                    user_data[sender]['Startpos'] = False
-                    user_data[sender]['dolog'] = ''
-                    user_data[sender]['secondRow'] = False
-                    user_data[sender]['token'] = '2'
-                    user_data[sender]['starter'] = ''
-                    user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-                    user_data[sender]['data'] = {}
-                    user_data[sender]['secondchoice'] = False
-                    user_data[sender]['intype'] = False
-                    user_data[sender]['personQuestions'] = []
-                print("Incoming from %s: %s" % (sender, message))
-                print(sender, message)
-                user_data[sender]['try'] = 0
-                print(message, user_data[sender]['oldincoming'])
-                print(mid,user_data[sender]['message-id'])
-                user_data[sender]['text'].append(('user',message))
-                user_data[sender]['message-id'] = mid
-                user_data[sender]['oldincoming'] = message
-                typing('on', PAT, sender)
-                data = send_message(PAT, sender, message,user_data[sender])
-                user_data[recipient] = data
-                pickle.dump(user_data, open('user_data.p', 'wb'))
+            user_data[sender]['text'].append(('user',message))
+            user_data[sender]['message-id'] = mid
+            user_data[sender]['oldincoming'] = message
+            typing('on', PAT, sender)
+            data = send_message(PAT, sender, message,user_data[sender])
+            user_data[recipient] = data
+            pickle.dump(user_data, open('user_data.p', 'wb'))
   return "ok", 200
 
 def messaging_events(payload):
