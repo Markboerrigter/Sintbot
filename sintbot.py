@@ -196,6 +196,7 @@ or write data can be found.
 """
 
 def makeStartScreen(token):
+  print('make starting screen')
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
     params={"access_token": token},
     data=json.dumps({
