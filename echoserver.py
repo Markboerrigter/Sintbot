@@ -26,8 +26,8 @@ childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", '
 #     print(x)
 # err
 
-# x = dict()
-# pickle.dump(x, open('user_data.p', 'wb'))
+x = dict()
+pickle.dump(x, open('user_data.p', 'wb'))
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
