@@ -610,6 +610,7 @@ def handle_messages():
   for sender, message, mid, recipient in messaging_events(payload) :
     if sender not in user_data:
         user_info = getdata(sender)
+        user_data[sender] = {}
         user_data[sender]['info'] = user_info
         user_data[sender] = dict()
         user_data[sender]['log'] = {}
