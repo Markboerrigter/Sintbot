@@ -604,7 +604,7 @@ def handle_messages():
                     user_data[sender]['starter'] = ''
                     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     user_data[sender]['data'] = {}
-                    data['secondchoice'] = False
+                    user_data[sender]['secondchoice'] = False
                     user_data[sender]['intype'] = False
                     user_data[sender]['personQuestions'] = []
                 print("Incoming from %s: %s" % (sender, message))
@@ -636,7 +636,7 @@ def handle_messages():
             user_data[sender]['log']['feedback']= {}
             user_data[sender]['log']['presents']= {}
             user_data[sender]['dolog'] = ''
-            data['secondchoice'] = False
+            user_data[sender]['secondchoice'] = False
             user_data[sender]['secondRow'] = False
             user_data[sender]['startans'] = []
             user_data[sender]['Stage'] = TokenStages[0]
@@ -876,7 +876,8 @@ def send_message(token, recipient, text, data):
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja':
         findToken(recipient, data, text)
-    elif text == 'Nee':
+    elif text == 'Nee' and not data['secondchoice']:
+
         data['secondchoice'] = True
         message = 'Oke, bedankt dat je zo eerlijk bent! Ik zal nog een keer kijken.'
     	data['text'].append(('bot',message))
@@ -917,7 +918,7 @@ def send_message(token, recipient, text, data):
             	print r.text
 
     elif text == 'Nee' and data['secondchoice']:
-        data['secondchoice'] = True
+
         message = 'Sorry, ik denk dat ik niet helemaal weet wat je zoekt. Je zou zelf verder kunnen zoeken in de folders. Die kun je vinden via de volgende links'
     	data['text'].append(('bot',message))
     	data['oldmessage'] = message
