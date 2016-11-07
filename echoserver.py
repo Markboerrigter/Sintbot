@@ -380,11 +380,13 @@ def checksuggest(token, recipient, data,n):
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
-        print(presents)
+        # print(presents)
 
         for x in presents:
             print(x)
             if 'img_link' not in x[0]:
+                print('image is missing')
+                print(x)
                 if x[0]['retailer'] == 'intertoys':
                     x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
                 else:
@@ -588,7 +590,6 @@ def findToken(recipient, data, text):
       typing('off', PAT, recipient)
       data['dolog'] = 'end'
       response = {}
-      send_message(PAT, recipient, '', data)
 
   # return response, data
 
@@ -1006,6 +1007,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
+        typing('on', PAT, recipient)
+
         findToken(recipient, data, text)
 
     else:
@@ -1049,7 +1052,7 @@ def send_message(token, recipient, text, data):
   elif data['Stage'] == 'response':
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
-    data['text'].append(('bot',response['msg']))
+    data['text'].append(('bot',message))
     data['oldmessage'] = response['msg']
     postdashbot('bot',(recipient,response['msg'], data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
