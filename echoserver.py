@@ -653,6 +653,7 @@ def handle_messages():
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         data['data'] = {}
         mg.insertUser(sender,data)
+        print(sender)
         typing('on', PAT, sender)
         data = send_message(PAT, sender, message,data)
         # user_data[recipient] = data
@@ -720,6 +721,7 @@ def send_message(token, recipient, text, data):
   """
   print('And now we will send a message to: '+ recipient)
   print(data['Stage'])
+  print(recipient)
 
   if data['dolog'] == 'end':
       print('done')
