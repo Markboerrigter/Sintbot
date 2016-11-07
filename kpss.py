@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #!/usr/bin/env python
+=======
+##!/usr/bin/env python
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
 # vim:fileencoding=utf-8
 
 
@@ -133,7 +137,11 @@ class _Program(object):
         if r:
             r = self.i_x >= self.i_p1  # >=
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_R2(self, s):
         r = True
         self.i_x = s.cursor  ##
@@ -141,7 +149,11 @@ class _Program(object):
         if r:
             r = self.i_x >= self.i_p2  # >=
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_V(self, s):
         r = True
         var1 = len(s) - s.cursor                                       ##
@@ -157,7 +169,11 @@ class _Program(object):
             r = s.starts_with(u'ij')  # character check          ##    #
         s.cursor = len(s) - var1                                       ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_VX(self, s):
         r = True
         var3 = len(s) - s.cursor                                           ##
@@ -175,7 +191,11 @@ class _Program(object):
                 r = s.starts_with(u'ij')  # character check          ##    #
         s.cursor = len(s) - var3                                           ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_C(self, s):
         r = True
         var5 = len(s) - s.cursor                                                  ##
@@ -193,7 +213,11 @@ class _Program(object):
                 s.cursor -= 1                          ##                         #
         s.cursor = len(s) - var5                                                  ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_lengthen_V(self, s):
         r = True
         var13 = len(s) - s.cursor                                                                                                      ##
@@ -287,7 +311,11 @@ class _Program(object):
         s.cursor = len(s) - var13                                                                                                      #
         r = True                                                                                                                       ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_1(self, s):
         r = True
         self.left = s.cursor  ##
@@ -422,7 +450,11 @@ class _Program(object):
                     if a_1 == 6:                                                                                     #
                         r = s.set_range(self.left, self.right, u'nd')  # <-                                          ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_2(self, s):
         r = True
         self.left = s.cursor  ##
@@ -581,7 +613,11 @@ class _Program(object):
                             if r:                                                                                                            #
                                 r = s.set_range(self.left, self.right, u'ief')  # <-                                                         ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_3(self, s):
         r = True
         self.left = s.cursor  ##
@@ -660,7 +696,11 @@ class _Program(object):
                             if r:                                                     #
                                 r = s.set_range(self.left, self.right, u'd')  # <-    ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_4(self, s):
         r = True
         var54 = len(s) - s.cursor                                                                   ##
@@ -763,7 +803,11 @@ class _Program(object):
                                     if r:                                                  #        #
                                         r = self.r_lengthen_V(s)  # routine call           ##       ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_7(self, s):
         r = True
         self.left = s.cursor  ##
@@ -792,7 +836,11 @@ class _Program(object):
                     if a_6 == 2:                                            #
                         r = s.set_range(self.left, self.right, u'p')  # <-  ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_6(self, s):
         r = True
         self.left = s.cursor  ##
@@ -859,7 +907,11 @@ class _Program(object):
                     if a_7 == 21:                                           #
                         r = s.set_range(self.left, self.right, u's')  # <-  ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Step_1c(self, s):
         r = True
         self.left = s.cursor  ##
@@ -906,7 +958,11 @@ class _Program(object):
                         if r:                                                      #
                             r = s.set_range(self.left, self.right, u'')  # delete  ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Lose_prefix(self, s):
         r = True
         self.left = s.cursor  ##
@@ -952,7 +1008,11 @@ class _Program(object):
                             if r:
                                 r = s.set_range(self.left, self.right, u'')  # delete
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_Lose_infix(self, s):
         r = True
         r = s.hop(1)  # next
@@ -1004,7 +1064,11 @@ class _Program(object):
                         if r:
                             r = s.set_range(self.left, self.right, u'')  # delete
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_measure(self, s):
         r = True
         var78 = s.cursor                          ##
@@ -1130,7 +1194,11 @@ class _Program(object):
             s.cursor = var85                                                                                      #
             r = True                                                                                              ##
         return r
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
     def r_stem(self, s):
         r = True
         self.b_Y_found = False  ##
