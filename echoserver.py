@@ -19,8 +19,8 @@ import emoji
 # personality, sentiment = getIt()
 # print(emoji.emojize('Python is :thumbs_up_sign:'))
 childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", 'Knutselaars', 'Verhalenmakers en superhelden', 'Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans', 'Bouwers en onderzoekers', 'Sporters, stunters en stoere kids', 'Razende racers en stoere stuurders', 'Rocksterren en stijliconen', 'Gadget- en gamekings']
-typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
-childTypes = [x.encode('utf-8') for x in childTypes]
+# typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
+# childTypes = [x.encode('utf-8') for x in childTypes]
 
 # for x in childTypes:
 #     print(x)
@@ -31,70 +31,20 @@ childTypes = [x.encode('utf-8') for x in childTypes]
 
 user_data = pickle.load( open( "user_data.p", "rb" ) )
 
-N = 10
+N = 3
 # Number of presented articles
 
 
 faulwords = pickle.load(open('Faulword.p', 'rb'))
 stoplist = []
 
-sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
+# sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
 Starttext = pickle.load(open('Starttext.p', 'rb'))
 
-responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende keer!', 'Bedankt dat ik je kon helpen en een fijne pakjesavond', 'Bedankt voor het fijne gesprek!', 'Tot de 5de van December!', 'Bedankt voor het gesprek, ik zie je op mijn verjaardag!']
-presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
-presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
-personalitymessages = [["""
-{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title": "Liever creatief of lekker lui?",
-            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
-          }
-        ]
-      }
-    }
-  }
-""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', "https://support.greenorange.com/sint/images/geel_suprise_maken.png"], ['Gedichtje', "https://support.greenorange.com/sint/images/rood_gedicht_internet.png"]],[
-"""
-{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title": "Geef of krijg jij liever een kado?",
-            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
-          }
-        ]
-      }
-    }
-  }
-""", 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', "https://support.greenorange.com/sint/images/blauw_kado_geven.png"], ['Krijgen', "https://support.greenorange.com/sint/images/groen_kado_krijgen.png"]]
-,["""
-  {
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"generic",
-          "elements":[
-            {
-              "title": "Lees of schrijf jij liever een gedicht?",
-              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
-            }
-          ]
-        }
-      }
-    }
-""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.png"]]]
+
 Tokens = pickle.load(open('Tokens.p', 'rb'))
 
 dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
@@ -653,6 +603,7 @@ def handle_messages():
                     user_data[sender]['starter'] = ''
                     user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     user_data[sender]['data'] = {}
+                    data['secondchoice'] = False
                     user_data[sender]['intype'] = False
                     user_data[sender]['personQuestions'] = []
                 print("Incoming from %s: %s" % (sender, message))
@@ -684,6 +635,7 @@ def handle_messages():
             user_data[sender]['log']['feedback']= {}
             user_data[sender]['log']['presents']= {}
             user_data[sender]['dolog'] = ''
+            data['secondchoice'] = False
             user_data[sender]['secondRow'] = False
             user_data[sender]['startans'] = []
             user_data[sender]['Stage'] = TokenStages[0]
@@ -921,8 +873,86 @@ def send_message(token, recipient, text, data):
               headers={'Content-type': 'application/json'})
 
   elif data['Stage'] == 'presentchoosing':
-    if text == 'Ja' or text == 'Nee':
+    if text == 'Ja':
         findToken(recipient, data, text)
+    elif text == 'Nee':
+        data['secondchoice'] = True
+        message = 'Oke, bedankt dat je zo eerlijk bent! Ik zal nog een keer kijken.'
+    	data['text'].append(('bot',message))
+    	data['oldmessage'] = message
+    	postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message.encode('utf-8')}
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+        typing('on', PAT, recipient)
+        checksuggest(PAT, recipient, data,N+N)
+        message = random.choice(presentmessage3)
+
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message.encode('utf-8'),
+              "quick_replies":[{
+                            "content_type":"text",
+                            "title":'Ja',
+                            "payload":'Ja'
+                          },{
+                            "content_type":"text",
+                            "title":'Nee',
+                            "payload":'Nee'
+                          }
+                          ]
+            }}),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+
+    elif text == 'Nee' and data['secondchoice']:
+        data['secondchoice'] = True
+        message = 'Sorry, ik denk dat ik niet helemaal weet wat je zoekt. Je zou zelf verder kunnen zoeken in de folders. Die kun je vinden via de volgende links'
+    	data['text'].append(('bot',message))
+    	data['oldmessage'] = message
+    	postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+  "message":{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"button",
+        "text":message,
+        "buttons":[
+          {
+            "type":"web_url",
+            "url":"https://www.spotta.nl/folders/intertoys?fid=1",
+            "title":"Intertoys"
+          },
+          {
+            "type":"web_url",
+            "url":"https://www.spotta.nl/folders/bart-smit?fid=116",
+            "title":"Bart Smit"
+          }
+        ]
+      }
+    }
+  }
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
+        findToken(recipient, data, text)
+
     else:
         message = random.choice(presentmessage1)
     	data['text'].append(('bot',message))
@@ -939,7 +969,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        checksuggest(PAT, recipient, data)
+        checksuggest(PAT, recipient, data,N)
         message = random.choice(presentmessage3)
 
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",

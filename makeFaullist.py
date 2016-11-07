@@ -3,8 +3,9 @@ x =  ['homo','flikker','klootzak','hitler','nazi','zwartjoekel','bokito','hoer',
 
 file1 = open('scheldwoorden.txt', 'r+').read()
 
-for word in file1:
+for word in file1.splitlines():
      x.append(word)
+print(x)
 
 import pickle
 import pprint
