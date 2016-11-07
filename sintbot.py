@@ -384,13 +384,13 @@ def checksuggest(token, recipient, data,n):
         # print(presents)
 
         for x in presents:
-            if  not x[0]['img_link']:
+            if not x[0]['img_link']:
                 print('image is missing')
                 print(x)
                 if x[0]['retailer'] == 'intertoys':
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['id']) + '.jpg'
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg'
                 else:
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['id']) + '.png'
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png'
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
