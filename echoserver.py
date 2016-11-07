@@ -16,6 +16,59 @@ from flask import g
 import time
 import emoji
 
+responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende keer!', 'Bedankt dat ik je kon helpen en een fijne pakjesavond', 'Bedankt voor het fijne gesprek!', 'Tot de 5de van December!', 'Bedankt voor het gesprek, ik zie je op mijn verjaardag!']
+presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
+presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
+personalitymessages = [["""
+{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title": "Liever creatief of lekker lui?",
+            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
+          }
+        ]
+      }
+    }
+  }
+""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', "https://support.greenorange.com/sint/images/geel_suprise_maken.png"], ['Gedichtje', "https://support.greenorange.com/sint/images/rood_gedicht_internet.png"]],[
+"""
+{
+    "attachment":{
+      "type":"template",
+      "payload":{
+        "template_type":"generic",
+        "elements":[
+          {
+            "title": "Geef of krijg jij liever een kado?",
+            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
+          }
+        ]
+      }
+    }
+  }
+""", 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', "https://support.greenorange.com/sint/images/blauw_kado_geven.png"], ['Krijgen', "https://support.greenorange.com/sint/images/groen_kado_krijgen.png"]]
+,["""
+  {
+      "attachment":{
+        "type":"template",
+        "payload":{
+          "template_type":"generic",
+          "elements":[
+            {
+              "title": "Lees of schrijf jij liever een gedicht?",
+              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
+            }
+          ]
+        }
+      }
+    }
+""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.png"]]]
+
+
 # personality, sentiment = getIt()
 # print(emoji.emojize('Python is :thumbs_up_sign:'))
 childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", 'Knutselaars', 'Verhalenmakers en superhelden', 'Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans', 'Bouwers en onderzoekers', 'Sporters, stunters en stoere kids', 'Razende racers en stoere stuurders', 'Rocksterren en stijliconen', 'Gadget- en gamekings']
