@@ -79,10 +79,10 @@ childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", '
 #     print(x)
 # err
 
-x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
-
-user_data = pickle.load( open( "user_data.p", "rb" ) )
+# x = dict()
+# pickle.dump(x, open('user_data.p', 'wb'))
+#
+# user_data = pickle.load( open( "user_data.p", "rb" ) )
 
 N = 3
 # Number of presented articles
@@ -127,13 +127,11 @@ def findword(string):
         return True
     else:
         return False
-
 def get_keys(d,target):
     result = []
     path = []
     get_key(d,target, path, result)
     return result[0]
-
 def allValues(dictionary):
     ans = []
     for k,v in dictionary.items():
@@ -142,7 +140,6 @@ def allValues(dictionary):
         else:
             ans.append(v)
     return ans
-
 def mergedicts(L):
     intersect = []
     for item in L[0]:
@@ -150,12 +147,10 @@ def mergedicts(L):
         if len(x) == len(L):
             intersect.append(item)
     return intersect
-
 def findValue(L,d):
 	for x in L:
 		d = d[x]
 	return d
-
 def findNo(L):
 	num = L.count('Nee')
 	if num == 0:
@@ -169,7 +164,6 @@ def findNo(L):
 	elif num == 4:
 		pers = 'Default'
 	return pers
-
 def get_key(d, target, path, result):
     for k, v in d.iteritems():
         path.append(k)
@@ -178,13 +172,11 @@ def get_key(d, target, path, result):
         if v == target:
             result.append(copy(path))
         path.pop()
-
 def replace_value_with_definition(key_to_find, definition, current_dict):
     for key in current_dict.keys():
         if key == key_to_find:
             current_dict[key] = definition
     return current_dict
-
 def word_feats(words):
     return dict([(word, True) for word in words])
 
@@ -618,7 +610,7 @@ def handle_messages():
   # print "Handling Messages"
   payload = request.get_data()
   print(payload)
-  global user_data
+  # global user_data
 
   for sender, message, mid, recipient in messaging_events(payload) :
 
@@ -632,6 +624,7 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
+    print(mg.findUser(sender))
     if not mg.findUser(sender):
         print(sender)
         user_info = getdata(sender)
