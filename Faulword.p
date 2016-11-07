@@ -21,7 +21,6 @@ aS'discriminatie'
 p10
 aS'rascisme'
 p11
-<<<<<<< HEAD
 aS'anaal'
 p12
 aS'anus'
@@ -122,7 +121,6 @@ aS'zaadcel'
 p60
 aS'zanik'
 p61
-=======
 aS'a'
 p12
 aS'n'
@@ -494,5 +492,4 @@ ag13
 ag22
 ag29
 ag15
->>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
 a.

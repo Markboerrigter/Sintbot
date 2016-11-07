@@ -812,7 +812,8 @@ def send_message(token, recipient, text, data):
           params={"access_token": token},
           data=json.dumps({
             "recipient": {"id": recipient},
-            "message":{"text": message "quick_replies":[{
+            "message":{"text": message ,
+            "quick_replies":[{
                            "content_type":"text",
                            "title":'Ja',
                            "payload":'Ja'
