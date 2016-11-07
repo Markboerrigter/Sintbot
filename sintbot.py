@@ -316,10 +316,8 @@ def getInformation(response, tekst):
             out['distinction'] = entities['distinction'][0]['value']
         if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.8:
             out['Feedback'] = entities['Feedback'][0]['value']
-        mg.updateUser(recipient, data)
         return out
     else:
-        mg.updateUser(recipient, data)
         return []
 
 def findAnswer(response, question,witToken,data):
@@ -327,7 +325,6 @@ def findAnswer(response, question,witToken,data):
     information = getInformation(response,question)
     response = mergeAns(response, witToken, session_id, question)
     information.update(getInformation(response,question))
-    mg.updateUser(recipient, data)
     return response,data, information
 
 def getResponse(recipient, text, data):
