@@ -388,9 +388,9 @@ def checksuggest(token, recipient, data,n):
                 print('image is missing')
                 print(x)
                 if x[0]['retailer'] == 'intertoys':
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['id']) + '.jpg'
                 else:
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ str(x['page']) + '_p' + str(x['id']) + '.png'
+                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['id']) + '.png'
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
