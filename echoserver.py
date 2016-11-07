@@ -337,7 +337,7 @@ def getResponse(recipient, text, data):
   data['data'].update(information)
   return response, data
 
-def checksuggest(token, recipient, data):
+def checksuggest(token, recipient, data,n):
     print('in checksuggest ' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
         print('giving presents')
@@ -376,7 +376,7 @@ def checksuggest(token, recipient, data):
         #         presents = mergedics(L)
         # else:
         #     presents = presentstasks
-        presents = mg.findRightProduct(geslacht, budget, age, category, idea,N)
+        presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)[n-N:n]
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
