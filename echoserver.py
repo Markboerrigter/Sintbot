@@ -1053,7 +1053,7 @@ def send_message(token, recipient, text, data):
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
     data['text'].append(('bot',message))
-    data['oldmessage'] = response['msg']
+    data['oldmessage'] = message
     postdashbot('bot',(recipient,response['msg'], data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
