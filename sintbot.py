@@ -652,19 +652,19 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-    elif mid == 'Postback':
-        print('postback binnen')
-        print("Incoming from %s: %s" % (sender, message))
-        print(sender, message)
-        user_data[sender]['try'] = 0
-        print(message, user_data[sender]['oldincoming'])
-        print(mid,user_data[sender]['message-id'])
-        user_data[sender]['text'].append(('user',message))
-        user_data[sender]['message-id'] = mid
-        user_data[sender]['oldincoming'] = message
-        typing('on', PAT, sender)
-        data = send_message(PAT, sender, message,user_data[sender])
-        pickle.dump(user_data, open('user_data.p', 'wb'))
+    # elif mid == 'Postback':
+    #     print('postback binnen')
+    #     print("Incoming from %s: %s" % (sender, message))
+    #     print(sender, message)
+    #     user_data[sender]['try'] = 0
+    #     print(message, user_data[sender]['oldincoming'])
+    #     print(mid,user_data[sender]['message-id'])
+    #     user_data[sender]['text'].append(('user',message))
+    #     user_data[sender]['message-id'] = mid
+    #     user_data[sender]['oldincoming'] = message
+    #     typing('on', PAT, sender)
+    #     data = send_message(PAT, sender, message,user_data[sender])
+    #     pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
         print(message)
         print('message events')
