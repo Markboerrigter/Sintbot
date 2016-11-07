@@ -384,8 +384,7 @@ def checksuggest(token, recipient, data,n):
         # print(presents)
 
         for x in presents:
-            print(x)
-            if 'img_link' not in x[0]:
+            if  not x[0]['img_link']:
                 print('image is missing')
                 print(x)
                 if x[0]['retailer'] == 'intertoys':
@@ -623,7 +622,7 @@ def handle_messages():
         postdashbot('human', payload)
         print(sender,message)
         if sender in user_data:
-            print(user_data[sender])
+            # print(user_data[sender])
             print(mid,user_data[sender]['message-id'])
             if mid != user_data[sender]['message-id']:
 

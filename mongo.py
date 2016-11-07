@@ -916,6 +916,7 @@ def findByAge(jaar):
 
 
 def findRightProduct(geslacht, budget, age, category, idea,n):
+    idea = idea.lower()
     idea = idea.replace('een ', '').replace('de ', '' ).replace('het ', '')
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
     geslachtQuery = findArticlesGender(geslacht)
