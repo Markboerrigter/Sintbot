@@ -609,6 +609,7 @@ def handle_messages():
   global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
     if mid == 'Postback':
+        print('postback binnen')
         print("Incoming from %s: %s" % (sender, message))
         print(sender, message)
         user_data[sender]['try'] = 0
