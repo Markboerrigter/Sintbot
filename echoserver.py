@@ -66,7 +66,7 @@ personalitymessages = [["""
         }
       }
     }
-""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.png"]]]
+""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg"]]]
 
 
 # personality, sentiment = getIt()
@@ -109,7 +109,7 @@ pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
 
 # This needs to be filled with the Page Access Token that will be provided
 # by the Facebook App that will be created.
-PAT = 'EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
+PAT = 'EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD'
 # PAT for vraag het sint
 # EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
 # PAT for echoobotje
@@ -157,7 +157,6 @@ def findValue(L,d):
 	return d
 
 def findNo(L):
-
 	num = L.count('Nee')
 	if num == 0:
 		pers = 'Extraverion'
@@ -197,6 +196,7 @@ or write data can be found.
 """
 
 def makeStartScreen(token):
+  print('make starting screen')
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
     params={"access_token": token},
     data=json.dumps({
@@ -233,6 +233,7 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+            print('something is going wrong')
     if opt == 'off':
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -333,8 +334,8 @@ def getResponse(recipient, text, data):
       response, data, information = findAnswer(response,text,data['token'],data)
       data['data'].update(information)
   information = getInformation(response, text)
-
   data['data'].update(information)
+  mg.updateUser(recipient, data)
   return response, data
 
 def checksuggest(token, recipient, data,n):
@@ -346,7 +347,7 @@ def checksuggest(token, recipient, data,n):
         geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
         age = str(final_data['Age']).split(' ')[0]
-        category = data['cat']
+        category = data['data']['type']
         if 'product' in final_data:
             idea = final_data['product']
         else: idea = ''
@@ -383,14 +384,15 @@ def checksuggest(token, recipient, data,n):
         # print(presents)
 
         for x in presents:
-            print(x)
-            if 'img_link' not in x[0]:
+            if not x[0]['img_link']:
                 print('image is missing')
-                print(x)
+
                 if x[0]['retailer'] == 'intertoys':
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/bartsmit/'+ str(x['page']) + '-p' + str(x['id']) + '.jpg'
+                    x.append('http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
                 else:
-                    x[0]['img_link'] = 'http://support.greenorange.com/sint/intertoys/'+ str(x['page']) + '_p' + str(x['id']) + '.png'
+                    x.append('http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
+            else:
+                x.append(x[0]['img_link'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -404,7 +406,7 @@ def checksuggest(token, recipient, data,n):
                   {
                     "title":x[0]['title'],
                     "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
-                    "image_url":x[0]['img_link'],
+                    "image_url":x[2],
                     "subtitle":x[0]['description'],
                     "buttons":[
                       {
@@ -422,6 +424,7 @@ def checksuggest(token, recipient, data,n):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+    mg.updateUser(recipient, data)
     return data
 
 def findToken(recipient, data, text):
@@ -439,6 +442,7 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
+          mg.updateUser(recipient, data)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
       else:
@@ -459,6 +463,7 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
+          mg.updateUser(recipient, data)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'feedback':
@@ -466,6 +471,7 @@ def findToken(recipient, data, text):
       data['Stage'] = NextStage
       response = {}
       print(data['Stage'])
+      mg.updateUser(recipient, data)
       send_message(PAT, recipient, '', data)
 
   elif Stage == 'Connection':
@@ -473,11 +479,13 @@ def findToken(recipient, data, text):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['Stage'] = NextStage
           response = {}
+          mg.updateUser(recipient, data)
           send_message(PAT, recipient, '', data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           response = {}
+          mg.updateUser(recipient, data)
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
       NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -495,6 +503,7 @@ def findToken(recipient, data, text):
       headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
       	print r.text
+      mg.updateUser(recipient, data)
     #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
@@ -505,12 +514,14 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
         #   response, data = getResponse(recipient, data['starter'], data)
+          mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['Stage'] = NextStage
           response = {}
           print(data['Stage'])
+          mg.updateUser(recipient, data)
           send_message(PAT, recipient, '', data)
   elif Stage == 'Personality':
       print(data['personality'])
@@ -530,11 +541,11 @@ def findToken(recipient, data, text):
           data['token'] = Tokens[Nextstage]['2'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
           data['token'] = Tokens[Nextstage]['3'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
-      elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
+      elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
           data['token'] = Tokens[Nextstage]['4'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
           print('changing something')
@@ -575,6 +586,7 @@ def findToken(recipient, data, text):
           print(Nextstage)
           print(data['personality'][1:])
       print(data['token'])
+      mg.updateUser(recipient, data)
       send_message(PAT, recipient, data['starter'], data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -583,6 +595,7 @@ def findToken(recipient, data, text):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['Stage'] = NextStage
+      mg.updateUser(recipient, data)
     #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, data['starter'], data)
   else:
@@ -590,6 +603,7 @@ def findToken(recipient, data, text):
       typing('off', PAT, recipient)
       data['dolog'] = 'end'
       response = {}
+      mg.updateUser(recipient, data)
 
   # return response, data
 
@@ -605,7 +619,9 @@ def handle_messages():
   payload = request.get_data()
   print(payload)
   global user_data
+
   for sender, message, mid, recipient in messaging_events(payload) :
+
     if findword(message):
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -616,101 +632,73 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
+    if not mg.findUser(sender):
+        user_info = getdata(sender)
+        data = {}
+        data['info'] = user_info
+        data['log'] = {}
+        # data['persFB'] = persFB
+        data['log']['text']= {'0':'first conversation'}
+        data['log']['feedback']= {}
+        data['log']['presents']= {}
+        data['dolog'] = ''
+        data['secondchoice'] = False
+        data['secondRow'] = False
+        data['Stage'] = TokenStages[0]
+        data['text'] = []
+        data['personQuestions'] = []
+        data['message-id'] = mid
+        data['personality'] = []
+        data['oldincoming'] = message
+        data['oldmessage'] = ''
+        data['intype'] = False
+        data['token'] = random.choice(allValues(Tokens['Start']['New']))
+        # data['token'] = '1'
+        # Tokens['Start']['Personalities']['Extraversion'].values()[0]
+        data['starter'] = ''
+        data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+        data['data'] = {}
+        mg.insertUser(sender,data)
+        typing('on', PAT, sender)
+        data = send_message(PAT, sender, message,data)
+        # user_data[recipient] = data
+        # pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
+        data = findUser(id)
+        print(data)
         print(message)
-        print(payload)
         print('message events')
         postdashbot('human', payload)
         print(sender,message)
-        if sender in user_data:
-            print(user_data[sender])
-            print(mid,user_data[sender]['message-id'])
-            if mid != user_data[sender]['message-id']:
-
-                # if user_data[sender]['Startpos']:
-                # 	user_data[sender]['Startpos'] = False
-                # 	user_data[sender]['data']['distinction'] = message
-                # 	user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-                # 	if message.lower() == 'ja':
-                # 	  user_data[sender]['token'] = Tokens['GiveIdea']['Ja'].values()[0]
-                # 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-                # 	  message = user_data[sender]['starter']
-                # 	else:
-                # 	  user_data[sender]['token'] = Tokens['GiveIdea']['Nee'].values()[0]
-                # 	  print(user_data[sender]['token'])
-                # 	  user_data[sender]['starter'] = get_keys(Tokens, user_data[sender]['token'])[-1]
-                # 	  message = user_data[sender]['starter']
-                # _data[sender]['Stage'] == 'Start':
-                #     user_data[sender]['startans'].append(message)
-                if user_data[sender]['dolog'] == 'end':
-                    print(user_data[sender]['log']['text'])
-                    print(user_data[sender]['text'])
-                    mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
-                    user_data[sender]['log']['text'].update({(max(list(user_data[sender]['log']['text'].keys()))+1):user_data[sender]['text']})
-                    user_data[sender]['log']['feedback'].update('')
-                    user_data[sender]['log']['presents'].update('')
-                    user_data[sender]['Stage'] = TokenStages[0]
-                    user_data[sender]['text'] = []
-                    user_data[sender]['Startpos'] = False
-                    user_data[sender]['dolog'] = ''
-                    user_data[sender]['secondRow'] = False
-                    user_data[sender]['token'] = '2'
-                    user_data[sender]['starter'] = ''
-                    user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-                    user_data[sender]['data'] = {}
-                    user_data[sender]['secondchoice'] = False
-                    user_data[sender]['intype'] = False
-                    user_data[sender]['personQuestions'] = []
-                print("Incoming from %s: %s" % (sender, message))
-                print(sender, message)
-                user_data[sender]['try'] = 0
-                print(message, user_data[sender]['oldincoming'])
-                print(mid,user_data[sender]['message-id'])
-                user_data[sender]['text'].append(('user',message))
-                user_data[sender]['message-id'] = mid
-                user_data[sender]['oldincoming'] = message
-                typing('on', PAT, sender)
-                data = send_message(PAT, sender, message,user_data[sender])
-                user_data[recipient] = data
-                pickle.dump(user_data, open('user_data.p', 'wb'))
-
-        else:
-            user_info = getdata(sender)
-            print(user_info)
-            print('NEWUSER')
-            makeStartScreen(PAT)
-            # persFB, sent = getIt()
-            # pprint(persFB)
-            user_data[sender] = dict()
-            user_data[sender]['log'] = {}
-            user_data[sender]['try'] = 0
-            # user_data[sender]['persFB'] = persFB
-            user_data[sender]['Startpos'] = False
-            user_data[sender]['log']['text']= {0:'first conversation'}
-            user_data[sender]['log']['feedback']= {}
-            user_data[sender]['log']['presents']= {}
-            user_data[sender]['dolog'] = ''
-            user_data[sender]['secondchoice'] = False
-            user_data[sender]['secondRow'] = False
-            user_data[sender]['startans'] = []
-            user_data[sender]['Stage'] = TokenStages[0]
-            user_data[sender]['text'] = []
-            user_data[sender]['personQuestions'] = []
-            user_data[sender]['message-id'] = mid
-            user_data[sender]['personality'] = []
-            user_data[sender]['oldincoming'] = message
-            user_data[sender]['oldmessage'] = ''
-            user_data[sender]['intype'] = False
-            user_data[sender]['token'] = random.choice(allValues(Tokens['Start']['New']))
-            # user_data[sender]['token'] = '1'
-            # Tokens['Start']['Personalities']['Extraversion'].values()[0]
-            user_data[sender]['starter'] = ''
-            user_data[sender]['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-            user_data[sender]['data'] = {}
+        print(mid,data['message-id'])
+        if mid != data['message-id']:
+            if data['dolog'] == 'end':
+                # print(user_data[sender]['log']['text'])
+                # print(user_data[sender]['text'])
+                # mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
+                data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                data['log']['feedback'].update('')
+                data['log']['presents'].update('')
+                data['Stage'] = TokenStages[0]
+                data['text'] = []
+                data['dolog'] = ''
+                data['secondRow'] = False
+                data['token'] = '2'
+                data['starter'] = ''
+                data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                data['data'] = {}
+                data['secondchoice'] = False
+                data['intype'] = False
+                data['personQuestions'] = []
+            print("Incoming from %s: %s" % (sender, message))
+            print(sender, message)
+            print(message, data['oldincoming'])
+            print(mid,data['message-id'])
+            data['text'].append(('user',message))
+            data['message-id'] = mid
+            data['oldincoming'] = message
             typing('on', PAT, sender)
-            data = send_message(PAT, sender, message, user_data[sender])
-            user_data[recipient] = data
-            pickle.dump(user_data, open('user_data.p', 'wb'))
+            data = send_message(PAT, sender, message,data)
   return "ok", 200
 
 def messaging_events(payload):
@@ -724,21 +712,21 @@ def messaging_events(payload):
         print(event)
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
+        if 'postback'in event:
+          print('postback event')
+          yield event["sender"]["id"], event["postback"]["payload"].encode('unicode_escape'), 'Postback', event["recipient"]['id']
         # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
         #   yield event["messaging"][0]["recipient"]['id'], event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['title'].encode('unicode_escape'), event["messaging"][0]["message"]['mid'], event['messaging'][0]['recipient']['id']
-
-print(childTypes[9])
+  # if 'postback'in data["entry"][0]:
+  #     messaging_events = data["entry"][0]
+  #     for event in messaging_events:
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
   print('And now we will send a message to: '+ recipient)
   print(data['Stage'])
-  global user_data
 
-  # if text == 'Get started':
-  #  data['startans'] = []
-  # if data['Stage'] in ['Personality', 'GiveIdea', 'presentchoosing', 'response']:
   if data['dolog'] == 'end':
       print('done')
 
@@ -774,11 +762,12 @@ def send_message(token, recipient, text, data):
                   headers={'Content-type': 'application/json'})
                 if r.status_code != requests.codes.ok:
                   	print r.text
+                mg.updateUser(recipient, data)
             else:
-                data['cat'] = childTypes[x-1]
                 data['data']['type'] =  childTypes[x-1]
                 print(data['data'])
                 findToken(recipient, data, text)
+                mg.updateUser(recipient, data)
     else:
       data['intype'] = True
       print('start cat')
@@ -802,6 +791,7 @@ def send_message(token, recipient, text, data):
           headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
           	print r.text
+      mg.updateUser(recipient, data)
   elif text == 'we weten de persoonlijkheid al':
       message = 'Weet je dit keer al wat je zoekt? :)'
       data['text'].append(('bot',message))
@@ -812,7 +802,8 @@ def send_message(token, recipient, text, data):
           params={"access_token": token},
           data=json.dumps({
             "recipient": {"id": recipient},
-            "message":{"text": message "quick_replies":[{
+            "message":{"text": message ,
+            "quick_replies":[{
                            "content_type":"text",
                            "title":'Ja',
                            "payload":'Ja'
@@ -823,12 +814,13 @@ def send_message(token, recipient, text, data):
           headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
           	print r.text
+      mg.updateUser(recipient, data)
 
   elif data['Stage'] == 'Personality':
     print(data['personality'], 'in send mess')
     if not data['personQuestions']:
         print(text)
-        message = 'Ah, leuk idee!'
+        message = 'Ah, leuk!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
@@ -855,13 +847,15 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
+        mg.updateUser(recipient, data)
         time.sleep(3)
+
     else:
         data['personality'].append(text)
+        mg.updateUser(recipient, data)
     if len(data['personQuestions']) > 2:
         findToken(recipient, data, text)
     else:
-
         message = random.choice(personalitymessages)
         while personalitymessages.index(message) in data['personQuestions']:
             message = random.choice(personalitymessages)
@@ -900,6 +894,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
         	print r.text
         	print(recipient)
+        mg.updateUser(recipient, data)
         print('send personality')
 
 
@@ -947,6 +942,10 @@ def send_message(token, recipient, text, data):
                             ]}
               }),
               headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+              print r.text
+          mg.updateUser(recipient, data)
+
 
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja':
@@ -990,10 +989,9 @@ def send_message(token, recipient, text, data):
             }}),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
-            	print r.text
-
+            print r.text
+        mg.updateUser(recipient, data)
     elif text == 'Nee' and data['secondchoice']:
-
         message = 'Sorry, ik denk dat ik niet helemaal weet wat je zoekt. Je zou zelf verder kunnen zoeken in de folders. Die kun je vinden via de volgende links'
     	data['text'].append(('bot',message))
     	data['oldmessage'] = message
@@ -1029,7 +1027,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-
+        mg.updateUser(recipient, data)
         findToken(recipient, data, text)
 
     else:
@@ -1050,7 +1048,6 @@ def send_message(token, recipient, text, data):
         typing('on', PAT, recipient)
         checksuggest(PAT, recipient, data,N)
         message = random.choice(presentmessage3)
-
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -1069,13 +1066,14 @@ def send_message(token, recipient, text, data):
             }}),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
-            	print r.text
+            print r.text
+        mg.updateUser(recipient, data)
   elif data['Stage'] == 'response':
     typing('off', PAT, recipient)
     message = random.choice(responsemessage)
     data['text'].append(('bot',message))
     data['oldmessage'] = message
-    postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+    postdashbot('bot',(recipient,message, data['message-id']) )
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -1084,32 +1082,31 @@ def send_message(token, recipient, text, data):
         }),
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
-        	print r.text
+        print r.text
+    mg.updateUser(recipient, data)
     findToken(recipient, data, text)
   else:
-    data['try'] +=1
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
     print(response)
     time1 = time.time()
     print('getresponse',time1-time0)
-    # or response['msg'] == data['oldmessage']
     if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
     	findToken(recipient, data, text)
-
     	time2 = time.time()
     	print('stopthing',time2 - time1)
     	time1 = time2
         print(data['data'])
         # checksuggest(token, recipient, data)
-
+        mg.updateUser(recipient, data)
     elif 'msg' in response and response['msg'] != data['oldmessage']:
         # print(response['msg'])
         time3 = time.time()
         print('checksuggest',time3- time1)
         data['text'].append(('bot',response['msg']))
         data['oldmessage'] = response['msg']
-        postdashbot('bot',(recipient,response['msg'], data['message-id']) )
+        postdashbot('bot',(recipient,response['msg'], data['message-id']))
+        mg.updateUser(recipient, data)
         if 'quickreplies' in response:
             replies = response['quickreplies']
             typing('off', token, recipient)
