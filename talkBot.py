@@ -9,11 +9,9 @@ from runLogin import getIt
 import pickle
 import random
 import datetime
-<<<<<<< HEAD
 # import mongo as mg
-=======
 import mongo as mg
->>>>>>> f84f3187c8369dab947582db20a163e34b73a29a
+
 import pprint
 
 
