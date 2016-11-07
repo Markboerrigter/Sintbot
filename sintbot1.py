@@ -619,6 +619,7 @@ def handle_messages():
   payload = request.get_data()
   print(payload)
   global user_data
+  print('in sintbot')
 
   for sender, message, mid, recipient in messaging_events(payload) :
 
