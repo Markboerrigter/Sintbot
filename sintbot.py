@@ -740,7 +740,7 @@ def messaging_events(payload):
       for event in messaging_events:
         print(event)
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
-          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id
+          yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id]
         if 'postback'in event:
           print('postback event')
           yield event["sender"]["id"], event["postback"]["payload"].encode('unicode_escape'), 'Postback', event["recipient"]['id']
