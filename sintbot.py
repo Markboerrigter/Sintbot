@@ -55,6 +55,7 @@ def findword(string):
         return False
 
 def triggered(message, sender):
+    message = message.lower()
     if message in traverse(TriggerPhrases):
         i = find(message,TriggerPhrases)
         reaction = random.choice(TriggerCats[i])
