@@ -30,8 +30,10 @@ presentmessage3 = mg.findConfig(22)
 personalitymessages = mg.findConfig(23)
 faulwords = mg.findConfig(24)
 Tokens = mg.findConfig(25)
-# TriggerPhrases =
-
+Triggers = mg.findConfig(50)['triggers']
+print(Triggers)
+TriggerPhrases = Triggers['tigger']
+TriggerCats = Triggers['answers']
 
 app = Flask(__name__)
 
@@ -53,11 +55,44 @@ def findword(string):
     else:
         return False
 
+def triggered(message):
+    if message in traverse(TriggerPhrases):
+        i = find(message,TriggerPhrases)
+        reaction = TriggerCats[i]
+        time.sleep(1.5)
+        typing('off', PAT, sender)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
+        }),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
+        return True
+    else: return False
+
+def find(target,L):
+    for i,lst in enumerate(L):
+        for j,color in enumerate(lst):
+            if color == target:
+                return i
+    return None
+
 def get_keys(d,target):
     result = []
     path = []
     get_key(d,target, path, result)
     return result[0]
+
+def traverse(o, tree_types=(list, tuple)):
+    if isinstance(o, tree_types):
+        for value in o:
+            for subvalue in traverse(value, tree_types):
+                yield subvalue
+    else:
+        yield o
 
 def allValues(dictionary):
     ans = []
@@ -475,7 +510,10 @@ def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
     print("Incoming from %s: %s" % (sender, message))
+    typing('on', PAT, sender)
     if findword(message):
+        time.sleep(1.5)
+        typing('off', PAT, sender)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
@@ -485,7 +523,9 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-    if not mg.findUser(sender):
+    elif triggered(message):
+        print(triggered)
+    elif not mg.findUser(sender):
         user_info = getdata(sender)
         data = {}
         data['info'] = user_info
@@ -533,7 +573,7 @@ def handle_messages():
             data['text'].append(('user',message))
             data['message-id'] = mid
             data['oldincoming'] = message
-            typing('on', PAT, sender)
+
             mg.updateUser(recipient, data)
             data = send_message(PAT, sender, message,data)
   return "ok", 200

@@ -20,12 +20,14 @@ def addConfig(dict, name, number):
 def findConfig(x):
     try:
         catalogus = db.configs
-        ans = list(catalogus.find({'number': x}))[0]
+        ans = catalogus.find({'number': x})[0]
+        out = {}
         for x in ans:
             if x != '_id' and x != 'number':
-                return(ans[x])
+                out.update({x:ans[x]})
+        return out
     except Exception, e:
-        return 'Not found any configuration'
+        return 'Not found any configuration',e
 
 def findUser(id):
     try:
@@ -1006,9 +1008,21 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
             a-=4
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])
-    high = finalScore[-1][1]
-
+    lenScores = [y for [x,y] in finalScore].count(finalScore[-1][1])
+    if lenScores >3:
+        finalScores = random.shuffle(finalScores[:lenScores])+finalScores[lenScores:]
     return finalScore[-n:]
+
+# triggers = []
+# answers = []
+# for i in range(28,36):
+#     print(i)
+#     print(findConfig(i))
+#     triggers.append(findConfig(i)['trigger'])
+#     answers.append(findConfig(i)['antwoorden'])
+#
+# print(addConfig({'tigger':triggers, 'answers': answers}, 'triggers', 50))
+
 
 def printprod(L):
     for x in L:
