@@ -182,7 +182,6 @@ def postdashbot(id, payload):
         print r.text
   if id == 'bot':
       print('send botshit to dashbot ')
-      print('payload: ', payload)
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
         data=json.dumps({"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}}),
         headers={'Content-type': 'application/json'})
@@ -328,8 +327,6 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
-  print(data['data'])
-  print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
@@ -367,10 +364,8 @@ def findToken(recipient, data, text):
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = NextStage
       response = {}
-      print(data['Stage'])
       mg.updateUser(recipient, data)
       send_message(PAT, recipient, '', data)
-
   elif Stage == 'Connection':
       if not data['personality']:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -405,84 +400,59 @@ def findToken(recipient, data, text):
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
       if not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
-          print('next')
           data['token'] = random.choice(allValues(Tokens[Stage]))
           while get_keys(Tokens, data['token'])[-1] in data['data']:
               data['token'] = random.choice(allValues(Tokens[Stage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-        #   response, data = getResponse(recipient, data['starter'], data)
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['Stage'] = NextStage
           response = {}
-          print(data['Stage'])
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, '', data)
   elif Stage == 'Personality':
-      print(data['personality'])
-      print("let's go to the bridge")
       Nextstage = TokenStages[TokenStages.index(Stage)+1]
       data['Stage'] = Nextstage
-      print(Nextstage)
-      print(data['personality'][1:])
-      print(set(data['personality'][1:]))
-      print(set(['Geven', 'Gedichtje']))
-      print(data['token'])
       if set(data['personality'][1:]) == set(['Geven', 'Surprise']):
           data['token'] = Tokens[Nextstage]['1'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Geven', 'Gedichtje']):
           data['token'] = Tokens[Nextstage]['2'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
           data['token'] = Tokens[Nextstage]['3'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
           data['token'] = Tokens[Nextstage]['4'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Krijgen', 'Surprise']):
           data['token'] = Tokens[Nextstage]['5'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Krijgen', 'Gedichtje']):
           data['token'] = Tokens[Nextstage]['6'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Krijgen', 'Lezen']):
           data['token'] = Tokens[Nextstage]['7'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
           data['token'] = Tokens[Nextstage]['8'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Schrijven', 'Surprise']):
           data['token'] = Tokens[Nextstage]['9'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Schrijven', 'Gedichtje']):
           data['token'] = Tokens[Nextstage]['10'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Lezen', 'Surprise']):
           data['token'] = Tokens[Nextstage]['11'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
-          print('changing something')
       elif set(data['personality'][1:]) == set(['Lezen', 'Gedichtje']):
-          print('changing something')
           data['token'] = Tokens[Nextstage]['12'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       else:
           print('something went wrong')
-          print(Nextstage)
-          print(data['personality'][1:])
-      print(data['token'])
       mg.updateUser(recipient, data)
       send_message(PAT, recipient, data['starter'], data)
   elif TokenStages.index(Stage) < len(TokenStages)-1:
@@ -493,7 +463,6 @@ def findToken(recipient, data, text):
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       data['Stage'] = NextStage
       mg.updateUser(recipient, data)
-    #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, data['starter'], data)
   else:
       print('end of conversation')
@@ -501,8 +470,6 @@ def findToken(recipient, data, text):
       data['dolog'] = 'end'
       response = {}
       mg.updateUser(recipient, data)
-
-  # return response, data
 
 """ FUNCTIONS TO RECEIVE AND SEND MESSAGES
 
@@ -513,9 +480,8 @@ below the receive and send functions can be found.
 @app.route('/', methods=['POST'])
 def handle_messages():
   payload = request.get_data()
-  print(payload)
-  global user_data
   for sender, message, mid, recipient in messaging_events(payload) :
+    print("Incoming from %s: %s" % (sender, message))
     if findword(message):
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -531,7 +497,6 @@ def handle_messages():
         data = {}
         data['info'] = user_info
         data['log'] = {}
-        # data['persFB'] = persFB
         data['log']['text']= {'0':'first conversation'}
         data['log']['feedback']= {}
         data['log']['presents']= {}
@@ -547,26 +512,17 @@ def handle_messages():
         data['oldmessage'] = ''
         data['intype'] = False
         data['token'] = random.choice(allValues(Tokens['Start']['New']))
-        # data['token'] = '1'
-        # Tokens['Start']['Personalities']['Extraversion'].values()[0]
         data['starter'] = ''
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         data['data'] = {}
         mg.insertUser(sender,data)
         typing('on', PAT, sender)
         data = send_message(PAT, sender, message,data)
-        # user_data[recipient] = data
-        # pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
         data = mg.findUser(sender)
-        print('message events')
         postdashbot('human', payload)
-        print(sender,message)
         if mid != data['message-id']:
             if data['dolog'] == 'end':
-                # print(user_data[sender]['log']['text'])
-                # print(user_data[sender]['text'])
-                # mg.addUserScore(sender, user_data[sender]['personality'], user_data[sender]['text'], user_data[sender]['presents'],  user_data[sender]['data']['Feedback'])
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['log']['feedback'].update('')
                 data['log']['presents'].update('')
@@ -581,10 +537,6 @@ def handle_messages():
                 data['secondchoice'] = False
                 data['intype'] = False
                 data['personQuestions'] = []
-            print("Incoming from %s: %s" % (sender, message))
-            print(sender, message)
-            print(message, data['oldincoming'])
-            print(mid,data['message-id'])
             data['text'].append(('user',message))
             data['message-id'] = mid
             data['oldincoming'] = message
@@ -601,29 +553,20 @@ def messaging_events(payload):
   if "messaging" in data["entry"][0]:
       messaging_events = data["entry"][0]["messaging"]
       for event in messaging_events:
-        print(event)
         if "message" in event and "text" in event["message"] and 'is_echo' not in event["message"]:
           yield event["sender"]["id"], event["message"]["text"].encode('unicode_escape'), event["message"]['mid'], event["recipient"]['id']
         if 'postback'in event:
-          print('postback event')
           yield event["sender"]["id"], event["postback"]["payload"].encode('unicode_escape'), 'Postback', event["recipient"]['id']
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  print('And now we will send a message to: '+ recipient)
-  print(data['Stage'])
   if data['dolog'] == 'end':
       print('done')
   elif data['token'] == '1' and data['Stage'] == 'decisions':
     print('text for this phase',text)
-    print(text.encode('utf-8'))
-    print(childTypes)
-    print(text)
     if text.isdigit() and data['intype']:
-        print(text)
         if int(text) in range(1,12):
-            print('jeeeej')
             x = int(text)
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
@@ -650,12 +593,10 @@ def send_message(token, recipient, text, data):
                 mg.updateUser(recipient, data)
             else:
                 data['data']['type'] =  childTypes[x-1]
-                print(data['data'])
                 findToken(recipient, data, text)
                 mg.updateUser(recipient, data)
     else:
       data['intype'] = True
-      print('start cat')
       message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(1,6)]) + '\n6: Een andere categorie'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
@@ -704,9 +645,7 @@ def send_message(token, recipient, text, data):
       mg.updateUser(recipient, data)
 
   elif data['Stage'] == 'Personality':
-    print(data['personality'], 'in send mess')
     if not data['personQuestions']:
-        print(text)
         message = 'Ah, leuk!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
@@ -781,7 +720,6 @@ def send_message(token, recipient, text, data):
         	print r.text
         	print(recipient)
         mg.updateUser(recipient, data)
-        print('send personality')
   elif data['token'] == '2':
       if text == 'Oke!':
           findToken(recipient, data, text)
@@ -811,7 +749,6 @@ def send_message(token, recipient, text, data):
     if text == 'Ja':
         findToken(recipient, data, text)
     elif text == 'Nee' and not data['secondchoice']:
-
         data['secondchoice'] = True
         message = 'Oke, bedankt dat je zo eerlijk bent! Ik zal nog een keer kijken.'
     	data['text'].append(('bot',message))
@@ -830,7 +767,6 @@ def send_message(token, recipient, text, data):
         typing('on', PAT, recipient)
         checksuggest(PAT, recipient, data,N+N)
         message = random.choice(presentmessage3)
-
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
@@ -941,7 +877,6 @@ def send_message(token, recipient, text, data):
   else:
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
-    print(response)
     time1 = time.time()
     print('getresponse',time1-time0)
     if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
@@ -949,7 +884,6 @@ def send_message(token, recipient, text, data):
     	time2 = time.time()
     	print('stopthing',time2 - time1)
     	time1 = time2
-        print(data['data'])
         mg.updateUser(recipient, data)
     elif 'msg' in response and response['msg'] != data['oldmessage']:
         time3 = time.time()
