@@ -1007,6 +1007,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])
     high = finalScore[-1][1]
+    print(type(n))
     # print(len([x for x in finalScore if x[1] == high]))
     # print(finalScore[-n:])
     return finalScore[-n:]
