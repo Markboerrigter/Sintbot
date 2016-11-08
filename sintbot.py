@@ -28,7 +28,7 @@ personalitymessages = [["""
         "elements":[
           {
             "title": "Liever creatief of lekker lui?",
-            "image_url":"http://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
+            "image_url":"https://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
           }
         ]
       }
@@ -44,7 +44,7 @@ personalitymessages = [["""
         "elements":[
           {
             "title": "Geef of krijg jij liever een kado?",
-            "image_url":"http://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
+            "image_url":"https://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
           }
         ]
       }
@@ -60,7 +60,7 @@ personalitymessages = [["""
           "elements":[
             {
               "title": "Lees of schrijf jij liever een gedicht?",
-              "image_url":"http://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
+              "image_url":"https://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
             }
           ]
         }
@@ -388,9 +388,9 @@ def checksuggest(token, recipient, data,n):
                 print('image is missing')
 
                 if x[0]['retailer'] == 'intertoys':
-                    x.append('http://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
+                    x.append('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
                 else:
-                    x.append('http://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
+                    x.append('https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
             else:
                 x.append(x[0]['img_link'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -630,7 +630,6 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-    print(mg.findUser(sender))
     if not mg.findUser(sender):
         user_info = getdata(sender)
         data = {}
@@ -664,13 +663,9 @@ def handle_messages():
         # pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
         data = mg.findUser(sender)
-        print(data)
-        print(message)
         print('message events')
         postdashbot('human', payload)
         print(sender,message)
-
-        print(mid,data['message-id'])
         if mid != data['message-id']:
             if data['dolog'] == 'end':
                 # print(user_data[sender]['log']['text'])
@@ -748,7 +743,7 @@ def send_message(token, recipient, text, data):
                 data['oldmessage'] = message
                 postdashbot('bot',(recipient,message, data['message-id']) )
                 typing('off', PAT, recipient)
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                r = requests.post("https:s://graph.facebook.com/v2.6/me/messages",
                   params={"access_token": token},
                   data=json.dumps({
                     "recipient": {"id": recipient},
@@ -793,10 +788,12 @@ def send_message(token, recipient, text, data):
       if r.status_code != requests.codes.ok:
           	print r.text
       mg.updateUser(recipient, data)
+
   elif text == 'we weten de persoonlijkheid al':
       message = 'Weet je dit keer al wat je zoekt? :)'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
+       data['Stage'] = 'bridge'
       postdashbot('bot',(recipient,message, data['message-id']) )
       typing('off', PAT, recipient)
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
