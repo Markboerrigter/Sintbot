@@ -54,7 +54,7 @@ def findword(string):
     else:
         return False
 
-def triggered(message):
+def triggered(message, sender):
     if message in traverse(TriggerPhrases):
         i = find(message,TriggerPhrases)
         reaction = random.choice(TriggerCats[i])
@@ -522,7 +522,7 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-    elif triggered(message):
+    elif triggered(message, sender):
         print(triggered)
     elif not mg.findUser(sender):
         user_info = getdata(sender)
