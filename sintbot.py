@@ -35,7 +35,7 @@ Tokens = mg.findConfig(25)
 app = Flask(__name__)
 
 dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT'], os.environ['N']
-print(dasbotAPI)
+print(dashbotAPI)
 # dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 #
 #
