@@ -21,11 +21,9 @@ def findConfig(x):
     try:
         catalogus = db.configs
         ans = catalogus.find({'number': x})[0]
-        out = {}
         for x in ans:
             if x != '_id' and x != 'number':
-                out.update({x:ans[x]})
-        return out
+                return ans[x]
     except Exception, e:
         return 'Not found any configuration',e
 
