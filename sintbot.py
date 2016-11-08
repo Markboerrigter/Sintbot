@@ -16,9 +16,7 @@ from flask import g
 import time
 import emoji
 
-responsemessage = ['Hartstikke bedankt voor het leuke gesprek en tot de volgende keer!', 'Bedankt dat ik je kon helpen en een fijne pakjesavond', 'Bedankt voor het fijne gesprek!', 'Tot de 5de van December!', 'Bedankt voor het gesprek, ik zie je op mijn verjaardag!']
-presentmessage1 = ['Bedankt voor je informatie, ik ga is even op zoek naar kadootjes.', 'Oke, ik ga even zoeken! Ben zo terug.', 'Oke, ik weet genoeg! Ik zal is even wat ideeen opzoeken!']
-presentmessage3 = ['Ben je tevreden met deze ideeen?', 'Zat er wat leuks tussen?','Heb ik je de juiste keuzes gegeven?']
+
 personalitymessages = [["""
 {
     "attachment":{
@@ -69,47 +67,29 @@ personalitymessages = [["""
 """, 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg"]]]
 
 
-# personality, sentiment = getIt()
-# print(emoji.emojize('Python is :thumbs_up_sign:'))
-childTypes = ['Kleine ontdekkers', "Kleine papa's, mama's en dierenvriendjes", 'Knutselaars', 'Verhalenmakers en superhelden', 'Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans', 'Bouwers en onderzoekers', 'Sporters, stunters en stoere kids', 'Razende racers en stoere stuurders', 'Rocksterren en stijliconen', 'Gadget- en gamekings']
-# typeResponse = ['Houd het kind van games, puzzles of gadgets?', 'Ah, dus het kind houd van dieren, ontdekken of oudertje spelen? ', 'Een slim kind dus, dat graag verhalen verteldt, bouwt of zelf dingen uitzoekt?','Het kind houd dus van muziek of knutselen?',"Dus het kind houd van auto's, stunten of sporten? :)"]
-# childTypes = [x.encode('utf-8') for x in childTypes]
-
-# for x in childTypes:
-#     print(x)
-# err
-
-x = dict()
-pickle.dump(x, open('user_data.p', 'wb'))
-
-user_data = pickle.load( open( "user_data.p", "rb" ) )
 
 N = 3
 # Number of presented articles
 
+childTypes = mg.findConfig(18)
+TokenStages = mg.findConfig(19)
+responsemessage = mg.findConfig(20)
+presentmessage1 = mg.findConfig(21)
+presentmessage3 = mg.findConfig(22)
+faulwords = mg.findConfig(24)
+Tokens = mg.findConfig(25)
 
-faulwords = pickle.load(open('Faulword.p', 'rb'))
-stoplist = []
-
-# sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 app = Flask(__name__)
 
-Starttext = pickle.load(open('Starttext.p', 'rb'))
+dashbotAPI, PAT = S3Client(os.environ['dashbotAPI'], os.environ['PAT'])
 
-
-Tokens = pickle.load(open('Tokens.p', 'rb'))
-
-dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
-
-TokenStages = ['Start','Connection', 'Personality', 'bridge', 'GiveIdea','decisions', 'presentchoosing', 'feedback', 'response']
-
-tokenWit = 'D4CRSEOIOCHA36Y2ZSQUG7YUCUK3BJBS'
-pickle.dump(tokenWit, (open("tokenWit.p", "wb")))
-
-# This needs to be filled with the Page Access Token that will be provided
-# by the Facebook App that will be created.
-PAT = 'EAAEkTt8L730BAJlZCwPApEtRZAshZBTKHlGd4zPdyN20fyk02hGPhoXpZARJGt2Gq58GaIxVU7JAjO0wGA2neNSOw0ErI2rPtI0efgboFZBXZBjWtlAvMogpZAOAoT5c1OepdFkIHZC4zUSvh2M4pZCkMrmjZAxT2PuFk0EwRMOH6EwgZDZD'
+# dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
+#
+#
+# # This needs to be filled with the Page Access Token that will be provided
+# # by the Facebook App that will be created.
+# PAT = 'EAAEkTt8L730BAJlZCwPApEtRZAshZBTKHlGd4zPdyN20fyk02hGPhoXpZARJGt2Gq58GaIxVU7JAjO0wGA2neNSOw0ErI2rPtI0efgboFZBXZBjWtlAvMogpZAOAoT5c1OepdFkIHZC4zUSvh2M4pZCkMrmjZAxT2PuFk0EwRMOH6EwgZDZD'
 # PAT for vraag het sint
 # EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
 # PAT for echoobotje
