@@ -35,6 +35,7 @@ presentmessage3 = mg.findConfig(22)
 personalitymessages = mg.findConfig(23)
 faulwords = mg.findConfig(24)
 Tokens = mg.findConfig(25)
+# TriggerPhrases =
 
 
 app = Flask(__name__)
@@ -468,6 +469,7 @@ def findToken(recipient, data, text):
 below the receive and send functions can be found.
 
 """
+
 
 @app.route('/', methods=['POST'])
 def handle_messages():
