@@ -16,6 +16,11 @@ from flask import g
 import time
 import os
 
+# Below you find the PAT for Vraag het Sint en Echobotje
+# PAT for vraag het sint
+# EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
+# PAT for echoobotje
+# EAAEkTt8L730BAJlZCwPApEtRZAshZBTKHlGd4zPdyN20fyk02hGPhoXpZARJGt2Gq58GaIxVU7JAjO0wGA2neNSOw0ErI2rPtI0efgboFZBXZBjWtlAvMogpZAOAoT5c1OepdFkIHZC4zUSvh2M4pZCkMrmjZAxT2PuFk0EwRMOH6EwgZDZD
 
 
 
@@ -35,17 +40,6 @@ Tokens = mg.findConfig(25)
 app = Flask(__name__)
 
 dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT'], os.environ['N']
-print(dashbotAPI)
-# dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
-#
-#
-# # This needs to be filled with the Page Access Token that will be provided
-# # by the Facebook App that will be created.
-# PAT = 'EAAEkTt8L730BAJlZCwPApEtRZAshZBTKHlGd4zPdyN20fyk02hGPhoXpZARJGt2Gq58GaIxVU7JAjO0wGA2neNSOw0ErI2rPtI0efgboFZBXZBjWtlAvMogpZAOAoT5c1OepdFkIHZC4zUSvh2M4pZCkMrmjZAxT2PuFk0EwRMOH6EwgZDZD'
-# PAT for vraag het sint
-# EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
-# PAT for echoobotje
-# EAAVJQyYb958BAAGBvlYuonE3VZAa2LxCZCzdzRH2USUSYEWOAy0ZBahfV0xqIKGHQ8wzQ9NDKy3eco7JfOn0jULaJJLKlfnAZBv70IJEO4uNu28GGgRZBkrj1yLPYbQrDeE4PEAGZCNKC9KDlkrcjJospRAO5ZCMToK0smK7gZB2xQZDZD'
 
 """ FORMULAS ON TEXT PROCESSING
 
@@ -180,21 +174,21 @@ def typing(opt, token, recipient):
             print r.text
 def postdashbot(id, payload):
   print('boe')
-  # if id == 'human':
-  #     print('send to dashbot ')
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-  #       data=payload,
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
-  # if id == 'bot':
-  #     print('send botshit to dashbot ')
-  #     print('payload: ', payload)
-  #     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-  #       data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
-  #       headers={'Content-type': 'application/json'})
-  #     if r.status_code != requests.codes.ok:
-  #       print r.text
+  if id == 'human':
+      print('send to dashbot ')
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+        data=payload,
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
+  if id == 'bot':
+      print('send botshit to dashbot ')
+      print('payload: ', payload)
+      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+        data={"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}},
+        headers={'Content-type': 'application/json'})
+      if r.status_code != requests.codes.ok:
+        print r.text
 
 # @app.route('/', methods=['GET'])
 # def handle_verification():
@@ -283,38 +277,10 @@ def checksuggest(token, recipient, data,n):
         if 'product' in final_data:
             idea = final_data['product']
         else: idea = ''
-        # presentstasks = mg.findByTrinityRange(geslacht,budgetl, budgeth,jaar)
-        # if 'product' in data:
-        #     if isinstance(data['data']['product'], str):
-        #         presentsproduct = mg.findArticlesTitleAndDescription(data['product'])
-        #     else:
-        #         presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['product'])]
-        #         presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-        #     L = [presentsproduct,presentstasks]
-        #     if len(L[0])+len(L[1])==len(L[0]+L[1]):
-        #         presents = L[0]+L[1]
-        #     else:
-        #
-        #         presents = mergedics(L)
-        # elif 'hobby' in data:
-        #     if isinstance(data['data']['hobby'], str):
-        #         presentsproduct = mg.findArticlesTitleAndDescription(data['data']['hobby'])
-        #     else:
-        #         presentsproduct = [mg.findArticlesTitleAndDescription(x) for x in (data['data']['hobby'])]
-        #         presentsproduct = list(set([item for sublist in presentsproduct for item in sublist]))
-        #     L = [presentshobby,presentstasks]
-        #     if len(L[0])+len(L[1])==len(L[0]+L[1]):
-        #         presents = L[0]+L[1]
-        #     else:
-        #         presents = mergedics(L)
-        # else:
-        #     presents = presentstasks
         presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)[n-N:n]
         data['presents'] = presents
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
-        # print(presents)
-
         for x in presents:
             if not x[0]['img_link']:
                 print('image is missing')
@@ -547,7 +513,6 @@ below the receive and send functions can be found.
 
 @app.route('/', methods=['POST'])
 def handle_messages():
-  # print "Handling Messages"
   payload = request.get_data()
   print(payload)
   global user_data
@@ -643,21 +608,14 @@ def messaging_events(payload):
         if 'postback'in event:
           print('postback event')
           yield event["sender"]["id"], event["postback"]["payload"].encode('unicode_escape'), 'Postback', event["recipient"]['id']
-        # if "messaging" in event and "attachment" in event["messaging"][0] and event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['type'] == 'postback':
-        #   yield event["messaging"][0]["recipient"]['id'], event["messaging"][0]["message"]['attachment']['payload']['elements'][0]['buttons'][1]['title'].encode('unicode_escape'), event["messaging"][0]["message"]['mid'], event['messaging'][0]['recipient']['id']
-  # if 'postback'in data["entry"][0]:
-  #     messaging_events = data["entry"][0]
-  #     for event in messaging_events:
 
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
   print('And now we will send a message to: '+ recipient)
   print(data['Stage'])
-
   if data['dolog'] == 'end':
       print('done')
-
   elif data['token'] == '1' and data['Stage'] == 'decisions':
     print('text for this phase',text)
     print(text.encode('utf-8'))
@@ -779,7 +737,6 @@ def send_message(token, recipient, text, data):
             	print r.text
         mg.updateUser(recipient, data)
         time.sleep(3)
-
     else:
         data['personality'].append(text)
         mg.updateUser(recipient, data)
@@ -826,30 +783,6 @@ def send_message(token, recipient, text, data):
         	print(recipient)
         mg.updateUser(recipient, data)
         print('send personality')
-
-
-  # elif data['Stage'] == 'GiveIdea':
-  #
-  #   message = 'Waar ben je naar op zoek?'
-  #   if message == data['oldmessage']:
-  #       information = getInformation(tb.response(text, 'GI53VC6SX2EPKWUHYOC2MSEIZMZORHFG' , 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')), text)
-  #       data['data'].update(information)
-  #       findToken(recipient, data, text)
-  #   else:
-  #   	data['text'].append(('bot',message))
-  #   	data['oldmessage'] = message
-  #   	postdashbot('bot',(recipient,message, data['message-id']) )
-  #       typing('off', PAT, recipient)
-  #       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-  #           params={"access_token": token},
-  #           data=json.dumps({
-  #             "recipient": {"id": recipient},
-  #             "message": {"text": message}
-  #           }),
-  #           headers={'Content-type': 'application/json'})
-  #       if r.status_code != requests.codes.ok:
-  #           	print r.text
-
   elif data['token'] == '2':
       if text == 'Oke!':
           findToken(recipient, data, text)
@@ -875,8 +808,6 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
               print r.text
           mg.updateUser(recipient, data)
-
-
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja':
         findToken(recipient, data, text)
@@ -914,8 +845,7 @@ def send_message(token, recipient, text, data):
                             "content_type":"text",
                             "title":'Nee',
                             "payload":'Nee'
-                          }
-                          ]
+                          }]
             }}),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
@@ -947,19 +877,13 @@ def send_message(token, recipient, text, data):
             "type":"web_url",
             "url":"https://www.spotta.nl/folders/bart-smit?fid=116",
             "title":"Bart Smit"
-          }
-        ]
-      }
-    }
-  }
-            }),
+          }]}}}}),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
-
     else:
         message = random.choice(presentmessage1)
     	data['text'].append(('bot',message))
@@ -1027,10 +951,8 @@ def send_message(token, recipient, text, data):
     	print('stopthing',time2 - time1)
     	time1 = time2
         print(data['data'])
-        # checksuggest(token, recipient, data)
         mg.updateUser(recipient, data)
     elif 'msg' in response and response['msg'] != data['oldmessage']:
-        # print(response['msg'])
         time3 = time.time()
         print('checksuggest',time3- time1)
         data['text'].append(('bot',response['msg']))

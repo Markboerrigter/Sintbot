@@ -86,7 +86,7 @@ def addConfig(dict, name, number):
         return 'done'
     except Exception, e:
         return 'Not found user because ',e
-        
+
 def findConfig(x):
     try:
         catalogus = db.configs
@@ -105,9 +105,6 @@ def findUser(id):
         return outcome
     except Exception, e:
         return None
-
-print(findUser('1100393156681613'))
-
 
 def updateUser(id, newInformation):
     try:
