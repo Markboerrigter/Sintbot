@@ -663,7 +663,7 @@ def handle_messages():
         # user_data[recipient] = data
         # pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
-        data = findUser(id)
+        data = mg.findUser(id)
         print(data)
         print(message)
         print('message events')
