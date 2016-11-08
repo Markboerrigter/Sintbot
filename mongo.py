@@ -1009,7 +1009,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = sorted(finalScore, key=lambda x: x[1])
     lenScores = [y for [x,y] in finalScore].count(finalScore[-1][1])
     if lenScores >3:
-        finalScores = random.shuffle(finalScores[:lenScores])+finalScores[lenScores:]
+        finalScore = random.shuffle(finalScore[:lenScores])+finalScore[lenScores:]
     return finalScore[-n:]
 
 # triggers = []
