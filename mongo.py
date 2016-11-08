@@ -45,10 +45,7 @@ def findUser(id):
     try:
         catalogus = db.users
         ans = list(catalogus.find({'_id': id}))[0]
-        outcome = {}
-        for x in ans:
-            if x != '_id' and x != 'number':
-                outcome.update({x:ans[x]})
+        outcome = ans
         return outcome
     except Exception, e:
         return None
