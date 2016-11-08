@@ -663,12 +663,13 @@ def handle_messages():
         # user_data[recipient] = data
         # pickle.dump(user_data, open('user_data.p', 'wb'))
     else:
-        data = mg.findUser(id)
+        data = mg.findUser(sender)
         print(data)
         print(message)
         print('message events')
         postdashbot('human', payload)
         print(sender,message)
+
         print(mid,data['message-id'])
         if mid != data['message-id']:
             if data['dolog'] == 'end':
