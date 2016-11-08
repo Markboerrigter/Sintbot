@@ -44,12 +44,16 @@ def findConfig(x):
 def findUser(id):
     try:
         catalogus = db.users
-        ans = list(catalogus.find({'sender': x}))[0]
+        ans = list(catalogus.find({'_id': id}))[0]
+        outcome = {}
         for x in ans:
             if x != '_id' and x != 'number':
-                return(ans[x])
+                outcome.update({x:ans[x]})
+        return outcome
     except Exception, e:
         return None
+
+print(findUser('1100393156681613'))
 
 
 def updateUser(id, newInformation):
