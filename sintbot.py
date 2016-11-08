@@ -38,7 +38,7 @@ app = Flask(__name__)
 channel = 'sintbot'
 if channel == 'sintbot':
     dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT1'], os.environ['N']
-else: dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT2'], os.environ['N']
+else: dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT2'], int(os.environ['N'])
 
 """ FORMULAS ON TEXT PROCESSING
 
