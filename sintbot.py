@@ -793,7 +793,7 @@ def send_message(token, recipient, text, data):
       message = 'Weet je dit keer al wat je zoekt? :)'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
-       data['Stage'] = 'bridge'
+      data['Stage'] = 'bridge'
       postdashbot('bot',(recipient,message, data['message-id']) )
       typing('off', PAT, recipient)
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
