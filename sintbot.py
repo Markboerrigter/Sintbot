@@ -173,7 +173,6 @@ def typing(opt, token, recipient):
         if r.status_code != requests.codes.ok:
             print r.text
 def postdashbot(id, payload):
-  print('boe')
   if id == 'human':
       print('send to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
@@ -749,7 +748,7 @@ def send_message(token, recipient, text, data):
         data['personQuestions'].append(personalitymessages.index(message))
         data['text'].append(('bot',message))
     	data['oldmessage'] = message
-    	postdashbot('bot',(recipient,message, data['message-id']) )
+    	postdashbot('bot',(recipient,message[1], data['message-id']) )
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
@@ -923,11 +922,11 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'response':
-    typing('off', PAT, recipient)
     message = random.choice(responsemessage)
     data['text'].append(('bot',message))
     data['oldmessage'] = message
     postdashbot('bot',(recipient,message, data['message-id']) )
+    typing('off', PAT, recipient)
     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
