@@ -16,11 +16,6 @@ from flask import g
 import time
 import os
 
-# Below you find the PAT for Vraag het Sint en Echobotje
-# PAT for vraag het sint
-# EAAVJQyYb958BACIXNdGspAZBwmazFxZBXLNPi7qQVU7JaSZA2TJIDePd5qITVVvEBLA03ocRn4yDYCRXYOtrZCBL7FZCA5VViZAHzunrK2A5LWZAJM5VnuAxcXrcBIORXZBQXGIGvZAZCD7Nt3P7QJZAgQrMvLBJNvqD3Lr0jV7lwFbnAZDZD
-# PAT for echoobotje
-# EAAEkTt8L730BAJlZCwPApEtRZAshZBTKHlGd4zPdyN20fyk02hGPhoXpZARJGt2Gq58GaIxVU7JAjO0wGA2neNSOw0ErI2rPtI0efgboFZBXZBjWtlAvMogpZAOAoT5c1OepdFkIHZC4zUSvh2M4pZCkMrmjZAxT2PuFk0EwRMOH6EwgZDZD
 
 
 
@@ -44,6 +39,7 @@ channel = 'sintbot'
 if channel == 'sintbot':
     dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT1'], os.environ['N']
 else: dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT2'], os.environ['N']
+
 """ FORMULAS ON TEXT PROCESSING
 
 Below you find all formulas needed to preprocess and process the message,
@@ -51,6 +47,7 @@ dictionaries and other data sets.
 """
 
 def findword(string):
+    string = string.lower()
     if True in [x in faulwords for x in string.split()]:
         return True
     else:
