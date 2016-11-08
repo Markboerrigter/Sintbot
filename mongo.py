@@ -1009,7 +1009,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     high = finalScore[-1][1]
     # print(len([x for x in finalScore if x[1] == high]))
     # print(finalScore[-n:])
-    return finalScore[-n:]
+    return finalScore[-int(n):]
 
 def printprod(L):
     for x in L:
