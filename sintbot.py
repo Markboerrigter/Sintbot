@@ -619,9 +619,7 @@ def handle_messages():
   payload = request.get_data()
   print(payload)
   global user_data
-
   for sender, message, mid, recipient in messaging_events(payload) :
-
     if findword(message):
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -632,6 +630,7 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
+    print(mg.findUser(sender))
     if not mg.findUser(sender):
         user_info = getdata(sender)
         data = {}
