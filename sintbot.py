@@ -49,7 +49,6 @@ dictionaries and other data sets.
 
 def findword(string):
     if True in [x in faulwords for x in string.split()]:
-        print([x in faulwords for x in string.split()])
         return True
     else:
         return False
@@ -122,7 +121,6 @@ or write data can be found.
 """
 
 def makeStartScreen(token):
-  print('make starting screen')
   r = requests.post("https://graph.facebook.com/v2.6/me/thread_settings",
     params={"access_token": token},
     data=json.dumps({
@@ -159,7 +157,6 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
-            print('something is going wrong')
     if opt == 'off':
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -172,6 +169,7 @@ def typing(opt, token, recipient):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+
 def postdashbot(id, payload):
   if id == 'human':
       print('send to dashbot ')
@@ -252,7 +250,6 @@ def findAnswer(response, question,witToken,data):
     return response,data, information
 
 def getResponse(recipient, text, data):
-  print(text, data['token'], data['session'])
   response = tb.response(text, data['token'], data['session'])
   if 'msg' not in response:
       response, data, information = findAnswer(response,text,data['token'],data)
@@ -263,10 +260,7 @@ def getResponse(recipient, text, data):
   return response, data
 
 def checksuggest(token, recipient, data,n):
-    print('in checksuggest ' + data['Stage'])
     if data['Stage'] == 'presentchoosing':
-        print('giving presents')
-        print(data['data'])
         final_data = data['data']
         geslacht = final_data['Gender'].split(' ')[1]
         budget = (final_data['budget']).split('-')
@@ -281,8 +275,6 @@ def checksuggest(token, recipient, data,n):
         typing('off', PAT, recipient)
         for x in presents:
             if not x[0]['img_link']:
-                print('image is missing')
-
                 if x[0]['retailer'] == 'intertoys':
                     x.append('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
                 else:
@@ -564,7 +556,6 @@ def send_message(token, recipient, text, data):
   if data['dolog'] == 'end':
       print('done')
   elif data['token'] == '1' and data['Stage'] == 'decisions':
-    print('text for this phase',text)
     if text.isdigit() and data['intype']:
         if int(text) in range(1,12):
             x = int(text)
