@@ -524,7 +524,7 @@ def handle_messages():
         if r.status_code != requests.codes.ok:
         	print r.text
     elif triggered(message, sender):
-        print(triggered)
+        print('Trigger send')
     elif not mg.findUser(sender):
         user_info = getdata(sender)
         data = {}
