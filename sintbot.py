@@ -14,57 +14,7 @@ from copy import copy
 import pickle
 from flask import g
 import time
-import emoji
 
-
-personalitymessages = [["""
-{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title": "Liever creatief of lekker lui?",
-            "image_url":"https://support.greenorange.com/sint/images/IG_vraag2_Maken_Internet.jpg",
-          }
-        ]
-      }
-    }
-  }
-""", 'Maak jij een hele mooie originele surprise of een gedichtje van het internet? :)', ['Surprise', "https://support.greenorange.com/sint/images/geel_suprise_maken.png"], ['Gedichtje', "https://support.greenorange.com/sint/images/rood_gedicht_internet.png"]],[
-"""
-{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"generic",
-        "elements":[
-          {
-            "title": "Geef of krijg jij liever een kado?",
-            "image_url":"https://support.greenorange.com/sint/images/IG_vraag3_Geven_Ontvangen.jpg",
-          }
-        ]
-      }
-    }
-  }
-""", 'Geef jij liever een kado, of krijg je liever iets? :)', ['Geven', "https://support.greenorange.com/sint/images/blauw_kado_geven.png"], ['Krijgen', "https://support.greenorange.com/sint/images/groen_kado_krijgen.png"]]
-,["""
-  {
-      "attachment":{
-        "type":"template",
-        "payload":{
-          "template_type":"generic",
-          "elements":[
-            {
-              "title": "Lees of schrijf jij liever een gedicht?",
-              "image_url":"https://support.greenorange.com/sint/images/IG_vraag1_Lezen_Schrijven.jpg",
-            }
-          ]
-        }
-      }
-    }
-""", 'Lees jij liever je gedicht voor aan de groep, of schijf je liever een gedicht voor een ander? :)', ['Lezen', "https://support.greenorange.com/sint/images/groen_gedicht_lezen.png"], ['Schrijven',"https://support.greenorange.com/sint/images/blauw_gedicht_schrijven.jpg"]]]
 
 
 
@@ -76,13 +26,14 @@ TokenStages = mg.findConfig(19)
 responsemessage = mg.findConfig(20)
 presentmessage1 = mg.findConfig(21)
 presentmessage3 = mg.findConfig(22)
+personalitymessages = mg.findConfig(23)
 faulwords = mg.findConfig(24)
 Tokens = mg.findConfig(25)
 
 
 app = Flask(__name__)
 
-dashbotAPI, PAT, N = S3Client(os.environ['dashbotAPI'], os.environ['PAT'], os.environ['N'])
+dashbotAPI, PAT, N = echobotje(os.environ['dashbotAPI'], os.environ['PAT'], os.environ['N'])
 print(dasbotAPI)
 # dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 #
