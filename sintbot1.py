@@ -221,6 +221,7 @@ def verify():
     return 'Hello world', 200
 
 def typing(opt, token, recipient):
+    print(token, recipient)
     if opt == 'on':
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
