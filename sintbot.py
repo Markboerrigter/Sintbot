@@ -83,7 +83,7 @@ Tokens = mg.findConfig(25)
 app = Flask(__name__)
 
 dashbotAPI, PAT = S3Client(os.environ['dashbotAPI'], os.environ['PAT'])
-
+print(dasbotAPI)
 # dashbotAPI = 'p2UanZNzFIcjKS321Asc9zIk0lnziYFHodZwV9fh'
 #
 #
