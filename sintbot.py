@@ -30,7 +30,7 @@ presentmessage3 = mg.findConfig(22)
 personalitymessages = mg.findConfig(23)
 faulwords = mg.findConfig(24)
 Tokens = mg.findConfig(25)
-Triggers = mg.findConfig(50)['triggers']
+Triggers = mg.findConfig(50)
 TriggerPhrases = Triggers['tigger']
 TriggerCats = Triggers['answers']
 
