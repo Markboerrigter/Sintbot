@@ -511,6 +511,7 @@ def handle_messages():
   for sender, message, mid, recipient in messaging_events(payload) :
     print("Incoming from %s: %s" % (sender, message))
     typing('on', PAT, sender)
+    postdashbot('human', payload)
     if findword(message):
         time.sleep(1.5)
         typing('off', PAT, sender)
@@ -568,24 +569,7 @@ def handle_messages():
         	print r.text
         data['trig'] = True
         mg.updateUser(recipient, data)
-    elif data['trig']:
-        if text == 'Ja':
-            send_message(PAT, sender, data['oldmessage'],data)
-        else:
-            typing('on', PAT, sender)
-            time.sleep(1.5)
-            typing('off', PAT, sender)
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
-            }}),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-            	print r.text
-            data['dolog'] = 'end'
-            mg.updateUser(recipient, data)
+
     elif not mg.findUser(sender):
         user_info = getdata(sender)
         data = {}
@@ -615,36 +599,54 @@ def handle_messages():
         mg.insertUser(sender,data)
         typing('on', PAT, sender)
         data = send_message(PAT, sender, message,data)
-
     else:
         data = mg.findUser(sender)
-        postdashbot('human', payload)
-        if mid != data['message-id']:
-            if data['dolog'] == 'end':
-                data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                data['log']['feedback'].update(data['feedback'])
-                data['log']['presents'].update(data['presents'])
-                data['log']['data'].update(data['data'])
-                data['log']['data'].update(data['personality'])
-                data['presents'] = []
-                data['Stage'] = TokenStages[0]
-                data['text'] = []
-                data['dolog'] = ''
-                data['trig'] = False
-                data['secondRow'] = False
-                data['token'] = '2'
-                data['starter'] = ''
-                data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-                data['data'] = {}
-                data['secondchoice'] = False
-                data['intype'] = False
-                data['personQuestions'] = []
-            data['text'].append(('user',message))
-            data['message-id'] = mid
-            data['oldincoming'] = message
+        if data['trig']:
+            if text == 'Ja':
+                send_message(PAT, sender, data['oldmessage'],data)
+            else:
+                typing('on', PAT, sender)
+                time.sleep(1.5)
+                typing('off', PAT, sender)
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": PAT},
+                data=json.dumps({
+                  "recipient": {"id": sender},
+                  "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
+                }}),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                	print r.text
+                data['dolog'] = 'end'
+                mg.updateUser(recipient, data)
+        else:
 
-            mg.updateUser(recipient, data)
-            data = send_message(PAT, sender, message,data)
+            if mid != data['message-id']:
+                if data['dolog'] == 'end':
+                    data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                    data['log']['feedback'].update(data['feedback'])
+                    data['log']['presents'].update(data['presents'])
+                    data['log']['data'].update(data['data'])
+                    data['log']['data'].update(data['personality'])
+                    data['presents'] = []
+                    data['Stage'] = TokenStages[0]
+                    data['text'] = []
+                    data['dolog'] = ''
+                    data['trig'] = False
+                    data['secondRow'] = False
+                    data['token'] = '2'
+                    data['starter'] = ''
+                    data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                    data['data'] = {}
+                    data['secondchoice'] = False
+                    data['intype'] = False
+                    data['personQuestions'] = []
+                data['text'].append(('user',message))
+                data['message-id'] = mid
+                data['oldincoming'] = message
+
+                mg.updateUser(recipient, data)
+                data = send_message(PAT, sender, message,data)
   mg.updateUser(recipient, data)
   return "ok", 200
 
