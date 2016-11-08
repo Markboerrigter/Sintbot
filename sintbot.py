@@ -31,7 +31,6 @@ personalitymessages = mg.findConfig(23)
 faulwords = mg.findConfig(24)
 Tokens = mg.findConfig(25)
 Triggers = mg.findConfig(50)['triggers']
-print(Triggers)
 TriggerPhrases = Triggers['tigger']
 TriggerCats = Triggers['answers']
 
@@ -58,14 +57,14 @@ def findword(string):
 def triggered(message):
     if message in traverse(TriggerPhrases):
         i = find(message,TriggerPhrases)
-        reaction = TriggerCats[i]
+        reaction = random.choice(TriggerCats[i])
         time.sleep(1.5)
         typing('off', PAT, sender)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
           "recipient": {"id": sender},
-          "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
+          "message": {"text": reaction}
         }),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
