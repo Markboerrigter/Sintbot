@@ -697,6 +697,7 @@ def handle_messages():
             data['message-id'] = mid
             data['oldincoming'] = message
             typing('on', PAT, sender)
+            mg.updateUser(recipient, data)
             data = send_message(PAT, sender, message,data)
   return "ok", 200
 
