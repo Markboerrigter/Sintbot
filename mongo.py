@@ -1007,16 +1007,13 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])
     high = finalScore[-1][1]
-    print(type(n))
-    # print(len([x for x in finalScore if x[1] == high]))
-    # print(finalScore[-n:])
+
     return finalScore[-n:]
 
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
-# printprod(findRightProduct('Jongen', [30,45], '14', 'Gadget- en gamekings', 'Een drone',3))
-#
+
 # # finding one unique toy by article number [title, brand, price, age, gender, page, img_link]
 # @app.route('/articles/<geslacht>/<budget>/<bedrag>/age/<jaar>')
 def findByTrinity(geslacht,budget,bedrag,jaar):

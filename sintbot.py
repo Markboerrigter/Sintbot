@@ -878,8 +878,6 @@ def send_message(token, recipient, text, data):
     	time1 = time2
         mg.updateUser(recipient, data)
     elif 'msg' in response and response['msg'] != data['oldmessage']:
-        time3 = time.time()
-        print('checksuggest',time3- time1)
         data['text'].append(('bot',response['msg']))
         data['oldmessage'] = response['msg']
         postdashbot('bot',(recipient,response['msg'], data['message-id']))
@@ -901,7 +899,6 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
             if r.status_code != requests.codes.ok:
             	print r.text
-            	print(recipient)
     	else:
             typing('off', token, recipient)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -913,8 +910,8 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
             if r.status_code != requests.codes.ok:
             	print r.text
-    	time4 = time.time()
-    	print('sendmessage', time4 - time3)
+	time4 = time.time()
+	print('sendmessage', time4 - time0)
   return data
 
 if __name__ == '__main__':
