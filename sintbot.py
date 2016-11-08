@@ -40,8 +40,10 @@ Tokens = mg.findConfig(25)
 
 app = Flask(__name__)
 
-dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT'], os.environ['N']
-
+channel = 'sintbot'
+if channel == 'sintbot':
+    dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT1'], os.environ['N']
+else: dashbotAPI, PAT, N = os.environ['dashbotAPI'], os.environ['PAT2'], os.environ['N']
 """ FORMULAS ON TEXT PROCESSING
 
 Below you find all formulas needed to preprocess and process the message,
