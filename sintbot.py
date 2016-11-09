@@ -543,10 +543,10 @@ def handle_messages():
         data['log']['personality'] = {}
         data['log']['presents']= {}
         data['dolog'] = ''
-        data['feedback']
+        data['feedback'] = ''
         data['secondchoice'] = False
         data['secondRow'] = False
-        data['Stage'] = TokenStages[0]
+        # data['Stage'] = TokenStages[0]
         data['text'] = []
         data['personQuestions'] = []
         data['message-id'] = mid
@@ -555,7 +555,9 @@ def handle_messages():
         data['oldmessage'] = ''
         data['intype'] = False
         data['trig'] = False
-        data['token'] = random.choice(allValues(Tokens['Start']['New']))
+        # data['token'] = random.choice(allValues(Tokens['Start']['New']))
+        data['Stage'] = TokenStages[-2]
+        data['token'] = random.choice(allValues(Tokens['feedback']))
         data['starter'] = ''
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         data['data'] = {}
