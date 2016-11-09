@@ -719,8 +719,9 @@ def send_message(token, recipient, text, data):
   if data['dolog'] == 'end':
       print('done')
   if data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
+      data['token'] == '1'
       findToken(recipient, data, text)
-  elif data['Stage'] == 'decisions':
+  elif data['token'] == '1' and data['Stage'] == 'decisions':
     if text.isdigit() and data['intype']:
         if int(text) in range(1,12):
             x = int(text)
