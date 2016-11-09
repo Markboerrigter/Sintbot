@@ -1070,6 +1070,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
     lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])
+    finalScore = finalScore[:max(100,lenScores)]
     if lenScores >3:
         copy = finalScore[:lenScores]
         random.shuffle(copy)
