@@ -385,7 +385,6 @@ def findToken(recipient, data, text):
   Stage = data['Stage']
   print(Stage)
   if data['Stage'] == 'bridge':
-
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -719,6 +718,10 @@ def send_message(token, recipient, text, data):
   """
   if data['dolog'] == 'end':
       print('done')
+  if data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
+      data['text'].append(('bot',message))
+      postdashbot('bot',(recipient,message, data['message-id']) )
+      findToken(recipient, data, text)
   elif data['token'] == '1' and data['Stage'] == 'decisions':
     if text.isdigit() and data['intype']:
         if int(text) in range(1,12):
@@ -778,6 +781,7 @@ def send_message(token, recipient, text, data):
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       data['Stage'] = 'bridge'
+
       postdashbot('bot',(recipient,message, data['message-id']) )
       typing('off', PAT, recipient)
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
