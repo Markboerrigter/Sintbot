@@ -329,10 +329,12 @@ def checksuggest(token, recipient, data,n):
             if x['retailer'] == 'intertoys':
                 x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
                 if not x['img_link']:
+                    print('no pic')
                     x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
             else:
                 x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
                 if not x['img_link']:
+                    print('no pic')
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
             newpres.append(x)
         presents = newpres[:N]
