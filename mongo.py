@@ -1039,17 +1039,16 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         else:
             a-=4
         finalScore.append([x[0],a])
-    finalScore = sorted(finalScore, key=lambda x: x[1])
-    lenScores = [y for [x,y] in finalScore].count(finalScore[-1][1])
-    print(lenScores)
-    print(len(finalScore))
+    finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
+    lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])
     if lenScores >3:
-        finalScore = random.shuffle(finalScore[:lenScores])+finalScore[lenScores:]
-    return finalScore[-n:]
+        copy = finalScore[:lenScores]
+        random.shuffle(copy)
+        finalScore[:lenScores] = copy
+    return finalScore[:n]
 
-x = findRightProduct('Jongen', [30,45], '4', 'Kleine ontdekkers', '', 3)
-for y in x:
-    print(y)
+# x = findRightProduct('Jongen', [30,45], '4', 'Kleine ontdekkers', '', 3)
+
 
 def printprod(L):
     for x in L:
