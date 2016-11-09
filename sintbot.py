@@ -291,7 +291,7 @@ def getResponse(recipient, text, data):
   return response, data
 
 def getFeedback(data):
-    feedback = data['Feedback']
+    feedback = data['data']['Feedback']
     if feedback == '\U0001f600':
         return '5'
     if feedback == '\U0001F60A':
