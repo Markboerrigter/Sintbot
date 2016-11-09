@@ -1076,8 +1076,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore[:lenScores] = copy
     chosenProducts = finalScore[:lenScores]
     for x in chosenProducts:
-        print(x[0]['title'])
-
+        print(x[0]['article_number'])
     levs = []
     for x in chosenProducts:
         for y in chosenProducts:
