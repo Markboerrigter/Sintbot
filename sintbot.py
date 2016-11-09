@@ -267,7 +267,7 @@ def getInformation(response, tekst):
             out['typeChild'] = entities['typeChild'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8 and entities['distinction'][0]['value'] in ['Ja', 'Nee']:
             out['distinction'] = entities['distinction'][0]['value']
-        if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.8:
+        if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.6:
             out['Feedback'] = entities['Feedback'][0]['value']
         return out
     else:
@@ -364,7 +364,7 @@ def checksuggest(token, recipient, data,n):
                       {
                         "type":"web_url",
                         "url": x['item_url'],
-                        "title":"View Website"
+                        "title":"Bekijk de folder!"
                       }
                     ]
                   }
@@ -383,7 +383,9 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
+  print(Stage)
   if data['Stage'] == 'bridge':
+
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -414,6 +416,7 @@ def findToken(recipient, data, text):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
+          print(NextStage)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'feedback':
@@ -549,7 +552,6 @@ def handle_messages():
         data['log']['text']= {'0':'first conversation'}
         data['log']['feedback']= []
         data['log']['data'] = {}
-
         data['log']['presents']= []
         data['dolog'] = ''
         data['secondchoice'] = False
@@ -674,7 +676,7 @@ def handle_messages():
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['log']['feedback'].append(getFeedback(data))
-                print(data['presents'])
+                print(len(data['presents']))
                 data['log']['presents'].append(data['presented'])
                 data['log']['data'].update(data['data'])
                 data['presents'] = []
@@ -877,7 +879,7 @@ def send_message(token, recipient, text, data):
       if text == 'Oke!':
           findToken(recipient, data, text)
       else:
-          message = 'Welkom Terug, zullen we weer op zoek gaan naar een kado? :)'
+          message = 'Welkom terug, zullen we weer op zoek gaan naar een kado? :)'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
