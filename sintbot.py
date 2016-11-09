@@ -307,7 +307,7 @@ def getFeedback(data):
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
         if data['secondchoice']:
-            presents = data['presents'][n:]
+            presents = data['presents'][n-N:n]
         else:
             final_data = data['data']
             geslacht = final_data['Gender'].split(' ')[1]
@@ -318,9 +318,9 @@ def checksuggest(token, recipient, data,n):
                 idea = final_data['product']
             else: idea = ''
 
-            presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)[n-N:n]
+            presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents[:n]
-
+        print(presents)
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
         for x in presents:
