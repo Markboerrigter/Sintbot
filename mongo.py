@@ -1076,9 +1076,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         random.shuffle(copy)
         finalScore[:lenScores] = copy
     chosenProducts = finalScore[:lenScores]
-    print(chosenProducts)
-    for x in chosenProducts:
-        print(x[0]['article_number'])
+    # print(chosenProducts)
+    # for x in chosenProducts:
+    #     print(x[0]['article_number'])
     levs = []
     for x in chosenProducts:
         for y in chosenProducts:
@@ -1104,8 +1104,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
-    for x in finalScore[:20]:
-        print(x['article_number'])
+    # for x in finalScore[:20]:
+    #     print(x['article_number'])
+    print(len(finalScore), type(finalScore))
     return finalScore[:2*n]
 
 # x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
