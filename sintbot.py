@@ -520,6 +520,7 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
+    print(message)
     # r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     # params={"access_token": PAT},
     # data=json.dumps({
