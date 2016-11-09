@@ -320,7 +320,7 @@ def checksuggest(token, recipient, data,n):
                 idea = final_data['product']
             else: idea = ''
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
-            data['presents'] = presents[:n]
+            data['presents'] = presents
         print(len(presents))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
 
