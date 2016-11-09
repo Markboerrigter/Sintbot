@@ -247,6 +247,7 @@ def mergeAns(response, witToken, session_id, question):
 def getInformation(response, tekst):
     if 'entities' in response:
         entities = response['entities']
+        print(entities)
         out  = {}
         if 'hobby' in entities:
             for x in entities['hobby']:
@@ -342,6 +343,7 @@ def checksuggest(token, recipient, data,n):
         for x in presents:
             print(x['title']).encode('utf8')
         print(presents[0])
+        data['presented'].extend(presents)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -561,6 +563,7 @@ def handle_messages():
         data['oldmessage'] = ''
         data['intype'] = False
         data['trig'] = False
+        data['presented'] = []
         data['token'] = random.choice(allValues(Tokens['Start']['New']))
         data['starter'] = ''
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -672,12 +675,13 @@ def handle_messages():
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['log']['feedback'].append(getFeedback(data))
                 print(data['presents'])
-                data['log']['presents'].update(data['presents'])
+                data['log']['presents'].append(data['presented'])
                 data['log']['data'].update(data['data'])
                 data['log']['data'].update(data['personality'])
                 data['presents'] = []
                 data['Stage'] = TokenStages[0]
                 data['text'] = []
+                data['presented'] = []
                 data['dolog'] = ''
                 data['trig'] = False
                 data['secondRow'] = False
