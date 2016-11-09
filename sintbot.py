@@ -340,7 +340,7 @@ def checksuggest(token, recipient, data,n):
         presents = newpres[:N]
         print(len(presents))
         for x in presents:
-            print(x['title'])
+            print(x['title']).encode('utf8')
         print(presents[0])
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
