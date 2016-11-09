@@ -291,6 +291,7 @@ def getResponse(recipient, text, data):
   return response, data
 
 def getFeedback(data):
+    print(data['data']['Feedback'])
     feedback = data['data']['Feedback']
     if feedback == '\U0001f600':
         return '5'
@@ -302,6 +303,7 @@ def getFeedback(data):
         return '2'
     if feedback == '\U0001F620':
         return '1'
+
 
 
 def checksuggest(token, recipient, data,n):
