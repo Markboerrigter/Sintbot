@@ -1,14 +1,39 @@
+import networkx as nx
+# import matplotlib.pyplot as plt
+
 from pymongo import MongoClient
 import datetime
 from difflib import SequenceMatcher
 import kpss
 import random
-
+import numpy as np
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
 db = client.toys
 
 now = datetime.datetime.now()
 d = now.isoformat()
+
+def printgraph(mGraph):
+    ##pos=nx.spring_layout(mGraph)
+    ##colors=range(20)
+    ##nx.draw(mGraph,pos,node_color='#A0CBE2',edge_color='#A0CBE5',width=10,edge_cmap=plt.cm.Blues,with_labels=False)
+
+    plt.figure(1, figsize=(8, 8))
+    # layout graphs with positions using graphviz neato
+
+    # color nodes the same in each connected subgraph
+    C = nx.connected_component_subgraphs(mGraph)
+    for g in C:
+        c = [random.random()] * nx.number_of_nodes(g)  # random color...
+        nx.draw_spectral(g,
+                       node_size=80,
+                       node_color=c,
+                       vmin=0.0,
+                       vmax=1.0,
+                       with_labels=False
+                       )
+    plt.show()
+    return 0
 
 def addConfig(dict, name, number):
     try:
@@ -1045,9 +1070,49 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         copy = finalScore[:lenScores]
         random.shuffle(copy)
         finalScore[:lenScores] = copy
-    return finalScore[:n]
+    chosenProducts = finalScore[:lenScores]
+    levs = []
+    for x in chosenProducts:
+        for y in chosenProducts:
+            if x!=y:
+                if levenshtein(x[0]['title'], y[0]['title'])< 11:
+                    levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
+    final = []
+    # print(levs)
+    # for x in levs:
+    #     if x[2] < 11:
+    #         final.append([x[0],x[1]])
 
-# x = findRightProduct('Jongen', [30,45], '4', 'Kleine ontdekkers', '', 3)
+    twolist1 = [[(x, y), z] for [x, y, z] in levs]
+    twolistdict = {x: z for [x, z] in twolist1}
+
+    twolist2 = [[x, y] for [x, y, z] in levs]
+    twolist2 = [item for items in twolist2 for item in items]
+
+    leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
+
+    #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
+    mGraph = nx.Graph()
+    count = 0
+    for [x, y, z] in levs:
+        if z > 0:
+            count += 1
+            mGraph.add_edge(x, y, weight=z)
+    for item in leftover:
+        mGraph.add_node(item)
+    graphs = list(nx.connected_component_subgraphs(mGraph))
+
+    a = (sorted(map(sorted, mGraph.edges())))
+    a = [x for [x,y] in a]
+    finalScore = [x for x in chosenProducts if x[0]['_id'] in a] + finalScore[lenScores:]
+    return finalScore[:2*n]
+    # else
+    # #
+    # # for x in finalScore[:lenScores]:
+    # #     if x[0]['_id'] in
+    # return finalScore[:2*n]
+
+x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
 
 
 def printprod(L):

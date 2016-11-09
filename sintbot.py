@@ -16,7 +16,13 @@ from flask import g
 import time
 import os
 
+a = u'U+1F600'
 
+b = u'U+1F60A'
+c = u'U+1F610'
+d = u'U+1F614'
+e = u'U+1F620'
+print(a.encode('utf-8'),b.encode('unicode-escape'),c,d,e)
 
 
 N = 3
@@ -293,6 +299,11 @@ def getResponse(recipient, text, data):
   data['data'].update(information)
   mg.updateUser(recipient, data)
   return response, data
+#
+# def getFeedback(data):
+#
+#
+
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
@@ -509,6 +520,15 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    params={"access_token": PAT},
+    data=json.dumps({
+      "recipient": {"id": sender},
+      "message": {"text": b
+    }}),
+    headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+    	print r.text
     print("Incoming from %s: %s" % (sender, message))
     typing('on', PAT, sender)
     postdashbot('human', payload)
@@ -523,6 +543,7 @@ def handle_messages():
         data['log']['personality'] = {}
         data['log']['presents']= {}
         data['dolog'] = ''
+        data['feedback']
         data['secondchoice'] = False
         data['secondRow'] = False
         data['Stage'] = TokenStages[0]
@@ -619,14 +640,33 @@ def handle_messages():
             	print r.text
             data['trig'] = True
             mg.updateUser(recipient, data)
+        elif data['trig']:
+            if text == 'Ja':
+                send_message(PAT, sender, data['oldmessage'],data)
+            else:
+                typing('on', PAT, sender)
+                time.sleep(1.5)
+                typing('off', PAT, sender)
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": PAT},
+                data=json.dumps({
+                  "recipient": {"id": sender},
+                  "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
+                }}),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                	print r.text
+                data['dolog'] = 'end'
+                mg.updateUser(recipient, data)
         elif mid != data['message-id']:
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                data['log']['feedback'].update(data['feedback'])
+                data['log']['feedback'].update(getFeedback(data))
                 data['log']['presents'].update(data['presents'])
                 data['log']['data'].update(data['data'])
                 data['log']['data'].update(data['personality'])
                 data['presents'] = []
+                data['feedback']
                 data['Stage'] = TokenStages[0]
                 data['text'] = []
                 data['dolog'] = ''
