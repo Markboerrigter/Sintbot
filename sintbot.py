@@ -328,14 +328,18 @@ def checksuggest(token, recipient, data,n):
         typing('off', PAT, recipient)
         newpres = []
         for x in presents:
-            if not x['img_link']:
-                if x['retailer'] == 'intertoys':
+            if x['retailer'] == 'intertoys':
+                x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
+                if not x['img_link']:
                     x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
-                else:
+            else:
+                x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
+                if not x['img_link']:
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
             newpres.append(x)
         presents = newpres
         print(len(presents))
+        print(presents[0])            
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -348,13 +352,13 @@ def checksuggest(token, recipient, data,n):
                 "elements":[
                   {
                     "title":x['title'],
-                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
+                    "item_url":x['item_url'],
                     "image_url":x['img_link'],
                     "subtitle":x['description'],
                     "buttons":[
                       {
                         "type":"web_url",
-                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
+                        "url": x['item_url'],
                         "title":"View Website"
                       }
                     ]
