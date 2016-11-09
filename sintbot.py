@@ -719,8 +719,6 @@ def send_message(token, recipient, text, data):
   if data['dolog'] == 'end':
       print('done')
   if data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
-      data['text'].append(('bot',message))
-      postdashbot('bot',(recipient,message, data['message-id']) )
       findToken(recipient, data, text)
   elif data['token'] == '1' and data['Stage'] == 'decisions':
     if text.isdigit() and data['intype']:
