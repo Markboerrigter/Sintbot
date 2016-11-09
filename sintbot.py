@@ -540,7 +540,7 @@ def handle_messages():
         data['data'] = {}
         mg.insertUser(sender,data)
         typing('on', PAT, sender)
-        data = send_message(PAT, sender, message,data
+        data = send_message(PAT, sender, message,data)
         mg.insertUser(sender,data)
         if data['trig']:
             if text == 'Ja':
