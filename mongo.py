@@ -1103,7 +1103,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     graphs = list(nx.connected_component_subgraphs(mGraph))
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
-    finalScore = [x for [x,y] in chosenProducts if x[0]['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
+    finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
     for x in finalScore[:20]:
         print(x['article_number'])
     return finalScore[:2*n]
