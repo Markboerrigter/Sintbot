@@ -299,10 +299,19 @@ def getResponse(recipient, text, data):
   data['data'].update(information)
   mg.updateUser(recipient, data)
   return response, data
-#
-# def getFeedback(data):
-#
-#
+
+def getFeedback(data):
+    feedback = data['Feedback']
+    if feedback == '\U0001f600':
+        return '5'
+    if feedback == '\U0001F60A':
+        return '4'
+    if feedback == '\U0001F610':
+        return '3'
+    if feedback == '\U0001F614':
+        return '2'
+    if feedback == '\U0001F620':
+        return '1'
 
 
 def checksuggest(token, recipient, data,n):
@@ -544,10 +553,9 @@ def handle_messages():
         data['log']['personality'] = {}
         data['log']['presents']= {}
         data['dolog'] = ''
-        data['feedback'] = ''
         data['secondchoice'] = False
         data['secondRow'] = False
-        # data['Stage'] = TokenStages[0]
+        data['Stage'] = TokenStages[0]
         data['text'] = []
         data['personQuestions'] = []
         data['message-id'] = mid
@@ -556,9 +564,9 @@ def handle_messages():
         data['oldmessage'] = ''
         data['intype'] = False
         data['trig'] = False
-        # data['token'] = random.choice(allValues(Tokens['Start']['New']))
-        data['Stage'] = TokenStages[-2]
-        data['token'] = random.choice(allValues(Tokens['feedback']))
+        data['token'] = random.choice(allValues(Tokens['Start']['New']))
+        # data['Stage'] = TokenStages[-2]
+        # data['token'] = random.choice(allValues(Tokens['feedback']))
         data['starter'] = ''
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         data['data'] = {}
@@ -663,14 +671,13 @@ def handle_messages():
                 mg.updateUser(recipient, data)
         elif mid != data['message-id']:
             if data['dolog'] == 'end':
-                # data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                # # data['log']['feedback'].update(getFeedback(data))
-                # print(data['presents'])
-                # data['log']['presents'].update(data['presents'])
-                # data['log']['data'].update(data['data'])
-                # data['log']['data'].update(data['personality'])
+                data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                data['log']['feedback'].update(getFeedback(data))
+                print(data['presents'])
+                data['log']['presents'].update(data['presents'])
+                data['log']['data'].update(data['data'])
+                data['log']['data'].update(data['personality'])
                 data['presents'] = []
-                data['feedback']
                 data['Stage'] = TokenStages[0]
                 data['text'] = []
                 data['dolog'] = ''
