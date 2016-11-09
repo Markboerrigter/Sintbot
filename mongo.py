@@ -247,15 +247,16 @@ def findUndervalue():
 
 # getting all articles above 50 euro
 # @app.route('/articles/above')
-def findAbovevalue():
+def findAbovevalue(the_price):
     try:
         catalogus = db.speelgoed
-        results = catalogus.find({'price': {'$gt':50}})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        results = list(catalogus.find({'price': {'$gt':the_price}}))
+        return results
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' - '+ str(r['price']) + '<br>'
+        # return output
     except Exception, e:
         return 'Not found'
 
@@ -1017,7 +1018,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     idea = idea.replace('een ', '').replace('de ', '' ).replace('het ', '')
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
     geslachtQuery = findArticlesGender(geslacht)
-    budgetQuery = findFromRange(budget[0],budget[1])
+    if len(budget) >1:
+        budgetQuery = findFromRange(budget[0],budget[1])
+    else:
+        budgetQuery = findAbovevalue(the_price)
     ageQuery = findByAge(age)
     if idea == '':
         ideaStem = 'jaa'

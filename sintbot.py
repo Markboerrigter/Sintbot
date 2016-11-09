@@ -15,16 +15,6 @@ import pickle
 from flask import g
 import time
 import os
-
-a = u'U+1F600'
-
-b = u'U+1F60A'
-c = u'U+1F610'
-d = u'U+1F614'
-e = u'U+1F620'
-print(a.encode('utf-8'),b.encode('unicode-escape'),c,d,e)
-
-
 N = 3
 # Number of presented articles
 
@@ -529,7 +519,6 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
-    print(message)
     # r = requests.post("https://graph.facebook.com/v2.6/me/messages",
     # params={"access_token": PAT},
     # data=json.dumps({
@@ -843,7 +832,6 @@ def send_message(token, recipient, text, data):
     	data['oldmessage'] = message
     	postdashbot('bot',(recipient,message[1], data['message-id']) )
         typing('off', PAT, recipient)
-        print(message)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
