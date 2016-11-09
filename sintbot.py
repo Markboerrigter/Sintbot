@@ -760,6 +760,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
+        typing('on', PAT, recipient)
         time.sleep(1)
         message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'
         data['text'].append(('bot',message))
@@ -867,7 +868,10 @@ def send_message(token, recipient, text, data):
             	print r.text
         typing('on', PAT, recipient)
         checksuggest(PAT, recipient, data,N+N)
+        typing('on', PAT, recipient)
+        time.sleep(2)
         message = random.choice(presentmessage3)
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
