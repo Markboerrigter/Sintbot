@@ -520,15 +520,15 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
-    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    params={"access_token": PAT},
-    data=json.dumps({
-      "recipient": {"id": sender},
-      "message": {"text": b
-    }}),
-    headers={'Content-type': 'application/json'})
-    if r.status_code != requests.codes.ok:
-    	print r.text
+    # r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+    # params={"access_token": PAT},
+    # data=json.dumps({
+    #   "recipient": {"id": sender},
+    #   "message": {"text": b
+    # }}),
+    # headers={'Content-type': 'application/json'})
+    # if r.status_code != requests.codes.ok:
+    # 	print r.text
     print("Incoming from %s: %s" % (sender, message))
     typing('on', PAT, sender)
     postdashbot('human', payload)
@@ -662,12 +662,12 @@ def handle_messages():
                 mg.updateUser(recipient, data)
         elif mid != data['message-id']:
             if data['dolog'] == 'end':
-                data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                # data['log']['feedback'].update(getFeedback(data))
-                print(data['presents'])
-                data['log']['presents'].update(data['presents'])
-                data['log']['data'].update(data['data'])
-                data['log']['data'].update(data['personality'])
+                # data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                # # data['log']['feedback'].update(getFeedback(data))
+                # print(data['presents'])
+                # data['log']['presents'].update(data['presents'])
+                # data['log']['data'].update(data['data'])
+                # data['log']['data'].update(data['personality'])
                 data['presents'] = []
                 data['feedback']
                 data['Stage'] = TokenStages[0]
