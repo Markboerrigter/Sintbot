@@ -1105,7 +1105,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     a = [x for [x,y] in a]
     finalScore = [x for [x,y] in chosenProducts if x[0]['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
     for x in finalScore[:20]:
-        print(x[0]['article_number'])
+        print(x['article_number'])
     return finalScore[:2*n]
 
 x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
