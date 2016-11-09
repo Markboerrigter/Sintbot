@@ -540,8 +540,8 @@ def handle_messages():
         data['data'] = {}
         mg.insertUser(sender,data)
         typing('on', PAT, sender)
-        data = send_message(PAT, sender, message,data)
-        data = mg.findUser(sender)
+        data = send_message(PAT, sender, message,data
+        mg.insertUser(sender,data)
         if data['trig']:
             if text == 'Ja':
                 send_message(PAT, sender, data['oldmessage'],data)
@@ -561,6 +561,7 @@ def handle_messages():
                 data['dolog'] = 'end'
                 mg.updateUser(recipient, data)
     else:
+        data = mg.findUser(sender)
         if findword(message):
             time.sleep(1.5)
             typing('off', PAT, sender)

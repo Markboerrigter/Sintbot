@@ -54,6 +54,42 @@ def insertUser(id, newInformation):
     except Exception, e:
         return 'Not found user because ',e
 
+def levenshtein(source, target):
+    if len(source) < len(target):
+        return levenshtein(target, source)
+
+    # So now we have len(source) >= len(target).
+    if len(target) == 0:
+        return len(source)
+
+    # We call tuple() to force strings to be used as sequences
+    # ('c', 'a', 't', 's') - numpy uses them as values by default.
+    source = np.array(tuple(source))
+    target = np.array(tuple(target))
+
+    # We use a dynamic programming algorithm, but with the
+    # added optimization that we only need the last two rows
+    # of the matrix.
+    previous_row = np.arange(target.size + 1)
+    for s in source:
+        # Insertion (target grows longer than source):
+        current_row = previous_row + 1
+
+        # Substitution or matching:
+        # Target and source items are aligned, and either
+        # are different (cost of 1), or are the same (cost of 0).
+        current_row[1:] = np.minimum(
+                current_row[1:],
+                np.add(previous_row[:-1], target != s))
+
+        # Deletion (target grows shorter than source):
+        current_row[1:] = np.minimum(
+                current_row[1:],
+                current_row[0:-1] + 1)
+
+        previous_row = current_row
+
+    return previous_row[-1]
 # print(updateUser(1042410335857237, information))
 
 # add data regarding usage of user in channel
@@ -950,7 +986,6 @@ def findByAge(jaar):
     except Exception, e:
         return 'Not found an article'
 
-
 def findRightProduct(geslacht, budget, age, category, idea,n):
     # print((geslacht, budget, age, category, idea,n))
     idea = idea.lower()
@@ -970,10 +1005,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         titleQuery = findArticlesTitle(idea)
     categoryQuery = findArticlesCategory(category)
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
-    #     print(x)
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
-    # print(len(uniqueProducts))
     finalScore = []
     for x in uniqueProducts:
         a = 0
@@ -1008,20 +1041,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])
     lenScores = [y for [x,y] in finalScore].count(finalScore[-1][1])
+    print(lenScores)
+    print(len(finalScore))
     if lenScores >3:
         finalScore = random.shuffle(finalScore[:lenScores])+finalScore[lenScores:]
     return finalScore[-n:]
 
-# triggers = []
-# answers = []
-# for i in range(28,36):
-#     print(i)
-#     print(findConfig(i))
-#     triggers.append(findConfig(i)['trigger'])
-#     answers.append(findConfig(i)['antwoorden'])
-#
-# print(addConfig({'tigger':triggers, 'answers': answers}, 'triggers', 50))
-
+x = findRightProduct('Jongen', [30,45], '4', 'Kleine ontdekkers', '', 3)
+for y in x:
+    print(y)
 
 def printprod(L):
     for x in L:
