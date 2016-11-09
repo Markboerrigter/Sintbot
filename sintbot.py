@@ -664,6 +664,7 @@ def handle_messages():
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 # data['log']['feedback'].update(getFeedback(data))
+                print(data['presents'])
                 data['log']['presents'].update(data['presents'])
                 data['log']['data'].update(data['data'])
                 data['log']['data'].update(data['personality'])
