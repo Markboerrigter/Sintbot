@@ -949,23 +949,23 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-  "message":{
-    "attachment":{
-      "type":"template",
-      "payload":{
-        "template_type":"button",
-        "text":message,
-        "buttons":[
-          {
-            "type":"web_url",
-            "url":"https://www.spotta.nl/folders/intertoys?fid=1",
-            "title":"Intertoys"
-          },
-          {
-            "type":"web_url",
-            "url":"https://www.spotta.nl/folders/bart-smit?fid=116",
-            "title":"Bart Smit"
-          }]}}}}),
+              "message":{
+                "attachment":{
+                  "type":"template",
+                  "payload":{
+                    "template_type":"button",
+                    "text":message,
+                    "buttons":[
+                      {
+                        "type":"web_url",
+                        "url":"https://www.spotta.nl/folders/intertoys?fid=1",
+                        "title":"Intertoys"
+                      },
+                      {
+                        "type":"web_url",
+                        "url":"https://www.spotta.nl/folders/bart-smit?fid=116",
+                        "title":"Bart Smit"
+                      }]}}}}),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
@@ -1030,6 +1030,7 @@ def send_message(token, recipient, text, data):
   else:
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
+    print(data['data'])
     time1 = time.time()
     print('getresponse',time1-time0)
     if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
