@@ -15,7 +15,6 @@ import pickle
 from flask import g
 import time
 import os
-N = 3
 # Number of presented articles
 
 childTypes = mg.findConfig(18)
@@ -320,12 +319,11 @@ def checksuggest(token, recipient, data,n):
             if 'product' in final_data:
                 idea = final_data['product']
             else: idea = ''
-
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents[:n]
         print(len(presents))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
-        typing('off', PAT, recipient)
+
         newpres = []
         for x in presents:
             if x['retailer'] == 'intertoys':
@@ -337,9 +335,10 @@ def checksuggest(token, recipient, data,n):
                 if not x['img_link']:
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
             newpres.append(x)
-        presents = newpres
+        presents = newpres[:N]
         print(len(presents))
         print(presents[0])
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
