@@ -30,3 +30,4 @@ wit==4.1.0
 pyowm==2.4.0
 Flask-PyMongo==0.4.1
 emoji==0.3.9
+networkx==1.11
