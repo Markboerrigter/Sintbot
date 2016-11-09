@@ -1108,7 +1108,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         print(x['article_number'])
     return finalScore[:2*n]
 
-x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
+# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
 
 
 def printprod(L):
