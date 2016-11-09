@@ -327,13 +327,13 @@ def checksuggest(token, recipient, data,n):
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
         for x in presents:
-            if not x[0]['img_link']:
-                if x[0]['retailer'] == 'intertoys':
-                    x.append('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x[0]['page']) + '_' + str(x[0]['article_number']) + '.png')
+            if not x['img_link']:
+                if x['retailer'] == 'intertoys':
+                    x.append('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png')
                 else:
-                    x.append('https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x[0]['page']) + '-' + str(x[0]['article_number']) + '.jpg')
+                    x.append('https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg')
             else:
-                x.append(x[0]['img_link'])
+                x.append(x['img_link'])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -345,14 +345,14 @@ def checksuggest(token, recipient, data,n):
                 "template_type":"generic",
                 "elements":[
                   {
-                    "title":x[0]['title'],
-                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
+                    "title":x['title'],
+                    "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
                     "image_url":x[2],
-                    "subtitle":x[0]['description'],
+                    "subtitle":x['description'],
                     "buttons":[
                       {
                         "type":"web_url",
-                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x[0]['page']),
+                        "url": "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
                         "title":"View Website"
                       }
                     ]
