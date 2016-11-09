@@ -323,7 +323,7 @@ def checksuggest(token, recipient, data,n):
 
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents[:n]
-        print(presents)
+        print(len(presents))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
         newpres = []
@@ -339,7 +339,7 @@ def checksuggest(token, recipient, data,n):
             newpres.append(x)
         presents = newpres
         print(len(presents))
-        print(presents[0])            
+        print(presents[0])
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
