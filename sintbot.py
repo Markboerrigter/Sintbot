@@ -329,11 +329,9 @@ def checksuggest(token, recipient, data,n):
         for x in presents:
             if not x['img_link']:
                 if x['retailer'] == 'intertoys':
-                    x.append('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png')
+                    x.update('https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png')
                 else:
-                    x.append('https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg')
-            else:
-                x.append(x['img_link'])
+                    x.update('https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg')
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
         data=json.dumps({
@@ -347,7 +345,7 @@ def checksuggest(token, recipient, data,n):
                   {
                     "title":x['title'],
                     "item_url":"https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page']),
-                    "image_url":x[2],
+                    "image_url":x['img_link'],
                     "subtitle":x['description'],
                     "buttons":[
                       {
