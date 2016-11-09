@@ -1082,19 +1082,11 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
                 if levenshtein(x[0]['title'], y[0]['title'])< 11:
                     levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
     final = []
-    # print(levs)
-    # for x in levs:
-    #     if x[2] < 11:
-    #         final.append([x[0],x[1]])
-
     twolist1 = [[(x, y), z] for [x, y, z] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
-
     twolist2 = [[x, y] for [x, y, z] in levs]
     twolist2 = [item for items in twolist2 for item in items]
-
     leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
-
     #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
     mGraph = nx.Graph()
     count = 0
@@ -1110,11 +1102,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     a = [x for [x,y] in a]
     finalScore = [x for x in chosenProducts if x[0]['_id'] in a] + finalScore[lenScores:]
     return finalScore[:2*n]
-    # else
-    # #
-    # # for x in finalScore[:lenScores]:
-    # #     if x[0]['_id'] in
-    # return finalScore[:2*n]
 
 x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
 

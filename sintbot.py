@@ -306,16 +306,21 @@ def getFeedback(data):
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
-        final_data = data['data']
-        geslacht = final_data['Gender'].split(' ')[1]
-        budget = (final_data['budget']).split('-')
-        age = str(final_data['Age']).split(' ')[0]
-        category = data['data']['type']
-        if 'product' in final_data:
-            idea = final_data['product']
-        else: idea = ''
-        presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)[n-N:n]
-        data['presents'] = presents
+        if data['secondchoice']:
+            presents = data['presents'][n:]
+        else:
+            final_data = data['data']
+            geslacht = final_data['Gender'].split(' ')[1]
+            budget = (final_data['budget']).split('-')
+            age = str(final_data['Age']).split(' ')[0]
+            category = data['data']['type']
+            if 'product' in final_data:
+                idea = final_data['product']
+            else: idea = ''
+
+            presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)[n-N:n]
+            data['presents'] = presents[:n]
+
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
         for x in presents:
@@ -519,19 +524,10 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
-    # r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-    # params={"access_token": PAT},
-    # data=json.dumps({
-    #   "recipient": {"id": sender},
-    #   "message": {"text": b
-    # }}),
-    # headers={'Content-type': 'application/json'})
-    # if r.status_code != requests.codes.ok:
-    # 	print r.text
     print("Incoming from %s: %s" % (sender, message))
-    typing('on', PAT, sender)
     postdashbot('human', payload)
     if not mg.findUser(sender):
+        typing('on', PAT, sender)
         user_info = getdata(sender)
         data = {}
         data['info'] = user_info
@@ -554,8 +550,6 @@ def handle_messages():
         data['intype'] = False
         data['trig'] = False
         data['token'] = random.choice(allValues(Tokens['Start']['New']))
-        # data['Stage'] = TokenStages[-2]
-        # data['token'] = random.choice(allValues(Tokens['feedback']))
         data['starter'] = ''
         data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
         data['data'] = {}
@@ -584,6 +578,7 @@ def handle_messages():
     else:
         data = mg.findUser(sender)
         if findword(message):
+            typing('on', PAT, sender)
             time.sleep(1.5)
             typing('off', PAT, sender)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -617,6 +612,7 @@ def handle_messages():
             data['trig'] = True
             mg.updateUser(recipient, data)
         elif triggered(message, sender):
+            typing('on', PAT, sender)
             print('Trigger send')
             typing('on', PAT, sender)
             time.sleep(1.5)
@@ -659,6 +655,7 @@ def handle_messages():
                 data['dolog'] = 'end'
                 mg.updateUser(recipient, data)
         elif mid != data['message-id']:
+            typing('on', PAT, sender)
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['log']['feedback'].update(getFeedback(data))
@@ -759,7 +756,6 @@ def send_message(token, recipient, text, data):
       if r.status_code != requests.codes.ok:
           	print r.text
       mg.updateUser(recipient, data)
-
   elif text == 'we weten de persoonlijkheid al':
       message = 'Weet je dit keer al wat je zoekt? :)'
       data['text'].append(('bot',message))
@@ -784,7 +780,6 @@ def send_message(token, recipient, text, data):
       if r.status_code != requests.codes.ok:
           	print r.text
       mg.updateUser(recipient, data)
-
   elif data['Stage'] == 'Personality':
     if not data['personQuestions']:
         message = 'Ah, leuk!'
@@ -908,7 +903,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        checksuggest(PAT, recipient, data,N+N)
+        checksuggest(PAT, recipient, data,N)
         typing('on', PAT, recipient)
         time.sleep(2)
         message = random.choice(presentmessage3)
@@ -981,7 +976,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        checksuggest(PAT, recipient, data,N)
+        checksuggest(PAT, recipient, data,0)
         message = random.choice(presentmessage3)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
