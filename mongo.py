@@ -1075,6 +1075,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         random.shuffle(copy)
         finalScore[:lenScores] = copy
     chosenProducts = finalScore[:lenScores]
+    print(chosenProducts)
     for x in chosenProducts:
         print(x[0]['article_number'])
     levs = []
@@ -1103,6 +1104,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     a = [x for [x,y] in a]
     finalScore = [x for x in chosenProducts if x[0]['_id'] in a] + finalScore[lenScores:]
     for x in finalScore[:20]:
+        print(x[0]['article_number'])
         print(x[0]['title'])
     return finalScore[:2*n]
 
