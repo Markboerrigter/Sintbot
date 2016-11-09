@@ -676,7 +676,7 @@ def send_message(token, recipient, text, data):
                 data['oldmessage'] = message
                 postdashbot('bot',(recipient,message, data['message-id']) )
                 typing('off', PAT, recipient)
-                r = requests.post("https:s://graph.facebook.com/v2.6/me/messages",
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                   params={"access_token": token},
                   data=json.dumps({
                     "recipient": {"id": recipient},
