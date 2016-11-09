@@ -326,12 +326,15 @@ def checksuggest(token, recipient, data,n):
         print(presents)
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         typing('off', PAT, recipient)
+        newpres = []
         for x in presents:
             if not x['img_link']:
                 if x['retailer'] == 'intertoys':
                     x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
                 else:
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
+            newpres.append(x)
+        presents = newpres
         print(len(presents))
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
