@@ -775,6 +775,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             	print r.text
+        typing('on', PAT, recipient)
         mg.updateUser(recipient, data)
         time.sleep(3)
     else:
@@ -791,6 +792,7 @@ def send_message(token, recipient, text, data):
     	data['oldmessage'] = message
     	postdashbot('bot',(recipient,message[1], data['message-id']) )
         typing('off', PAT, recipient)
+        print(message)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
