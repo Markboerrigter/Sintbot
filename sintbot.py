@@ -337,6 +337,8 @@ def checksuggest(token, recipient, data,n):
             newpres.append(x)
         presents = newpres[:N]
         print(len(presents))
+        for x in presents:
+            print(x['title'])
         print(presents[0])
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
