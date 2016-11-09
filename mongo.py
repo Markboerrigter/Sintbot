@@ -1013,7 +1013,7 @@ def findByAge(jaar):
         return 'Not found an article'
 
 def findRightProduct(geslacht, budget, age, category, idea,n):
-    # print((geslacht, budget, age, category, idea,n))
+    print((geslacht, budget, age, category, idea,n))
     idea = idea.lower()
     idea = idea.replace('een ', '').replace('de ', '' ).replace('het ', '')
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
@@ -1075,6 +1075,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         random.shuffle(copy)
         finalScore[:lenScores] = copy
     chosenProducts = finalScore[:lenScores]
+    for x in chosenProducts:
+        print(x[0]['title'])
+
     levs = []
     for x in chosenProducts:
         for y in chosenProducts:
@@ -1097,10 +1100,11 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     for item in leftover:
         mGraph.add_node(item)
     graphs = list(nx.connected_component_subgraphs(mGraph))
-
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
     finalScore = [x for x in chosenProducts if x[0]['_id'] in a] + finalScore[lenScores:]
+    for x in finalScore[:20]:
+        print(x[0]['title'])
     return finalScore[:2*n]
 
 x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
