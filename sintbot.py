@@ -309,7 +309,7 @@ def getFeedback(data):
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
         if data['secondchoice']:
-            presents = data['presents'][n-N:n]
+            presents = data['presents'][N:]
         else:
             final_data = data['data']
             geslacht = final_data['Gender'].split(' ')[1]
