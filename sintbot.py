@@ -549,8 +549,8 @@ def handle_messages():
         data['log']['text']= {'0':'first conversation'}
         data['log']['feedback']= []
         data['log']['data'] = {}
-        data['log']['personality'] = {}
-        data['log']['presents']= {}
+
+        data['log']['presents']= []
         data['dolog'] = ''
         data['secondchoice'] = False
         data['secondRow'] = False
@@ -677,7 +677,6 @@ def handle_messages():
                 print(data['presents'])
                 data['log']['presents'].append(data['presented'])
                 data['log']['data'].update(data['data'])
-                data['log']['data'].update(data['personality'])
                 data['presents'] = []
                 data['Stage'] = TokenStages[0]
                 data['text'] = []
