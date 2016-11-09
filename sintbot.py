@@ -720,7 +720,7 @@ def send_message(token, recipient, text, data):
       print('done')
   if data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
       findToken(recipient, data, text)
-  elif data['token'] == '1' and data['Stage'] == 'decisions':
+  elif data['Stage'] == 'decisions':
     if text.isdigit() and data['intype']:
         if int(text) in range(1,12):
             x = int(text)
