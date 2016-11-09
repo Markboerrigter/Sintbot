@@ -291,6 +291,7 @@ def getResponse(recipient, text, data):
   return response, data
 
 def getFeedback(data):
+    print(data['data'])
     print(data['data']['Feedback'])
     feedback = data['data']['Feedback']
     if feedback == '\U0001f600':
@@ -535,7 +536,7 @@ def handle_messages():
         data['info'] = user_info
         data['log'] = {}
         data['log']['text']= {'0':'first conversation'}
-        data['log']['feedback']= {}
+        data['log']['feedback']= []
         data['log']['data'] = {}
         data['log']['personality'] = {}
         data['log']['presents']= {}
@@ -660,7 +661,7 @@ def handle_messages():
             typing('on', PAT, sender)
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                data['log']['feedback'].update(getFeedback(data))
+                data['log']['feedback'].append(getFeedback(data))
                 print(data['presents'])
                 data['log']['presents'].update(data['presents'])
                 data['log']['data'].update(data['data'])
