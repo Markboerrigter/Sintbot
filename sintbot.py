@@ -711,7 +711,7 @@ def handle_messages():
             typing('on', PAT, sender)
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                data['log']['feedback'].append(getFeedback(data))
+                data['log']['feedback'].append(data['data']['Feedback'])
                 print(len(data['presents']))
                 data['log']['presents'].append(data['presented'])
                 data['log']['data'].update(data['data'])
