@@ -1021,10 +1021,12 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     if len(budget) >1:
         budgetQuery = findFromRange(budget[0],budget[1])
     else:
+        print(budget)
         if int(budget[0]):
             budgetQuery = findAbovevalue(budget[0])
-        budget = [int(s) for s in budget.split() if s.isdigit()]
-        budgetQuery = findAbovevalue(budget[0])
+        else:
+            budget = [int(s) for s in budget.split() if s.isdigit()]
+            budgetQuery = findAbovevalue(budget[0])
     ageQuery = findByAge(age)
     if idea == '':
         ideaStem = 'jaa'
