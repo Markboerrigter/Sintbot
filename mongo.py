@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import datetime
 from difflib import SequenceMatcher
 import kpss
+from stringscore import liquidmetal
 import random
 import numpy as np
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
@@ -1012,6 +1013,9 @@ def findByAge(jaar):
     except Exception, e:
         return 'Not found an article'
 
+def score(x,y):
+    return float(levenshtein(x,y)/float((len(x)+len(y))/2))
+
 def findRightProduct(geslacht, budget, age, category, idea,n):
     print((geslacht, budget, age, category, idea,n))
     idea = idea.lower()
@@ -1021,12 +1025,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     if len(budget) >1:
         budgetQuery = findFromRange(budget[0],budget[1])
     else:
-        print(budget)
-        if int(budget[0]):
-            budgetQuery = findAbovevalue(budget[0])
-        else:
-            budget = [int(s) for s in budget.split() if s.isdigit()]
-            budgetQuery = findAbovevalue(budget[0])
+        budget = [int(s) for s in str.split() if s.isdigit()]
+        budgetQuery = findAbovevalue(budget)
     ageQuery = findByAge(age)
     if idea == '':
         ideaStem = 'jaa'
@@ -1082,50 +1082,63 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         copy = finalScore[:lenScores]
         random.shuffle(copy)
         finalScore[:lenScores] = copy
-    if lenScores<10:
-        lenScores = 10
+    if lenScores<30:
+        lenScores = 30
     chosenProducts = finalScore[:lenScores]
     if lenScores>50:
         lenScores = 50
     chosenProducts = chosenProducts[:lenScores]
     levs = []
     # print('hoi')
-    # print(len(chosenProducts))
+    print(len(chosenProducts))
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
                 # print('ja')
-                if levenshtein(x[0]['title'], y[0]['title']) < 11:
-                    levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
+                levs.append([x[0]['title'], y[0]['title'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
     final = []
-    # print('hoi')
-    twolist1 = [[(x, y), z] for [x, y, z] in levs]
+    for x in levs:
+        print(x)
+    # print(levs)
+    # priint('hoi')
+    twolist1 = [[(x, y), z] for [x, y, z,s] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
-    twolist2 = [[x, y] for [x, y, z] in levs]
+    twolist2 = [[x, y] for [x, y, z,s] in levs]
     twolist2 = [item for items in twolist2 for item in items]
     leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
     #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
     mGraph = nx.Graph()
     # print('hoi')
     count = 0
-    for [x, y, z] in levs:
-        if z > 0:
+    # print(levs)
+    for [x, y, z, s] in levs:
+        if z <0.7 or s >0.5:
             count += 1
             mGraph.add_edge(x, y, weight=z)
     for item in leftover:
         mGraph.add_node(item)
     graphs = list(nx.connected_component_subgraphs(mGraph))
-    a = (sorted(map(sorted, mGraph.edges())))
-    a = [x for [x,y] in a]
-    # print('hoi')
-    finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
-    # for x in finalScore[:20]:
-    # print(finalScore)
-    # #     print(x['article_number'])
-    # print(len(finalScore), type(finalScore))
+    l = (sorted(map(sorted, mGraph.edges())))
+    # print(l)
+    a = [x for [x,y] in l]
+    b = [y for [x,y] in l]
+    c = a+b
+    c = list(set(c))
+    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
+    #     print(i['title'])
+    for x in a:
+        for y in b:
+            if [x,y] in l:
+                if y in c:
+                    c.remove(y)
+    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
+    #     print(i['title'])
+    finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
-# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
+x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
+for i in x:
+    print(i['title'])
 
 
 def printprod(L):

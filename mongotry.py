@@ -5,6 +5,7 @@ from pymongo import MongoClient
 import datetime
 from difflib import SequenceMatcher
 import kpss
+from stringscore import liquidmetal
 import random
 import numpy as np
 client = MongoClient('mongodb://go:go1234@95.85.15.38:27017/toys')
@@ -1012,6 +1013,9 @@ def findByAge(jaar):
     except Exception, e:
         return 'Not found an article'
 
+def score(x,y):
+    return float(levenshtein(x,y)/float((len(x)+len(y))/2))
+
 def findRightProduct(geslacht, budget, age, category, idea,n):
     print((geslacht, budget, age, category, idea,n))
     idea = idea.lower()
@@ -1078,8 +1082,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         copy = finalScore[:lenScores]
         random.shuffle(copy)
         finalScore[:lenScores] = copy
-    if lenScores<10:
-        lenScores = 20
+    if lenScores<30:
+        lenScores = 30
     chosenProducts = finalScore[:lenScores]
     if lenScores>50:
         lenScores = 50
@@ -1091,57 +1095,45 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         for y in chosenProducts:
             if x!=y:
                 # print('ja')
-                if levenshtein(x[0]['title'], y[0]['title']) < 11:
-                    levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
+                levs.append([x[0]['title'], y[0]['title'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
     final = []
-    # print('hoi')
-    twolist1 = [[(x, y), z] for [x, y, z] in levs]
+    for x in levs:
+        print(x)
+    # print(levs)
+    # priint('hoi')
+    twolist1 = [[(x, y), z] for [x, y, z,s] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
-    twolist2 = [[x, y] for [x, y, z] in levs]
+    twolist2 = [[x, y] for [x, y, z,s] in levs]
     twolist2 = [item for items in twolist2 for item in items]
     leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
     #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
     mGraph = nx.Graph()
     # print('hoi')
     count = 0
-    for [x, y, z] in levs:
-        if z > 0:
+    # print(levs)
+    for [x, y, z, s] in levs:
+        if z <0.7 or s >0.5:
             count += 1
             mGraph.add_edge(x, y, weight=z)
     for item in leftover:
         mGraph.add_node(item)
     graphs = list(nx.connected_component_subgraphs(mGraph))
     l = (sorted(map(sorted, mGraph.edges())))
-    print(l)
+    # print(l)
     a = [x for [x,y] in l]
     b = [y for [x,y] in l]
     c = a+b
-    c = [x for x in c if c.count(x) == 1]
-    print(c)
+    c = list(set(c))
+    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
+    #     print(i['title'])
     for x in a:
         for y in b:
             if [x,y] in l:
-                print(y)
                 if y in c:
                     c.remove(y)
-    print(c)
-
-    # d = []
-    # for x in c:
-    #     new = []
-    #     if x not in d:
-    #         for i in d:
-    #             if x in a:
-    #                 if b[a.index(x)] not in d:
-    #                     new.append(x)
-    #     d.extend(new)
-    # print(d)
-    # print('hoi')
+    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
+    #     print(i['title'])
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
-    # for x in finalScore[:20]:
-    # print(finalScore)
-    # #     print(x['article_number'])
-    # print(len(finalScore), type(finalScore))
     return finalScore[:n]
 
 x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
