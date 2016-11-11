@@ -249,15 +249,16 @@ def getInformation(response, tekst):
     print(feedback)
     x = 0
     out  = {}
+
     if feedback == '\U0001f600':
         x = '5'
-    if feedback == '\U0001F60A':
+    if feedback == '\U0001f60A':
         x = '4'
-    if feedback == '\U0001F610':
+    if feedback == '\U0001f610':
         x = '3'
-    if feedback == '\U0001F614':
+    if feedback == '\U0001f614':
         x = '2'
-    if feedback == '\U0001F620':
+    if feedback == '\U0001f620':
         x = '1'
     if int(x) > 0:
         out['Feedback'] = x
@@ -315,8 +316,6 @@ def getFeedback(data):
         return '2'
     if feedback == '\U0001F620':
         return '1'
-
-
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
@@ -402,6 +401,7 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
+          print(data['Stage'])
           mg.updateUser(recipient, data)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
