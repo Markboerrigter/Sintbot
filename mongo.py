@@ -1037,6 +1037,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
     finalScore = []
+    print('hoi')
     for x in uniqueProducts:
         a = 0
         if x[0] in titleQuery:
@@ -1078,9 +1079,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     if lenScores<10:
         lenScores = 10
     chosenProducts = finalScore[:lenScores]
-    # print(chosenProducts)
-    # for x in chosenProducts:
-    #     print(x[0]['article_number'])
     levs = []
     for x in chosenProducts:
         for y in chosenProducts:
