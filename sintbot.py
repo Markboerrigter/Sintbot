@@ -613,7 +613,7 @@ def handle_messages():
                 mg.updateUser(recipient, data)
     else:
         data = mg.findUser(sender)
-        print(data['Stage'])
+        print(data['Stage'],data)
 
         if findword(message):
             typing('on', PAT, sender)
@@ -757,6 +757,9 @@ def send_message(token, recipient, text, data):
   print(data['Stage'])
   if data['dolog'] == 'end':
       print('done')
+  # elif message == 'Get started' or message =='Aan de slag':
+  #     data['dolog'] == 'end'
+  #     mg.updateUser(recipient, data)
   elif data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
       data['token'] = '1'
       findToken(recipient, data, text)
@@ -1075,7 +1078,6 @@ def send_message(token, recipient, text, data):
     mg.updateUser(recipient, data)
     findToken(recipient, data, text)
   else:
-
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
     print(data['Stage'], response)
