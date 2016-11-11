@@ -339,7 +339,7 @@ def checksuggest(token, recipient, data,n):
                 x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
                 if not  x['img_link'].startswith('http'):
                     print('no pic')
-                    x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.png'})
+                    x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
             else:
                 x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
                 if not x['img_link'].startswith('http'):
