@@ -1075,8 +1075,10 @@ def send_message(token, recipient, text, data):
     mg.updateUser(recipient, data)
     findToken(recipient, data, text)
   else:
+
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
+    print(data['Stage'], response)
     print(data['data'])
     time1 = time.time()
     print('getresponse',time1-time0)
@@ -1086,6 +1088,7 @@ def send_message(token, recipient, text, data):
     	print('stopthing',time2 - time1)
     	time1 = time2
         mg.updateUser(recipient, data)
+
     elif 'msg' in response and response['msg'] != data['oldmessage']:
         data['text'].append(('bot',response['msg']))
         data['oldmessage'] = response['msg']
