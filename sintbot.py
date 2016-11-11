@@ -405,13 +405,19 @@ def findToken(recipient, data, text):
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
       else:
+          message = 'Oke, dan gaan we samen op zoek!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
           params={"access_token": PAT},
           data=json.dumps({
           "recipient": {"id": recipient},
-          "message": {"text": 'Oke, dan gaan we samen op zoek!'}
+          "message": {"text": message}
           }),
           headers={'Content-type': 'application/json'})
+        #   data['oldmessage'] = message
           if r.status_code != requests.codes.ok:
           	print r.text
           typing('on', PAT, recipient)
@@ -451,12 +457,17 @@ def findToken(recipient, data, text):
       if isinstance(data['token'], dict):
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           data['starter'] = get_keys(Tokens, data['token'])[-1]
+      message = 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'
       data['Stage'] = NextStage
+      data['text'].append(('bot',message))
+      data['oldmessage'] = message
+      postdashbot('bot',(recipient,message, data['message-id']) )
+      typing('off', PAT, recipient)
       r = requests.post("https://graph.facebook.com/v2.6/me/messages",
       params={"access_token": PAT},
       data=json.dumps({
       "recipient": {"id": recipient},
-      "message": {"text": 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'}
+      "message": {"text": message}
       }),
       headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
@@ -607,22 +618,33 @@ def handle_messages():
             typing('on', PAT, sender)
             time.sleep(1.5)
             typing('off', PAT, sender)
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'}
-            }),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-            	print r.text
-            time.sleep(1.5)
+            message = 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'
+            data['Stage'] = NextStage
+            data['text'].append(('bot',message))
+            data['oldmessage'] = message
+            postdashbot('bot',(sender,message, data['message-id']) )
             typing('off', PAT, sender)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": PAT},
             data=json.dumps({
               "recipient": {"id": sender},
-              "message": {"text": 'Wil je nu verder met het zoeken van een leuk kado?',
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+            	print r.text
+            time.sleep(1.5)
+            message = 'Wil je nu verder met het zoeken van een leuk kado?'
+            data['Stage'] = NextStage
+            data['text'].append(('bot',message))
+            data['oldmessage'] = message
+            postdashbot('bot',(sender,message, data['message-id']) )
+            typing('off', PAT, sender)
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": PAT},
+            data=json.dumps({
+              "recipient": {"id": sender},
+              "message": {"text": message,
               "quick_replies":[{
                              "content_type":"text",
                              "title":'Ja',
@@ -642,6 +664,11 @@ def handle_messages():
             print('Trigger send')
             typing('on', PAT, sender)
             time.sleep(1.5)
+            message = 'Wil je nu verder met het zoeken van een leuk kado?'
+            data['Stage'] = NextStage
+            data['text'].append(('bot',message))
+            data['oldmessage'] = message
+            postdashbot('bot',(sender,message, data['message-id']) )
             typing('off', PAT, sender)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": PAT},
