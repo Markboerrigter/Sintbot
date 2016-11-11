@@ -1096,7 +1096,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         for y in chosenProducts:
             if x!=y:
                 # print('ja')
-                levs.append([x[0]['title'], y[0]['title'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
+                levs.append([x[0]['_id'], y[0]['_id'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
     final = []
     twolist1 = [[(x, y), z] for [x, y, z,s] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
@@ -1115,6 +1115,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     graphs = list(nx.connected_component_subgraphs(mGraph))
     l = (sorted(map(sorted, mGraph.edges())))
     # print(l)
+
     a = [x for [x,y] in l]
     b = [y for [x,y] in l]
     c = a+b
@@ -1124,12 +1125,17 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
             if [x,y] in l:
                 if y in c:
                     c.remove(y)
+    u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
+    # print(u)
+    # for i in u:
+    #     print(i)
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
+# (u'jongen', [u'30', u'45'], '14', u'Razende racers en stoere stuurders', u'Een Drone', 9)
+x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', 'Een drone', 9)
 
-# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
-
-
+for i in x:
+    print(i['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
