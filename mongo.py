@@ -1084,6 +1084,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
+                print('ja')
                 if levenshtein(x[0]['title'], y[0]['title']) < 11:
                     levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
     final = []
