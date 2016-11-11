@@ -246,10 +246,8 @@ def mergeAns(response, witToken, session_id, question):
 
 def getInformation(response, tekst):
     feedback = tekst
-    print(feedback)
     x = 0
     out  = {}
-
     if feedback == '\U0001f600':
         x = '5'
     if feedback == '\U0001f60a':
@@ -391,7 +389,6 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
-  print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
@@ -402,7 +399,6 @@ def findToken(recipient, data, text):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
-          print(data['Stage'])
           mg.updateUser(recipient, data)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
@@ -614,8 +610,6 @@ def handle_messages():
                 mg.updateUser(recipient, data)
     else:
         data = mg.findUser(sender)
-        print(data['Stage'],data)
-
         if findword(message):
             typing('on', PAT, sender)
             time.sleep(1.5)
@@ -714,7 +708,6 @@ def handle_messages():
             if data['dolog'] == 'end':
                 data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['log']['feedback'].append(data['data']['Feedback'])
-                print(len(data['presents']))
                 data['log']['presents'].append(data['presented'])
                 data['log']['data'].update(data['data'])
                 data['presents'] = []
@@ -755,7 +748,6 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  print(data['Stage'], data['oldmessage'], data['token'], text)
   if data['dolog'] == 'end':
       print('done')
   # elif message == 'Get started' or message =='Aan de slag':
@@ -1081,8 +1073,6 @@ def send_message(token, recipient, text, data):
   else:
     time0 = time.time()
     response, data = getResponse(recipient, text, data)
-    print(data['Stage'], response)
-    print(data['data'])
     time1 = time.time()
     print('getresponse',time1-time0)
     if response['type'] == 'stop' or response['msg'] == data['oldmessage']:
