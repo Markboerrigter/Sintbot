@@ -246,6 +246,7 @@ def mergeAns(response, witToken, session_id, question):
 
 def getInformation(response, tekst):
     feedback = tekst
+    print(feedback)
     x = 0
     out  = {}
     if feedback == '\U0001f600':
@@ -258,7 +259,7 @@ def getInformation(response, tekst):
         x = '2'
     if feedback == '\U0001F620':
         x = '1'
-    if x > 0:
+    if int(x) > 0:
         out['Feedback'] = x
     if 'entities' in response:
         entities = response['entities']
