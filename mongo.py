@@ -1082,6 +1082,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     chosenProducts = finalScore[:lenScores]
     if lenScores>50:
         lenScores = 50
+    chosenProducts = chosenProducts[:lenScores]
     levs = []
     print('hoi')
     print(len(chosenProducts))
