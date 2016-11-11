@@ -245,9 +245,22 @@ def mergeAns(response, witToken, session_id, question):
         return response
 
 def getInformation(response, tekst):
+    feedback = tekst
+    x = 0
+    if feedback == '\U0001f600':
+        x = '5'
+    if feedback == '\U0001F60A':
+        x = '4'
+    if feedback == '\U0001F610':
+        x = '3'
+    if feedback == '\U0001F614':
+        x = '2'
+    if feedback == '\U0001F620':
+        x = '1'
+    if x > 0:
+        out['Feedback'] = x
     if 'entities' in response:
         entities = response['entities']
-        print(entities)
         out  = {}
         if 'hobby' in entities:
             for x in entities['hobby']:
@@ -267,8 +280,8 @@ def getInformation(response, tekst):
             out['typeChild'] = entities['typeChild'][0]['value']
         if 'distinction' in entities and entities['distinction'][0]['confidence'] > 0.8 and entities['distinction'][0]['value'] in ['Ja', 'Nee']:
             out['distinction'] = entities['distinction'][0]['value']
-        if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.6:
-            out['Feedback'] = entities['Feedback'][0]['value']
+        # if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.6:
+        #     out['Feedback'] = entities['Feedback'][0]['value']
         return out
     else:
         return []
@@ -291,8 +304,6 @@ def getResponse(recipient, text, data):
   return response, data
 
 def getFeedback(data):
-    print(data['data'])
-    print(data['data']['Feedback'])
     feedback = data['data']['Feedback']
     if feedback == '\U0001f600':
         return '5'
