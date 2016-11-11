@@ -559,182 +559,188 @@ below the receive and send functions can be found.
 def handle_messages():
   payload = request.get_data()
   for sender, message, mid, recipient in messaging_events(payload) :
-    print("Incoming from %s: %s" % (sender, message))
-    postdashbot('human', payload)
-    if not mg.findUser(sender):
-        typing('on', PAT, sender)
-        user_info = getdata(sender)
-        data = {}
-        data['info'] = user_info
-        data['log'] = {}
-        data['log']['text']= {'0':'first conversation'}
-        data['log']['feedback']= []
-        data['log']['data'] = {}
-        data['log']['presents']= []
-        data['dolog'] = ''
-        data['secondchoice'] = False
-        data['secondRow'] = False
-        data['Stage'] = TokenStages[0]
-        data['text'] = []
-        data['personQuestions'] = []
-        data['message-id'] = mid
-        data['personality'] = []
-        data['oldincoming'] = message
-        data['oldmessage'] = ''
-        data['intype'] = False
-        data['trig'] = False
-        data['presented'] = []
-        data['token'] = random.choice(allValues(Tokens['Start']['New']))
-        data['starter'] = ''
-        data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-        data['data'] = {}
-        mg.insertUser(sender,data)
-        typing('on', PAT, sender)
-        data = send_message(PAT, sender, message,data)
-        mg.insertUser(sender,data)
-        if data['trig']:
-            if text == 'Ja':
-                send_message(PAT, sender, data['oldmessage'],data)
-            else:
-                typing('on', PAT, sender)
-                time.sleep(1.5)
-                typing('off', PAT, sender)
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                params={"access_token": PAT},
-                data=json.dumps({
-                  "recipient": {"id": sender},
-                  "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
-                }}),
-                headers={'Content-type': 'application/json'})
-                if r.status_code != requests.codes.ok:
-                	print r.text
-                data['dolog'] = 'end'
-                mg.updateUser(recipient, data)
-    else:
-        data = mg.findUser(sender)
-        if findword(message):
+    try:
+        print("Incoming from %s: %s" % (sender, message))
+        postdashbot('human', payload)
+        if not mg.findUser(sender):
             typing('on', PAT, sender)
-            time.sleep(1.5)
-            typing('off', PAT, sender)
-            message = 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'
-            data['text'].append(('bot',message))
-            data['oldmessage'] = message
-            postdashbot('bot',(sender,message, data['message-id']) )
-            typing('off', PAT, sender)
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": message}
-            }),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-            	print r.text
-            time.sleep(1.5)
-            message = 'Wil je nu verder met het zoeken van een leuk kado?'
-            data['text'].append(('bot',message))
-            data['oldmessage'] = message
-            postdashbot('bot',(sender,message, data['message-id']) )
-            typing('off', PAT, sender)
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": message,
-              "quick_replies":[{
-                             "content_type":"text",
-                             "title":'Ja',
-                             "payload":'Ja'
-                           },{	                "content_type":"text",
-                                              "title":'Nee',
-                                              "payload":'Nee'
-                                             }]}
-            }),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-            	print r.text
-            data['trig'] = True
-            mg.updateUser(recipient, data)
-        elif triggered(message, sender):
-            typing('on', PAT, sender)
-            print('Trigger send')
-            typing('on', PAT, sender)
-            time.sleep(1.5)
-            message = 'Wil je nu verder met het zoeken van een leuk kado?'
-            data['text'].append(('bot',message))
-            data['oldmessage'] = message
-            postdashbot('bot',(sender,message, data['message-id']) )
-            typing('off', PAT, sender)
-            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": PAT},
-            data=json.dumps({
-              "recipient": {"id": sender},
-              "message": {"text": 'Wil je nu verder met het zoeken van een leuk kado?',
-              "quick_replies":[{
-                             "content_type":"text",
-                             "title":'Ja',
-                             "payload":'Ja'
-                           },{	                "content_type":"text",
-                                              "title":'Nee',
-                                              "payload":'Nee'
-                                             }]}
-            }),
-            headers={'Content-type': 'application/json'})
-            if r.status_code != requests.codes.ok:
-            	print r.text
-            data['trig'] = True
-            mg.updateUser(recipient, data)
-        elif data['trig']:
-            if text == 'Ja':
-                send_message(PAT, sender, data['oldmessage'],data)
-            else:
-                typing('on', PAT, sender)
-                time.sleep(1.5)
-
-                typing('off', PAT, sender)
-                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                params={"access_token": PAT},
-                data=json.dumps({
-                  "recipient": {"id": sender},
-                  "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
-                }}),
-                headers={'Content-type': 'application/json'})
-                if r.status_code != requests.codes.ok:
-                	print r.text
-                data['dolog'] = 'end'
-                mg.updateUser(recipient, data)
-        elif mid != data['message-id']:
-            typing('on', PAT, sender)
-            if data['dolog'] == 'end':
-                if 'Feedback' in data['data']:
-                    data['log']['feedback'].append(data['data']['Feedback'])
-                else:
-                    data['log']['feedback'].append('0')
-                if data['data']:
-
-                    data['log']['presents'].append(data['presented'])
-                    data['log']['data'].update(data['data'])
-                    data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
-                data['presents'] = []
-                data['Stage'] = TokenStages[0]
-                data['text'] = []
-                data['presented'] = []
-                data['dolog'] = ''
-                data['trig'] = False
-                data['secondRow'] = False
-                data['token'] = '2'
-                data['starter'] = ''
-                data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
-                data['data'] = {}
-                data['secondchoice'] = False
-                data['intype'] = False
-                data['personQuestions'] = []
-            data['text'].append(('user',message))
+            user_info = getdata(sender)
+            data = {}
+            data['info'] = user_info
+            data['log'] = {}
+            data['log']['text']= {'0':'first conversation'}
+            data['log']['feedback']= []
+            data['log']['data'] = {}
+            data['log']['presents']= []
+            data['dolog'] = ''
+            data['secondchoice'] = False
+            data['secondRow'] = False
+            data['Stage'] = TokenStages[0]
+            data['text'] = []
+            data['personQuestions'] = []
             data['message-id'] = mid
+            data['personality'] = []
             data['oldincoming'] = message
+            data['oldmessage'] = ''
+            data['intype'] = False
+            data['trig'] = False
+            data['presented'] = []
+            data['token'] = random.choice(allValues(Tokens['Start']['New']))
+            data['starter'] = ''
+            data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+            data['data'] = {}
+            mg.insertUser(sender,data)
+            typing('on', PAT, sender)
+            data = send_message(PAT, sender, message,data)
+            mg.insertUser(sender,data)
+            if data['trig']:
+                if text == 'Ja':
+                    send_message(PAT, sender, data['oldmessage'],data)
+                else:
+                    typing('on', PAT, sender)
+                    time.sleep(1.5)
+                    typing('off', PAT, sender)
+                    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                    params={"access_token": PAT},
+                    data=json.dumps({
+                      "recipient": {"id": sender},
+                      "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
+                    }}),
+                    headers={'Content-type': 'application/json'})
+                    if r.status_code != requests.codes.ok:
+                    	print r.text
+                    data['dolog'] = 'end'
+                    mg.updateUser(recipient, data)
+        else:
+            data = mg.findUser(sender)
+            if findword(message):
+                typing('on', PAT, sender)
+                time.sleep(1.5)
+                typing('off', PAT, sender)
+                message = 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'
+                data['text'].append(('bot',message))
+                data['oldmessage'] = message
+                postdashbot('bot',(sender,message, data['message-id']) )
+                typing('off', PAT, sender)
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": PAT},
+                data=json.dumps({
+                  "recipient": {"id": sender},
+                  "message": {"text": message}
+                }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                	print r.text
+                time.sleep(1.5)
+                message = 'Wil je nu verder met het zoeken van een leuk kado?'
+                data['text'].append(('bot',message))
+                data['oldmessage'] = message
+                postdashbot('bot',(sender,message, data['message-id']) )
+                typing('off', PAT, sender)
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": PAT},
+                data=json.dumps({
+                  "recipient": {"id": sender},
+                  "message": {"text": message,
+                  "quick_replies":[{
+                                 "content_type":"text",
+                                 "title":'Ja',
+                                 "payload":'Ja'
+                               },{	                "content_type":"text",
+                                                  "title":'Nee',
+                                                  "payload":'Nee'
+                                                 }]}
+                }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                	print r.text
+                data['trig'] = True
+                mg.updateUser(recipient, data)
+            elif triggered(message, sender):
+                typing('on', PAT, sender)
+                print('Trigger send')
+                typing('on', PAT, sender)
+                time.sleep(1.5)
+                message = 'Wil je nu verder met het zoeken van een leuk kado?'
+                data['text'].append(('bot',message))
+                data['oldmessage'] = message
+                postdashbot('bot',(sender,message, data['message-id']) )
+                typing('off', PAT, sender)
+                r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": PAT},
+                data=json.dumps({
+                  "recipient": {"id": sender},
+                  "message": {"text": 'Wil je nu verder met het zoeken van een leuk kado?',
+                  "quick_replies":[{
+                                 "content_type":"text",
+                                 "title":'Ja',
+                                 "payload":'Ja'
+                               },{	                "content_type":"text",
+                                                  "title":'Nee',
+                                                  "payload":'Nee'
+                                                 }]}
+                }),
+                headers={'Content-type': 'application/json'})
+                if r.status_code != requests.codes.ok:
+                	print r.text
+                data['trig'] = True
+                mg.updateUser(recipient, data)
+            elif data['trig']:
+                if text == 'Ja':
+                    send_message(PAT, sender, data['oldmessage'],data)
+                else:
+                    typing('on', PAT, sender)
+                    time.sleep(1.5)
+
+                    typing('off', PAT, sender)
+                    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                    params={"access_token": PAT},
+                    data=json.dumps({
+                      "recipient": {"id": sender},
+                      "message": {"text": 'Oke! Toch bedankt voor het fijne gesprek en veel plezier tijdens pakjesavond!'
+                    }}),
+                    headers={'Content-type': 'application/json'})
+                    if r.status_code != requests.codes.ok:
+                    	print r.text
+                    data['dolog'] = 'end'
+                    mg.updateUser(recipient, data)
+            elif mid != data['message-id']:
+                typing('on', PAT, sender)
+                if data['dolog'] == 'end':
+                    if 'Feedback' in data['data']:
+                        data['log']['feedback'].append(data['data']['Feedback'])
+                    else:
+                        data['log']['feedback'].append('0')
+                    if data['data']:
+
+                        data['log']['presents'].append(data['presented'])
+                        data['log']['data'].update(data['data'])
+                        data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                    data['presents'] = []
+                    data['Stage'] = TokenStages[0]
+                    data['text'] = []
+                    data['presented'] = []
+                    data['dolog'] = ''
+                    data['trig'] = False
+                    data['secondRow'] = False
+                    data['token'] = '2'
+                    data['starter'] = ''
+                    data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
+                    data['data'] = {}
+                    data['secondchoice'] = False
+                    data['intype'] = False
+                    data['personQuestions'] = []
+                data['text'].append(('user',message))
+                data['message-id'] = mid
+                data['oldincoming'] = message
+                mg.updateUser(recipient, data)
+                data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
-            # data = send_message(PAT, sender, message,data)
-        mg.updateUser(recipient, data)
+    except KeyboardInterrupt:
+        raise
+    except:
+        print "Caught it!"
+        raise
   return "ok", 200
 
 def messaging_events(payload):
