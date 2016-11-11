@@ -617,7 +617,6 @@ def handle_messages():
             time.sleep(1.5)
             typing('off', PAT, sender)
             message = 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'
-            data['Stage'] = NextStage
             data['text'].append(('bot',message))
             data['oldmessage'] = message
             postdashbot('bot',(sender,message, data['message-id']) )
