@@ -1134,8 +1134,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
 # (u'jongen', [u'30', u'45'], '14', u'Razende racers en stoere stuurders', u'Een Drone', 9)
 # x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', 'Een drone', 9)
 
-for i in x:
-    print(i['title'])
+# for i in x:
+#     print(i['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
