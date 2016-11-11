@@ -1037,7 +1037,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
     finalScore = []
-    print('hoi')
+    # print('hoi')
     for x in uniqueProducts:
         a = 0
         if x[0] in titleQuery:
@@ -1072,7 +1072,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
     lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])
     finalScore = finalScore[:max(100,lenScores)]
-    print(lenScores)
+    # print(lenScores)
     if lenScores >3:
         copy = finalScore[:lenScores]
         random.shuffle(copy)
@@ -1084,8 +1084,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         lenScores = 50
     chosenProducts = chosenProducts[:lenScores]
     levs = []
-    print('hoi')
-    print(len(chosenProducts))
+    # print('hoi')
+    # print(len(chosenProducts))
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
@@ -1093,7 +1093,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
                 if levenshtein(x[0]['title'], y[0]['title']) < 11:
                     levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
     final = []
-    print('hoi')
+    # print('hoi')
     twolist1 = [[(x, y), z] for [x, y, z] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
     twolist2 = [[x, y] for [x, y, z] in levs]
@@ -1101,7 +1101,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
     #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
     mGraph = nx.Graph()
-    print('hoi')
+    # print('hoi')
     count = 0
     for [x, y, z] in levs:
         if z > 0:
@@ -1112,12 +1112,12 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     graphs = list(nx.connected_component_subgraphs(mGraph))
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
-    print('hoi')
+    # print('hoi')
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
     # for x in finalScore[:20]:
-    print(finalScore)
-    #     print(x['article_number'])
-    print(len(finalScore), type(finalScore))
+    # print(finalScore)
+    # #     print(x['article_number'])
+    # print(len(finalScore), type(finalScore))
     return finalScore[:n]
 
 # x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
