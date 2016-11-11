@@ -1021,7 +1021,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     if len(budget) >1:
         budgetQuery = findFromRange(budget[0],budget[1])
     else:
-        budget = [int(s) for s in budget.split() if s.isdigit()]
+        budget = [int(s) for s in str.split() if s.isdigit()]
         budgetQuery = findAbovevalue(budget)
     ageQuery = findByAge(age)
     if idea == '':
@@ -1079,14 +1079,14 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         random.shuffle(copy)
         finalScore[:lenScores] = copy
     if lenScores<10:
-        lenScores = 10
+        lenScores = 20
     chosenProducts = finalScore[:lenScores]
     if lenScores>50:
         lenScores = 50
     chosenProducts = chosenProducts[:lenScores]
     levs = []
     # print('hoi')
-    # print(len(chosenProducts))
+    print(len(chosenProducts))
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
@@ -1111,17 +1111,42 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     for item in leftover:
         mGraph.add_node(item)
     graphs = list(nx.connected_component_subgraphs(mGraph))
-    a = (sorted(map(sorted, mGraph.edges())))
-    a = [x for [x,y] in a]
+    l = (sorted(map(sorted, mGraph.edges())))
+    print(l)
+    a = [x for [x,y] in l]
+    b = [y for [x,y] in l]
+    c = a+b
+    c = [x for x in c if c.count(x) == 1]
+    print(c)
+    for x in a:
+        for y in b:
+            if [x,y] in l:
+                print(y)
+                if y in c:
+                    c.remove(y)
+    print(c)
+
+    # d = []
+    # for x in c:
+    #     new = []
+    #     if x not in d:
+    #         for i in d:
+    #             if x in a:
+    #                 if b[a.index(x)] not in d:
+    #                     new.append(x)
+    #     d.extend(new)
+    # print(d)
     # print('hoi')
-    finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
+    finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     # for x in finalScore[:20]:
     # print(finalScore)
     # #     print(x['article_number'])
     # print(len(finalScore), type(finalScore))
     return finalScore[:n]
 
-# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
+x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
+for i in x:
+    print(i['title'])
 
 
 def printprod(L):
