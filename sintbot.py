@@ -728,7 +728,7 @@ def handle_messages():
             data['message-id'] = mid
             data['oldincoming'] = message
             mg.updateUser(recipient, data)
-            data = send_message(PAT, sender, message,data)
+            # data = send_message(PAT, sender, message,data)
         mg.updateUser(recipient, data)
   return "ok", 200
 
