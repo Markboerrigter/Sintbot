@@ -344,7 +344,7 @@ def checksuggest(token, recipient, data,n):
                 x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
                 if not x['img_link'].startswith('http'):
                     print('no pic')
-                    x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
+                    x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
             newpres.append(x)
         presents = newpres[:N]
         # print(len(presents))
@@ -391,12 +391,13 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
-  # print(Stage)
+  print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
+          data['oldmessage'] = ''
           if isinstance(data['token'], dict):
               data['token'] = random.choice(allValues(Tokens[NextStage]))
               data['starter'] = get_keys(Tokens, data['token'])[-1]
