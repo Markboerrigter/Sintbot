@@ -754,7 +754,7 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-  print(data['Stage'])
+  print(data['Stage'], data['oldmessage'], data['token'], text)
   if data['dolog'] == 'end':
       print('done')
   # elif message == 'Get started' or message =='Aan de slag':
