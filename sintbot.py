@@ -252,7 +252,7 @@ def getInformation(response, tekst):
 
     if feedback == '\U0001f600':
         x = '5'
-    if feedback == '\U0001f60A':
+    if feedback == '\U0001f60a':
         x = '4'
     if feedback == '\U0001f610':
         x = '3'
