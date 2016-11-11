@@ -631,7 +631,6 @@ def handle_messages():
             	print r.text
             time.sleep(1.5)
             message = 'Wil je nu verder met het zoeken van een leuk kado?'
-            data['Stage'] = NextStage
             data['text'].append(('bot',message))
             data['oldmessage'] = message
             postdashbot('bot',(sender,message, data['message-id']) )
