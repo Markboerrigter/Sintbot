@@ -602,6 +602,7 @@ def handle_messages():
     else:
         data = mg.findUser(sender)
         print(data['Stage'])
+
         if findword(message):
             typing('on', PAT, sender)
             time.sleep(1.5)
@@ -1061,6 +1062,7 @@ def send_message(token, recipient, text, data):
         data['oldmessage'] = response['msg']
         postdashbot('bot',(recipient,response['msg'], data['message-id']))
         mg.updateUser(recipient, data)
+        print('joo')
         if 'quickreplies' in response:
             replies = response['quickreplies']
             typing('off', token, recipient)
