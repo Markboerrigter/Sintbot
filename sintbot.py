@@ -754,10 +754,11 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+  print(data['Stage'])
   if data['dolog'] == 'end':
       print('done')
-  if data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
-      data['token'] == '1'
+  elif data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
+      data['token'] = '1'
       findToken(recipient, data, text)
   elif data['token'] == '1' and data['Stage'] == 'decisions':
     if text.isdigit() and data['intype']:
