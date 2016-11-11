@@ -706,11 +706,15 @@ def handle_messages():
         elif mid != data['message-id']:
             typing('on', PAT, sender)
             if data['dolog'] == 'end':
-                if data['data']:
+                if data['data']['Feedback']:
                     data['log']['feedback'].append(data['data']['Feedback'])
+                else:
+                    data['log']['feedback'].append('0')
+                if data['data']:
+
                     data['log']['presents'].append(data['presented'])
                     data['log']['data'].update(data['data'])
-                data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                    data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                 data['presents'] = []
                 data['Stage'] = TokenStages[0]
                 data['text'] = []
