@@ -1072,6 +1072,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
     lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])
     finalScore = finalScore[:max(100,lenScores)]
+    print(lenScores)
     if lenScores >3:
         copy = finalScore[:lenScores]
         random.shuffle(copy)
@@ -1079,12 +1080,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     if lenScores<10:
         lenScores = 10
     chosenProducts = finalScore[:lenScores]
+    if lenScores>50:
+        lenScores = 50
     levs = []
     print('hoi')
+    print(len(chosenProducts))
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
-                print('ja')
+                # print('ja')
                 if levenshtein(x[0]['title'], y[0]['title']) < 11:
                     levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
     final = []
