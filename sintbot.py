@@ -550,7 +550,6 @@ def handle_messages():
   for sender, message, mid, recipient in messaging_events(payload) :
     print("Incoming from %s: %s" % (sender, message))
     postdashbot('human', payload)
-    print(data['Stage'])
     if not mg.findUser(sender):
         typing('on', PAT, sender)
         user_info = getdata(sender)
@@ -602,6 +601,7 @@ def handle_messages():
                 mg.updateUser(recipient, data)
     else:
         data = mg.findUser(sender)
+        print(data['Stage'])
         if findword(message):
             typing('on', PAT, sender)
             time.sleep(1.5)
