@@ -321,7 +321,9 @@ def checksuggest(token, recipient, data,n):
             presents = data['presents'][N:]
         else:
             final_data = data['data']
-            geslacht = final_data['Gender'].split(' ')[1]
+            if len(final_data['Gender'].split())>1:
+                geslacht = final_data['Gender'].split(' ')[1]
+            else: geslacht = final_data['Gender']
             budget = (final_data['budget']).split('-')
             age = str(final_data['Age']).split(' ')[0]
             category = data['data']['type']
@@ -660,7 +662,6 @@ def handle_messages():
             typing('on', PAT, sender)
             time.sleep(1.5)
             message = 'Wil je nu verder met het zoeken van een leuk kado?'
-            data['Stage'] = NextStage
             data['text'].append(('bot',message))
             data['oldmessage'] = message
             postdashbot('bot',(sender,message, data['message-id']) )
@@ -690,6 +691,7 @@ def handle_messages():
             else:
                 typing('on', PAT, sender)
                 time.sleep(1.5)
+
                 typing('off', PAT, sender)
                 r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": PAT},
