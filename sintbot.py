@@ -332,9 +332,7 @@ def checksuggest(token, recipient, data,n):
             else: idea = ''
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents
-        print(len(presents))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
-
         newpres = []
         for x in presents:
             if x['retailer'] == 'intertoys':
@@ -349,10 +347,10 @@ def checksuggest(token, recipient, data,n):
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.jpg'})
             newpres.append(x)
         presents = newpres[:N]
-        print(len(presents))
-        for x in presents:
-            print(x['title']).encode('utf8')
-        print(presents[0])
+        # print(len(presents))
+        # for x in presents:
+        #     print(x['title']).encode('utf8')
+        # print(presents[0])
         data['presented'].extend(presents)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -393,7 +391,7 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
-  print(Stage)
+  # print(Stage)
   if data['Stage'] == 'bridge':
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
@@ -425,7 +423,7 @@ def findToken(recipient, data, text):
               data['starter'] = get_keys(Tokens, data['token'])[-1]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
-          print(NextStage)
+        #   print(NextStage)
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'feedback':
