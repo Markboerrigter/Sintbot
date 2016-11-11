@@ -1089,18 +1089,12 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         lenScores = 50
     chosenProducts = chosenProducts[:lenScores]
     levs = []
-    # print('hoi')
-    print(len(chosenProducts))
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
                 # print('ja')
                 levs.append([x[0]['title'], y[0]['title'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
     final = []
-    for x in levs:
-        print(x)
-    # print(levs)
-    # priint('hoi')
     twolist1 = [[(x, y), z] for [x, y, z,s] in levs]
     twolistdict = {x: z for [x, z] in twolist1}
     twolist2 = [[x, y] for [x, y, z,s] in levs]
@@ -1108,9 +1102,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     leftover = [item[0]['_id'] for item in chosenProducts if item[0]['_id'] not in twolist2]
     #now we make a graph consisting all cd's as nodes and possible duplicate relations as edges with the probability as weight
     mGraph = nx.Graph()
-    # print('hoi')
     count = 0
-    # print(levs)
     for [x, y, z, s] in levs:
         if z <0.7 or s >0.5:
             count += 1
@@ -1124,21 +1116,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     b = [y for [x,y] in l]
     c = a+b
     c = list(set(c))
-    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
-    #     print(i['title'])
     for x in a:
         for y in b:
             if [x,y] in l:
                 if y in c:
                     c.remove(y)
-    # for i in [x for [x,y] in chosenProducts if x['_id'] in c]:
-    #     print(i['title'])
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
 x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
-for i in x:
-    print(i['title'])
 
 
 def printprod(L):
