@@ -1080,6 +1080,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         lenScores = 10
     chosenProducts = finalScore[:lenScores]
     levs = []
+    print('hoi')
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
@@ -1103,7 +1104,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     graphs = list(nx.connected_component_subgraphs(mGraph))
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
-
+    print('hoi')
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
     # for x in finalScore[:20]:
     print(finalScore)
