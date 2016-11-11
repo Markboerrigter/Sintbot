@@ -247,6 +247,7 @@ def mergeAns(response, witToken, session_id, question):
 def getInformation(response, tekst):
     feedback = tekst
     x = 0
+    out  = {}
     if feedback == '\U0001f600':
         x = '5'
     if feedback == '\U0001F60A':
@@ -261,7 +262,7 @@ def getInformation(response, tekst):
         out['Feedback'] = x
     if 'entities' in response:
         entities = response['entities']
-        out  = {}
+
         if 'hobby' in entities:
             for x in entities['hobby']:
                 if x['confidence'] > 0.8:
@@ -282,9 +283,7 @@ def getInformation(response, tekst):
             out['distinction'] = entities['distinction'][0]['value']
         # if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.6:
         #     out['Feedback'] = entities['Feedback'][0]['value']
-        return out
-    else:
-        return []
+    return out
 
 def findAnswer(response, question,witToken,data):
     session_id = data['session']
