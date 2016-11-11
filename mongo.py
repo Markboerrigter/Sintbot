@@ -1075,6 +1075,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         copy = finalScore[:lenScores]
         random.shuffle(copy)
         finalScore[:lenScores] = copy
+    if lenScores<10:
+        lenScores = 10
     chosenProducts = finalScore[:lenScores]
     # print(chosenProducts)
     # for x in chosenProducts:
@@ -1083,7 +1085,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
-                if levenshtein(x[0]['title'], y[0]['title'])< 11:
+                if levenshtein(x[0]['title'], y[0]['title']) < 11:
                     levs.append([x[0]['_id'], y[0]['_id'], levenshtein(x[0]['title'], y[0]['title'])])
     final = []
     twolist1 = [[(x, y), z] for [x, y, z] in levs]
@@ -1103,11 +1105,12 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     graphs = list(nx.connected_component_subgraphs(mGraph))
     a = (sorted(map(sorted, mGraph.edges())))
     a = [x for [x,y] in a]
+
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in a] + [item[0] for item in finalScore[lenScores:]]
     # for x in finalScore[:20]:
     #     print(x['article_number'])
     print(len(finalScore), type(finalScore))
-    return finalScore[:2*n]
+    return finalScore[:n]
 
 # x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 3)
 
