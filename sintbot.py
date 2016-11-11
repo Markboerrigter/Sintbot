@@ -706,7 +706,7 @@ def handle_messages():
         elif mid != data['message-id']:
             typing('on', PAT, sender)
             if data['dolog'] == 'end':
-                if data['data']['Feedback']:
+                if 'Feedback' in data['data']:
                     data['log']['feedback'].append(data['data']['Feedback'])
                 else:
                     data['log']['feedback'].append('0')

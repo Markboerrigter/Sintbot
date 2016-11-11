@@ -1124,7 +1124,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
-x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
+# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', '', 9)
 
 
 def printprod(L):
