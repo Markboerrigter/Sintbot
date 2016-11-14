@@ -739,9 +739,10 @@ def handle_messages():
                     else:
                         data['log']['feedback'].append('0')
                     if data['data']:
-
-                        data['log']['presents'].append(data['presented'])
                         data['log']['data'].update(data['data'])
+                    if data['presents']:
+                        data['log']['presents'].append(data['presented'])
+                    if data['text']:
                         data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
                     data['presents'] = []
                     data['Stage'] = TokenStages[0]
