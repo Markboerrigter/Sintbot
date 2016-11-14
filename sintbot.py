@@ -454,7 +454,7 @@ def findToken(recipient, data, text):
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
-      products = mg.findArticlesTitle(text)
+      products = mg.findArticlesTitle(text)[:6]
       if products:
         NextStage = 'presentchoosing'
         data['presented'].extend(products)

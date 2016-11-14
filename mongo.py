@@ -13,7 +13,12 @@ db = client.toys
 
 now = datetime.datetime.now()
 d = now.isoformat()
-
+# db.speelgoed.create_index( [( 'title', "text"), ('description', "text"), ('description_extended', "text"), ('brand', "text")], weights={
+#         'title': 3,
+#         'brand': 2,
+#         'description': 2,
+#         'description_extended': 1
+#     })
 def printgraph(mGraph):
     ##pos=nx.spring_layout(mGraph)
     ##colors=range(20)
@@ -182,20 +187,18 @@ def findArticle(artnr):
 # getting all articles based on title (regex part of string not case sensitive)
 # @app.route('/articles/title/<the_query>')
 def findArticlesTitle(the_query):
-    the_query = the_query.replace('een ', '').replace('de ', '' ).replace('het ', '')
     try:
         catalogus = db.speelgoed
-        results = catalogus.find(
-        {'title': {'$regex': '.*'+the_query+'.*','$options' : 'i'}}
-        )
+        results = list(catalogus.find({"$text": {'$search': the_query } } ,{ 'score': { "$meta": "textScore" } }).sort( [( 'score', { "$meta": "textScore" } )] ))
+        results = [x for x in results if x['score'] > 5]
         return list(results)
     except Exception, e:
-        return 'Not found'
-# x = findArticlesTitle('drone')
+        return 'Not found',e
+x = findArticlesTitle('LEGO Star Wars')
+# 
 # for y in x:
-#     print(y)
-
-# getting all articles based on title and description_extended (regex part of string not case sensitive)
+#     print(y['title'])
+# # getting all articles based on title and description_extended (regex part of string not case sensitive)
 # @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
     try:
