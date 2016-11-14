@@ -195,7 +195,7 @@ def findArticlesTitle(the_query):
     except Exception, e:
         return 'Not found',e
 x = findArticlesTitle('LEGO Star Wars')
-# 
+#
 # for y in x:
 #     print(y['title'])
 # # getting all articles based on title and description_extended (regex part of string not case sensitive)
@@ -1452,9 +1452,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         neg = x[0]['negScore']
         a = 0
         if x[0] in titleQuery:
-            a+=5
+            a+=10
         else:
-            a-=5
+            a-=10
         if x[0] in ideaQuery:
             a+=2
         else:
