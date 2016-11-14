@@ -558,6 +558,17 @@ def findToken(recipient, data, text):
           print('something went wrong')
       mg.updateUser(recipient, data)
       send_message(PAT, recipient, data['starter'], data)
+  elif Stage == 'Start':
+      NextStage = TokenStages[TokenStages.index(Stage)+1]
+      while data['token'] in data['chitchat']:
+          data['token'] = random.choice(allValues(Tokens[NextStage]))
+          if isinstance(data['token'], dict):
+              data['token'] = random.choice(allValues(Tokens[NextStage]))
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
+      data['chitchat'].append(data['token'])
+      data['Stage'] = NextStage
+      mg.updateUser(recipient, data)
+      send_message(PAT, recipient, data['starter'], data)
   # elif Stage == 'presentchoosing' and 'Gender' not in data['data']:
   #     NextStage = 'decisions'
   #     data['Stage'] = NextStage
@@ -614,6 +625,7 @@ def handle_messages():
             data['personQuestions'] = []
             data['message-id'] = mid
             data['clicked'] = ''
+            data['chitchat'] = []
             data['personality'] = []
             data['oldincoming'] = message
             data['oldmessage'] = ''
@@ -760,6 +772,8 @@ def handle_messages():
                     data['text'] = []
                     data['clicked'] = []
                     data['presented'] = []
+                    if len (data['chitchat']) > 3:
+                        data['chitchat'] = []
                     data['dolog'] = ''
                     data['trig'] = False
                     data['secondRow'] = False
@@ -1145,7 +1159,6 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'response':
-    print(data)
     if int(data['data']['Feedback']) > 2:
         message = random.choice(responsemessage)
     else:
