@@ -320,6 +320,7 @@ def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
         print(data['data'])
         if data['secondchoice']:
+            print(data)
             presents = data['presents'][N:]
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
@@ -666,7 +667,7 @@ def handle_messages():
                 if r.status_code != requests.codes.ok:
                 	print r.text
                 time.sleep(1.5)
-                message = 'Wil je nu verder met het zoeken van een leuk kado?'
+                message = 'Wil je nu verder met het zoeken van een leuk cadeau?'
                 data['text'].append(('bot',message))
                 data['oldmessage'] = message
                 postdashbot('bot',(sender,message, data['message-id']) )
@@ -697,7 +698,7 @@ def handle_messages():
                 print('Trigger send')
                 typing('on', PAT, sender)
                 time.sleep(1.5)
-                message = 'Wil je nu verder met het zoeken van een leuk kado?'
+                message = 'Wil je nu verder met het zoeken van een leuk cadeau?'
                 data['text'].append(('bot',message))
                 data['oldmessage'] = message
                 postdashbot('bot',(sender,message, data['message-id']) )
@@ -706,7 +707,7 @@ def handle_messages():
                 params={"access_token": PAT},
                 data=json.dumps({
                   "recipient": {"id": sender},
-                  "message": {"text": 'Wil je nu verder met het zoeken van een leuk kado?',
+                  "message": {"text": 'Wil je nu verder met het zoeken van een leuk cadeau?',
                   "quick_replies":[{
                                  "content_type":"text",
                                  "title":'Ja',
@@ -835,7 +836,7 @@ def send_message(token, recipient, text, data):
             x = int(text)
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
-                message = 'Ik vroeg me nog af, welk type past het best bij het kind? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
+                message = 'Is het dan misschien een van de volgende types? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
                 data['text'].append(('bot',message))
                 data['oldmessage'] = message
                 postdashbot('bot',(recipient,message, data['message-id']) )
@@ -862,7 +863,7 @@ def send_message(token, recipient, text, data):
                 mg.updateUser(recipient, data)
     else:
       data['intype'] = True
-      message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(1,6)]) + '\n6: Een andere categorie'
+      message = 'Ik vroeg me nog af, welk type past het best bij het kind? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(1,6)]) + '\n6: Een andere categorie'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -990,7 +991,7 @@ def send_message(token, recipient, text, data):
       if text == 'Oke!':
           findToken(recipient, data, text)
       else:
-          message = 'Welkom terug, zullen we weer op zoek gaan naar een kado? :)'
+          message = 'Welkom terug, zullen we weer op zoek gaan naar een cadeau? :)'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
