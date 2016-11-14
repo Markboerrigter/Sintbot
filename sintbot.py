@@ -976,12 +976,12 @@ def send_message(token, recipient, text, data):
     if text == 'Ja':
         if data['secondchoice']:
             for present in data['presents'][3:]:
-                mg.addPositive(present['article_number'])
+                mg.addPositive(present['article_number'],2)
             for present in data['presents'][:3]:
                 mg.addDislike(present['article_number'])
         else:
             for present in data['presents'][:3]:
-                mg.addPositive(present['article_number'])
+                mg.addPositive(present['article_number'],2)
         findToken(recipient, data, text)
     elif text == 'Nee' and not data['secondchoice']:
         data['secondchoice'] = True
