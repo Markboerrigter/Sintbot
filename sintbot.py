@@ -322,7 +322,7 @@ def checksuggest(token, recipient, data,n):
             presents = data['presents'][N:]
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
-            presents = data['presented']
+            presents = data['presentFound']
         else:
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
@@ -466,7 +466,7 @@ def findToken(recipient, data, text):
           print(x['title'])
       if products:
         NextStage = 'presentchoosing'
-        data['presented'].extend(products)
+        data['presentFound'] = (products)
         # data['token'] = random.choice(allValues(Tokens[NextStage]))
         data['Stage'] = NextStage
         response = {}
@@ -606,6 +606,7 @@ def handle_messages():
             data['personality'] = []
             data['oldincoming'] = message
             data['oldmessage'] = ''
+            data['presentFound'] = []
             data['intype'] = False
             data['trig'] = False
             data['presented'] = []
@@ -750,6 +751,7 @@ def handle_messages():
                     data['dolog'] = ''
                     data['trig'] = False
                     data['secondRow'] = False
+                    data['presentFound'] = []
                     data['token'] = '2'
                     data['starter'] = ''
                     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -1031,8 +1033,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        if not data['presented']:
-            checksuggest(PAT, recipient, data,N)
+        checksuggest(PAT, recipient, data,N)
         typing('on', PAT, recipient)
         time.sleep(2)
         message = random.choice(presentmessage3)
@@ -1105,7 +1106,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        checksuggest(PAT, recipient, data,0)
+        checksuggest(PAT, recipient, data,N)
         message = random.choice(presentmessage3)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
