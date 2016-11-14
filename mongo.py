@@ -127,7 +127,7 @@ def addPositive(artnr, pamount):
         catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
-            {'$set': {'updated': d}, '$inc': {'positive_amount':int(pamount)}}
+            {'$set': {'updated': d}, '$inc': {'posScore':int(pamount)}}
         )
         return 'Added ' + pamount + ' positive point(s) to article :' + artnr
     except Exception, e:
@@ -143,7 +143,7 @@ def addDislike(artnr):
         catalogus = db.speelgoed
         catalogus.update_one(
             {'article_number':int(artnr)},
-            {'$set': {'updated': d}, '$inc': {'dislike_amount':1}}
+            {'$set': {'updated': d}, '$inc': {'negScore':1}}
         )
         return 'Extracted 1 dislike point to article :' + artnr
     except Exception, e:
@@ -215,6 +215,24 @@ def findAllArticles():
     except Exception, e:
         return 'Not found'
 
+def allToZero():
+    try:
+        articles = findAllArticles()
+        catalogus = db.speelgoed
+        for x in articles:
+            catalogus.update({"article_number" :x['article_number'] },{'$set': {"posScore":0}})
+            catalogus.update({"article_number" :x['article_number'] },{'$set': {"negScore":0}})
+        print('done')
+    except Exception, e:
+        return 'Not found'
+
+def readScore(number):
+    try:
+        catalogus = db.speelgoed
+        toy = catalogus.find_one({'article_number':int(artnr)})
+        return toy
+    except Exception, e:
+        return 'Not found'
 # getting all articles that are aprox. price (plus and minus 15%)
 # @app.route('/articles/price/<the_price>')
 def findByPrice(the_price):
@@ -1425,6 +1443,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = []
     # print('hoi')
     for x in uniqueProducts:
+        pos = x[0]['posScore']
+        neg = x[0]['negScore']
         a = 0
         if x[0] in titleQuery:
             a+=5
@@ -1443,21 +1463,28 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         else:
             a-=3
         if x[0] in ageQuery:
-            a+=4
+            a+=3
         else:
-            a-=4
+            a-=3
         if x[0] in ageSpecificQuery:
-            a+=4
+            a+=3
         else:
-            a-=4
+            a-=3
         if x[0] in budgetQuery:
             a+=4
         else:
             a-=4
         if x[0] in geslachtQuery:
-            a+=4
+            a+=6
         else:
-            a-=4
+            a-=6
+        score = pos-neg
+        if pos>0 or neg >0:
+            score= float(score/(pos+neg))
+            a += int(score/a)
+        else:
+            a+= score
+
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
     lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])

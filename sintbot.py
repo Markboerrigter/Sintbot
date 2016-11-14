@@ -372,7 +372,8 @@ def checksuggest(token, recipient, data,n):
                       {
                         "type":"web_url",
                         "url": x['item_url'],
-                        "title":"Bekijk de folder!"
+                        "title":"Bekijk de folder!",
+                        "payload":'clicked ' +  str(x['article_number'])
                       }
                     ]
                   }
@@ -580,6 +581,7 @@ def handle_messages():
             data['text'] = []
             data['personQuestions'] = []
             data['message-id'] = mid
+            data['clicked'] = ''
             data['personality'] = []
             data['oldincoming'] = message
             data['oldmessage'] = ''
@@ -657,6 +659,8 @@ def handle_messages():
                 	print r.text
                 data['trig'] = True
                 mg.updateUser(recipient, data)
+            elif message.split()[0] == 'clicked':
+                data['clicked'] = message.split()[1]
             elif triggered(message, sender):
                 typing('on', PAT, sender)
                 print('Trigger send')
@@ -720,6 +724,7 @@ def handle_messages():
                     data['presents'] = []
                     data['Stage'] = TokenStages[0]
                     data['text'] = []
+                    data['clicked'] = []
                     data['presented'] = []
                     data['dolog'] = ''
                     data['trig'] = False
@@ -782,6 +787,7 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
+
   if data['dolog'] == 'end':
       print('done')
   # elif message == 'Get started' or message =='Aan de slag':
@@ -974,6 +980,9 @@ def send_message(token, recipient, text, data):
           mg.updateUser(recipient, data)
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja':
+        if data['clicked']:
+            mg.addPositive(data['clicked'],2)
+            data['clicked'] = ''
         if data['secondchoice']:
             for present in data['presents'][3:]:
                 mg.addPositive(present['article_number'],2)
@@ -982,6 +991,7 @@ def send_message(token, recipient, text, data):
         else:
             for present in data['presents'][:3]:
                 mg.addPositive(present['article_number'],2)
+        mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     elif text == 'Nee' and not data['secondchoice']:
         data['secondchoice'] = True
