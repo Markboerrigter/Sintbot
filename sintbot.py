@@ -372,9 +372,7 @@ def checksuggest(token, recipient, data,n):
                       {
                         "type":"web_url",
                         "url": x['item_url'],
-                        "title":"Bekijk de folder!",
-                        "webview_height_ratio": "full",
-                        "messenger_extensions": True,
+                        "title":"Bekijk de folder!"
 
                         # "payload":'clicked ' +  str(x['article_number'])
                       }
@@ -456,27 +454,38 @@ def findToken(recipient, data, text):
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
-      NextStage = TokenStages[TokenStages.index(Stage)+1]
-      data['token'] = random.choice(allValues(Tokens[NextStage]))
-      if isinstance(data['token'], dict):
+      products = mg.findArticlesTitle(text)
+      if products:
+        NextStage = 'presentchoosing'
+        data['presented'].extend(products)
+        data['token'] = random.choice(allValues(Tokens[NextStage]))
+        data['Stage'] = NextStage
+        response = {}
+        mg.updateUser(recipient, data)
+        send_message(PAT, recipient, '', data)
+        mg.updateUser(recipient, data)
+      else:
+          NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
-          data['starter'] = get_keys(Tokens, data['token'])[-1]
-      message = 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'
-      data['Stage'] = NextStage
-      data['text'].append(('bot',message))
-      data['oldmessage'] = message
-      postdashbot('bot',(recipient,message, data['message-id']) )
-      typing('off', PAT, recipient)
-      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-      params={"access_token": PAT},
-      data=json.dumps({
-      "recipient": {"id": recipient},
-      "message": {"text": message}
-      }),
-      headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-      	print r.text
-      mg.updateUser(recipient, data)
+          if isinstance(data['token'], dict):
+              data['token'] = random.choice(allValues(Tokens[NextStage]))
+              data['starter'] = get_keys(Tokens, data['token'])[-1]
+          message = 'Ik wil graag nog wat andere dingen weten om zeker te zijn wat je zoekt!'
+          data['Stage'] = NextStage
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": PAT},
+          data=json.dumps({
+          "recipient": {"id": recipient},
+          "message": {"text": message}
+          }),
+          headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+          	print r.text
+          mg.updateUser(recipient, data)
     #   response, data = getResponse(recipient, data['starter'], data)
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
@@ -1013,7 +1022,8 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        checksuggest(PAT, recipient, data,N)
+        if not data['presented']:
+            checksuggest(PAT, recipient, data,N)
         typing('on', PAT, recipient)
         time.sleep(2)
         message = random.choice(presentmessage3)
