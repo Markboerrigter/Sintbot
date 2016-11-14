@@ -555,6 +555,13 @@ def findToken(recipient, data, text):
           print('something went wrong')
       mg.updateUser(recipient, data)
       send_message(PAT, recipient, data['starter'], data)
+  # elif Stage == 'presentchoosing' and 'Gender' not in data['data']:
+  #     NextStage = 'decisions'
+  #     data['Stage'] = NextStage
+  #     response = {}
+  #     mg.updateUser(recipient, data)
+  #     send_message(PAT, recipient, '', data)
+
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -956,7 +963,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
-        time.sleep(1.5)
+        time.sleep(1)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
@@ -1017,6 +1024,9 @@ def send_message(token, recipient, text, data):
             for present in data['presents'][:3]:
                 mg.addPositive(present['article_number'],2)
         mg.updateUser(recipient, data)
+        findToken(recipient, data, text)
+    elif text == 'Nee' and 'Gender' not in data['data']:
+        data['Stage'] = 'bridge'
         findToken(recipient, data, text)
     elif text == 'Nee' and not data['secondchoice']:
         data['secondchoice'] = True
@@ -1108,6 +1118,7 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
+        time.sleep(2)
         checksuggest(PAT, recipient, data,N)
         message = random.choice(presentmessage3)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
