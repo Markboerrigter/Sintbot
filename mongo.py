@@ -1024,7 +1024,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     geslachtQuery = findArticlesGender(geslacht)
     if len(budget) >1:
         budgetQuery = findFromRange(budget[0],budget[1])
-    elif int(budget[0]):
+    elif budget[0].isdigit():
         budgetQuery = findAbovevalue(budget[0])
     else:
         budget = [int(s) for s in budget.split() if s.isdigit()]
