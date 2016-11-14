@@ -1423,7 +1423,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     else:
         budget = [int(s) for s in budget.split() if s.isdigit()]
         budgetQuery = findAbovevalue(budget[0])
-
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
     if idea == '':
@@ -1442,7 +1441,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = []
     # print('hoi')
     for x in uniqueProducts:
-        print(x)
         pos = x[0]['posScore']
         neg = x[0]['negScore']
         a = 0
