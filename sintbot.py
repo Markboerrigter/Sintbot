@@ -458,7 +458,7 @@ def findToken(recipient, data, text):
       if products:
         NextStage = 'presentchoosing'
         data['presented'].extend(products)
-        data['token'] = random.choice(allValues(Tokens[NextStage]))
+        # data['token'] = random.choice(allValues(Tokens[NextStage]))
         data['Stage'] = NextStage
         response = {}
         mg.updateUser(recipient, data)
