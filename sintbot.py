@@ -322,7 +322,7 @@ def checksuggest(token, recipient, data,n):
             presents = data['presents'][N:]
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
-            presentes = data['presented']
+            presents = data['presented']
         else:
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
