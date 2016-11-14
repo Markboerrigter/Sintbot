@@ -220,12 +220,12 @@ def allToZero():
         articles = findAllArticles()
         catalogus = db.speelgoed
         for x in articles:
-            catalogus.update({"article_number" :x['article_number'] },{'$set': {"posScore":0}})
-            catalogus.update({"article_number" :x['article_number'] },{'$set': {"negScore":0}})
+            catalogus.update({"article_number" :x['article_number'] },{'$set': {"posScore":0}},upsert=False,multi= True )
+            catalogus.update({"article_number" :x['article_number'] },{'$set': {"negScore":0}},upsert=False,multi= True )
         print('done')
     except Exception, e:
-        return 'Not found'
-
+        return 'Not found', e
+print(allToZero())
 def readScore(number):
     try:
         catalogus = db.speelgoed
