@@ -928,7 +928,7 @@ def send_message(token, recipient, text, data):
             	print r.text
         typing('on', PAT, recipient)
         mg.updateUser(recipient, data)
-        time.sleep(3)
+        time.sleep(1.5)
     else:
         data['personality'].append(text)
         mg.updateUser(recipient, data)
