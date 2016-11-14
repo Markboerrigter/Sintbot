@@ -737,9 +737,31 @@ def handle_messages():
                 data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
     except KeyboardInterrupt:
+        data['message-id'] = mid
+        data['oldincoming'] = message
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Sorry, daar ging even iets fout'
+        }}),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
         raise
     except:
         print "Caught it!"
+        data['message-id'] = mid
+        data['oldincoming'] = message
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": sender},
+          "message": {"text": 'Sorry, daar ging even iets fout'
+        }}),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
         raise
   return "ok", 200
 
