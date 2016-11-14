@@ -324,7 +324,9 @@ def checksuggest(token, recipient, data,n):
             presents = data['presents'][N:]
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
+            data['secondchoice'] = True
             presents = data['presentFound']
+            data['presents'] = presents
             print('direct')
         else:
             final_data = data['data']
@@ -361,7 +363,6 @@ def checksuggest(token, recipient, data,n):
         # for x in presents:
         #     print(x['title']).encode('utf8')
         # print(presents[0])
-        data['presents'] = presents
         data['presented'].extend(presents)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
