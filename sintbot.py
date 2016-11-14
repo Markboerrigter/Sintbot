@@ -323,6 +323,7 @@ def checksuggest(token, recipient, data,n):
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
             presents = data['presentFound']
+            print('direct')
         else:
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
@@ -338,7 +339,7 @@ def checksuggest(token, recipient, data,n):
             data['presents'] = presents
         for x in presents:
             print(x['title'])
-        postdashbot('bot',(recipient,'presents', data['message-id']) )
+
         newpres = []
         for x in presents:
             if x['retailer'] == 'intertoys':
@@ -353,6 +354,7 @@ def checksuggest(token, recipient, data,n):
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
             newpres.append(x)
         presents = newpres[:N]
+        postdashbot('bot',(recipient,'presents', data['message-id']) )
         # print(len(presents))
         # for x in presents:
         #     print(x['title']).encode('utf8')
@@ -394,7 +396,7 @@ def checksuggest(token, recipient, data,n):
         if r.status_code != requests.codes.ok:
             print r.text
     mg.updateUser(recipient, data)
-    return data
+    # return data
 
 def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -471,7 +473,7 @@ def findToken(recipient, data, text):
         data['Stage'] = NextStage
         response = {}
         mg.updateUser(recipient, data)
-        send_message(PAT, recipient, '', data)
+        # send_message(PAT, recipient, '', data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
