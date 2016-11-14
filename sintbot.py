@@ -336,6 +336,8 @@ def checksuggest(token, recipient, data,n):
             else: idea = ''
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents
+        for x in presents:
+            print(x['title'])
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         newpres = []
         for x in presents:
