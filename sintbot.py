@@ -472,7 +472,6 @@ def findToken(recipient, data, text):
         response = {}
         mg.updateUser(recipient, data)
         send_message(PAT, recipient, '', data)
-        mg.updateUser(recipient, data)
       else:
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -811,7 +810,7 @@ def messaging_events(payload):
 def send_message(token, recipient, text, data):
   """Send the message text to recipient with id recipient.
   """
-
+  print('send_message', text)
   if data['dolog'] == 'end':
       print('done')
   # elif message == 'Get started' or message =='Aan de slag':
