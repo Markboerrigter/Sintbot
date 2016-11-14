@@ -319,6 +319,9 @@ def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
         if data['secondchoice']:
             presents = data['presents'][N:]
+            data['presented'].extend(presents)
+        elif not data['data']:
+            presentes = data['presented']
         else:
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
@@ -346,12 +349,12 @@ def checksuggest(token, recipient, data,n):
                     print('no pic')
                     x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
             newpres.append(x)
-        presents = newpres[:N]
-        # print(len(presents))
-        # for x in presents:
-        #     print(x['title']).encode('utf8')
-        # print(presents[0])
-        data['presented'].extend(presents)
+            presents = newpres[:N]
+            # print(len(presents))
+            # for x in presents:
+            #     print(x['title']).encode('utf8')
+            # print(presents[0])
+            data['presented'].extend(presents)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": token},
