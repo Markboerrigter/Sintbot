@@ -316,11 +316,12 @@ def getFeedback(data):
         return '1'
 
 def checksuggest(token, recipient, data,n):
-    if data['Stage'] == 'presentchoosing':
+    if data['Stage'] == 'presentchoosing
+        print(data['data'])
         if data['secondchoice']:
             presents = data['presents'][N:]
             data['presented'].extend(presents)
-        elif not data['data']:
+        elif 'Gender' not in data['data']:
             presentes = data['presented']
         else:
             final_data = data['data']
