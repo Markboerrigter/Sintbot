@@ -1408,7 +1408,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         budgetQuery = findAbovevalue(budget[0])
 
     ageQuery = findByAge(age)
-    ageSpecficQuery = findSpecificAge(age)
+    ageSpecificQuery = findSpecificAge(age)
     if idea == '':
         ideaStem = 'jaa'
         ideaQuery = []
