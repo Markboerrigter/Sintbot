@@ -558,6 +558,7 @@ below the receive and send functions can be found.
 @app.route('/', methods=['POST'])
 def handle_messages():
   payload = request.get_data()
+  print(payload)
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
         print("Incoming from %s: %s" % (sender, message))
@@ -973,6 +974,14 @@ def send_message(token, recipient, text, data):
           mg.updateUser(recipient, data)
   elif data['Stage'] == 'presentchoosing':
     if text == 'Ja':
+        if data['secondchoice']:
+            for present in data['presents'][3:]:
+                mg.addPositive(present['article_number'])
+            for present in data['presents'][:3]:
+                mg.addDislike(present['article_number'])
+        else:
+            for present in data['presents'][:3]:
+                mg.addPositive(present['article_number'])
         findToken(recipient, data, text)
     elif text == 'Nee' and not data['secondchoice']:
         data['secondchoice'] = True
