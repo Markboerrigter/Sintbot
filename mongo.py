@@ -225,7 +225,7 @@ def allToZero():
         print('done')
     except Exception, e:
         return 'Not found', e
-print(allToZero())
+# print(allToZero())
 def readScore(number):
     try:
         catalogus = db.speelgoed
