@@ -306,14 +306,15 @@ def getFeedback(data):
     feedback = data['data']['Feedback']
     if feedback == '\U0001f600':
         return '5'
-    if feedback == '\U0001F60A':
+    if feedback == '\U0001f60a':
         return '4'
-    if feedback == '\U0001F610':
+    if feedback == '\U0001f610':
         return '3'
-    if feedback == '\U0001F614':
+    if feedback == '\U0001f614':
         return '2'
-    if feedback == '\U0001F620':
+    if feedback == '\U0001f620':
         return '1'
+
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
@@ -834,7 +835,7 @@ def send_message(token, recipient, text, data):
             x = int(text)
             if data['secondRow'] == False and text == '6':
                 data['secondRow'] = True
-                message = 'Ik vroeg me nog af, tot welke van onderstaande categorieen behoort het kind het best? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
+                message = 'Ik vroeg me nog af, welk type past het best bij het kind? \n' +'\n'.join([str(i) + ': ' + childTypes[i-1] for i in range(6,12)])
                 data['text'].append(('bot',message))
                 data['oldmessage'] = message
                 postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1142,7 +1143,10 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'response':
-    message = random.choice(responsemessage)
+    if int(data['Feedback']) > 2:
+        message = random.choice(responsemessage)
+    else:
+        message = 'Jammer dat je het niet zo leuk vind, ik hoop dat je wel geniet van het feest!'
     data['text'].append(('bot',message))
     data['oldmessage'] = message
     postdashbot('bot',(recipient,message, data['message-id']) )

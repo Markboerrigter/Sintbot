@@ -1428,7 +1428,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     elif budget[0].isdigit():
         budgetQuery = findAbovevalue(budget[0])
     else:
-        budget = [int(s) for s in budget.split() if s.isdigit()]
+        budget = [int(s) for s in budget[0].split() if s.isdigit()]
         budgetQuery = findAbovevalue(budget[0])
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
