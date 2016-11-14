@@ -924,7 +924,7 @@ def send_message(token, recipient, text, data):
             	print r.text
         typing('on', PAT, recipient)
         time.sleep(1)
-        message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik wil wat vragen stellen om je beter te leren kennen!'
+        message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik Ga je een aantal keuzes geven om je beter te leren kennen!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
