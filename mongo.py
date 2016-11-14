@@ -182,6 +182,7 @@ def findArticle(artnr):
 # getting all articles based on title (regex part of string not case sensitive)
 # @app.route('/articles/title/<the_query>')
 def findArticlesTitle(the_query):
+    the_query = the_query.replace('een ', '').replace('de ', '' ).replace('het ', '')
     try:
         catalogus = db.speelgoed
         results = catalogus.find(
@@ -190,6 +191,9 @@ def findArticlesTitle(the_query):
         return list(results)
     except Exception, e:
         return 'Not found'
+# x = findArticlesTitle('drone')
+# for y in x:
+#     print(y)
 
 # getting all articles based on title and description_extended (regex part of string not case sensitive)
 # @app.route('/articles/<the_query>')
