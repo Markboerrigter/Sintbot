@@ -665,7 +665,7 @@ def handle_messages():
                 typing('on', PAT, sender)
                 time.sleep(1.5)
                 typing('off', PAT, sender)
-                message = 'Wij houden hier niet zo van schelden. Zou je alsjeblieft nogmaals mijn vraag willen beantwoorden.'
+                message = 'Wij houden hier niet zo van schelden. Zou je hier alsjeblieft mee willen stoppen!.'
                 data['text'].append(('bot',message))
                 data['oldmessage'] = message
                 postdashbot('bot',(sender,message, data['message-id']) )
@@ -738,10 +738,11 @@ def handle_messages():
             elif data['trig']:
                 if text == 'Ja':
                     send_message(PAT, sender, data['oldmessage'],data)
+                    data['trig'] = False
                 else:
                     typing('on', PAT, sender)
+                    data['trig'] = False
                     time.sleep(1.5)
-
                     typing('off', PAT, sender)
                     r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                     params={"access_token": PAT},
