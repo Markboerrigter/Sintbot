@@ -1476,12 +1476,12 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
             a+=6
         else:
             a-=6
-        score = pos-neg
+        score1 = pos-neg
         if pos>0 or neg >0:
-            score= float(score/(pos+neg))
-            a += int(score/a)
+            score1= float(score1/(pos+neg))
+            a += int(score1/a)
         else:
-            a+= score
+            a+= score1
 
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
@@ -1502,7 +1502,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     for x in chosenProducts:
         for y in chosenProducts:
             if x!=y:
-                # print('ja')
                 levs.append([x[0]['_id'], y[0]['_id'], score(x[0]['title'], y[0]['title']) ,liquidmetal.score(x[0]['title'], y[0]['title']) ])
     final = []
     twolist1 = [[(x, y), z] for [x, y, z,s] in levs]
@@ -1539,7 +1538,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 # (u'jongen', [u'30', u'45'], '14', u'Razende racers en stoere stuurders', u'Een Drone', 9)
-# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', 'Een drone', 9)
+x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', 'Een drone', 9)
 
 # for i in x:
 #     print(i['title'])
