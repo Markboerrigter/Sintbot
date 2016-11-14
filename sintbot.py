@@ -374,7 +374,7 @@ def checksuggest(token, recipient, data,n):
                         "url": x['item_url'],
                         "title":"Bekijk de folder!",
                         "webview_height_ratio": "full",
-                        "messenger_extensions": true,
+                        "messenger_extensions": True,
 
                         # "payload":'clicked ' +  str(x['article_number'])
                       }
