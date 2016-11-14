@@ -1143,7 +1143,8 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'response':
-    if int(data['Feedback']) > 2:
+    print(data)
+    if int(data['data']['Feedback']) > 2:
         message = random.choice(responsemessage)
     else:
         message = 'Jammer dat je het niet zo leuk vind, ik hoop dat je wel geniet van het feest!'

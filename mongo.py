@@ -194,7 +194,7 @@ def findArticlesTitle(the_query):
         return list(results)
     except Exception, e:
         return 'Not found',e
-x = findArticlesTitle('LEGO Star Wars')
+# x = findArticlesTitle('LEGO Star Wars')
 #
 # for y in x:
 #     print(y['title'])
