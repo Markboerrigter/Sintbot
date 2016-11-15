@@ -341,9 +341,6 @@ def checksuggest(token, recipient, data,n):
             else: idea = ''
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
             data['presents'] = presents
-        for x in presents:
-            print(x['title'])
-
         newpres = []
         for x in presents:
             if x['retailer'] == 'intertoys':
@@ -359,10 +356,6 @@ def checksuggest(token, recipient, data,n):
             newpres.append(x)
         presents = newpres[:N]
         postdashbot('bot',(recipient,'presents', data['message-id']) )
-        # print(len(presents))
-        # for x in presents:
-        #     print(x['title']).encode('utf8')
-        # print(presents[0])
         data['presented'].extend(presents)
         typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -467,8 +460,8 @@ def findToken(recipient, data, text):
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
       products = mg.findArticlesTitle(text)[:6]
-      for x in products:
-          print(x['title'])
+    #   for x in products:
+    #       print(x['title'])
       if products:
         NextStage = 'presentchoosing'
         data['presentFound'] = (products)
@@ -792,9 +785,18 @@ def handle_messages():
                 mg.updateUser(recipient, data)
                 data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
-    except KeyboardInterrupt:
+    except KeyboardInterrupt, e:
         data['message-id'] = mid
         data['oldincoming'] = message
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": 1042410335857237},
+          "message": {"text": e
+        }}),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
@@ -805,10 +807,19 @@ def handle_messages():
         if r.status_code != requests.codes.ok:
         	print r.text
         raise
-    except:
+    except e:
         print "Caught it!"
         data['message-id'] = mid
         data['oldincoming'] = message
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": PAT},
+        data=json.dumps({
+          "recipient": {"id": 1042410335857237},
+          "message": {"text": e
+        }}),
+        headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+        	print r.text
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({

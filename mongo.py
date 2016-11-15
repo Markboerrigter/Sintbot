@@ -1446,7 +1446,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
     finalScore = []
-    # print('hoi')
     for x in uniqueProducts:
         pos = x[0]['posScore']
         neg = x[0]['negScore']
@@ -1489,12 +1488,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
             a += int(score1/a)
         else:
             a+= score1
-
         finalScore.append([x[0],a])
     finalScore = sorted(finalScore, key=lambda x: x[1])[::-1]
     lenScores = [y for [x,y] in finalScore].count(finalScore[0][1])
     finalScore = finalScore[:max(100,lenScores)]
-    # print(lenScores)
     if lenScores >3:
         copy = finalScore[:lenScores]
         random.shuffle(copy)
@@ -1527,8 +1524,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         mGraph.add_node(item)
     graphs = list(nx.connected_component_subgraphs(mGraph))
     l = (sorted(map(sorted, mGraph.edges())))
-    # print(l)
-
     a = [x for [x,y] in l]
     b = [y for [x,y] in l]
     c = a+b
@@ -1539,17 +1534,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
                 if y in c:
                     c.remove(y)
     u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
-    # print(u)
-    # for i in u:
-    #     print(i)
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
-    print(len(finalScore))
     return finalScore[:n]
-# (u'jongen', [u'30', u'45'], '14', u'Razende racers en stoere stuurders', u'Een Drone', 9)
-# x = findRightProduct('Jongen', [30,45], '10', 'Kleine ontdekkers', 'Een drone', 9)
 
-# for i in x:
-#     print(i['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
