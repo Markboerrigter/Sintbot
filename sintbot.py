@@ -318,9 +318,7 @@ def getFeedback(data):
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
-        print(data['data'])
         if data['secondchoice']:
-            print(data)
             presents = data['presents'][N:]
             data['presented'].extend(presents)
         elif 'Gender' not in data['data']:
@@ -595,7 +593,6 @@ below the receive and send functions can be found.
 @app.route('/', methods=['POST'])
 def handle_messages():
   payload = request.get_data()
-  print(payload)
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
         print("Incoming from %s: %s" % (sender, message))
