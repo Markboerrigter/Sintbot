@@ -792,7 +792,7 @@ def handle_messages():
         params={"access_token": PAT},
         data=json.dumps({
           "recipient": {"id": 1042410335857237},
-          "message": {"text": e
+          "message": {"text": str(e)
         }}),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
@@ -815,7 +815,7 @@ def handle_messages():
         params={"access_token": PAT},
         data=json.dumps({
           "recipient": {"id": 1042410335857237},
-          "message": {"text": e
+          "message": {"text": str(e)
         }}),
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
