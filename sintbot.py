@@ -785,7 +785,7 @@ def handle_messages():
                 mg.updateUser(recipient, data)
                 data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
-    except KeyboardInterrupt, e:
+    except KeyboardInterrupt as e:
         data['message-id'] = mid
         data['oldincoming'] = message
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
@@ -807,7 +807,7 @@ def handle_messages():
         if r.status_code != requests.codes.ok:
         	print r.text
         raise
-    except e:
+    except Exception as e:
         print "Caught it!"
         data['message-id'] = mid
         data['oldincoming'] = message
