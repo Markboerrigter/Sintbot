@@ -600,7 +600,7 @@ def findToken(recipient, data, text):
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'Start':
       data['type'] = text
-      if text == 'Cadeauadvies':
+      if text == 'Cadeau advies':
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
