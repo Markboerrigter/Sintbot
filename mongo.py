@@ -1441,7 +1441,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         ideaQuery = findArticlesTitleAndDescription(idea)
         stemQuery = findArticlesStemming(ideaStem)
         titleQuery = findArticlesTitle(idea)
-    categoryQuery = findArticlesCategory(category)
+    categoryQuery = [findArticlesCategory(x) for x in category]
+    categoryQuery = [item for sublist in categoryQuery for item in sublist]
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
