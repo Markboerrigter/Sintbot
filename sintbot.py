@@ -1173,7 +1173,7 @@ def send_message(token, recipient, text, data):
     #     typing('on', PAT, recipient)
     #     mg.updateUser(recipient, data)
     #     findToken(recipient, data, text)
-elif text == 'Andere categorie!':
+    elif text == 'Andere categorie!':
         data['data']['oldType'] = data['data']['type']
         data['data']['type'] = ''
         data['Stage'] = 'decisions'
