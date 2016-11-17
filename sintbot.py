@@ -213,7 +213,7 @@ def postdashbot(id, payload):
     data = mg.findUser(sender)
     if mg.findUser(sender):
         data['messagenumberresponse'] +=1
-        mg.updateUser(sender)
+        mg.updateUser(sender,data)
     print('send to dashbot ')
     r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
         data=payload,
