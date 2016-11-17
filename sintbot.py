@@ -476,7 +476,7 @@ def findToken(recipient, data, text):
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
       products = mg.findArticlesTitle(text)[:6]
-      message = random.choice(['goed dat je het al weet!','Wat een leuk idee!', 'Ah oke, dat klinkt heel leuk!'])
+      message = random.choice(['Goed dat je het al weet!','Wat een leuk idee!', 'Ah oke, dat klinkt heel leuk!'])
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -490,6 +490,7 @@ def findToken(recipient, data, text):
       headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
         print r.text
+      time.sleep(1)
       #   for x in products:
     #       print(x['title'])
       if products:
@@ -994,7 +995,7 @@ def send_message(token, recipient, text, data):
             	print r.text
         typing('on', PAT, recipient)
         time.sleep(1)
-        message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen. Ik Ga je een aantal keuzes geven om je beter te leren kennen!'
+        message = 'Het grote boek van Sinterklaas kent alle kinderen, maar weet wat minder van de volwassenen.'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1008,6 +1009,19 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             	print r.text
         typing('on', PAT, recipient)
+        message = 'Ik Gga je een aantal keuzes geven om je beter te leren kennen!'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message":{"text": message}}),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            	print r.text
         mg.updateUser(recipient, data)
         time.sleep(1.5)
     else:
@@ -1112,33 +1126,54 @@ def send_message(token, recipient, text, data):
         time.sleep(1)
         message = random.choice(presentmessage3)
         typing('off', PAT, recipient)
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": message,
-              "quick_replies":[{
-                            "content_type":"text",
-                            "title":'Andere keuzes!',
-                            "payload":'Andere'
-                          },
-                {
-                              "content_type":"text",
-                              "title":'Gevonden!',
-                              "payload":'Gevonden'
-                            },{
-                                          "content_type":"text",
-                                          "title":'Andere categorie!',
-                                          "payload":'Categorie'
-                                        },{
-                                                      "content_type":"text",
-                                                      "title":'Ander bedrag!',
-                                                      "payload":'bedrag'
-                                                    }]}
-            }),
-            headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-            print r.text
+        if 'budget'in data['data']':'
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": token},
+                data=json.dumps({
+                  "recipient": {"id": recipient},
+                  "message": {"text": message,
+                  "quick_replies":[{
+                                "content_type":"text",
+                                "title":'Andere keuzes!',
+                                "payload":'Andere'
+                              },
+                    {
+                                  "content_type":"text",
+                                  "title":'Gevonden!',
+                                  "payload":'Gevonden'
+                                },{
+                                              "content_type":"text",
+                                              "title":'Andere categorie!',
+                                              "payload":'Categorie'
+                                            },{
+                                                          "content_type":"text",
+                                                          "title":'Ander bedrag!',
+                                                          "payload":'bedrag'
+                                                        }]}
+                }),
+                headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+                print r.text
+        else:
+                        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                            params={"access_token": token},
+                            data=json.dumps({
+                              "recipient": {"id": recipient},
+                              "message": {"text": message,
+                              "quick_replies":[{
+                                            "content_type":"text",
+                                            "title":'Andere keuzes!',
+                                            "payload":'Andere'
+                                          },
+                                {
+                                              "content_type":"text",
+                                              "title":'Gevonden!',
+                                              "payload":'Gevonden'
+                                            }
+                            }),
+                            headers={'Content-type': 'application/json'})
+                        if r.status_code != requests.codes.ok:
+                            print r.text
         mg.updateUser(recipient, data)
     # elif text == 'Nee' and data['secondchoice']:
     #     message = 'Sorry, ik denk dat ik niet helemaal weet wat je zoekt. Je zou zelf verder kunnen zoeken in de folders. Die kun je vinden via de volgende links'
@@ -1186,20 +1221,21 @@ def send_message(token, recipient, text, data):
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     else:
-        message = random.choice(presentmessage1)
-    	data['text'].append(('bot',message))
-    	data['oldmessage'] = message
-    	postdashbot('bot',(recipient,message, data['message-id']) )
-        typing('off', PAT, recipient)
-        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": message.encode('utf-8')}
-            }),
-            headers={'Content-type': 'application/json'})
-        if r.status_code != requests.codes.ok:
-            	print r.text
+        if data['oldmessage'] != 'Ik heb het zelfs al gevonden!':
+            message = random.choice(presentmessage1)
+        	data['text'].append(('bot',message))
+        	data['oldmessage'] = message
+        	postdashbot('bot',(recipient,message, data['message-id']) )
+            typing('off', PAT, recipient)
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                params={"access_token": token},
+                data=json.dumps({
+                  "recipient": {"id": recipient},
+                  "message": {"text": message.encode('utf-8')}
+                }),
+                headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+                	print r.text
         typing('on', PAT, recipient)
         time.sleep(2)
         checksuggest(PAT, recipient, data,N)
