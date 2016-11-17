@@ -1169,7 +1169,7 @@ def send_message(token, recipient, text, data):
                                               "content_type":"text",
                                               "title":'Gevonden!',
                                               "payload":'Gevonden'
-                                            }
+                                            }]}
                             }),
                             headers={'Content-type': 'application/json'})
                         if r.status_code != requests.codes.ok:
