@@ -1287,7 +1287,7 @@ def send_message(token, recipient, text, data):
         print r.text
     mg.updateUser(recipient, data)
     findToken(recipient, data, text)
-elif data['Stage'] == 'bridge' and data['type'] == 'snel':
+  elif data['Stage'] == 'bridge' and data['type'] == 'snel':
     if text == 'Ja' or text == 'Nee':
         findToken(recipient, data, text)
         mg.updateUser(recipient, data)
