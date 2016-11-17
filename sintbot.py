@@ -542,6 +542,7 @@ def findToken(recipient, data, text):
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'decisions':
       if not all(k in data['data'] for k in ['budget', 'Age', 'Gender', 'type']):
+          print('newdecisions')
           data['token'] = random.choice(allValues(Tokens[Stage]))
           while get_keys(Tokens, data['token'])[-1] in data['data']:
               data['token'] = random.choice(allValues(Tokens[Stage]))
