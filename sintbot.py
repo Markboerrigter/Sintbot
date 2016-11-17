@@ -913,6 +913,7 @@ def send_message(token, recipient, text, data):
   """
   a = random.choice([True,False,False,False,False,False,False])
   print('send_message', text)
+  print(data['Stage'])
   if data['dolog'] == 'end':
       print('done')
   elif text == 'triggermessage':
@@ -1257,6 +1258,7 @@ def send_message(token, recipient, text, data):
     elif text == 'Andere categorie!':
         data['data']['oldType'] = data['data']['type']
         del data['data']['type']
+        data['intype'] = False
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
