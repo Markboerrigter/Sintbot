@@ -395,7 +395,7 @@ def findType(string):
     if string == "Ontdek & Verhaal":
         return ['Kleine ontdekkers', 'Verhalenmakers en superhelden']
     if string == "Zorgzaam":
-        return ['Kleine papa’s, mama’s en dierenvriendjes']
+        return ["Kleine papa's, mama's en dierenvriendjes"]
     if string == "Maak & Bouw":
         return ['Knutselaars', 'Bouwers en onderzoekers']
     if string == "Denk & Puzzel":
@@ -1130,7 +1130,7 @@ def send_message(token, recipient, text, data):
                                           "content_type":"text",
                                           "title":'Andere categorie!',
                                           "payload":'Categorie'
-                                        },,{
+                                        },{
                                                       "content_type":"text",
                                                       "title":'Ander bedrag!',
                                                       "payload":'bedrag'
@@ -1222,7 +1222,7 @@ def send_message(token, recipient, text, data):
                                           "content_type":"text",
                                           "title":'Andere categorie!',
                                           "payload":'Categorie'
-                                        },,{
+                                        },{
                                                       "content_type":"text",
                                                       "title":'Ander bedrag!',
                                                       "payload":'bedrag'
