@@ -204,20 +204,27 @@ def typing(opt, token, recipient):
 
 def postdashbot(id, payload):
   print(payload)
+
   if id == 'human':
-      print('send to dashbot ')
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
-        data=payload,
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
+    data = mg.findUser(payload["entry"][0]["messaging"][0]["sender"]["id"])
+    data['messagenumberresponse'] +=1
+    mg.updateUser(payload["entry"][0]["messaging"][0]["sender"]["id"], data)
+    print('send to dashbot ')
+    r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
+    data=payload,
+    headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+    print r.text
   if id == 'bot':
-      print('send botshit to dashbot ')
-      r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
-        data=json.dumps({"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}}),
-        headers={'Content-type': 'application/json'})
-      if r.status_code != requests.codes.ok:
-        print r.text
+    data = mg.findUser(payload[0])
+    data['messagenumberresponse'] +=1
+    mg.updateUser(payload[0], data)
+    print('send botshit to dashbot ')
+    r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=outgoing&apiKey=" + dashbotAPI,
+    data=json.dumps({"qs":{"access_token":PAT},"uri":"https://graph.facebook.com/v2.6/me/messages","json":{"message":{"text":payload[1]},"recipient":{"id":payload[0]}},"method":"POST","responseBody":{"recipient_id":payload[0],"message_id":payload[2]}}),
+    headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+    print r.text
 
 # @app.route('/', methods=['GET'])
 # def handle_verification():
