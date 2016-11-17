@@ -791,7 +791,7 @@ def handle_messages():
                 mg.updateUser(recipient, data)
             elif data['trig']:
                 if text == 'Ja':
-                    send_message(PAT, sender, data['oldmessage'],data)
+                    send_message(PAT, sender, 'triggermessage',data)
                     data['trig'] = False
                 else:
                     typing('on', PAT, sender)
@@ -914,6 +914,22 @@ def send_message(token, recipient, text, data):
   print('send_message', text)
   if data['dolog'] == 'end':
       print('done')
+  elif text = 'triggermessage':
+    message = data['oldmessage']
+    data['text'].append(('bot',message))
+    data['oldmessage'] = message
+    postdashbot('bot',(recipient,message, data['message-id']) )
+    typing('off', PAT, recipient)
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+          "recipient": {"id": recipient},
+          "message": {"text": message.encode('utf-8')}
+        }),
+        headers={'Content-type': 'application/json'})
+    if r.status_code != requests.codes.ok:
+        	print r.text
+
   # elif message == 'Get started' or message =='Aan de slag':
   #     data['dolog'] == 'end'
   #     mg.updateUser(recipient, data)
