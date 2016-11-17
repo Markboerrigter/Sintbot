@@ -692,6 +692,8 @@ def handle_messages():
             data['starter'] = ''
             data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
             data['data'] = {}
+            data['data']['oldType'] = []
+            data['data']['oldBudget'] = []
             mg.insertUser(sender,data)
             typing('on', PAT, sender)
             data = send_message(PAT, sender, message,data)
@@ -839,6 +841,8 @@ def handle_messages():
                     data['type'] = ''
                     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     data['data'] = {}
+                    data['data']['oldType'] = []
+                    data['data']['oldBudget'] = []
                     data['secondchoice'] = False
                     data['intype'] = False
                     data['personQuestions'] = []
@@ -978,7 +982,7 @@ def send_message(token, recipient, text, data):
                           "content_type":"text",
                           "title":x,
                           "payload":x
-                        } for x in childTypes
+                        } for x in childTypes if x not in data['data']['oldType']
                         ]
           }}),
           headers={'Content-type': 'application/json'})
@@ -1256,14 +1260,14 @@ def send_message(token, recipient, text, data):
                             print r.text
         mg.updateUser(recipient, data)
     elif text == 'Andere categorie!':
-        data['data']['oldType'] = data['data']['type']
+        data['data']['oldType'].append(data['data']['type'])
         del data['data']['type']
         data['intype'] = False
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     elif text == 'Ander bedrag!':
-        data['data']['oldBudget'] = data['data']['budget']
+        data['data']['oldBudget'].append(['data']['budget'])
         del data['data']['budget']
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
