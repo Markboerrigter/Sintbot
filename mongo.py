@@ -1476,11 +1476,11 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         else:
             a-=3
         if x[0] in budgetQuery:
-            a+=4
+            a+=8
         else:
             a-=4
         if x[0] in geslachtQuery:
-            a+=6
+            a+=8
         else:
             a-=6
         score1 = pos-neg
