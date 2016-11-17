@@ -357,6 +357,7 @@ def checksuggest(token, recipient, data,n):
             else:
                 presents = mg.findRightProduct(geslacht, budget, age, category, idea,6*N)
                 data['presents'] = presents
+            print(geslacht, budget, age, category, idea)
             presents = [x for x in presents if x not in data['presented']]
         newpres = []
         print('I found' + str(len(presents)) + 'presents')
