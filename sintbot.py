@@ -402,7 +402,7 @@ def findType(string):
         return ['Knutselaars', 'Bouwers en onderzoekers']
     if string == "Denk & Puzzel":
         return ['Knappe koppen en boekenwurmen', 'Spelletjesgekken en puzzelfans']
-    if string == "Sport& Stunt":
+    if string == "Sport & Stunt":
         return ['Sporters, stunters en stoere kids']
     if string == "Race & Rock":
         return ['Razende racers en stoere stuurders', 'Rocksterren en stijliconen']
@@ -410,7 +410,6 @@ def findType(string):
         return ['Gadget en gamekings']
     else:
         return ''
-
 
 def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
@@ -919,7 +918,11 @@ def send_message(token, recipient, text, data):
   #     data['dolog'] == 'end'
   #     mg.updateUser(recipient, data)
   elif a and data['Stage'] == 'decisions' and 'Lezen' in data['personality'] and 'Krijgen' in data['personality']:
+      print(a)
       message = random.choice(chitchat)
+      while message in data['chitchat']:
+          message = random.choice(chitchat)
+      data['chitchat'].append(message)
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -943,7 +946,7 @@ def send_message(token, recipient, text, data):
         mg.updateUser(recipient, data)
     else:
       data['intype'] = True
-      message = 'Ik vroeg me nog af, welk type past het meest bij het kind?'
+      message = 'Ik vroeg me nog af, welk type past het meest bij het kind? ( Scroll naar rechts om alle categorien te zien!)'
       data['text'].append(('bot',message))
       data['oldmessage'] = message
       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1236,13 +1239,13 @@ def send_message(token, recipient, text, data):
         mg.updateUser(recipient, data)
     elif text == 'Andere categorie!':
         data['data']['oldType'] = data['data']['type']
-        data['data']['type'] = ''
+        del data['data']['type']
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     elif text == 'Ander bedrag!':
         data['data']['oldBudget'] = data['data']['budget']
-        data['data']['budget'] = ''
+        del data['data']['budget']
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
