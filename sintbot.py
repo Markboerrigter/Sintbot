@@ -203,6 +203,7 @@ def typing(opt, token, recipient):
             print r.text
 
 def postdashbot(id, payload):
+  data['messagenumberresponse'] +=1
   if id == 'human':
       print('send to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
@@ -684,6 +685,8 @@ def handle_messages():
             data['personality'] = []
             data['oldincoming'] = message
             data['oldmessage'] = ''
+            data['messagenumber'] = 1
+            data['messagenumberresponse'] = 0
             data['presentFound'] = []
             data['intype'] = False
             data['trig'] = False
@@ -718,7 +721,10 @@ def handle_messages():
                     mg.updateUser(recipient, data)
         else:
             data = mg.findUser(sender)
-            if findword(message):
+            data['messagenumber'] +=1
+            if data['messagenumber'] > data['messagenumberresponse']+1:
+                pass
+            elif findword(message):
                 typing('on', PAT, sender)
                 time.sleep(1.5)
                 typing('off', PAT, sender)
@@ -833,6 +839,7 @@ def handle_messages():
                     if len (data['chitchat']) > 3:
                         data['chitchat'] = []
                     data['dolog'] = ''
+
                     data['trig'] = False
                     data['secondRow'] = False
                     data['presentFound'] = []
