@@ -331,7 +331,7 @@ def getFeedback(data):
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
-        if 'Gender' not in data['data']:
+        if data['presentFound']:
             data['secondchoice'] = True
             presents = data['presentFound']
             presents = [x for x in presents if x not in data['presented']]
