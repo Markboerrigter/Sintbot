@@ -1406,7 +1406,7 @@ def send_message(token, recipient, text, data):
   elif data['Stage'] == 'Start':
     if text == 'Beter leren kennen' or text == 'Cadeau advies':
         findToken(recipient, data, text)
-    elif data['oldmessage'] = 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?':
+    elif data['oldmessage'] == 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?':
         message = 'Ik werk het liefst met de knopjes onder aan je scherm!'
         data['text'].append(('bot',message))
         data['oldmessage'] = message
