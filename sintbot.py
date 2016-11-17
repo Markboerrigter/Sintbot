@@ -1463,7 +1463,7 @@ def send_message(token, recipient, text, data):
     else:
         message = random.choice(startmessage)
         if not isinstance(message, str):
-            message = message[0] + ' ' + data['info']['first_name'] + message[1]
+            message = (message[0] + ' ' + data['info']['first_name'] + message[1]).encode('utf-8')
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
