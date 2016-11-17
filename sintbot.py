@@ -203,9 +203,7 @@ def typing(opt, token, recipient):
             print r.text
 
 def postdashbot(id, payload):
-  data = mg.findUser(sender)
-  data['messagenumberresponse'] +=1
-  mg.updateUser(id, data)
+  print(payload)
   if id == 'human':
       print('send to dashbot ')
       r = requests.post("https://tracker.dashbot.io/track?platform=facebook&v=0.7.4-rest&type=incoming&apiKey=" + dashbotAPI,
