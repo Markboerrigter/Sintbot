@@ -597,12 +597,12 @@ def findToken(recipient, data, text):
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'Start':
       data['type'] = text
-      if text == 'Snel':
+      if text == 'Snel cadeau':
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
-      elif text == 'Uniek':
+      elif text == 'Uniek cadeau':
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           while data['token'] in data['chitchat']:
               data['token'] = random.choice(allValues(Tokens[NextStage]))
