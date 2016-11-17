@@ -238,18 +238,9 @@ def postdashbot(id, payload):
 #     return 'Error, wrong validation token'
 import ast
 def getdata(id):
-
     json1 = requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text
     d = ast.literal_eval(json1)
-    print(d)
     return d
-    # print(json1)
-    # dicto = json1.read()
-    # print(dicto)
-    # final = json.loads(dicto)[0]
-    # return final
-    # print(json.loads(requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).json)[0])
-    # return json.loads(requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT.json))[0]
 
 """ FUNCTIONS TO RETRIEVE THE REIGHT ANSWER FROM WIT.AI.
 
@@ -686,7 +677,6 @@ def handle_messages():
         if not mg.findUser(sender):
             typing('on', PAT, sender)
             user_info = getdata(sender)
-            print(type(user_info))
             data = {}
             data['info'] = user_info
             data['log'] = {}
@@ -1472,7 +1462,7 @@ def send_message(token, recipient, text, data):
     else:
         message = random.choice(startmessage)
         if not isinstance(message, str):
-            message = message[0] + data['info'] + message[1]
+            message = message[0] + data['info']['first_name'] + message[1]
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
