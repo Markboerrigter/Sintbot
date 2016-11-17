@@ -1460,7 +1460,7 @@ def send_message(token, recipient, text, data):
 
     else:
         message = random.choice(startmessage)
-        if not isinstance(str,message):
+        if not isinstance(message, str):
             message = message[0] + data['info'] + message[1]
         data['text'].append(('bot',message))
         data['oldmessage'] = message
