@@ -914,7 +914,7 @@ def send_message(token, recipient, text, data):
   print('send_message', text)
   if data['dolog'] == 'end':
       print('done')
-  elif text = 'triggermessage':
+  elif text == 'triggermessage':
     message = data['oldmessage']
     data['text'].append(('bot',message))
     data['oldmessage'] = message
