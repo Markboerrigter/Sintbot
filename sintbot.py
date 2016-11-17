@@ -883,8 +883,6 @@ def handle_messages():
         raise
     except Exception as e:
         print "Caught it!"
-        data['message-id'] = mid
-        data['oldincoming'] = message
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
