@@ -203,13 +203,9 @@ def typing(opt, token, recipient):
             print r.text
 
 def postdashbot(id, payload):
-
   if id == 'human':
-
-    payload = json.loads(payload)
-    print(payload['entry'][0]['messaging'][0]['sender']['id'])
-    print(payload['entry'][0]['messaging'][0])
-    sender = payload['entry'][0]['messaging'][0]['sender']['id']
+    payload1 = json.loads(payload)
+    sender = payload1['entry'][0]['messaging'][0]['sender']['id']
     data = mg.findUser(sender)
     if mg.findUser(sender):
         data['messagenumberresponse'] +=1
@@ -350,9 +346,12 @@ def checksuggest(token, recipient, data,n):
             if 'product' in final_data:
                 idea = final_data['product']
             else: idea = ''
-            presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
+            if data['presents']:
+                presents = data['presents']
+            else:
+                presents = mg.findRightProduct(geslacht, budget, age, category, idea,6*N)
+                data['presents'] = presents
             presents = [x for x in presents if x not in data['presented']]
-            data['presents'] = presents
         newpres = []
         for x in presents:
             if x['retailer'] == 'intertoys':
@@ -1157,13 +1156,7 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": message.encode('utf-8'),
-              "quick_replies":[{
-                            "content_type":"text",
-                            "title":'Oke!',
-                            "payload":'Oke!'
-                          }
-                          ]}
+              "message": {"text": message.encode('utf-8')}
             }),
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
