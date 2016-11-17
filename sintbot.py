@@ -598,12 +598,12 @@ def findToken(recipient, data, text):
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'Start':
       data['type'] = text
-      if text == 'Snel cadeau':
+      if text == 'Cadeauadvies':
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
-      elif text == 'Uniek cadeau':
+      elif text == 'Beter leren kennen':
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           while data['token'] in data['chitchat']:
               data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -1126,7 +1126,7 @@ def send_message(token, recipient, text, data):
         time.sleep(1)
         message = random.choice(presentmessage3)
         typing('off', PAT, recipient)
-        if 'budget'in data['data']':'
+        if 'budget' in data['data']:
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
                 data=json.dumps({
@@ -1343,15 +1343,15 @@ def send_message(token, recipient, text, data):
             params={"access_token": token},
             data=json.dumps({
               "recipient": {"id": recipient},
-              "message": {"text": 'Wil je samen een uniek cadeau voor jou gaan zoeken of wil je snel je cadeau?',
+              "message": {"text": 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?',
               "quick_replies":[{
                             "content_type":"text",
-                            "title":'Uniek cadeau',
+                            "title":'Beter leren kennen',
                             "payload":'Uniek'
                           },
                 {
                               "content_type":"text",
-                              "title":'Snel cadeau',
+                              "title":'Cadeau advies',
                               "payload":'Snel'
                             }]}
             }),
