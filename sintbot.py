@@ -323,7 +323,7 @@ def checksuggest(token, recipient, data,n):
         if 'Gender' not in data['data']:
             data['secondchoice'] = True
             presents = data['presentFound']
-            presents = [x for x in presents in x not in data['presented']]
+            presents = [x for x in presents if x not in data['presented']]
             data['presents'] = presents
             print('direct')
         else:
@@ -338,7 +338,7 @@ def checksuggest(token, recipient, data,n):
                 idea = final_data['product']
             else: idea = ''
             presents = mg.findRightProduct(geslacht, budget, age, category, idea,3*N)
-            presents = [x for x in presents in x not in data['presented']]
+            presents = [x for x in presents if x not in data['presented']]
             data['presents'] = presents
         newpres = []
         for x in presents:
