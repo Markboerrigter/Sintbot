@@ -346,7 +346,7 @@ def checksuggest(token, recipient, data,n):
             if 'product' in final_data:
                 idea = final_data['product']
             else: idea = ''
-            if data['presents']:
+            if 'presents' in data:
                 presents = data['presents']
             else:
                 presents = mg.findRightProduct(geslacht, budget, age, category, idea,6*N)
