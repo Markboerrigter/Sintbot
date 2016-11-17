@@ -238,7 +238,7 @@ def postdashbot(id, payload):
 #     return 'Error, wrong validation token'
 
 def getdata(id):
-    return requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).json
+    return json.loads(requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).json)[0]
 
 """ FUNCTIONS TO RETRIEVE THE REIGHT ANSWER FROM WIT.AI.
 
