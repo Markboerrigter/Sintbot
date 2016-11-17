@@ -259,15 +259,16 @@ def findByPrice(the_price):
 
 # getting all articles under 50 euro
 # @app.route('/articles/under')
-def findUndervalue():
+def findUndervalue(x):
     try:
         catalogus = db.speelgoed
-        results = catalogus.find({'$and': [{'price': {'$lt':50}},{'price': {'$gt':0}} ]})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
-        return output
+        results = list(catalogus.find({'$and': [{'price': {'$lt':x}},{'price': {'$gt':0}} ]}))
+        return results
+        # ordered = results.sort('price')
+        # output = ''
+        # for r in ordered:
+        #     output += r['title'] + ' - '+ str(r['price']) + '<br>'
+        # return output
     except Exception, e:
         return 'Not found'
 
@@ -1428,8 +1429,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     elif budget[0].isdigit():
         budgetQuery = findAbovevalue(budget[0])
     else:
-        budget = [int(s) for s in budget[0].split() if s.isdigit()]
-        budgetQuery = findAbovevalue(budget[0])
+        if 'meer' in budget[0].lower() or 'boven' in budget[0].lower():
+            budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            budgetQuery = findAbovevalue(budget[0])
+        elif 'minder' in budget[0].lower() or 'onder' in budget[0].lower():
+            budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            budgetQuery = findUndervalue(budget[0])
+        else:
+            budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            budgetQuery = findByPrice(budget[0])
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
     if idea == '':
@@ -1538,6 +1546,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
+# x = findRightProduct('Jongen', ['20'] , '7jaar', ['Razende racers en stoere stuurders', 'Rocksterren en stijliconen'], '',20)
+# for l in x:
+#     print(l['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])

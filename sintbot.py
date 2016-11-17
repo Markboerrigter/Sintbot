@@ -331,6 +331,7 @@ def getFeedback(data):
 
 def checksuggest(token, recipient, data,n):
     if data['Stage'] == 'presentchoosing':
+        print('finding presents')
         if data['presentFound']:
             data['secondchoice'] = True
             presents = data['presentFound']
@@ -338,11 +339,14 @@ def checksuggest(token, recipient, data,n):
             data['presents'] = presents
             print('direct')
         else:
+
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
                 geslacht = final_data['Gender'].split(' ')[1]
             else: geslacht = final_data['Gender']
             budget = (final_data['budget']).split('-')
+            if isinstance(budget, str):
+                budget = [budget]
             age = str(final_data['Age']).split(' ')[0]
             category = data['data']['type']
             if 'product' in final_data:
@@ -355,6 +359,7 @@ def checksuggest(token, recipient, data,n):
                 data['presents'] = presents
             presents = [x for x in presents if x not in data['presented']]
         newpres = []
+        print('I found' + str(len(presents)) + 'presents')
         for x in presents:
             if x['retailer'] == 'intertoys':
                 x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
