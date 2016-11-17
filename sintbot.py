@@ -1463,7 +1463,7 @@ def send_message(token, recipient, text, data):
     else:
         message = random.choice(startmessage)
         print(type(message))
-        if not isinstance(message, str):
+        if not isinstance(message, list):
             message = (message[0] + ' ' + data['info']['first_name'] + message[1]).encode('utf-8')
         print(message)
         data['text'].append(('bot',message))
