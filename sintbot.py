@@ -617,6 +617,12 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
+      elif text == 'Oke!':
+          data['type'] = 'snel'
+          NextStage = TokenStages[TokenStages.index(Stage)+2]
+          data['Stage'] = NextStage
+          mg.updateUser(recipient, data)
+          send_message(PAT, recipient, data['starter'], data)
   # elif Stage == 'presentchoosing' and 'Gender' not in data['data']:
   #     NextStage = 'decisions'
   #     data['Stage'] = NextStage
@@ -1075,9 +1081,9 @@ def send_message(token, recipient, text, data):
         	print(recipient)
         mg.updateUser(recipient, data)
   elif data['token'] == '2':
-      if text == 'Oke!':
+      if text == 'Beter leren kennen' or text == 'Cadeau advies' or text == 'Oke!':
           findToken(recipient, data, text)
-      else:
+      elif data['personality']:
           message = 'Welkom terug, zullen we weer op zoek gaan naar een cadeau? :)'
           data['text'].append(('bot',message))
           data['oldmessage'] = message
@@ -1099,8 +1105,55 @@ def send_message(token, recipient, text, data):
           if r.status_code != requests.codes.ok:
               print r.text
           mg.updateUser(recipient, data)
+      else:
+        message = 'Welkom terug!'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message.encode('utf-8'),
+              "quick_replies":[{
+                            "content_type":"text",
+                            "title":'Oke!',
+                            "payload":'Oke!'
+                          }
+                          ]}
+            }),
+            headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+            print r.text
+        mg.updateUser(recipient, data)
+        time.sleep(1)
+        message = 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Beter leren kennen',
+                          "payload":'Uniek'
+                        },
+              {
+                            "content_type":"text",
+                            "title":'Cadeau advies',
+                            "payload":'Snel'
+                          }]}
+          }),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.text
+        mg.updateUser(recipient, data)
   elif data['Stage'] == 'presentchoosing':
-
     if text == 'Gevonden!':
         for present in data['presents'][-3:]:
             mg.addPositive(present['article_number'],2)
@@ -1194,7 +1247,7 @@ def send_message(token, recipient, text, data):
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     else:
-        if data['oldmessage'] != 'Ik heb het zelfs al gevonden!':
+        if data['oldmessage'] not in ['Ik heb het zelfs al gevonden!', 'Ik zie het al staan!']:
             message = random.choice(presentmessage1)
             data['text'].append(('bot',message))
             data['oldmessage'] = message
@@ -1336,25 +1389,30 @@ def send_message(token, recipient, text, data):
         if r.status_code != requests.codes.ok:
             print r.text
         time.sleep(1)
+        message = 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token": token},
-            data=json.dumps({
-              "recipient": {"id": recipient},
-              "message": {"text": 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?',
-              "quick_replies":[{
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Beter leren kennen',
+                          "payload":'Uniek'
+                        },
+              {
                             "content_type":"text",
-                            "title":'Beter leren kennen',
-                            "payload":'Uniek'
-                          },
-                {
-                              "content_type":"text",
-                              "title":'Cadeau advies',
-                              "payload":'Snel'
-                            }]}
-            }),
-            headers={'Content-type': 'application/json'})
+                            "title":'Cadeau advies',
+                            "payload":'Snel'
+                          }]}
+          }),
+          headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
-            print r.text
+          print r.text
         mg.updateUser(recipient, data)
   else:
     time0 = time.time()
