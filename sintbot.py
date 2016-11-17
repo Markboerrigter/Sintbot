@@ -1286,7 +1286,7 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'Start':
-    message = random.choice(startemessage)
+    message = random.choice(startmessage)
     data['text'].append(('bot',message))
     data['oldmessage'] = message
     postdashbot('bot',(recipient,message, data['message-id']) )
