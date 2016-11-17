@@ -670,6 +670,7 @@ below the receive and send functions can be found.
 @app.route('/', methods=['POST'])
 def handle_messages():
   payload = request.get_data()
+  print(payload)
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
         print("Incoming from %s: %s" % (sender, message))
@@ -1462,7 +1463,7 @@ def send_message(token, recipient, text, data):
     else:
         message = random.choice(startmessage)
         if not isinstance(message, str):
-            message = message[0] + data['info']['first_name'] + message[1]
+            message = message[0] + ' ' + data['info']['first_name'] + message[1]
         data['text'].append(('bot',message))
         data['oldmessage'] = message
         postdashbot('bot',(recipient,message, data['message-id']) )
