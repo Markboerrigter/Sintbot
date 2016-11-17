@@ -1223,9 +1223,9 @@ def send_message(token, recipient, text, data):
     else:
         if data['oldmessage'] != 'Ik heb het zelfs al gevonden!':
             message = random.choice(presentmessage1)
-        	data['text'].append(('bot',message))
-        	data['oldmessage'] = message
-        	postdashbot('bot',(recipient,message, data['message-id']) )
+            data['text'].append(('bot',message))
+            data['oldmessage'] = message
+            postdashbot('bot',(recipient,message, data['message-id']) )
             typing('off', PAT, recipient)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
                 params={"access_token": token},
