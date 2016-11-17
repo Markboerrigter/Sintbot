@@ -1081,7 +1081,7 @@ def send_message(token, recipient, text, data):
               print r.text
           mg.updateUser(recipient, data)
   elif data['Stage'] == 'presentchoosing':
-    if text == 'Gevonden':
+    if text == 'Gevonden!':
         for present in data['presents'][-3:]:
             mg.addPositive(present['article_number'],2)
         for present in data['presents'][:-3]:
@@ -1091,7 +1091,7 @@ def send_message(token, recipient, text, data):
     elif text == 'Andere' and 'Gender' not in data['data']:
         data['Stage'] = 'bridge'
         findToken(recipient, data, text)
-    elif text == 'Andere':
+    elif text == 'Andere keuzes!':
         message = 'Oke, bedankt dat je zo eerlijk bent! Wat denk je hier van?'
     	data['text'].append(('bot',message))
     	data['oldmessage'] = message
@@ -1173,13 +1173,13 @@ def send_message(token, recipient, text, data):
     #     typing('on', PAT, recipient)
     #     mg.updateUser(recipient, data)
     #     findToken(recipient, data, text)
-    elif text == 'Categorie':
+elif text == 'Andere categorie!':
         data['data']['oldType'] = data['data']['type']
         data['data']['type'] = ''
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
-    elif text == 'bedrag':
+    elif text == 'Ander bedrag!':
         data['data']['oldBudget'] = data['data']['budget']
         data['data']['budget'] = ''
         data['Stage'] = 'decisions'
@@ -1286,7 +1286,7 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'Start':
-    if text == 'Uniek' or text == 'Snel':
+    if text == 'Uniek cadeau' or text == 'Snel cadeau':
         findToken(recipient, data, text)
     else:
         message = random.choice(startmessage)
