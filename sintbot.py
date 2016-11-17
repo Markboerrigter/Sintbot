@@ -236,14 +236,18 @@ def postdashbot(id, payload):
 #   else:
 #     print "Verification failed!"
 #     return 'Error, wrong validation token'
-
+import ast
 def getdata(id):
-    json1 = requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).json
-    print(json1)
-    dicto = json1.read()
-    print(dicto)
-    final = json.loads(dicto)[0]
-    return final
+
+    json1 = requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text
+    d = ast.literal_eval(json1)
+    print(d)
+    return d
+    # print(json1)
+    # dicto = json1.read()
+    # print(dicto)
+    # final = json.loads(dicto)[0]
+    # return final
     # print(json.loads(requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).json)[0])
     # return json.loads(requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT.json))[0]
 
