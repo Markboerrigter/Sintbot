@@ -1322,7 +1322,7 @@ def send_message(token, recipient, text, data):
             print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'Start':
-    if text == 'Uniek cadeau' or text == 'Snel cadeau':
+    if text == 'Beter leren kennen' or text == 'Cadeau advies':
         findToken(recipient, data, text)
     else:
         message = random.choice(startmessage)
@@ -1339,6 +1339,7 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+        time.sleep(1)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
             params={"access_token": token},
             data=json.dumps({
