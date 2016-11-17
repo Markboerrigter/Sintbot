@@ -1399,6 +1399,54 @@ def send_message(token, recipient, text, data):
   elif data['Stage'] == 'Start':
     if text == 'Beter leren kennen' or text == 'Cadeau advies':
         findToken(recipient, data, text)
+    elif data['oldmessage'] = 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?':
+        message = 'Ik werk het liefst met de knopjes onder aan je scherm!'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Oke!',
+                          "payload":'Oke!'
+                        }]}
+          }),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.text
+        mg.updateUser(recipient, data)
+    elif text == 'Oke!':
+        message = 'Zullen we elkaar eerst wat beter leren kennen of wil je snel cadeau advies?'
+        data['text'].append(('bot',message))
+        data['oldmessage'] = message
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Beter leren kennen',
+                          "payload":'Uniek'
+                        },
+              {
+                            "content_type":"text",
+                            "title":'Cadeau advies',
+                            "payload":'Snel'
+                          }]}
+          }),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.text
+        mg.updateUser(recipient, data)
+
     else:
         message = random.choice(startmessage)
         data['text'].append(('bot',message))
