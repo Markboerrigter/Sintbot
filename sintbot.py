@@ -204,9 +204,12 @@ def typing(opt, token, recipient):
 
 def postdashbot(id, payload):
   print(payload)
+
   if id == 'human':
-    print()
-    sender= payload['entry'][0]['messaging'][0]['sender']['id']
+    payload = json.loads(payload)
+    print(payload['entry'][0]['messaging'][0]['sender']['id'])
+    print(payload['entry'][0]['messaging'][0])
+    sender = payload['entry'][0]['messaging'][0]['sender']['id']
     data = mg.findUser(sender)
     data['messagenumberresponse'] +=1
     mg.updateUser(sender)
