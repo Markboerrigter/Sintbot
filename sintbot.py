@@ -599,8 +599,9 @@ def findToken(recipient, data, text):
       mg.updateUser(recipient, data)
       send_message(PAT, recipient, data['starter'], data)
   elif Stage == 'Start':
-      data['type'] = text
+    #   data['type'] = text
       if text == 'Cadeau advies':
+          data['type'] = 'snel'
           NextStage = TokenStages[TokenStages.index(Stage)+2]
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
@@ -664,6 +665,7 @@ def handle_messages():
             data['log']['data'] = {}
             data['log']['presents']= []
             data['dolog'] = ''
+            data['type'] = ''
             data['secondchoice'] = False
             data['secondRow'] = False
             data['Stage'] = TokenStages[0]
@@ -828,6 +830,7 @@ def handle_messages():
                     data['presentFound'] = []
                     data['token'] = '2'
                     data['starter'] = ''
+                    data['type'] = ''
                     data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
                     data['data'] = {}
                     data['secondchoice'] = False
@@ -1284,7 +1287,7 @@ def send_message(token, recipient, text, data):
         print r.text
     mg.updateUser(recipient, data)
     findToken(recipient, data, text)
-  elif data['Stage'] == 'bridge' and data['type'] == 'Snel':
+elif data['Stage'] == 'bridge' and data['type'] == 'snel':
     if text == 'Ja' or text == 'Nee':
         findToken(recipient, data, text)
         mg.updateUser(recipient, data)
