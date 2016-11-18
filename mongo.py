@@ -1431,12 +1431,15 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     else:
         if 'meer' in budget[0].lower() or 'boven' in budget[0].lower():
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            print(budget)
             budgetQuery = findAbovevalue(budget[0])
         elif 'minder' in budget[0].lower() or 'onder' in budget[0].lower():
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            print(budget)
             budgetQuery = findUndervalue(budget[0])
         else:
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
+            print(budget)
             budgetQuery = findByPrice(budget[0])
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
@@ -1454,7 +1457,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     print(type(categoryQuery))
     print(type(titleQuery))
     print(type(ageQuery))
-    print(type(budgetQuery))
+    print((budgetQuery))
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
