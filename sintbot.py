@@ -628,12 +628,8 @@ def findToken(recipient, data, text):
           send_message(PAT, recipient, data['starter'], data)
       elif text == 'Beter leren kennen':
           NextStage = TokenStages[TokenStages.index(Stage)+1]
-          while data['token'] in data['chitchat']:
-              data['token'] = random.choice(allValues(Tokens[NextStage]))
-              if isinstance(data['token'], dict):
-                  data['token'] = random.choice(allValues(Tokens[NextStage]))
-                  data['starter'] = get_keys(Tokens, data['token'])[-1]
-          data['chitchat'].append(data['token'])
+          data['token'] = 'personality'
+        #   data['chitchat'].append(data['token'])
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
