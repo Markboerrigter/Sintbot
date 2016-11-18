@@ -630,7 +630,7 @@ def findToken(recipient, data, text):
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = 'personality'
         #   data['chitchat'].append(data['token'])
-          data['Stage'] = NextStage
+          data['Stage'] = 'Personality'
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
       elif text == 'Oke!':
