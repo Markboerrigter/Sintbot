@@ -247,13 +247,10 @@ def findByPrice(the_price):
         the_price_low = float(the_price) - float(the_price)/6.6
         the_price_high = float(the_price)/6.6 + float(the_price)
         catalogus = db.speelgoed
-        results = catalogus.find({'$and': [{'price': {'$lt':the_price_high}},{'price': {'$gt':the_price_low}} ]})
-        ordered = results.sort('price')
-        output = ''
-        for r in ordered:
-            output += r['title'] + ' - '+ str(r['price']) + '<br>'
+        results = list(catalogus.find({'$and': [{'price': {'$lt':the_price_high}},{'price': {'$gt':the_price_low}} ]}))
+
         # return str(the_price_low) + ' and ' + str(the_price_high)
-        return output
+        return results
     except Exception, e:
         return 'Not found'
 
@@ -1440,7 +1437,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         else:
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
             print(budget)
-            budgetQuery = findByPrice(int(budget[0]))
+            budgetQuery = findByPrice((budget[0]))
     print(type(budget[0]))
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
