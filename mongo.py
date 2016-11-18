@@ -1455,7 +1455,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     print(type(categoryQuery))
     print(type(titleQuery))
     print(type(ageQuery))
-    print(budgetQuery)
+    # print(budgetQuery)
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
