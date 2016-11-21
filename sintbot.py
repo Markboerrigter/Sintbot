@@ -917,6 +917,7 @@ def handle_messages():
             data['log']['data'] = {}
             data['log']['presents']= []
             data['dolog'] = ''
+            data['context'] = ''
             data['type'] = ''
             data['chit'] = False
             data['kiezen'] = False
@@ -1098,6 +1099,7 @@ def handle_messages():
                         data['presentFound'] = []
                         data['kiezen'] = False
                         data['token'] = '2'
+                        data['context'] = ''
                         data['starter'] = ''
                         data['type'] = ''
                         data['chit'] = False
@@ -1206,7 +1208,9 @@ def send_message(token, recipient, text, data):
           text = text.lower()
           text = text.replace('een ', '').replace('de ', '' ).replace('het ', '')
           if 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
-              context = extraChitchat.index(data['oldmessage'])
+              if not data['context']:
+                  data['context'] = extraChitchat.index(data['oldmessage'])
+              context = data['context']
               if context == 0:
                   if contains_word('sinterklaas',text):
                       data['memory'] = 'sinterklaas'
@@ -1227,7 +1231,7 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                   elif contains_word('kerstman',text):
                       data['memory'] = 'kerstman'
-                      message = 'En hoe oud daenk je dat hij s dan??'
+                      message = 'En hoe oud denk je dat hij is dan??'
                       data['text'].append(('bot',message))
                       data['oldmessage'] = message
                       postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1242,7 +1246,7 @@ def send_message(token, recipient, text, data):
                       if r.status_code != requests.codes.ok:
                           print r.text
                       mg.updateUser(recipient, data)
-                  elif data['oldmessage'] == 'En hoe oud daenk je dat hij is dan??':
+                  elif data['oldmessage'] == 'En hoe oud denk je dat hij is dan??':
                       message = 'Oke! :)'
                       data['text'].append(('bot',message))
                       data['oldmessage'] = message
