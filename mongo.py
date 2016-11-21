@@ -2342,7 +2342,7 @@ def changeImage():
             addImg(x['_id'], newImage)
     return 'done'
 
-changeImage()
+# changeImage()
 """
 
 
