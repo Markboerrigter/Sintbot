@@ -15,6 +15,7 @@ import pickle
 from flask import g
 import time
 import os
+import re
 # Number of presented articles
 
 childTypes = mg.findConfig(18)
@@ -31,6 +32,15 @@ introChitchat = mg.findConfig(52)
 extraChitchat = mg.findConfig(53)
 TriggerPhrases = Triggers['tigger']
 TriggerCats = Triggers['answers']
+
+def contains_word(w,s):
+    s = re.findall(r"[\w']+|[.,!?;]", s)
+    print(s)
+    if w in s:
+        return True
+    else:
+        return False
+print(contains_word('ja','ja, dat lijkt me leuk!'))
 
 app = Flask(__name__)
 
@@ -298,6 +308,7 @@ def getInformation(response, tekst):
         # if 'Feedback' in entities and entities['Feedback'][0]['confidence'] > 0.6:
         #     out['Feedback'] = entities['Feedback'][0]['value']
     return out
+
 
 def findAnswer(response, question,witToken,data):
     session_id = data['session']
@@ -1016,7 +1027,7 @@ def send_message(token, recipient, text, data):
           if 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
               context = extraChitchat.index(data['oldmessage'])
               if context == 0:
-                  if text == 'sinterklaas':
+                  if contains_word('sinterklaas',text):
                       data['memory'] = 'sinterklaas'
                       message = 'En hoe oud daenk je dat hij is dan??'
                       data['text'].append(('bot',message))
@@ -1033,7 +1044,7 @@ def send_message(token, recipient, text, data):
                       if r.status_code != requests.codes.ok:
                           print r.text
                       mg.updateUser(recipient, data)
-                  elif text == 'kerstman':
+                  elif contains_word('kerstman',text):
                       data['memory'] = 'kerstman'
                       message = 'En hoe oud daenk je dat hij s dan??'
                       data['text'].append(('bot',message))
@@ -1112,12 +1123,12 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
               if context == 2:
-                  if text == 'ja':
+                  if contains_word('ja',text):
                       data['memory'] = 'active'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if text == 'nee':
+                  if contains_word('nee',text):
                       data['memory'] = 'not active'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
@@ -1129,12 +1140,12 @@ def send_message(token, recipient, text, data):
           else:
               context = introChitchat.index(data['oldmessage'])
               if context == 0:
-                  if text == 'ja':
+                  if contains_word('ja',text):
                       data['memory'] = 'druk'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if text == 'nee':
+                  if contains_word('nee',text):
                       data['memory'] = 'rustig'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
@@ -1193,12 +1204,12 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
               if context == 2:
-                  if text == 'ja':
+                  if contains_word('ja',text):
                       data['memory'] = 'schoen'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if text == 'nee':
+                  if contains_word('nee',text):
                       data['memory'] = 'geen schoen'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
