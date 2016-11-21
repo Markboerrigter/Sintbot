@@ -1428,17 +1428,16 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     else:
         if 'meer' in budget[0].lower() or 'boven' in budget[0].lower():
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
-            print(budget)
+
             budgetQuery = findAbovevalue(int(budget[0]))
         elif 'minder' in budget[0].lower() or 'onder' in budget[0].lower():
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
-            print(budget)
+
             budgetQuery = findUndervalue(int(budget[0]))
         else:
             budget = [int(s) for s in budget[0].split() if s.isdigit()]
-            print(budget)
+
             budgetQuery = findByPrice((budget[0]))
-    print(type(budget[0]))
     ageQuery = findByAge(age)
     ageSpecificQuery = findSpecificAge(age)
     if idea == '':
@@ -1452,9 +1451,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         titleQuery = findArticlesTitle(idea)
     categoryQuery = [findArticlesCategory(x) for x in category]
     categoryQuery = [item for sublist in categoryQuery for item in sublist]
-    print(type(categoryQuery))
-    print(type(titleQuery))
-    print(type(ageQuery))
     # print(budgetQuery)
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
@@ -1551,9 +1547,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
-# x = findRightProduct('Jongen', ['20'] , '7jaar', ['Razende racers en stoere stuurders', 'Rocksterren en stijliconen'], '',20)
-# for l in x:
-#     print(l['title'])
+x = findRightProduct(u'jongen', [u'15', u'30'] , '10',  [u'Knutselaars', u'Bouwers en onderzoekers'], '',20)
+
+for l in x:
+    print(l['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])

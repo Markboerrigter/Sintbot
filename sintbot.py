@@ -352,7 +352,7 @@ def checksuggest(token, recipient, data,n):
             if 'product' in final_data:
                 idea = final_data['product']
             else: idea = ''
-            if 'presents' in data:
+            if data['presents']:
                 presents = data['presents']
             else:
                 presents = mg.findRightProduct(geslacht, budget, age, category, idea,6*N)
@@ -711,6 +711,7 @@ def handle_messages():
             data['message-id'] = mid
             data['clicked'] = ''
             data['chitchat'] = []
+            data['presents'] = []
             data['personality'] = []
             data['oldincoming'] = message
             data['oldmessage'] = ''
