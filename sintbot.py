@@ -690,7 +690,6 @@ def handle_messages():
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
         print("Incoming from %s: %s" % (sender, message))
-
         postdashbot('human', payload)
         if not mg.findUser(sender):
             typing('on', PAT, sender)
@@ -754,6 +753,7 @@ def handle_messages():
                     mg.updateUser(recipient, data)
         else:
             data = mg.findUser(sender)
+            print(mid, data['message-id'])
             if mid != data['message-id']:
                 data['messagenumber'] +=1
                 if data['messagenumber'] > data['messagenumberresponse']+1:
