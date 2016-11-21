@@ -2307,7 +2307,6 @@ def changeImage():
             addImg(x['article_number'], newImage)
     return 'done'
 
-changeImage()
 """
 
 

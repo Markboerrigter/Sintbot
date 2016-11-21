@@ -1106,7 +1106,7 @@ def send_message(token, recipient, text, data):
         while personalitymessages.index(message) in data['personQuestions']:
             message = random.choice(personalitymessages)
         data['personQuestions'].append(personalitymessages.index(message))
-        data['quick_replies'] = [message[2][0], message[3][0]
+        data['quick_replies'] = [message[2][0], message[3][0]]
         data['text'].append(('bot',message))
     	data['oldmessage'] = message
     	postdashbot('bot',(recipient,message[1], data['message-id']) )
