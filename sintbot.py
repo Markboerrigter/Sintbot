@@ -592,39 +592,219 @@ def findToken(recipient, data, text):
       data['Stage'] = Nextstage
       data['chit'] = True
       if set(data['personality'][1:]) == set(['Geven', 'Surprise']):
+          message = 'Ah, dus jij maakt graag mooie, originele surprises bij de kadootjes die je geeft. '
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+              params={"access_token": token},
+              data=json.dumps({
+                "recipient": {"id": recipient},
+                "message": {"text": message}
+              }),
+              headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+              print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['1'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Geven', 'Gedichtje']):
-          data['token'] = Tokens[Nextstage]['2'].values()[0]
-          data['starter'] = get_keys(Tokens, data['token'])[-1]
+            message = 'Het zoeken van een kado is ook al moeilijk genoeg natuurlijk ;)! '
+            data['text'].append(('bot',message))
+            data['oldmessage'] = message
+            postdashbot('bot',(recipient,message, data['message-id']) )
+            typing('off', PAT, recipient)
+            r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+              params={"access_token": token},
+              data=json.dumps({
+                "recipient": {"id": recipient},
+                "message": {"text": message}
+              }),
+              headers={'Content-type': 'application/json'})
+            if r.status_code != requests.codes.ok:
+              print r.text
+            mg.updateUser(recipient, data)
+            data['token'] = Tokens[Nextstage]['2'].values()[0]
+            data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Geven', 'Lezen']):
+          message = 'Gedichtjes schrijven is ook altijd zoveel werk!  '
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['3'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Geven', 'Schrijven']):
+          message = 'Dus jouw familie gaat weer lange gedichten mogen voorlezen? '
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['4'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Krijgen', 'Surprise']):
+          message = 'Als je veel tijd in de surprises stopt is het ook wel fijn om zelf wat te krijgen he!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['5'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Krijgen', 'Gedichtje']):
+          message = 'Sinterklaas gaat stiekem ook vooral om het genieten van je kadootjes :)!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['6'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Krijgen', 'Lezen']):
+          message = 'Ik vind het ook altijd fijn als de aandacht eventjes om mij draait!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['7'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Krijgen', 'Schrijven']):
+          message = 'Kadootjes zijn leuk, maar voorlezen kan ook alleen maar fout gaan he!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['8'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Schrijven', 'Surprise']):
+          message = 'Ah, jij bent de creatieveling! Daar houden wij altijd het meest van! :D'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['9'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Schrijven', 'Gedichtje']):
+          message = 'haha, je weet niet helemaal wat je wil zeker, nouja lezen is ook niet zo leuk he! ;)'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['10'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Lezen', 'Surprise']):
+          message = 'Ik vind het altijd leuk om de knutselpiet in de weer te zien met al zijn spullen! Jij zult het zeker ook goed kunnen!'
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['11'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       elif set(data['personality'][1:]) == set(['Lezen', 'Gedichtje']):
+          message = 'Met Sinterklaas mag je soms ook gewoon even genieten van de rust he! '
+          data['text'].append(('bot',message))
+          data['oldmessage'] = message
+          postdashbot('bot',(recipient,message, data['message-id']) )
+          typing('off', PAT, recipient)
+          r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+            params={"access_token": token},
+            data=json.dumps({
+              "recipient": {"id": recipient},
+              "message": {"text": message}
+            }),
+            headers={'Content-type': 'application/json'})
+          if r.status_code != requests.codes.ok:
+            print r.text
+          mg.updateUser(recipient, data)
           data['token'] = Tokens[Nextstage]['12'].values()[0]
           data['starter'] = get_keys(Tokens, data['token'])[-1]
       else:
@@ -647,8 +827,8 @@ def findToken(recipient, data, text):
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
       elif text == 'Oke!':
-          data['type'] = 'snel'
           NextStage = TokenStages[TokenStages.index(Stage)+2]
+          data['chit'] = True
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
@@ -739,6 +919,7 @@ def handle_messages():
             data['dolog'] = ''
             data['type'] = ''
             data['chit'] = False
+            data['kiezen'] = False
             data['secondchoice'] = False
             data['secondRow'] = False
             data['Stage'] = TokenStages[0]
@@ -915,6 +1096,7 @@ def handle_messages():
                         data['trig'] = False
                         data['secondRow'] = False
                         data['presentFound'] = []
+                        data['kiezen'] = False
                         data['token'] = '2'
                         data['starter'] = ''
                         data['type'] = ''
@@ -1212,6 +1394,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
+
       elif 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
           message = random.choice(extraChitchat)
           while message in data['chitchat']:
@@ -1702,7 +1885,7 @@ def send_message(token, recipient, text, data):
                 print r.text
             mg.updateUser(recipient, data)
         elif data['memory'] == 'druk':
-            message = random.choice(['Ik hoop dat het goed komt met je voorbereidingen!','Maak ej niet te druk om de voorbereidingen he!'])
+            message = random.choice(['Ik hoop dat het goed komt met je voorbereidingen!','Maak je niet te druk om de voorbereidingen he!'])
             data['text'].append(('bot',message))
             data['oldmessage'] = message
             postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1833,6 +2016,34 @@ def send_message(token, recipient, text, data):
             headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
             print r.text
+        mg.updateUser(recipient, data)
+  elif data['Stage'] == 'bridge':
+    if data['kiezen']:
+        findToken(recipient, data, text)
+    else:
+        message = random.choice(['Weet je ook al welk kado je zoekt dan?', 'Maar weet je ook al wat je dit jaar gaat geven dan?', 'Weet je ook al welk kado je dit jaar wil geven?'])
+        data['oldmessage'] = message
+        data['kiezen'] = True
+        postdashbot('bot',(recipient,message, data['message-id']) )
+        typing('off', PAT, recipient)
+        r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+          params={"access_token": token},
+          data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {"text": message,
+            "quick_replies":[{
+                          "content_type":"text",
+                          "title":'Ja',
+                          "payload":'Ja'
+                        },{
+                                      "content_type":"text",
+                                      "title":'Nee',
+                                      "payload":'Nee'
+                                    }]
+          }}),
+          headers={'Content-type': 'application/json'})
+        if r.status_code != requests.codes.ok:
+          print r.text
         mg.updateUser(recipient, data)
   elif data['Stage'] == 'Start':
     if text == 'Beter leren kennen' or text == 'Cadeau advies':
