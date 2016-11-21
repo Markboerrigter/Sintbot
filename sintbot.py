@@ -596,9 +596,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-              params={"access_token":PAT,
+              params={"access_token":PAT},
               data=json.dumps({
                 "recipient": {"id": recipient},
                 "message": {"text": message}
@@ -614,9 +614,9 @@ def findToken(recipient, data, text):
             data['text'].append(('bot',message))
             data['oldmessage'] = message
             postdashbot('bot',(recipient,message, data['message-id']) )
-            typing('off', PAT, recipient)
+            typing('off', PAT}, recipient)
             r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-              params={"access_token":PAT,
+              params={"access_token":PAT},
               data=json.dumps({
                 "recipient": {"id": recipient},
                 "message": {"text": message}
@@ -632,9 +632,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -650,9 +650,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -668,9 +668,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -686,9 +686,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -704,9 +704,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -722,9 +722,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -740,9 +740,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -758,9 +758,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -776,9 +776,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
@@ -794,9 +794,9 @@ def findToken(recipient, data, text):
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
-          typing('off', PAT, recipient)
+          typing('off', PAT}, recipient)
           r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-            params={"access_token":PAT,
+            params={"access_token":PAT},
             data=json.dumps({
               "recipient": {"id": recipient},
               "message": {"text": message}
