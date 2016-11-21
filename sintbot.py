@@ -894,6 +894,9 @@ def handle_messages():
     except KeyboardInterrupt as e:
         data['message-id'] = mid
         data['oldincoming'] = message
+        data = mg.findUser(sender)
+        data['message-id'] = mid
+        mg.updateUser(recipient, data)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
@@ -915,6 +918,9 @@ def handle_messages():
         raise
     except Exception as e:
         print "Caught it!"
+        data = mg.findUser(sender)
+        data['message-id'] = mid
+        mg.updateUser(recipient, data)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
