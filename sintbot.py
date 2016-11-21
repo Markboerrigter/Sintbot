@@ -374,7 +374,7 @@ def checksuggest(token, recipient, data,n):
         #             x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
         #     newpres.append(x)
         print(N)
-        presents = newpres[:N]
+        presents = presents[:N]
         print(len(presents))
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         data['presented'].extend(presents)
