@@ -662,6 +662,18 @@ def findToken(recipient, data, text):
       response = {}
       mg.updateUser(recipient, data)
 
+def fullPers(data):
+    pers = data['personality']
+    if 'Lezen' in pers or 'Schrijven' in pers:
+        if 'Surprise' in pers or 'Gedichtje' in pers:
+            if 'Geven' in pers or 'Krijgen' in pers:
+                return True
+            else:
+                return False
+        else:
+            return False
+    else:
+        return False
 """ FUNCTIONS TO RECEIVE AND SEND MESSAGES
 
 below the receive and send functions can be found.
@@ -1082,15 +1094,19 @@ def send_message(token, recipient, text, data):
         mg.updateUser(recipient, data)
         time.sleep(1.5)
     else:
-        data['personality'].append(text)
+        if text in data[ 'quick_replies']:
+            data['personality'].append(text)
+        else:
+            data['personQuestions'].remove(data['oldmessage'][0])
         mg.updateUser(recipient, data)
-    if len(data['personQuestions']) > 2:
+    if fullPers(data):
         findToken(recipient, data, text)
     else:
         message = random.choice(personalitymessages)
         while personalitymessages.index(message) in data['personQuestions']:
             message = random.choice(personalitymessages)
         data['personQuestions'].append(personalitymessages.index(message))
+        data['quick_replies'] = [message[2][0], message[3][0]
         data['text'].append(('bot',message))
     	data['oldmessage'] = message
     	postdashbot('bot',(recipient,message[1], data['message-id']) )
