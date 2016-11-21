@@ -1009,7 +1009,7 @@ def send_message(token, recipient, text, data):
         headers={'Content-type': 'application/json'})
     if r.status_code != requests.codes.ok:
         	print r.text
-  elif data['Stage'] == 'bridge' and data['chit'] = True:
+  elif data['Stage'] == 'bridge' and data['chit'] == True:
       if text != 'bridge':
           text = text.lower()
           text = text.replace('een ', '').replace('de ', '' ).replace('het ', '')
@@ -1050,24 +1050,6 @@ def send_message(token, recipient, text, data):
                       if r.status_code != requests.codes.ok:
                           print r.text
                       mg.updateUser(recipient, data)
-                  else:
-                      message = 'Oke! :)'
-                      data['text'].append(('bot',message))
-                      data['oldmessage'] = message
-                      postdashbot('bot',(recipient,message, data['message-id']) )
-                      typing('off', PAT, recipient)
-                      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
-                          params={"access_token": token},
-                          data=json.dumps({
-                            "recipient": {"id": recipient},
-                            "message": {"text": message}
-                          }),
-                          headers={'Content-type': 'application/json'})
-                      if r.status_code != requests.codes.ok:
-                          print r.text
-                      data['chit'] = False
-                      mg.updateUser(recipient, data)
-                      send_message(PAT, recipient, 'bridge', data)
                   elif data['oldmessage'] == 'En hoe oud daenk je dat hij is dan??':
                       message = 'Oke! :)'
                       data['text'].append(('bot',message))
@@ -1086,6 +1068,25 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
+                  else:
+                      message = 'Oke! :)'
+                      data['text'].append(('bot',message))
+                      data['oldmessage'] = message
+                      postdashbot('bot',(recipient,message, data['message-id']) )
+                      typing('off', PAT, recipient)
+                      r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+                          params={"access_token": token},
+                          data=json.dumps({
+                            "recipient": {"id": recipient},
+                            "message": {"text": message}
+                          }),
+                          headers={'Content-type': 'application/json'})
+                      if r.status_code != requests.codes.ok:
+                          print r.text
+                      data['chit'] = False
+                      mg.updateUser(recipient, data)
+                      send_message(PAT, recipient, 'bridge', data)
+
               if context == 1:
                   if isLocation(text):
                       data['memory'] = isLocation(text)
@@ -1133,7 +1134,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if text == 'nee' or :
+                  if text == 'nee':
                       data['memory'] = 'rustig'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
@@ -1197,7 +1198,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if text == 'nee' or :
+                  if text == 'nee':
                       data['memory'] = 'geen schoen'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
