@@ -40,7 +40,6 @@ def contains_word(w,s):
         return True
     else:
         return False
-print(contains_word('ja','ja, dat lijkt me leuk!'))
 
 app = Flask(__name__)
 
