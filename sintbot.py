@@ -1096,7 +1096,6 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-
               if context == 1:
                   if isLocation(text):
                       data['memory'] = isLocation(text)
@@ -1127,7 +1126,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if contains_word('nee',text):
+                  elif contains_word('nee',text):
                       data['memory'] = 'not active'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
@@ -1144,7 +1143,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if contains_word('nee',text):
+                  elif contains_word('nee',text):
                       data['memory'] = 'rustig'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
@@ -1208,7 +1207,7 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-                  if contains_word('nee',text):
+                  elif contains_word('nee',text):
                       data['memory'] = 'geen schoen'
                       data['chit'] = False
                       mg.updateUser(recipient, data)
