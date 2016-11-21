@@ -361,18 +361,18 @@ def checksuggest(token, recipient, data,n):
             presents = [x for x in presents if x not in data['presented']]
         newpres = []
         print('I found' + str(len(presents)) + 'presents')
-        for x in presents:
-            if x['retailer'] == 'intertoys':
-                x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
-                if not  x['img_link'].startswith('http'):
-                    print('no pic')
-                    x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.png'})
-            else:
-                x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
-                if not x['img_link'].startswith('http'):
-                    print('no pic')
-                    x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
-            newpres.append(x)
+        # for x in presents:
+        #     if x['retailer'] == 'intertoys':
+        #         x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
+        #         if not  x['img_link'].startswith('http'):
+        #             print('no pic')
+        #             x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.png'})
+        #     else:
+        #         x['item_url'] = "https://www.spotta.nl/folders/bart-smit?fid=116&page=" + str(x['page'])
+        #         if not x['img_link'].startswith('http'):
+        #             print('no pic')
+        #             x.update({'img_link':'https://support.greenorange.com/sint/bartsmit/'+ 'p' + str(x['page']) + '_' + str(x['article_number']) + '.png'})
+        #     newpres.append(x)
         presents = newpres[:N]
         postdashbot('bot',(recipient,'presents', data['message-id']) )
         data['presented'].extend(presents)
@@ -449,7 +449,7 @@ def findToken(recipient, data, text):
         #   response, data = getResponse(recipient, data['starter'], data)
           send_message(PAT, recipient, data['starter'], data)
       else:
-          message = random.choice(['Oke, dan gaan we samen op zoek!', 'Ah, oke! Daarom ben ik er he!', 'Dat is niet erg;) We gaan samen wat vinden!'])
+          message = random.choice(['Oke, dan gaan we samen op zoek!', 'Ah, oke! Daarom ben ik er he!', 'Dat is niet erg ;) We gaan samen wat vinden!'])
           data['text'].append(('bot',message))
           data['oldmessage'] = message
           postdashbot('bot',(recipient,message, data['message-id']) )
@@ -1002,6 +1002,7 @@ def send_message(token, recipient, text, data):
           headers={'Content-type': 'application/json'})
       if r.status_code != requests.codes.ok:
           print r.text
+      mg.updateUser(recipient, data)
   elif data['oldmessage'] == 'Weet je dit keer al wat je zoekt? :)':
       data['token'] = '1'
       findToken(recipient, data, text)

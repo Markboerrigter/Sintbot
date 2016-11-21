@@ -213,7 +213,7 @@ def findArticlesTitleAndDescription(the_query):
 def findAllArticles():
     try:
         catalogus = db.speelgoed
-        results = catalogus.find()
+        results = catalogus.find({})
         return(list(results))
         # output = ''
         # for r in results:
@@ -1547,10 +1547,10 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
-x = findRightProduct(u'jongen', [u'15', u'30'] , '10',  [u'Knutselaars', u'Bouwers en onderzoekers'], '',20)
-
-for l in x:
-    print(l['title'])
+# x = findRightProduct(u'jongen', [u'15', u'30'] , '10',  [u'Knutselaars', u'Bouwers en onderzoekers'], '',20)
+#
+# for l in x:
+#     print(l['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])
@@ -2272,18 +2272,30 @@ def addImg(artnr, img):
     try:
         catalogus = db.speelgoed
         catalogus.update_one(
-            {'article_number':int(artnr)},
-            {'$set': {'updated': d}, '$inc': {'img_link':img}}
+            {'_id': artnr},
+            {'$set': {'img_link':img}}
         )
-        return 'Extracted 1 dislike point to article :' + artnr
+        print('finished')
+        return 'doei'
     except Exception, e:
+        print(e)
         return 'Not found an article'
 
 def changeImage():
     prod = findAllArticles()
     for x in prod:
         newImage = ''
-        if x['img_link'] == x:
+        if x['img_link'].startswith('https://support'):
+            print(x['img_link'])
+            if x['retailer'] == 'intertoys':
+                if x['article_number'] in [1020822,1386814, 1386826, 1386831, 1199630, 1014314, 1387533, 1292395, 11384141]:
+                    newImage = 'https://www.onlinepublisher.nl/Chatbot/intertoys/p'+ str(x['page']) + '-' + str(x['article_number'])+ ".png"
+                else:
+                    newImage = 'https://cache.onlinepublisher.nl/fsicache/server?type=image&source=shares%2FChatbot%2Fintertoys%2F'+ str(x['page']) + '-' + str(x['article_number']) +'.png&width=400&height=200'
+            else:
+                newImage = 'https://cache.onlinepublisher.nl/fsicache/server?type=image&source=shares%2FChatbot%2Fbartsmit%2F'+ str(x['page']) + '_' + str(x['article_number']) +'.png&width=400&height=200'
+        if x['img_link'] == 'x':
+            print(x['img_link'])
             if x['retailer'] == 'intertoys':
                 if x['article_number'] in [1020822,1020814, 1020826, 1020831, 1020630, 1020314, 1020533, 1020395, 1020141]:
                     newImage = 'https://www.onlinepublisher.nl/Chatbot/intertoys/p'+ str(x['page']) + '-' + str(x['article_number'])+ ".png"
@@ -2292,6 +2304,7 @@ def changeImage():
             else:
                 newImage = 'https://cache.onlinepublisher.nl/fsicache/server?type=image&source=shares%2FChatbot%2Fbartsmit%2F'+ str(x['page']) + '_' + str(x['article_number']) +'.png&width=400&height=200'
         if not x['img_link']:
+            print(x['img_link'])
             if x['retailer'] == 'intertoys':
                 if x['article_number'] in [1020822,1020814, 1020826, 1020831, 1020630, 1020314, 1020533, 1020395, 1020141]:
                     newImage = 'https://www.onlinepublisher.nl/Chatbot/intertoys/p'+ str(x['page']) + '-' + str(x['article_number']) + ".png"
@@ -2301,9 +2314,10 @@ def changeImage():
                 newImage = 'https://cache.onlinepublisher.nl/fsicache/server?type=image&source=shares%2FChatbot%2Fbartsmit%2F'+ str(x['page']) + '_' + str(x['article_number']) +'.png&width=400&height=200'
         if newImage:
             print(x['title'], newImage)
-            addImg(x['article_number'], newImage)
+            addImg(x['_id'], newImage)
     return 'done'
 
+changeImage()
 """
 
 
