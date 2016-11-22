@@ -906,11 +906,6 @@ def handle_messages():
             user_info = getdata(sender)
             data = {}
             data['info'] = user_info
-            # data['log'] = {}
-            # data['log']['text']= {'0':'first conversation'}
-            # data['log']['feedback']= []
-            # data['log']['data'] = {}
-            # data['log']['presents']= []
             data['dolog'] = ''
             data['context'] = ''
             data['type'] = ''
@@ -1083,7 +1078,7 @@ def handle_messages():
                         log['id'] = sender
                         log['personality'] = data['personality']
                         mg.logging(log)
-                        
+
                         data['presents'] = []
                         data['Stage'] = TokenStages[0]
                         data['text'] = []
@@ -1341,7 +1336,7 @@ def send_message(token, recipient, text, data):
                       print(context)
 
                   else:
-                      context = extraChitchat.index(data['oldmessage'])
+                      context = introChitchat.index(data['oldmessage'])
               else:
                   context = data['context']
               if context == 0:
