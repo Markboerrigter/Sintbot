@@ -1214,7 +1214,7 @@ def send_message(token, recipient, text, data):
               if context == 0:
                   if contains_word('sinterklaas',text):
                       data['memory'] = 'sinterklaas'
-                      message = 'En hoe oud daenk je dat hij is dan??'
+                      message = 'En hoe oud denk je dat hij is dan??'
                       data['text'].append(('bot',message))
                       data['oldmessage'] = message
                       postdashbot('bot',(recipient,message, data['message-id']) )
