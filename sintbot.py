@@ -1145,7 +1145,11 @@ def handle_messages():
     except Exception as e:
         print "Caught it!"
         data = mg.findUser(sender)
-        data['message-id'] = mid
+        if data:
+            data['message-id'] = mid
+        else:
+            data = {}
+            data['message-id'] = mid
         mg.updateUser(recipient, data)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
@@ -1419,6 +1423,10 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
+                  else:
+                    data['chit'] = False
+                    mg.updateUser(recipient, data)
+                    send_message(PAT, recipient, 'bridge', data)
       elif 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
           message = random.choice(extraChitchat)
           while message in data['chitchat']:
