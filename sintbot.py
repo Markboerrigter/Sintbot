@@ -446,7 +446,7 @@ def findToken(recipient, data, text):
   data['session'] = 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", '')
   oldToken = data['token']
   Stage = data['Stage']
-  if data['Stage'] == 'bridge':
+  if Stage == 'bridge':
       if text.lower() == 'ja':
           typing('on', PAT, recipient)
           NextStage = TokenStages[TokenStages.index(Stage)+1]
@@ -874,7 +874,6 @@ def isPresent(text):
     else:
         return False
 
-
 def isLocation(text):
     x = tb.response(text,"EEJ5LAFVAYKTD7IPW5SBJ6RM5PF3VTUH", 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", ''))
     if 'entities' in x:
@@ -892,15 +891,12 @@ below the receive and send functions can be found.
 
 """
 
-
 @app.route('/', methods=['POST'])
 def handle_messages():
   payload = request.get_data()
   print(payload)
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
-        if sender  == '1042410335857237':
-            Error
         print("Incoming from %s: %s" % (sender, message))
         postdashbot('human', payload)
         if not mg.findUser(sender):
