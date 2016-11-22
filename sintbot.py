@@ -1273,6 +1273,7 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
                   else:
+                      print('sturen')
                       message = 'Oke! :)'
                       data['text'].append(('bot',message))
                       data['oldmessage'] = message
