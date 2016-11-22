@@ -349,7 +349,6 @@ def checksuggest(token, recipient, data,n):
             data['presents'] = presents
             print('direct')
         else:
-
             final_data = data['data']
             if len(final_data['Gender'].split())>1:
                 geslacht = final_data['Gender'].split(' ')[1]
@@ -1693,6 +1692,7 @@ def send_message(token, recipient, text, data):
         findToken(recipient, data, text)
     elif text == 'Andere keuzes!' and 'Gender' not in data['data']:
         data['Stage'] = 'bridge'
+        data['presentFound'] = []
         findToken(recipient, data, text)
     elif text == 'Andere keuzes!':
         message = 'Oke, bedankt dat je zo eerlijk bent! Wat denk je hier van?'
