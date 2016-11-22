@@ -832,13 +832,6 @@ def findToken(recipient, data, text):
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
           send_message(PAT, recipient,'bridge', data)
-  # elif Stage == 'presentchoosing' and 'Gender' not in data['data']:
-  #     NextStage = 'decisions'
-  #     data['Stage'] = NextStage
-  #     response = {}
-  #     mg.updateUser(recipient, data)
-  #     send_message(PAT, recipient, '', data)
-
   elif TokenStages.index(Stage) < len(TokenStages)-1:
       NextStage = TokenStages[TokenStages.index(Stage)+1]
       data['token'] = random.choice(allValues(Tokens[NextStage]))
@@ -1216,8 +1209,10 @@ def send_message(token, recipient, text, data):
                       context = random.choice([0,1,2])
                       print(context)
                   else:
-                      data['context'] = extraChitchat.index(data['oldmessage'])
-              context = data['context']
+                      context = extraChitchat.index(data['oldmessage'])
+              else:
+                  context = data['context']
+              data['context'] = context
               mg.updateUser(recipient, data)
               if context == 0:
                   if contains_word('sinterklaas',text):
