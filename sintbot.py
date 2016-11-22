@@ -900,6 +900,9 @@ def handle_messages():
   print(payload)
   for sender, message, mid, recipient in messaging_events(payload) :
     try:
+        if sender == 1042410335857237:
+            Error
+        
         print("Incoming from %s: %s" % (sender, message))
         postdashbot('human', payload)
         if not mg.findUser(sender):
