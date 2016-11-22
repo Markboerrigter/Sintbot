@@ -29,8 +29,6 @@ def logging(log):
     except Exception, e:
         return 'Not found user because ',e
 
-
-
 def printgraph(mGraph):
     ##pos=nx.spring_layout(mGraph)
     ##colors=range(20)
@@ -198,18 +196,21 @@ def findArticle(artnr):
 
 # getting all articles based on title (regex part of string not case sensitive)
 # @app.route('/articles/title/<the_query>')
-def findArticlesTitle(the_query):
+def findArticlesTitle(the_query,y):
     try:
         catalogus = db.speelgoed
         results = list(catalogus.find({"$text": {'$search': the_query } } ,{ 'score': { "$meta": "textScore" } }).sort( [( 'score', { "$meta": "textScore" } )] ))
-        results = [x for x in results if x['score'] > 5]
+        # for x in results:
+        #     print(x['score'])
+        results = [x for x in results if x['score'] > y]
         return list(results)
     except Exception, e:
         return 'Not found',e
-# x = findArticlesTitle('LEGO Star Wars')
-#
-# for y in x:
-#     print(y['title'])
+
+
+x = findArticlesTitle('vliegtickets',2)
+for y in x:
+    print(y['title'])
 # # getting all articles based on title and description_extended (regex part of string not case sensitive)
 # @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
@@ -1460,7 +1461,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     else:
         ideaQuery = findArticlesTitleAndDescription(idea)
         stemQuery = findArticlesStemming(ideaStem)
-        titleQuery = findArticlesTitle(idea)
+        titleQuery = findArticlesTitle(idea,3)
     categoryQuery = [findArticlesCategory(x) for x in category]
     categoryQuery = [item for sublist in categoryQuery for item in sublist]
     # print(budgetQuery)
@@ -1556,18 +1557,9 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
                 if y in c:
                     c.remove(y)
     u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
-    # l = []
-    # for x in u:
-    #     if x not in l:
-    #         l.append(x)
-    #
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
-# x = findRightProduct(u'jongen', [u'15', u'30'] , '10',  [u'Knutselaars', u'Bouwers en onderzoekers'], '',20)
-#
-# for l in x:
-#     print(l['title'])
 def printprod(L):
     for x in L:
         print(x[0]['title'], x[1])

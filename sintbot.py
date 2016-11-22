@@ -508,7 +508,7 @@ def findToken(recipient, data, text):
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, 'we weten de persoonlijkheid al', data)
   elif Stage == 'GiveIdea':
-      products = mg.findArticlesTitle(text)[:6]
+      products = mg.findArticlesTitle(text,5)[:6]
       message = random.choice(['Goed dat je het al weet!','Wat een leuk idee!', 'Ah oke, dat klinkt heel leuk!'])
       data['text'].append(('bot',message))
       data['oldmessage'] = message
@@ -549,6 +549,7 @@ def findToken(recipient, data, text):
         mg.updateUser(recipient, data)
         # send_message(PAT, recipient, '', data)
       else:
+        #   mg.findArticlesTitle(text,2)
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = random.choice(allValues(Tokens[NextStage]))
           if isinstance(data['token'], dict):
@@ -1136,7 +1137,7 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-        raise
+        pass
     except Exception as e:
         print "Caught it!"
         data = mg.findUser(sender)
@@ -1160,7 +1161,7 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-        raise
+        pass
   return "ok", 200
 
 def messaging_events(payload):
