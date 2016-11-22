@@ -1211,8 +1211,10 @@ def send_message(token, recipient, text, data):
           text = text.replace('een ', '').replace('de ', '' ).replace('het ', '')
           if 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
               if data['context'] not in [0,1,2]:
+                  print(data['context'])
                   if data['token'] == '2':
                       context = random.choice([0,1,2])
+                      print(context)
                   else:
                       data['context'] = extraChitchat.index(data['oldmessage'])
               context = data['context']
@@ -1409,7 +1411,6 @@ def send_message(token, recipient, text, data):
                       data['chit'] = False
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
-
       elif 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
           message = random.choice(extraChitchat)
           while message in data['chitchat']:
