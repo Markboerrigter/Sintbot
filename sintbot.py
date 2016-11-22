@@ -1592,8 +1592,7 @@ def send_message(token, recipient, text, data):
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-        	print(recipient)
-            mg.updateUser(recipient, data)
+        mg.updateUser(recipient, data)
   elif data['token'] == '2':
     #   data['token'] = '9'
       if text == 'Beter leren kennen' or text == 'Cadeau advies' or text == 'Oke!':
