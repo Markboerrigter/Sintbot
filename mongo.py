@@ -1556,6 +1556,11 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
                 if y in c:
                     c.remove(y)
     u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
+    # l = []
+    # for x in u:
+    #     if x not in l:
+    #         l.append(x)
+    #
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
 
