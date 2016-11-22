@@ -906,11 +906,11 @@ def handle_messages():
             user_info = getdata(sender)
             data = {}
             data['info'] = user_info
-            data['log'] = {}
-            data['log']['text']= {'0':'first conversation'}
-            data['log']['feedback']= []
-            data['log']['data'] = {}
-            data['log']['presents']= []
+            # data['log'] = {}
+            # data['log']['text']= {'0':'first conversation'}
+            # data['log']['feedback']= []
+            # data['log']['data'] = {}
+            # data['log']['presents']= []
             data['dolog'] = ''
             data['context'] = ''
             data['type'] = ''
@@ -1069,16 +1069,21 @@ def handle_messages():
                 elif mid != data['message-id']:
                     typing('on', PAT, sender)
                     if data['dolog'] == 'end':
+                        log = {}
                         if 'Feedback' in data['data']:
-                            data['log']['feedback'].append(data['data']['Feedback'])
+                            log['feedback']= (data['data']['Feedback'])
                         else:
-                            data['log']['feedback'].append('0')
+                            log['feedback']= ('0')
                         if data['data']:
-                            data['log']['data'].update(data['data'])
+                            log['data']= (data['data'])
                         if data['presents']:
-                            data['log']['presents'].append(data['presented'])
+                            log['presents']=(data['presented'])
                         if data['text']:
-                            data['log']['text'].update({str(max([ int(x) for x in list(data['log']['text'].keys())])+1):data['text']})
+                            log['text'] = data['text']
+                        log['id'] = sender
+                        log['personality'] = data['personality']
+                        mg.logging(log)
+                        
                         data['presents'] = []
                         data['Stage'] = TokenStages[0]
                         data['text'] = []

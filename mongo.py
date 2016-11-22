@@ -19,6 +19,18 @@ d = now.isoformat()
 #         'description': 2,
 #         'description_extended': 1
 #     })
+
+
+def logging(log):
+    try:
+        catalogus = db.conversations
+        catalogus.insert(log)
+        return 'done'
+    except Exception, e:
+        return 'Not found user because ',e
+
+
+
 def printgraph(mGraph):
     ##pos=nx.spring_layout(mGraph)
     ##colors=range(20)
