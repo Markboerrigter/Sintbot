@@ -831,7 +831,7 @@ def findToken(recipient, data, text):
           data['chit'] = True
           data['Stage'] = NextStage
           mg.updateUser(recipient, data)
-          send_message(PAT, recipient, data['starter'], data)
+          send_message(PAT, recipient,'bridge', data)
   # elif Stage == 'presentchoosing' and 'Gender' not in data['data']:
   #     NextStage = 'decisions'
   #     data['Stage'] = NextStage
