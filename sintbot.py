@@ -1757,11 +1757,13 @@ def send_message(token, recipient, text, data):
         del data['data']['type']
         data['intype'] = False
         data['Stage'] = 'decisions'
+        data['presents'] = []
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
     elif text == 'Ander bedrag!':
         data['data']['oldBudget'].append(data['data']['budget'])
         del data['data']['budget']
+        data['presents'] = []
         data['Stage'] = 'decisions'
         mg.updateUser(recipient, data)
         findToken(recipient, data, text)
