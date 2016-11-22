@@ -1562,6 +1562,8 @@ def send_message(token, recipient, text, data):
             else:
                 data['personQuestions'] = data['personQuestions'][:-1]
             mg.updateUser(recipient, data)
+        if fullPers(data):
+            findToken(recipient, data, text)
         message = random.choice(personalitymessages)
         while personalitymessages.index(message) in data['personQuestions']:
             message = random.choice(personalitymessages)
