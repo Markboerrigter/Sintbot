@@ -869,7 +869,7 @@ def fullPers(data):
         return False
 
 def isPresent(text):
-    x = response(text,"YVSAX46XH5DN7E3EUZ5BN2FIW53DR5GY", 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", ''))
+    x = tb.response(text,"YVSAX46XH5DN7E3EUZ5BN2FIW53DR5GY", 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", ''))
     if 'entities' in response:
         entities = response['entities']
         if 'Kado' in entities and entities['Kado'][0]['confidence'] > 0.8:
@@ -881,7 +881,7 @@ def isPresent(text):
 
 
 def isLocation(text):
-    x = response(text,"EEJ5LAFVAYKTD7IPW5SBJ6RM5PF3VTUH", 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", ''))
+    x = tb.response(text,"EEJ5LAFVAYKTD7IPW5SBJ6RM5PF3VTUH", 'GreenOrange-session-' + str(datetime.datetime.now()).replace(" ", ''))
     if 'entities' in response:
         entities = response['entities']
         if 'location' in entities and entities['location'][0]['confidence'] > 0.8:
