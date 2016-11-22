@@ -1328,12 +1328,17 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
           else:
-              if data['context'] in [0,1,2]:
+              if data['context'] not in [0,1,2]:
+                  print(data['context'])
                   if data['token'] == '2':
+                      data['token'] = 'hahah'
                       context = random.choice([0,1,2])
+                      print(context)
+
                   else:
-                      data['context'] = extraChitchat.index(data['oldmessage'])
-              context = data['context']
+                      context = extraChitchat.index(data['oldmessage'])
+              else:
+                  context = data['context']
               if context == 0:
                   if contains_word('ja',text):
                       data['memory'] = 'druk'
