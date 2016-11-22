@@ -857,6 +857,7 @@ def findToken(recipient, data, text):
 
 def fullPers(data):
     pers = data['personality']
+    print(pers)
     if 'Lezen' in pers or 'Schrijven' in pers:
         if 'Surprise' in pers or 'Gedichtje' in pers:
             if 'Geven' in pers or 'Krijgen' in pers:
@@ -885,7 +886,7 @@ def isLocation(text):
     if 'entities' in x:
         entities = x['entities']
         if 'location' in entities and entities['location'][0]['confidence'] > 0.8:
-            return entities['age_of_person'][0]['value']
+            return entities['location'][0]['value']
         else:
             return False
     else:
