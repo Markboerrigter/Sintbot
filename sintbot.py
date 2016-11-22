@@ -1116,13 +1116,16 @@ def handle_messages():
                     mg.updateUser(recipient, data)
                     data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
-        data['message-id'] = mid
     except KeyboardInterrupt as e:
         data['message-id'] = mid
         data['oldincoming'] = message
         data = mg.findUser(sender)
-        data['message-id'] = mid
-        mg.updateUser(recipient, data)
+        if isinstance(data,dict):
+            data['message-id'] = mid
+        else:
+            data = {}
+            data['message-id'] = mid
+            mg.updateUser(recipient, data)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
@@ -1145,12 +1148,12 @@ def handle_messages():
     except Exception as e:
         print "Caught it!"
         data = mg.findUser(sender)
-        if data:
+        if isinstance(data,dict):
             data['message-id'] = mid
         else:
             data = {}
             data['message-id'] = mid
-        mg.updateUser(recipient, data)
+            mg.updateUser(recipient, data)
         r = requests.post("https://graph.facebook.com/v2.6/me/messages",
         params={"access_token": PAT},
         data=json.dumps({
