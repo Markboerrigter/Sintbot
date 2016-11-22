@@ -861,6 +861,7 @@ def fullPers(data):
     if 'Lezen' in pers or 'Schrijven' in pers:
         if 'Surprise' in pers or 'Gedichtje' in pers:
             if 'Geven' in pers or 'Krijgen' in pers:
+                print('full personality')
                 return True
             else:
                 return False
