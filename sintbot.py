@@ -1209,8 +1209,10 @@ def send_message(token, recipient, text, data):
           text = text.replace('een ', '').replace('de ', '' ).replace('het ', '')
           if 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
               if not data['context']:
+                  print(data['context'])
                   data['context'] = extraChitchat.index(data['oldmessage'])
               context = data['context']
+              mg.updateUser(recipient, data)
               if context == 0:
                   if contains_word('sinterklaas',text):
                       data['memory'] = 'sinterklaas'
