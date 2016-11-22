@@ -1114,6 +1114,9 @@ def handle_messages():
                     data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
     except KeyboardInterrupt as e:
+        print "Caught it!"
+        print(sender)
+        print(e)
         data['message-id'] = mid
         data['oldincoming'] = message
         data = mg.findUser(sender)
@@ -1143,6 +1146,8 @@ def handle_messages():
         	print r.text
     except Exception as e:
         print "Caught it!"
+        print(sender)
+        print(e)
         data = mg.findUser(sender)
         if isinstance(data,dict):
             data['message-id'] = mid
