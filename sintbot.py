@@ -1208,7 +1208,7 @@ def send_message(token, recipient, text, data):
           text = text.lower()
           text = text.replace('een ', '').replace('de ', '' ).replace('het ', '')
           if 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
-              if not data['context']:
+              if data['context'] not in [0,1,2]:
                   print(data['context'])
                   data['context'] = extraChitchat.index(data['oldmessage'])
               context = data['context']
@@ -1324,7 +1324,10 @@ def send_message(token, recipient, text, data):
                       mg.updateUser(recipient, data)
                       send_message(PAT, recipient, 'bridge', data)
           else:
-              context = introChitchat.index(data['oldmessage'])
+              if data['context'] in [0,1,2]:
+                  print(data['context'])
+                  data['context'] = introChitchat.index(data['oldmessage'])
+              context = data['context']
               if context == 0:
                   if contains_word('ja',text):
                       data['memory'] = 'druk'
