@@ -1140,7 +1140,6 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-        pass
     except Exception as e:
         print "Caught it!"
         data = mg.findUser(sender)
@@ -1168,7 +1167,6 @@ def handle_messages():
         headers={'Content-type': 'application/json'})
         if r.status_code != requests.codes.ok:
         	print r.text
-        pass
   return "ok", 200
 
 def messaging_events(payload):
