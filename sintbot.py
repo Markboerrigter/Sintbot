@@ -1206,8 +1206,10 @@ def send_message(token, recipient, text, data):
               if data['context'] not in [0,1,2]:
                   print(data['context'])
                   if data['token'] == '2':
+                      data['token'] = 'hahah'
                       context = random.choice([0,1,2])
                       print(context)
+
                   else:
                       context = extraChitchat.index(data['oldmessage'])
               else:
