@@ -1429,7 +1429,7 @@ def send_message(token, recipient, text, data):
       elif 'Lezen' in data['personality'] or 'Krijgen' in data['personality']:
           message = random.choice(extraChitchat)
           while message in data['chitchat']:
-              message = random.choice(chitchat)
+              message = random.choice(extraChitchat)
           data['chitchat'].append(message)
           data['text'].append(('bot',message))
           data['oldmessage'] = message
@@ -1448,7 +1448,7 @@ def send_message(token, recipient, text, data):
       else:
           message = random.choice(introChitchat)
           while message in data['chitchat']:
-              message = random.choice(chitchat)
+              message = random.choice(introChitchat)
           data['chitchat'].append(message)
           data['text'].append(('bot',message))
           data['oldmessage'] = message

@@ -208,7 +208,7 @@ def findArticlesTitle(the_query,y):
         return 'Not found',e
 
 
-x = findArticlesTitle('vliegtickets',2)
+x = findArticlesTitle('e',5)
 for y in x:
     print(y['title'])
 # # getting all articles based on title and description_extended (regex part of string not case sensitive)
