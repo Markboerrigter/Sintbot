@@ -8,6 +8,7 @@ pyliblzma==0.5.3
 pysolr==3.5.0
 python-dateutil==1.5
 requests==2.11.1
+nltk==3.2.1
 virtualenv==15.0.3
 Werkzeug==0.11.11
 wit==4.1.0
