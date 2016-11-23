@@ -11,6 +11,7 @@ import datetime
 import mongo as mg
 import pprint
 from copy import copy
+import ast
 import pickle
 from flask import g
 import time
@@ -32,6 +33,8 @@ introChitchat = mg.findConfig(52)
 extraChitchat = mg.findConfig(53)
 TriggerPhrases = Triggers['tigger']
 TriggerCats = Triggers['answers']
+
+sentimentClassifier = pickle.load( open( "sentiment_analysis_final.p", "rb" ) )
 
 def contains_word(w,s):
     s = re.findall(r"[\w']+|[.,!?;]", s)
@@ -237,16 +240,6 @@ def postdashbot(id, payload):
     if r.status_code != requests.codes.ok:
         print r.text
 
-# @app.route('/', methods=['GET'])
-# def handle_verification():
-#   print "Handling Verification."
-#   if request.args.get('hub.verify_token', '') == 'my_voice_is_my_password_verify_me':
-#     print "Verification successful!"
-#     return request.args.get('hub.challenge', '')
-#   else:
-#     print "Verification failed!"
-#     return 'Error, wrong validation token'
-import ast
 def getdata(id):
     json1 = requests.get('https://graph.facebook.com/v2.6/'+ id+ '?fields=first_name,last_name,profile_pic,locale,timezone,gender&access_token=' + PAT).text
     d = ast.literal_eval(json1)
