@@ -5,7 +5,6 @@ import pickle
 import pprint
 
 import numpy
-# import urlparse
 import subprocess
 import warnings
 import requests

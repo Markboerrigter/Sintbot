@@ -1,6 +1,4 @@
 import networkx as nx
-# import matplotlib.pyplot as plt
-
 from pymongo import MongoClient
 import datetime
 from difflib import SequenceMatcher

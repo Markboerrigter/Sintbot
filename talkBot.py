@@ -16,8 +16,8 @@ import pprint
 
 
 #
-import pyowm
-owm = pyowm.OWM
+# import pyowm
+# owm = pyowm.OWM
 import datetime
 
 def first_entity_value(entities, entity):
