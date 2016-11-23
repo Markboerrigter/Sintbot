@@ -208,9 +208,9 @@ def findArticlesTitle(the_query,y):
         return 'Not found',e
 
 
-x = findArticlesTitle('e',5)
-for y in x:
-    print(y['title'])
+# x = findArticlesTitle('e',5)
+# for y in x:
+#     print(y['title'])
 # # getting all articles based on title and description_extended (regex part of string not case sensitive)
 # @app.route('/articles/<the_query>')
 def findArticlesTitleAndDescription(the_query):
@@ -245,6 +245,7 @@ def allToZero():
         print('done')
     except Exception, e:
         return 'Not found', e
+
 # print(allToZero())
 def readScore(number):
     try:
