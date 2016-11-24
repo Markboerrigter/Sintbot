@@ -1467,6 +1467,7 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     allProducts = geslachtQuery + budgetQuery + ageQuery + ideaQuery + stemQuery + titleQuery + categoryQuery
     uniqueProducts = dict((v['_id'],v) for v in allProducts).values()
     uniqueProducts = [[x,0] for x in uniqueProducts]
+    uniqueProducts = [x for x in uniqueProducts if x[0]['title']]
     finalScore = []
     for x in uniqueProducts:
         pos = x[0]['posScore']
@@ -1505,8 +1506,6 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         else:
             a-=6
         score1 = pos-neg
-        print(score1)
-        print(a)
         if pos>0 or neg >0:
             score1= float(score1/(pos+neg))
             if a!=0:
@@ -1561,6 +1560,11 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
+
+x = findRightProduct(u'jongen', [u'15', u'30'], '11', [u'Razende racers en stoere stuurders', u'Rocksterren en stijliconen'], u'', 18)
+
+for y in x :
+    print(y['title'])
 
 def printprod(L):
     for x in L:
