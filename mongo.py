@@ -1507,7 +1507,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
         score1 = pos-neg
         if pos>0 or neg >0:
             score1= float(score1/(pos+neg))
-            a += int(score1/a)
+            if a!=0:
+                a += int(score1/a)
         else:
             a+= score1
         finalScore.append([x[0],a])
