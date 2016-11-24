@@ -301,7 +301,6 @@ def getInformation(response, tekst):
         #     out['Feedback'] = entities['Feedback'][0]['value']
     return out
 
-
 def findAnswer(response, question,witToken,data):
     session_id = data['session']
     information = getInformation(response,question)
@@ -349,7 +348,10 @@ def checksuggest(token, recipient, data,n):
             budget = (final_data['budget']).split('-')
             if isinstance(budget, str):
                 budget = [budget]
-            age = str(final_data['Age']).split(' ')[0]
+            if contains_word('maand',final_data['Age']):
+                age = '1'
+            else:
+                age = str(final_data['Age']).split(' ')[0]
             category = data['data']['type']
             if 'product' in final_data:
                 idea = final_data['product']
