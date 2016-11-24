@@ -1429,6 +1429,12 @@ def score(x,y):
 
 def findRightProduct(geslacht, budget, age, category, idea,n):
     print((geslacht, budget, age, category, idea,n))
+    # print(type(age))
+    # print(age)
+    if len(age.split(','))>1:
+        age = age.split(',')[0]
+    if len(age.split('.'))>1:
+        age = age.split('.')[0]
     idea = idea.lower()
     idea = idea.replace('een ', '').replace('de ', '' ).replace('het ', '')
     ideaStem = ' '.join([kpss.stem(word) for word in idea.split()])
@@ -1560,8 +1566,8 @@ def findRightProduct(geslacht, budget, age, category, idea,n):
     u = [x['title'] for [x,y] in chosenProducts if x['_id'] in c]
     finalScore = [x for [x,y] in chosenProducts if x['_id'] in c] + [item[0] for item in finalScore[lenScores:]]
     return finalScore[:n]
-
-x = findRightProduct(u'jongen', [u'15', u'30'], '11', [u'Razende racers en stoere stuurders', u'Rocksterren en stijliconen'], u'', 18)
+#
+# x = findRightProduct(u'jongen', [u'15', u'30'], '2.5', [u'Razende racers en stoere stuurders', u'Rocksterren en stijliconen'], u'', 18)
 
 for y in x :
     print(y['title'])
