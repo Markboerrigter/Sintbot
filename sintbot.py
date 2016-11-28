@@ -2130,7 +2130,10 @@ def send_message(token, recipient, text, data):
         message = random.choice(startmessage)
         print(type(message))
         if isinstance(message, list):
-            message = (message[0] + ' ' + data['info']['first_name'] + message[1]).encode('utf-8')
+            if data['info']['first_name']:
+                message = (message[0] + ' ' + data['info']['first_name'] + message[1]).encode('utf-8')
+            else:
+                message = (message[0] + ' ' +  message[1]).encode('utf-8')
         print(message)
         data['text'].append(('bot',message))
         data['oldmessage'] = message
