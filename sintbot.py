@@ -367,7 +367,7 @@ def checksuggest(token, recipient, data,n):
         print('I found' + str(len(presents)) + 'presents')
         for x in presents:
             if x['retailer'] == 'intertoys':
-                x['item_url'] = "https://publish.folders.eu/fixed/1045431?token=a85b6e3184de74e183325ea2836c6c10&startpage=" + str(x['page'])
+                x['item_url'] = "https://www.spotta.nl/folders/intertoys?fid=1&page=" + str(x['page'])
                 # if not  x['img_link'].startswith('http'):
                 #     print('no pic')
                 #     x.update({'img_link':'https://support.greenorange.com/sint/intertoys/'+ 'p' + str(x['page']) + '-' + str(x['article_number']) + '.png'})
@@ -960,6 +960,7 @@ def handle_messages():
                 data['messagenumber'] +=1
                 if data['messagenumber'] > data['messagenumberresponse']+2:
                     pass
+                data['message-id'] = mid
                 elif findword(message):
                     typing('on', PAT, sender)
                     time.sleep(1.5)

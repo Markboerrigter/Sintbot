@@ -18,6 +18,15 @@ d = now.isoformat()
 #         'description_extended': 1
 #     })
 
+def getConvos():
+    catalogus = db.conversations
+    results = catalogus.find({})
+    return(list(results))
+
+def getUsers():
+    catalogus = db.users
+    results = catalogus.find({})
+    return(list(results))
 
 def logging(log):
     try:
