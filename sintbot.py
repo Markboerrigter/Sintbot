@@ -958,9 +958,10 @@ def handle_messages():
             print(mid, data['message-id'])
             if mid != data['message-id']:
                 data['messagenumber'] +=1
+                data['message-id'] = mid
                 if data['messagenumber'] > data['messagenumberresponse']+2:
                     pass
-                data['message-id'] = mid
+
                 elif findword(message):
                     typing('on', PAT, sender)
                     time.sleep(1.5)
