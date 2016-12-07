@@ -1059,7 +1059,7 @@ def handle_messages():
                         data['dolog'] = 'end'
                         mg.updateUser(recipient, data)
                 elif mid != data['message-id']:
-                    print('Im here!'')
+                    print('Im here!')
                     typing('on', PAT, sender)
                     if data['dolog'] == 'end':
                         log = {}
