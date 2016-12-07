@@ -815,6 +815,7 @@ def findToken(recipient, data, text):
           mg.updateUser(recipient, data)
           send_message(PAT, recipient, data['starter'], data)
       elif text == 'Beter leren kennen':
+          print('hoi')
           NextStage = TokenStages[TokenStages.index(Stage)+1]
           data['token'] = 'personality'
         #   data['chitchat'].append(data['token'])
