@@ -1062,7 +1062,7 @@ def handle_messages():
                         	print r.text
                         data['dolog'] = 'end'
                         mg.updateUser(recipient, data)
-                else
+                else:
                     print('Im here!')
                     typing('on', PAT, sender)
                     if data['dolog'] == 'end':
