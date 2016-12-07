@@ -1105,6 +1105,7 @@ def handle_messages():
                     data['text'].append(('user',message))
                     data['message-id'] = mid
                     data['oldincoming'] = message
+                    print('saving')
                     mg.updateUser(recipient, data)
                     data = send_message(PAT, sender, message,data)
             mg.updateUser(recipient, data)
