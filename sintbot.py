@@ -961,10 +961,13 @@ def handle_messages():
             if mid != data['message-id']:
                 data['messagenumber'] +=1
                 data['message-id'] = mid
+                print('Im here1!')
                 if data['messagenumber'] > data['messagenumberresponse']+2:
+                    print('Im here2!')
                     pass
 
                 elif findword(message):
+                    print('Im here!')
                     typing('on', PAT, sender)
                     time.sleep(1.5)
                     typing('off', PAT, sender)
@@ -1010,6 +1013,7 @@ def handle_messages():
                 elif message.split()[0] == 'clicked':
                     data['clicked'] = message.split()[1]
                 elif triggered(message, sender):
+                    print('Im trighere!')
                     typing('on', PAT, sender)
                     print('Trigger send')
                     typing('on', PAT, sender)
@@ -1058,7 +1062,7 @@ def handle_messages():
                         	print r.text
                         data['dolog'] = 'end'
                         mg.updateUser(recipient, data)
-                elif mid != data['message-id']:
+                else
                     print('Im here!')
                     typing('on', PAT, sender)
                     if data['dolog'] == 'end':
